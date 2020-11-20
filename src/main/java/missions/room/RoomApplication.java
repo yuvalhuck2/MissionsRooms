@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 @SpringBootApplication
 //@RestController
-@EnableJpaRepositories("Pack_Try")
-@EntityScan("Pack_Try")
+@EnableJpaRepositories("Pack_Try")//let spring to read from repositories
+@EntityScan("Pack_Try")// let spring to scan all the entities and crete or update table accordingly
 public class RoomApplication {
 
     public static void main(String[] args) {
