@@ -3,11 +3,11 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, Alert  } from 'react-native';
 
 export default function App() {
-  let onPressLearnMore = () => fetch('http://localhost:8080/hello', {
+  let onPressLearnMore = () => fetch('https://localhost:8443/hello', {
       method: 'GET'
   }).then((response) => response.json()).then((res) => {
-    Alert.alert(res);
-  }).catch((err) => Alert.alert(err.toString()));
+    Alert.alert(res.toString());
+  }).catch((err) => Alert.alert(err.toString()+" fuck "));
   return (
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
