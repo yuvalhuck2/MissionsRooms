@@ -75,13 +75,13 @@ public class ServiceAPI {
     }
 
     /**
-     * req 3.6.1 - watch room details
+     * req 3.6.1 - watch details of the room
      * @param auth - authentication object
      * @param roomId - room id
      * @return the mission details of the given room
      * TODO check on database if can generate unique string
      */
-    public Response<MissionDetailsData> watchMissionDetails (Auth auth, int roomId){
+    public Response<RoomDetailsData> watchRoomDetails (Auth auth, int roomId){
         throw new NotImplementedException();
     }
 
@@ -93,9 +93,19 @@ public class ServiceAPI {
      * @param file - file attached to the solution
      * @return if the answer was accepted successfully
      */
+    //TODO real time notifications to move the other clients a room
     public Response<Boolean> answerOpenQuestionMission(Auth auth, int roomId,String answer,String file){
         throw new NotImplementedException();
     }
+
+    /**
+     * 3.6.2.2 - answer open discussion mission
+     * @return if the answer was accepted successfully
+     */
+
+
+
+
 
 
 

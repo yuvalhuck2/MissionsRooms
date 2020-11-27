@@ -2,5 +2,5 @@ package DataAPI;
 
 
 //TODO implement
-public class MissionDetailsData {
+public class RoomDetailsData {
 }
