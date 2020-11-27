@@ -20,7 +20,7 @@ public class Controller1 {
     private UserRepository userRepository;
 
     @GetMapping("/hello")
-    public String sayHello(@RequestParam(value = "myName", defaultValue = "World") String name) {
+    public @ResponseBody String sayHello(@RequestParam(value = "myName", defaultValue = "World") String name) {
         return String.format("Hello %s!", name);
     }
 
