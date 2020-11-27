@@ -1,5 +1,6 @@
 package missions.room;
 
+import ExternalSystems.VerificationCodeGenerator;
 import Pack_Try.User;
 import Pack_Try.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ public class Controller1 {
     private UserRepository userRepository;
 
     @GetMapping("/hello")
-    public String sayHello(@RequestParam(value = "myName", defaultValue = "World") String name) {
+    public @ResponseBody String sayHello(@RequestParam(value = "myName", defaultValue = "World") String name) {
+        //return VerificationCodeGenerator.ret();
         return String.format("Hello %s!", name);
     }
 
