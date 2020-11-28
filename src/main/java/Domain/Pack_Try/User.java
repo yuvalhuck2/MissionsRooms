@@ -1,4 +1,4 @@
-package Pack_Try;
+package Domain.Pack_Try;
 
 import javax.persistence.*;
 
