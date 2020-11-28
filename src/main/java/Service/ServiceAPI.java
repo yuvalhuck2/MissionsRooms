@@ -3,7 +3,7 @@ package Service;
 import DataAPI.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import javax.xml.ws.Response;
+import java.util.List;
 
 public class ServiceAPI {
 
@@ -81,7 +81,7 @@ public class ServiceAPI {
      * @return the mission details of the given room
      * TODO check on database if can generate unique string
      */
-    public Response<RoomDetailsData> watchRoomDetails (Auth auth, int roomId){
+    public Response<RoomDetailsData> watchRoomDetails (Auth auth, String roomId){
         throw new NotImplementedException();
     }
 
@@ -94,7 +94,7 @@ public class ServiceAPI {
      * @return if the answer was accepted successfully
      */
     //TODO real time notifications to move the other clients a room
-    public Response<Boolean> answerOpenQuestionMission(Auth auth, int roomId,String answer,String file){
+    public Response<Boolean> answerOpenQuestionMission(Auth auth, String roomId,String answer,String file){
         throw new NotImplementedException();
     }
 
@@ -112,7 +112,7 @@ public class ServiceAPI {
      * @param answer - answer for the question
      * @return if the answer was correct
      */
-    public Response<Boolean> answerDeterministicQuestion(Auth auth,int roomId,String answer){
+    public Response<Boolean> answerDeterministicQuestion(Auth auth,String roomId,String answer){
         throw new NotImplementedException();
     }
 
@@ -125,7 +125,7 @@ public class ServiceAPI {
      * @param falseSentence - incorrect sentence about the student
      * @return if the sentences were added to the mission
      */
-    public Response<Boolean> answerTrueLieQuestion(Auth auth, int roomId,String trueSentence, String falseSentence){
+    public Response<Boolean> answerTrueLieQuestion(Auth auth, String roomId,String trueSentence, String falseSentence){
         throw new NotImplementedException();
     }
 
@@ -138,7 +138,7 @@ public class ServiceAPI {
      * @param trueAnswer - true if the sentence the student think the first sentence is correct
      * @return if the answer was correct
      */
-    public Response<Boolean> answerTrueLieQuestion(Auth auth, int roomId,String mail, boolean trueAnswer){
+    public Response<Boolean> answerTrueLieQuestion(Auth auth, String roomId,String mail, boolean trueAnswer){
         throw new NotImplementedException();
     }
 
@@ -150,7 +150,7 @@ public class ServiceAPI {
      * @param sentence - the next sentence to add to the story
      * @return - the whole story after adding the next sentence
      */
-    public Response<String> answerStoryMission(Auth auth,int roomId, String sentence){
+    public Response<String> answerStoryMission(Auth auth,String roomId, String sentence){
         throw new NotImplementedException();
     }
 
@@ -162,7 +162,7 @@ public class ServiceAPI {
      * @param answerNumber - the number of the answer that the students answers
      * @return - the correct answer number
      */
-    public Response<Integer> answerTriviaQuestion(Auth auth,int roomId, int answerNumber){
+    public Response<Integer> answerTriviaQuestion(Auth auth,String roomId, int answerNumber){
         throw new NotImplementedException();
     }
 
@@ -189,6 +189,161 @@ public class ServiceAPI {
     public Response<Boolean> resetPassword(Auth auth){
         throw new NotImplementedException();
     }
+
+
+    /**
+     * req 4.1 - create room
+     */
+
+    /**
+     * req 4.2 - close missions room
+     * @param auth - authentication object
+     * @param roomId - the identifier of the room
+     * @return if the room was closed successfully
+     */
+    public Response<Boolean> closeRoom(Auth auth, String roomId){
+        throw new NotImplementedException();
+    }
+
+
+    /**
+     * req 4.3 - search missions
+     * @param auth - authentication object
+     * @param filter - details about how to filter the missions
+     * @return - list of the missions were filtered
+     */
+    public Response<List<MissionData>> searchMissions(Auth auth, MissionFilterData filter){
+        throw new NotImplementedException();
+    }
+
+
+    /**
+     * req 4.4 - add room template
+     * @param auth - authentication object
+     * @param details - details of the template to be created
+     * @return if the template was added successfully
+     */
+    public Response<Boolean> createRoomTemplate(Auth auth, RoomTemplateDetailsData details){
+        throw new NotImplementedException();
+    }
+
+
+    /**
+     * req 4.5 - add mission
+     * @param auth - authentication object
+     * @param missionData - details of the mission
+     * @return if the mission was added successfully
+     */
+    public Response<Boolean> createMission(Auth auth, MissionData missionData){
+        throw new NotImplementedException();
+    }
+
+
+    /**
+     * req 4.6 - create trivia subject
+     * @param auth - authentication object
+     * @param subject - the subject of the trivia the teacher want to add
+     * @return if the subject was added successfully
+     */
+    public Response<Boolean> createTriviaSubject(Auth auth, String subject){
+        throw new NotImplementedException();
+    }
+
+
+    /**
+     * req 4.7 - add trivia question
+     * @param auth - authentication object
+     * @param question - question details
+     * @return if the question was added successfully
+     */
+    public Response<Boolean> addTriviaQuestion(Auth auth, TriviaQuestionData question){
+        throw new NotImplementedException();
+    }
+
+
+    /**
+     * req 4.8 - delete trivia question
+     * @param auth - authentication object
+     * @param questionID - the ID of the question
+     * @return if the question was deleted successfully
+     */
+    public Response<Boolean> deleteTriviaQuestion(Auth auth, String questionID){
+        throw new NotImplementedException();
+    }
+
+    /**
+     * req 4.9 - watch students solutions
+     * @param auth - authentication object
+     * @return all the solutions that wait to be approved
+     */
+    public Response<List<SolutionData>> watchSolutions(Auth auth){
+        throw new NotImplementedException();
+    }
+
+    /**
+     * req 4.10 - approve or deny student's solution
+     * @param auth - authentication object
+     * @param roomId - the room identifier
+     * @param missionId - the mission identifier
+     * @param isApproved - if the solution was approved
+     * @return if the mission was approved successfully
+     */
+    public Response<Boolean> responseStudentSolution(Auth auth,String roomId, String missionId,boolean isApproved){
+        throw new NotImplementedException();
+    }
+
+
+    /**
+     * req 4.11 - watch student's suggestions
+     * @param auth - authentication object
+     * @return the student's suggestions
+     */
+    public Response<List<String>> watchSuggestions(Auth auth){
+        throw new NotImplementedException();
+    }
+
+
+    /**
+     * req 4.12 - approve or deny student's suggestion
+     * @param auth - authentication object
+     * @param suggestionId - identifier of the suggestion need to be approved
+     * @param isApproved - if the suggestion was approved
+     * @return if the suggestion was
+     */
+    public Response<Boolean> responseStudentSuggestion(Auth auth,String suggestionId, boolean isApproved){
+        throw new NotImplementedException();
+    }
+
+
+    /**
+     * req 4.13 - deduce points to a student
+     * @param auth - authentication object
+     * @param studentMail - the identifier of the student need to deduce points to.
+     * @param pointsToDeduce - the amount of points to deduce the user
+     * @return if the points were deducted successfully
+     */
+    public Response<Boolean> deducePoints(Auth auth,String studentMail, int pointsToDeduce){
+        throw new NotImplementedException();
+    }
+
+
+    /**
+     * req 4.14 - look for room templates
+     * @param auth - authentication object
+     * @param filter - details about how to filter the rooms
+     * @return list of filtered room templates
+     */
+    public Response<List<RoomTemplateDetailsData>> searchRoomTemplates(Auth auth, TemplateFilerData filter){
+        throw new NotImplementedException();
+    }
+
+
+
+
+
+
+
+
 
 
 
