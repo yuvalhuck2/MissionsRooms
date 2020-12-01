@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "axios": "^0.21.0",
     "expo": "~39.0.0",
     "react": "~16.13.0",
     "react-dom": "~16.13.0",
