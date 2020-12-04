@@ -1,24 +1,28 @@
 package Domain;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
 public class Classroom extends Participant{
 
-    @OneToOne
-    private Group groupA;
+    //@LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="classroom",referencedColumnName = "alias")
+    private List<ClassGroup> classGroupA;
 
-    @OneToOne
-    private Group groupB;
+    //example one to one
+//    @OneToOne(mappedBy = "classroom")
+//    private ClassGroup classGroupB;
 
     public Classroom() {
+
     }
 
-    public Classroom(String Id,Group groupA, Group groupB) {
+    public Classroom(String Id, ClassGroup classGroupA, ClassGroup classGroupB) {
         super(Id);
-        this.groupA = groupA;
-        this.groupB = groupB;
+        //this.classGroupA = classGroupA;
+        //this.classGroupB = classGroupB;
     }
 }

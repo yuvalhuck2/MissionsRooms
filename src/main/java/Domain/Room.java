@@ -12,9 +12,11 @@ public class Room {
     @Id
     private String roomId;
 
+    @Enumerated(EnumType.ORDINAL)
     private RoomType roomType;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="roomId",referencedColumnName = "roomId")
     private List<RoomMessage> roomMessages;
 
     @OneToOne
@@ -29,6 +31,7 @@ public class Room {
     public Room() {
     }
 
+    //TODO fix constructor
     public Room(String roomId) {
         this.roomId = roomId;
     }

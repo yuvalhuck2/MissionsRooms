@@ -308,7 +308,7 @@ public class ServiceAPI {
      * @param auth - authentication object
      * @param suggestionId - identifier of the suggestion need to be approved
      * @param isApproved - if the suggestion was approved
-     * @return if the suggestion was
+     * @return if the suggestion was deleted successfully
      */
     public Response<Boolean> responseStudentSuggestion(Auth auth,String suggestionId, boolean isApproved){
         throw new NotImplementedException();

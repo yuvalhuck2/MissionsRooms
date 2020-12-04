@@ -1,7 +1,6 @@
 package Domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class RoomMessage {
@@ -12,4 +11,13 @@ public class RoomMessage {
     private String sender;
 
     private String message;
+
+    public RoomMessage() {
+    }
+
+    public RoomMessage(String messageKey, String sender, String message) {
+        this.messageKey = messageKey;
+        this.sender = sender;
+        this.message = message;
+    }
 }
