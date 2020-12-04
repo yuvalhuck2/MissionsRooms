@@ -22,7 +22,6 @@ public class Controller1 {
 
     @GetMapping("/hello")
     public @ResponseBody String sayHello(@RequestParam(value = "myName", defaultValue = "World") String name) {
-        //return VerificationCodeGenerator.ret();
         return String.format("Hello %s!", name);
     }
 
