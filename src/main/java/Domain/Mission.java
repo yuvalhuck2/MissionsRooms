@@ -3,7 +3,6 @@ package Domain;
 import DataAPI.RoomType;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,7 +13,6 @@ public abstract class Mission {
     protected String missionId;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    //@CollectionTable(name="missionType",joinColumns = {@JoinColumn(name="missionId")})
     @Enumerated(EnumType.ORDINAL)
     protected Set<RoomType> missionTypes;
 
