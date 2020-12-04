@@ -325,13 +325,12 @@ public class ServiceAPI {
 
 
     /**
-     * req 4.12 - approve or deny student's suggestion
+     * req 4.12 - delete student's suggestion
      * @param auth - authentication object
-     * @param suggestionId - identifier of the suggestion need to be approved
-     * @param isApproved - if the suggestion was approved
+     * @param suggestionId - identifier of the suggestion need to be deleted
      * @return if the suggestion was deleted successfully
      */
-    public Response<Boolean> responseStudentSuggestion(Auth auth,String suggestionId, boolean isApproved){
+    public Response<Boolean> responseStudentSuggestion(Auth auth,String suggestionId){
         throw new NotImplementedException();
     }
 
