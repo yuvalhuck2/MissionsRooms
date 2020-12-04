@@ -1,9 +1,6 @@
 package Domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.MapKey;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Map;
 
 @Entity
@@ -13,7 +10,8 @@ public class Subject {
     private String name;
 
     @OneToMany
-    @MapKey(name = "id")
+    @MapKeyColumn(name = "id")
+    @JoinColumn(name="subject",referencedColumnName="name")
     private Map<String,TriviaQuestion> questions;
 
 

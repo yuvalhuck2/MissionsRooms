@@ -10,9 +10,19 @@ public class ServiceAPI {
     /**
      * req 2.2 - register
      * @param details - user details
-     * @return if register succeeded
+     * @return if mail with the code was sent successfully
      */
     public Response<Boolean> register (RegisterDetailsData details){
+        throw new NotImplementedException();
+    }
+
+
+    /**
+     * req 2.2 - register code
+     * @param code - user details
+     * @return if register succeeded
+     */
+    public Response<Boolean> registerCode (String mail, String code){
         throw new NotImplementedException();
     }
 
@@ -190,6 +200,17 @@ public class ServiceAPI {
         throw new NotImplementedException();
     }
 
+    /**
+     * req 3.9 - send room message
+     * @param auth - authentication object
+     * @param message - message to send to the other user
+     * @param mail - target user mail
+     * @param roomId - the room to send a message to
+     * @return if the message was sent successfully
+     */
+    public Response<Boolean> sendMessage(Auth auth,String message,String mail,String roomId){
+        throw new NotImplementedException();
+    }
 
     /**
      * req 4.1 - create room

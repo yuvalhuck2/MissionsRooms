@@ -12,6 +12,8 @@ public abstract class Participant {
     @Id
     protected String alias;
 
+    protected int points;
+
     public Participant() {
     }
 
