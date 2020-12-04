@@ -1,6 +1,7 @@
 package Service;
 
 import DataAPI.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
@@ -334,6 +335,123 @@ public class ServiceAPI {
      * @return list of filtered room templates
      */
     public Response<List<RoomTemplateDetailsData>> searchRoomTemplates(Auth auth, TemplateFilerData filter){
+        throw new NotImplementedException();
+    }
+
+    /**
+     * req 6.1 - transfer student classroom
+    * @param auth - authentication object
+     * @param studentMail - the identifier of the student that needs to change his classroom.
+     * @param newClassroom - new classroom
+     * @return if classroom changed successfully
+     */
+    public Response<Boolean> changeStudentClassroom(Auth auth,String studentMail, String newClassroom){
+        throw new NotImplementedException();
+    }
+
+    /**
+     * req 6.2 - delete user from the system
+     * @param auth- authentication object
+     * @param userMail - the identifier of the user that needs to delete.
+     * @return if user deleted successfully
+     */
+    public Response<Boolean> deleteUser(Auth auth,String userMail){
+        throw new NotImplementedException();
+    }
+
+
+    /**
+     * req 6.3 - upload csv file with users details
+     * @param auth - authentication object
+     * @param usersList -  list of users details to add/update in system
+     * @return if users details updated in system
+     */
+    public Response<Boolean> UploadCSV(Auth auth,List<UserProfileData> usersList){
+        throw new NotImplementedException();
+    }
+
+    /**
+     * req 6.4 - adding new IT to the system
+     * @param auth - authentication object
+     * @param newUser - new IT details
+     * @return if user added successfully
+     */
+    public Response<Boolean> addNewIT(Auth auth,UserProfileData newUser){
+        throw new NotImplementedException();
+    }
+
+    /**
+     * req 6.5.1 - update user mail
+     * @param auth - authentication object
+     * @param userMail - the identifier of the user that needs to update his mail.
+     * @param newMail - new mail to update
+     * @return if mail updated successfully
+     */
+    public Response<Boolean> UpdateUserMail(Auth auth,String userMail,String newMail){
+        throw new NotImplementedException();
+    }
+
+    /**
+     * req 6.5.2 - update user first name
+     * @param auth - authentication object
+     * @param userMail - the identifier of the user that needs to update his first name.
+     * @param FirstName - first name to update
+     * @return if first name updated successfully
+     */
+    public Response<Boolean> UpdateUserFirstName(Auth auth,String userMail,String FirstName){
+        throw new NotImplementedException();
+    }
+
+    /**
+     * req 6.5.3 - update user last name
+     * @param auth - authentication object
+     * @param userMail - the identifier of the user that needs to update his last name.
+     * @param LastName - last name to update
+     * @return if last name updated successfully
+     */
+    public Response<Boolean> UpdateUserLastName(Auth auth,String userMail,String LastName){
+        throw new NotImplementedException();
+    }
+
+    /**
+     * req 6.5.4 - update user phone number
+     * @param auth - authentication object
+     * @param userMail - the identifier of the user that needs to update his phone number.
+     * @param PhoneNumber - phone number t update
+     * @return if phone number updated successfully
+     */
+    public Response<Boolean> UpdateUserPhoneNumber(Auth auth,String userMail,String PhoneNumber){
+        throw new NotImplementedException();
+    }
+
+
+    /**
+     * req 6.6 - delete all students that graduated from school
+     * @param auth - authentication object
+     * @return if users deleted successfully
+     */
+    public Response<Boolean> DeleteAllLastGradeStudents(Auth auth){
+        throw new NotImplementedException();
+    }
+
+    /**
+     * req 6.7 - close classroom
+     * @param auth - authentication object
+     * @param classroom - tha identifier of the classroom need to close
+     * @return if classroom closed successfully
+     */
+    public Response<Boolean> CloseClassroom(Auth auth,String classroom){
+        throw new NotImplementedException();
+    }
+
+    /**
+     * req 6.8 - transfer teacher classroom
+     * @param auth - authentication object
+     * @param teacherMail - the identifier of the teacher that needs to change his classroom.
+     * @param newClassroom - new classroom
+     * @return if classroom changed successfully
+     */
+    public Response<Boolean> changeTeacherClassroom(Auth auth,String teacherMail, String newClassroom){
         throw new NotImplementedException();
     }
 
