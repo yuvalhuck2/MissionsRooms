@@ -1,10 +1,7 @@
 package missions.room;
 
-import DataAPI.OpCode;
-import DataAPI.RegisterDetailsData;
-import DataAPI.Response;
-import DataAPI.UserType;
-import Domain.CodeAndTime;
+import DataAPI.*;
+import Utils.StringAndTime;
 import Repositories.StudentRepository;
 import Domain.Student;
 import ExternalSystems.HashSystem;
@@ -25,21 +22,27 @@ public class LogicManager {
 
     private final HashSystem hashSystem;
     private final MailSender sender;
+
     //save verification codes and string for trace and clean old code
-    private ConcurrentHashMap<String, CodeAndTime> aliasToCode;
+    private ConcurrentHashMap<String, PasswordCodeAndTime> aliasToCode;
+
+    //save apikey and alias for trace and clean not connected users
+    private ConcurrentHashMap<String, StringAndTime> apiToAlias;
 
     //tests constructor
     public LogicManager(StudentRepository studentRepository, MailSender sender) {
         this.studentRepository = studentRepository;
-        this.hashSystem = new HashSystem();
+        hashSystem = new HashSystem();
         this.sender = sender;
-        this.aliasToCode=new ConcurrentHashMap<>();
+        aliasToCode=new ConcurrentHashMap<>();
+        apiToAlias=new ConcurrentHashMap<>();
     }
 
     public LogicManager() {
         hashSystem=new HashSystem();
         sender=new MailSender();
-        this.aliasToCode=new ConcurrentHashMap<>();
+        aliasToCode=new ConcurrentHashMap<>();
+        apiToAlias=new ConcurrentHashMap<>();
     }
 
     /**
@@ -59,42 +62,42 @@ public class LogicManager {
 
 
     private Response<Boolean> updateStudent(RegisterDetailsData details) {
+        //critical read path
         Optional<Student> studentOption=studentRepository.findById(details.getAlias());
         if(!studentOption.isPresent()){
             return new Response<>(false, OpCode.Not_Exist);
         }
 
-        //critical path
         Student student=studentOption.get();
         if(student.getPassword()!=null){
             return new Response<>(false,OpCode.Already_Exist);
         }
+        //end of critical read path
         if(checkStudentFromCSV(details,student)){
             return sendMailAndSave(details, student);
         }
-        //end of critical path
+
         return new Response<>(false,OpCode.Dont_Match_CSV);
     }
 
     /**
-     * send the mail ,persist the student and save the verification code that was sent
+     * send the mail and save the verification code that was sent
      * @param details - user details
      * @param student - the student himself
      * @return
      */
     private Response<Boolean> sendMailAndSave(RegisterDetailsData details, Student student) {
-        student.setPassword(details.getPassword());
         String verificationCode=UniqueStringGenerator.getUniqueCode();
         if(!sender.send(Utils.getMailFromAlias(details.getAlias()), verificationCode)){
             return new Response<>(false, OpCode.Mail_Error);
         }
-        try {
-            studentRepository.save(student);
-        }
-        catch (Exception e){
-            return new Response<>(false,OpCode.DB_Error);
-        }
-        this.aliasToCode.put(details.getAlias(),new CodeAndTime(verificationCode));
+//        try {
+//            studentRepository.save(student);
+//        }
+//        catch (Exception e){
+//            return new Response<>(false,OpCode.DB_Error);
+//        }
+        this.aliasToCode.put(details.getAlias(),new PasswordCodeAndTime(verificationCode,details.getPassword()));
         return new Response<>(true,OpCode.Success);
     }
 
@@ -134,4 +137,48 @@ public class LogicManager {
     }
 
 
+    /**
+     * req 2.2 - register code
+     * * @param alias - user alias
+     * @param code - user details
+     * @return if register succeeded
+     */
+    public Response<Boolean> registerCode(String alias, String code) {
+        if(!Utils.checkString(alias)){
+            return new Response<>(false,OpCode.Wrong_Alias);
+        }
+
+        if(!Utils.checkString(code)){
+            return new Response<>(false,OpCode.Wrong_Code);
+        }
+
+        PasswordCodeAndTime passwordCodeAndTime=aliasToCode.get(alias);
+        if(!passwordCodeAndTime.getCode().equals(code)){
+            return new Response<>(false,OpCode.Code_Not_Match);
+        }
+
+        //critical write path
+        Optional<Student> studentOption=studentRepository.findById(alias);
+        if(!studentOption.isPresent()){
+            return new Response<>(false, OpCode.Not_Exist);
+        }
+
+        Student student=studentOption.get();
+        if(student.getPassword()!=null){
+            return new Response<>(false,OpCode.Already_Exist);
+        }
+        student.setPassword(passwordCodeAndTime.getCode());
+        try {
+            studentRepository.save(student);
+        }
+        catch (Exception e){
+            return new Response<>(false,OpCode.DB_Error);
+        }
+        //end of critical write path
+
+        aliasToCode.remove(alias);
+        return new Response<>(true,OpCode.Success);
+
+
+    }
 }

@@ -44,10 +44,10 @@ public class LogicManagerTestsRealMailSenderStudentRepo extends LogicManagerReal
 
     @Test
     void testRegisterInvalidAlreadyRegisteredStudent(){
-        loginSetUp();
+        registerCodeSetUp();
         Response<Boolean> response=logicManager.register(dataGenerator.getRegisterDetails(Data.VALID));
         assertFalse(response.getValue());
         assertEquals(response.getReason(), OpCode.Already_Exist);
-        loginTearDown();
+        registerCodeTearDown();
     }
 }

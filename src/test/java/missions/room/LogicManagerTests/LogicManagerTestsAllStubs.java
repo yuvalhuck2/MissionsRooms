@@ -3,6 +3,8 @@ package missions.room.LogicManagerTests;
 import Data.Data;
 import Data.DataGenerator;
 import DataAPI.OpCode;
+import DataAPI.PasswordCodeAndTime;
+import DataAPI.RegisterDetailsData;
 import DataAPI.Response;
 import ExternalSystemMocks.MailSenderFalseMock;
 import ExternalSystemMocks.MailSenderTrueMock;
@@ -53,14 +55,27 @@ public class LogicManagerTestsAllStubs {
         studentRepository.save(dataGenerator.getStudent(Data.VALID));
     }
 
-    void loginSetUp(){
+    void registerCodeSetUp(){
         registerSetUp();
-        logicManager.register(dataGenerator.getRegisterDetails(Data.VALID));
+        RegisterDetailsData validDetails=dataGenerator.getRegisterDetails(Data.VALID);
+        logicManager.register(validDetails);
+        String code=null;
+        try {
+            Field aliasToCode = LogicManager.class.getDeclaredField("aliasToCode");
+            aliasToCode.setAccessible(true);
+            code=(((ConcurrentHashMap<String, PasswordCodeAndTime>)aliasToCode.
+                    get(logicManager)).get(validDetails.getAlias())).getCode();
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            fail();
+        }
+        dataGenerator.setValidVerificationCode(code);
     }
 
     //------------------------------tests------------------------------------------------//
 
-
+    /**
+     * req 2.2 register
+     */
 
     @Test
     void testRegisterValid() {
@@ -176,11 +191,32 @@ public class LogicManagerTestsAllStubs {
         }
     }
 
+    /**
+     * req 2.2 register code
+     */
+    @Test
+    void testRegisterCodeValid(){
+        registerCodeSetUp();
+        registerCodeTest();
+        registerTearDown();
+    }
+
+    private void registerCodeTest() {
+        String code=dataGenerator.getVerificationCode(Data.VALID);
+        String alias=dataGenerator.getStudent(Data.VALID).getAlias();
+        Response<Boolean> response=logicManager.registerCode(alias,code);
+        assertTrue(response.getValue());
+        assertEquals(response.getReason(), OpCode.Success);
+
+    }
+
+    //TODO all the wrong tests
+
 
     //---------------------------------------tearDown-------------------------------------//
 
 
-    void loginTearDown(){
+    void registerCodeTearDown(){
         registerTearDown();
     }
 

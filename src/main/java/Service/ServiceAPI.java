@@ -1,11 +1,18 @@
 package Service;
 
 import DataAPI.*;
+import missions.room.LogicManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
+@Service
 public class ServiceAPI {
+
+    @Autowired
+    private LogicManager logicManager;
 
     /**
      * req 2.2 - register
@@ -13,26 +20,27 @@ public class ServiceAPI {
      * @return if mail with the code was sent successfully
      */
     public Response<Boolean> register (RegisterDetailsData details){
-        throw new NotImplementedException();
+        return logicManager.register(details);
     }
 
 
     /**
      * req 2.2 - register code
+     * * @param alias - user alias
      * @param code - user details
      * @return if register succeeded
      */
-    public Response<Boolean> registerCode (String mail, String code){
-        throw new NotImplementedException();
+    public Response<Boolean> registerCode (String alias, String code){
+        return logicManager.registerCode(alias,code);
     }
 
     /**
      * req 2.3 -login
-     * @param mail - user mail
+     * @param alias - user alias
      * @param password - user password
      * @return API key if login succeeded
      */
-    public Response<String> login (String mail, String password){
+    public Response<String> login (String alias, String password){
         throw new NotImplementedException();
     }
 

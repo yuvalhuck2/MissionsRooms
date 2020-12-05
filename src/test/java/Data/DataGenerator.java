@@ -10,10 +10,16 @@ public class DataGenerator {
 
     private HashMap<Data, Student> students;
     private HashMap<Data,RegisterDetailsData> registerDetailsDatas;
+    private HashMap<Data,String> verificationCodes;
 
     public DataGenerator() {
         initStudents();
         initRegisterDetailsDatas();
+        initVerificationCodes();
+    }
+
+    private void initVerificationCodes() {
+        verificationCodes=new HashMap<Data, String>();
     }
 
     private void initRegisterDetailsDatas() {
@@ -42,5 +48,14 @@ public class DataGenerator {
 
     public RegisterDetailsData getRegisterDetails(Data data) {
         return registerDetailsDatas.get(data);
+    }
+
+    public String getVerificationCode (Data data){
+        return verificationCodes.get(data);
+    }
+
+    public void setValidVerificationCode(String code) {
+        verificationCodes.put(Data.VALID,code);
+        verificationCodes.put(Data.WRONG_CODE,code+"3");
     }
 }
