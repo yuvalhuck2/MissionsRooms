@@ -1,4 +1,4 @@
-package Domain.Repositories;
+package Repositories;
 
 import Domain.Room;
 import org.springframework.data.repository.CrudRepository;

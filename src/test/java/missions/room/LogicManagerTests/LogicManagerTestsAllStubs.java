@@ -10,7 +10,7 @@ import ExternalSystems.MailSender;
 import RepositoryMocks.StudentRepositoryExceptionSaveMock;
 import RepositoryMocks.StudentRepositoryMock;
 import missions.room.LogicManager;
-import Domain.Repositories.StudentRepository;
+import Repositories.StudentRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

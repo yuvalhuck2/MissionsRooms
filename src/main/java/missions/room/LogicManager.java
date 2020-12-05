@@ -4,7 +4,8 @@ import DataAPI.OpCode;
 import DataAPI.RegisterDetailsData;
 import DataAPI.Response;
 import DataAPI.UserType;
-import Domain.Repositories.StudentRepository;
+import Domain.CodeAndTime;
+import Repositories.StudentRepository;
 import Domain.Student;
 import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
@@ -22,9 +23,10 @@ public class LogicManager {
     @Autowired
     private StudentRepository studentRepository;
 
-    private HashSystem hashSystem;
-    private MailSender sender;
-    private ConcurrentHashMap<String,String> aliasToCode;
+    private final HashSystem hashSystem;
+    private final MailSender sender;
+    //save verification codes and string for trace and clean old code
+    private ConcurrentHashMap<String, CodeAndTime> aliasToCode;
 
     //tests constructor
     public LogicManager(StudentRepository studentRepository, MailSender sender) {
@@ -92,7 +94,7 @@ public class LogicManager {
         catch (Exception e){
             return new Response<>(false,OpCode.DB_Error);
         }
-        this.aliasToCode.put(details.getAlias(),verificationCode);
+        this.aliasToCode.put(details.getAlias(),new CodeAndTime(verificationCode));
         return new Response<>(true,OpCode.Success);
     }
 

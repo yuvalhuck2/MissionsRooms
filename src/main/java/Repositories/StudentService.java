@@ -1,4 +1,4 @@
-package Domain.Repositories;
+package Repositories;
 
 import Domain.Student;
 import org.springframework.beans.factory.annotation.Autowired;

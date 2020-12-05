@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories("Domain.Repositories")//let spring to read from repositories
+@EnableJpaRepositories("Repositories")//let spring to read from repositories
 @EntityScan("Domain")// let spring to scan all the entities and crete or update table accordingly
 public class RoomApplication {
 

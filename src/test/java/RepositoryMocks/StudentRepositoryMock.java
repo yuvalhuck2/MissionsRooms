@@ -1,11 +1,11 @@
 package RepositoryMocks;
 
 import Data.DataGenerator;
-import Domain.Repositories.StudentRepository;
+import Repositories.StudentRepository;
 import Domain.Student;
 
 import java.util.Optional;
-import Data.*;
+
 import Data.Data;
 
 public class StudentRepositoryMock implements StudentRepository {

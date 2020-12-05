@@ -2,7 +2,7 @@ package missions.room;
 
 import Data.Data;
 import Data.DataGenerator;
-import Domain.Repositories.StudentRepository;
+import Repositories.StudentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

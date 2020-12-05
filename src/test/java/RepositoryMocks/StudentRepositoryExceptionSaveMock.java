@@ -1,7 +1,7 @@
 package RepositoryMocks;
 
 import Data.*;
-import Domain.Repositories.StudentRepository;
+import Repositories.StudentRepository;
 import Domain.Student;
 
 import javax.persistence.EntityNotFoundException;
