@@ -153,7 +153,10 @@ public class LogicManager {
         }
 
         PasswordCodeAndTime passwordCodeAndTime=aliasToCode.get(alias);
-        if(!passwordCodeAndTime.getCode().equals(code)){
+        if(passwordCodeAndTime==null) {
+            return new Response<>(false, OpCode.Not_Registered);
+        }
+        if(!code.equals(passwordCodeAndTime.getCode())){
             return new Response<>(false,OpCode.Code_Not_Match);
         }
 
