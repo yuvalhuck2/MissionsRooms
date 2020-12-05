@@ -20,4 +20,8 @@ public abstract class Participant {
     public Participant(String alias) {
         this.alias = alias;
     }
+
+    public String getAlias() {
+        return alias;
+    }
 }

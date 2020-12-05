@@ -20,6 +20,8 @@ public class Student extends Participant{
 
     protected String lastName;
 
+    protected String password;
+
     @Column(unique=true)
     protected String phoneNumber;
 
@@ -38,5 +40,21 @@ public class Student extends Participant{
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         messages=new ConcurrentHashMap<>();
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

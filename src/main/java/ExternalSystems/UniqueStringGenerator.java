@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 public class UniqueStringGenerator {
 
     public static String getUniqueCode(){
-        return RandomStringUtils.randomAlphabetic(15)+getTimeString();
+        return RandomStringUtils.randomAlphabetic(10)+getTimeString();
     }
 
     private static String getTimeString() {

@@ -6,16 +6,27 @@ package DataAPI;
 public class RegisterDetailsData {
     private String firstName;
     private String lastName;
-    private String mail;
+    private String alias;
     private String password;
     private UserType userType;
+    private String phoneNumber;
+    private String classroom;
 
-    public RegisterDetailsData(String firstName, String lastName, String mail, String password, UserType userType) {
+    public RegisterDetailsData(String firstName, String lastName, String alias, String password, UserType userType, String phoneNumber, String classroom) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.mail = mail;
+        this.alias = alias;
         this.password = password;
         this.userType = userType;
+        this.phoneNumber = phoneNumber;
+        this.classroom = classroom;
+    }
+
+    public RegisterDetailsData(String alias, String password, UserType userType, String phoneNumber) {
+        this.alias = alias;
+        this.password = password;
+        this.userType = userType;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getFirstName() {
@@ -26,8 +37,8 @@ public class RegisterDetailsData {
         return lastName;
     }
 
-    public String getMail() {
-        return mail;
+    public String getAlias() {
+        return alias;
     }
 
     public String getPassword() {
@@ -36,5 +47,17 @@ public class RegisterDetailsData {
 
     public UserType getUserType() {
         return userType;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getClassroom() {
+        return classroom;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

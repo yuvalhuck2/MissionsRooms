@@ -1,4 +1,4 @@
-package Repositories;
+package Domain.Repositories;
 
 import Domain.Suggestion;
 import org.springframework.data.repository.CrudRepository;
