@@ -20,6 +20,8 @@ public class DataGenerator {
 
     private void initVerificationCodes() {
         verificationCodes=new HashMap<Data, String>();
+        verificationCodes.put(Data.NULL_CODE,null);
+        verificationCodes.put(Data.EMPTY_CODE,"");
     }
 
     private void initRegisterDetailsDatas() {

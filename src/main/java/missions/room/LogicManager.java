@@ -24,10 +24,10 @@ public class LogicManager {
     private final MailSender sender;
 
     //save verification codes and string for trace and clean old code
-    private ConcurrentHashMap<String, PasswordCodeAndTime> aliasToCode;
+    private final ConcurrentHashMap<String, PasswordCodeAndTime> aliasToCode;
 
     //save apikey and alias for trace and clean not connected users
-    private ConcurrentHashMap<String, StringAndTime> apiToAlias;
+    private final ConcurrentHashMap<String, StringAndTime> apiToAlias;
 
     //tests constructor
     public LogicManager(StudentRepository studentRepository, MailSender sender) {
@@ -91,12 +91,6 @@ public class LogicManager {
         if(!sender.send(Utils.getMailFromAlias(details.getAlias()), verificationCode)){
             return new Response<>(false, OpCode.Mail_Error);
         }
-//        try {
-//            studentRepository.save(student);
-//        }
-//        catch (Exception e){
-//            return new Response<>(false,OpCode.DB_Error);
-//        }
         this.aliasToCode.put(details.getAlias(),new PasswordCodeAndTime(verificationCode,details.getPassword()));
         return new Response<>(true,OpCode.Success);
     }
@@ -163,14 +157,16 @@ public class LogicManager {
         //critical write path
         Optional<Student> studentOption=studentRepository.findById(alias);
         if(!studentOption.isPresent()){
+            aliasToCode.remove(alias);
             return new Response<>(false, OpCode.Not_Exist);
         }
 
         Student student=studentOption.get();
         if(student.getPassword()!=null){
+            aliasToCode.remove(alias);
             return new Response<>(false,OpCode.Already_Exist);
         }
-        student.setPassword(passwordCodeAndTime.getCode());
+        student.setPassword(passwordCodeAndTime.getPassword());
         try {
             studentRepository.save(student);
         }

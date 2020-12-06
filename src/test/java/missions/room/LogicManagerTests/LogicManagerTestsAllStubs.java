@@ -58,7 +58,11 @@ public class LogicManagerTestsAllStubs {
     void registerCodeSetUp(){
         registerSetUp();
         RegisterDetailsData validDetails=dataGenerator.getRegisterDetails(Data.VALID);
-        logicManager.register(validDetails);
+        Response<Boolean> r=logicManager.register(validDetails);
+        if(!r.getValue()){
+            System.out.println(r.getReason());
+            fail();
+        }
         String code=null;
         try {
             Field aliasToCode = LogicManager.class.getDeclaredField("aliasToCode");
@@ -96,8 +100,7 @@ public class LogicManagerTestsAllStubs {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             fail();
         }
-        assertEquals(dataGenerator.getRegisterDetails(Data.VALID).getPassword(),
-                studentRepository.findById(dataGenerator.getStudent(Data.VALID).getAlias()).get().getPassword());
+
     }
 
     @Test
@@ -167,15 +170,6 @@ public class LogicManagerTestsAllStubs {
         registerTearDown();
     }
 
-    @Test
-    void testRegisterInvalidExceptionStudentRepository(){
-        registerSetUp();
-        MailSender mailSender=new MailSenderTrueMock();
-        studentRepository=new StudentRepositoryExceptionSaveMock(dataGenerator);
-        logicManager=new LogicManager(studentRepository,mailSender);
-        checkWrongRegister(Data.VALID,OpCode.DB_Error);
-        registerTearDown();
-    }
 
     protected void checkWrongRegister(Data data,OpCode opCode){
         Response<Boolean> response=logicManager.register(dataGenerator.getRegisterDetails(data));
@@ -201,7 +195,7 @@ public class LogicManagerTestsAllStubs {
         registerTearDown();
     }
 
-    private void registerCodeTest() {
+    protected void registerCodeTest() {
         String code=dataGenerator.getVerificationCode(Data.VALID);
         String alias=dataGenerator.getStudent(Data.VALID).getAlias();
         Response<Boolean> response=logicManager.registerCode(alias,code);
@@ -210,7 +204,85 @@ public class LogicManagerTestsAllStubs {
 
     }
 
-    //TODO all the wrong tests
+    @Test
+    void testRegisterCodeInvalidEmptyAlias(){
+        registerCodeSetUp();
+        checkWrongRegisterCode(Data.EMPTY_ALIAS,Data.VALID,OpCode.Wrong_Alias);
+        registerTearDown();
+    }
+
+    @Test
+    void testRegisterCodeInvalidNullAlias(){
+        registerCodeSetUp();
+        checkWrongRegisterCode(Data.NULL_ALIAS,Data.VALID,OpCode.Wrong_Alias);
+        registerTearDown();
+    }
+
+    @Test
+    void testRegisterCodeInvalidEmptyCode(){
+        registerCodeSetUp();
+        checkWrongRegisterCode(Data.VALID,Data.EMPTY_CODE,OpCode.Wrong_Code);
+        registerTearDown();
+    }
+
+    @Test
+    void testRegisterCodeInvalidNullCode(){
+        registerCodeSetUp();
+        checkWrongRegisterCode(Data.VALID,Data.NULL_CODE,OpCode.Wrong_Code);
+        registerTearDown();
+    }
+
+    @Test
+    void testRegisterCodeInvalidNotRegisteredUser(){
+        registerCodeSetUp();
+        checkWrongRegisterCode(Data.WRONG_NAME,Data.VALID,OpCode.Not_Registered);
+        registerTearDown();
+    }
+
+    @Test
+    void testRegisterCodeInvalidCodeNotMatch(){
+        registerCodeSetUp();
+        checkWrongRegisterCode(Data.VALID,Data.WRONG_CODE,OpCode.Code_Not_Match);
+        registerTearDown();
+    }
+
+    @Test
+    void testRegisterCodeInvalidExceptionStudentRepository(){
+        registerSetUp();
+        //set up exception mock
+        MailSender mailSender=new MailSenderTrueMock();
+        logicManager=new LogicManager(new StudentRepositoryExceptionSaveMock(dataGenerator),mailSender);
+
+        //register the user
+        RegisterDetailsData validDetails=dataGenerator.getRegisterDetails(Data.VALID);
+        logicManager.register(validDetails);
+        String code=null;
+        try {
+            Field aliasToCode = LogicManager.class.getDeclaredField("aliasToCode");
+            aliasToCode.setAccessible(true);
+            code=(((ConcurrentHashMap<String, PasswordCodeAndTime>)aliasToCode.
+                    get(logicManager)).get(validDetails.getAlias())).getCode();
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            fail();
+        }
+        dataGenerator.setValidVerificationCode(code);
+
+        Response<Boolean> response=logicManager.registerCode(validDetails.getAlias(),code);
+        assertFalse(response.getValue());
+        assertEquals(response.getReason(), OpCode.DB_Error);
+        registerCodeTearDown();
+    }
+
+
+
+    protected void checkWrongRegisterCode(Data dataAlias,Data dataVerification,OpCode opCode){
+        String alias=dataGenerator.getRegisterDetails(dataAlias).getAlias();
+        String code=dataGenerator.getVerificationCode(dataVerification);
+        Response<Boolean> response=logicManager.registerCode(alias,code);
+        assertFalse(response.getValue());
+        assertEquals(response.getReason(), opCode);
+    }
+
 
 
     //---------------------------------------tearDown-------------------------------------//
