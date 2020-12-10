@@ -1,4 +1,4 @@
-package missions.room.LogicManagerTests;
+package missions.room.RegisterManagerTests;
 
 import Data.Data;
 import DataAPI.OpCode;
@@ -9,7 +9,7 @@ import Domain.Student;
 import ExternalSystemMocks.MailSenderTrueMock;
 import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
-import missions.room.LogicManager;
+import missions.room.Managers.RegisterManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 
 @SpringBootTest
 @TestPropertySource(locations = {"classpath:application-test.properties"})
-public class LogicManagerTestsRealMailSenderStudentRepo extends LogicManagerTestsAllStubs {
+public class RegisterManagerTestsRealMailSenderStudentRepo extends RegisterManagerTestsAllStubs {
 
     //clear code to alias map before starting the tests
     @BeforeEach
@@ -30,13 +30,13 @@ public class LogicManagerTestsRealMailSenderStudentRepo extends LogicManagerTest
         super.setUp();
         Field aliasToCode= null;
         try {
-            aliasToCode = LogicManager.class.getDeclaredField("aliasToCode");
+            aliasToCode = RegisterManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
-            ((ConcurrentHashMap)aliasToCode.get(logicManager)).clear();
+            ((ConcurrentHashMap)aliasToCode.get(registerManager)).clear();
             MailSender mailSender=new MailSenderTrueMock();
-            Field logicMailSender=LogicManager.class.getDeclaredField("sender");
+            Field logicMailSender=RegisterManager.class.getDeclaredField("sender");
             logicMailSender.setAccessible(true);
-            logicMailSender.set(logicManager,mailSender);
+            logicMailSender.set(registerManager,mailSender);
         } catch (NoSuchFieldException | IllegalAccessException e) {
            fail();
         }
@@ -58,8 +58,8 @@ public class LogicManagerTestsRealMailSenderStudentRepo extends LogicManagerTest
     void testRegisterInvalidAlreadyRegisteredStudent(){
         registerCodeSetUp();
         RegisterDetailsData detailsData=dataGenerator.getRegisterDetails(Data.VALID);
-        logicManager.registerCode(detailsData.getAlias(),dataGenerator.getVerificationCode(Data.VALID));
-        Response<Boolean> response=logicManager.register(detailsData);
+        registerManager.registerCode(detailsData.getAlias(),dataGenerator.getVerificationCode(Data.VALID));
+        Response<Boolean> response= registerManager.register(detailsData);
         assertFalse(response.getValue());
         assertEquals(response.getReason(), OpCode.Already_Exist);
         registerCodeTearDown();
@@ -78,9 +78,9 @@ public class LogicManagerTestsRealMailSenderStudentRepo extends LogicManagerTest
         assertEquals(studentRepository.findById(valid.getAlias()).get().getPassword(),
                 hashSystem.encrypt(valid.getPassword()));
         try {
-            Field aliasToCode = LogicManager.class.getDeclaredField("aliasToCode");
+            Field aliasToCode = RegisterManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
-            assertTrue(((ConcurrentHashMap)aliasToCode.get(logicManager)).isEmpty());
+            assertTrue(((ConcurrentHashMap)aliasToCode.get(registerManager)).isEmpty());
         } catch (NoSuchFieldException | IllegalAccessException e) {
             fail();
         }
@@ -93,9 +93,9 @@ public class LogicManagerTestsRealMailSenderStudentRepo extends LogicManagerTest
         Student valid=dataGenerator.getStudent(Data.VALID);
         assertNull(studentRepository.findById(valid.getAlias()).get().getPassword());
         try {
-            Field aliasToCode = LogicManager.class.getDeclaredField("aliasToCode");
+            Field aliasToCode = RegisterManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
-            assertTrue(((ConcurrentHashMap)aliasToCode.get(logicManager)).containsKey(valid.getAlias()));
+            assertTrue(((ConcurrentHashMap)aliasToCode.get(registerManager)).containsKey(valid.getAlias()));
         } catch (NoSuchFieldException | IllegalAccessException e) {
             fail();
         }
@@ -109,9 +109,9 @@ public class LogicManagerTestsRealMailSenderStudentRepo extends LogicManagerTest
         //super because he has to me removed from aliasToCode
         super.checkWrongRegisterCode(Data.VALID,Data.VALID,OpCode.Not_Exist);
         try {
-            Field aliasToCode = LogicManager.class.getDeclaredField("aliasToCode");
+            Field aliasToCode = RegisterManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
-            assertTrue(((ConcurrentHashMap)aliasToCode.get(logicManager)).isEmpty());
+            assertTrue(((ConcurrentHashMap)aliasToCode.get(registerManager)).isEmpty());
         } catch (NoSuchFieldException | IllegalAccessException e) {
             fail();
         }
@@ -123,13 +123,13 @@ public class LogicManagerTestsRealMailSenderStudentRepo extends LogicManagerTest
         registerCodeSetUp();
         String code=dataGenerator.getVerificationCode(Data.VALID);
         String alias=dataGenerator.getStudent(Data.VALID).getAlias();
-        logicManager.registerCode(alias,code);
+        registerManager.registerCode(alias,code);
         //inject alias with password code
         try {
-            Field aliasToCode = LogicManager.class.getDeclaredField("aliasToCode");
+            Field aliasToCode = RegisterManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
             ((ConcurrentHashMap<String, PasswordCodeAndTime>)aliasToCode.
-                    get(logicManager)).put(alias,new PasswordCodeAndTime(code,code));
+                    get(registerManager)).put(alias,new PasswordCodeAndTime(code,code));
         } catch (IllegalAccessException | NoSuchFieldException e) {
             fail();
         }

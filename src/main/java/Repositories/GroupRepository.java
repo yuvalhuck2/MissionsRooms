@@ -1,7 +1,7 @@
 package Repositories;
 
-import Domain.Room;
+import Domain.ClassGroup;
 import org.springframework.data.repository.CrudRepository;
 
-public interface GroupRepository extends CrudRepository<Room, String> {
+public interface GroupRepository extends CrudRepository<ClassGroup, String> {
 }

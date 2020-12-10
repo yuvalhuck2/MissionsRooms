@@ -1,7 +1,6 @@
 package Domain;
 
 import DataAPI.RoomType;
-import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.util.List;

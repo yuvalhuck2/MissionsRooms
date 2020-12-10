@@ -1,8 +1,6 @@
 package Service;
 
 import DataAPI.*;
-import missions.room.LogicManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -11,28 +9,28 @@ import java.util.List;
 @Service
 public class ServiceAPI {
 
-    @Autowired
-    private LogicManager logicManager;
-
-    /**
-     * req 2.2 - register
-     * @param details - user details
-     * @return if mail with the code was sent successfully
-     */
-    public Response<Boolean> register (RegisterDetailsData details){
-        return logicManager.register(details);
-    }
-
-
-    /**
-     * req 2.2 - register code
-     * * @param alias - user alias
-     * @param code - user details
-     * @return if register succeeded
-     */
-    public Response<Boolean> registerCode (String alias, String code){
-        return logicManager.registerCode(alias,code);
-    }
+//    @Autowired
+//    private LogicManager logicManager;
+//
+//    /**
+//     * req 2.2 - register
+//     * @param details - user details
+//     * @return if mail with the code was sent successfully
+//     */
+//    public Response<Boolean> register (RegisterDetailsData details){
+//        return logicManager.register(details);
+//    }
+//
+//
+//    /**
+//     * req 2.2 - register code
+//     * * @param alias - user alias
+//     * @param code - user details
+//     * @return if register succeeded
+//     */
+//    public Response<Boolean> registerCode (String alias, String code){
+//        return logicManager.registerCode(alias,code);
+//    }
 
     /**
      * req 2.3 -login
@@ -173,6 +171,7 @@ public class ServiceAPI {
     }
 
 
+    //TODO change to all answers in one request and return all the answers.
     /**
      * req 3.6.2.6 - answer trivia mission( american question)
      * @param auth - authentication object
