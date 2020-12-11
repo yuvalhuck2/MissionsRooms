@@ -2,18 +2,19 @@ package RepositoryMocks;
 
 import Data.Data;
 import Data.DataGenerator;
+
 import Domain.User;
 import CrudRepositories.UserCrudRepository;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
-public class StudentRepositoryExceptionSaveMock implements UserCrudRepository {
+public class UserRepositoryMock implements UserCrudRepository {
     private DataGenerator dataGenerator;
 
-    public StudentRepositoryExceptionSaveMock(DataGenerator dataGenerator) {
+    public UserRepositoryMock(DataGenerator dataGenerator) {
         this.dataGenerator = dataGenerator;
     }
+
 
     @Override
     public User findUserForWrite(String alias) {
@@ -26,18 +27,18 @@ public class StudentRepositoryExceptionSaveMock implements UserCrudRepository {
     }
 
     @Override
-    public Optional<User> findById(String s) {
-        return Optional.ofNullable(dataGenerator.getStudent(Data.VALID));
-    }
-
-    @Override
     public <S extends User> S save(S s) {
-        throw new EntityNotFoundException();
+        return (S) dataGenerator.getStudent(Data.VALID);
     }
 
     @Override
     public <S extends User> Iterable<S> saveAll(Iterable<S> iterable) {
         return null;
+    }
+
+    @Override
+    public Optional<User> findById(String s) {
+        return Optional.ofNullable(dataGenerator.getStudent(Data.VALID));
     }
 
     @Override
@@ -79,8 +80,4 @@ public class StudentRepositoryExceptionSaveMock implements UserCrudRepository {
     public void deleteAll() {
 
     }
-
-
-
-
 }

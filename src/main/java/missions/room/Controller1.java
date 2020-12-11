@@ -1,7 +1,6 @@
 package missions.room;
 
-import Domain.Room;
-import Repositories.RoomRepository;
+import CrudRepositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,12 +23,12 @@ public class Controller1 {
         return String.format("Hello %s!", name);
     }
 
-    @GetMapping("/2")
-    public @ResponseBody String sayHello() {
-        Room room=new Room("3");
-        roomRepository.save(room);
-        return "saved";
-    }
+//    @GetMapping("/2")
+//    public @ResponseBody String sayHello() {
+//        Room room=new Room("3");
+//        roomRepository.save(room);
+//        return "saved";
+//    }
 
 //    @PostMapping(path="/add") // Map ONLY POST Requests
 //    public @ResponseBody

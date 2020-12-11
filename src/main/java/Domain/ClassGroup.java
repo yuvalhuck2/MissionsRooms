@@ -4,7 +4,10 @@ import javax.persistence.*;
 import java.util.Map;
 
 @Entity
-public class ClassGroup extends Participant {
+public class ClassGroup {
+
+    @Id
+    private String groupName;
 
     //one to one example
 //    @OneToOne(cascade = CascadeType.ALL)
@@ -15,14 +18,14 @@ public class ClassGroup extends Participant {
 
     @OneToMany(cascade = CascadeType.ALL)
     @MapKeyColumn(name = "alias")
-    @JoinColumn(name="classgroup",referencedColumnName = "alias")
+    @JoinColumn(name="classgroup",referencedColumnName = "groupName")
     private Map<String, Student> students;
 
     public ClassGroup() {
     }
 
-    public ClassGroup(String Id, Map<String, Student> students) {
-        super(Id);
+    public ClassGroup(String id, Map<String, Student> students) {
+        this.groupName=id;
         this.students = students;
     }
 }

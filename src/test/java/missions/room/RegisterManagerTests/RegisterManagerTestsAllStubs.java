@@ -6,13 +6,13 @@ import DataAPI.OpCode;
 import DataAPI.PasswordCodeAndTime;
 import DataAPI.RegisterDetailsData;
 import DataAPI.Response;
+import CrudRepositories.UserCrudRepository;
 import missions.room.Managers.RegisterManager;
 import ExternalSystemMocks.MailSenderFalseMock;
 import ExternalSystemMocks.MailSenderTrueMock;
 import ExternalSystems.MailSender;
 import RepositoryMocks.StudentRepositoryExceptionSaveMock;
-import RepositoryMocks.StudentRepositoryMock;
-import Repositories.StudentRepository;
+import RepositoryMocks.UserRepositoryMock;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 public class RegisterManagerTestsAllStubs {
 
     @Autowired
-    protected StudentRepository studentRepository;
+    protected UserCrudRepository userRepository;
 
     @Autowired
     protected RegisterManager registerManager;
@@ -46,13 +46,13 @@ public class RegisterManagerTestsAllStubs {
 
     void setUpMocks(){
         MailSender mailSender=new MailSenderTrueMock();
-        studentRepository=new StudentRepositoryMock(dataGenerator);
-        registerManager =new RegisterManager(studentRepository,mailSender);
+        userRepository =new UserRepositoryMock(dataGenerator);
+        registerManager =new RegisterManager(userRepository,mailSender);
     }
 
     void registerSetUp(){
         setUpMocks();
-        studentRepository.save(dataGenerator.getStudent(Data.VALID));
+        userRepository.save(dataGenerator.getStudent(Data.VALID));
     }
 
     void registerCodeSetUp(){
@@ -132,20 +132,6 @@ public class RegisterManagerTestsAllStubs {
     }
 
     @Test
-    void testRegisterInvalidInvalidPhoneNumber(){
-        registerSetUp();
-        checkWrongRegister(Data.INVALID_PHONE,OpCode.Wrong_Phone_Number);
-        registerTearDown();
-    }
-
-    @Test
-    void testRegisterInvalidNullPhoneNumber(){
-        registerSetUp();
-        checkWrongRegister(Data.NULL_PHONE,OpCode.Wrong_Phone_Number);
-        registerTearDown();
-    }
-
-    @Test
     void testRegisterInvalidUserType(){
         registerSetUp();
         checkWrongRegister(Data.WRONG_TYPE,OpCode.Wrong_UserType);
@@ -156,8 +142,8 @@ public class RegisterManagerTestsAllStubs {
     void testRegisterInvalidFailMailSender(){
         registerSetUp();
         MailSender mailSender=new MailSenderFalseMock();
-        studentRepository=new StudentRepositoryMock(dataGenerator);
-        registerManager =new RegisterManager(studentRepository,mailSender);
+        userRepository =new UserRepositoryMock(dataGenerator);
+        registerManager =new RegisterManager(userRepository,mailSender);
         checkWrongRegister(Data.VALID,OpCode.Mail_Error);
         registerTearDown();
     }
@@ -285,7 +271,7 @@ public class RegisterManagerTestsAllStubs {
     }
 
     void registerTearDown(){
-        studentRepository.delete(dataGenerator.getStudent(Data.VALID));
+        userRepository.delete(dataGenerator.getStudent(Data.VALID));
     }
     @AfterEach
     void tearDown(){

@@ -1,28 +1,29 @@
 package Domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Entity
-public class Classroom extends Participant{
+public class Classroom{
+
+    @Id
+    private String className;
 
     //@LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="classroom",referencedColumnName = "alias")
-    private List<ClassGroup> classGroupA;
-
-    //example one to one
-//    @OneToOne(mappedBy = "classroom")
-//    private ClassGroup classGroupB;
+    @JoinColumn(name="classroom",referencedColumnName = "className")
+    private List<ClassGroup> classGroups;
 
     public Classroom() {
 
     }
 
-    public Classroom(String Id, ClassGroup classGroupA, ClassGroup classGroupB) {
-        super(Id);
-        //this.classGroupA = classGroupA;
-        //this.classGroupB = classGroupB;
+    public Classroom(String id, ClassGroup classGroupA, ClassGroup classGroupB) {
+        this.className=id;
+        this.classGroups=new ArrayList<>();
+        this.classGroups.add(classGroupA);
+        this.classGroups.add(classGroupB);
     }
 }

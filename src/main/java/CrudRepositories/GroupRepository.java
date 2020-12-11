@@ -1,4 +1,4 @@
-package Repositories;
+package CrudRepositories;
 
 import Domain.ClassGroup;
 import org.springframework.data.repository.CrudRepository;

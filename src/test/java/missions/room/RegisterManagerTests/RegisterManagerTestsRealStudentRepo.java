@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 
 @SpringBootTest
 @TestPropertySource(locations = {"classpath:application-test.properties"})
-public class RegisterManagerTestsRealMailSenderStudentRepo extends RegisterManagerTestsAllStubs {
+public class RegisterManagerTestsRealStudentRepo extends RegisterManagerTestsAllStubs {
 
     //clear code to alias map before starting the tests
     @BeforeEach
@@ -73,9 +73,9 @@ public class RegisterManagerTestsRealMailSenderStudentRepo extends RegisterManag
     protected void registerCodeTest(){
         super.registerCodeTest();
         HashSystem hashSystem=new HashSystem();
-        //wrong phone because valid has hashed password
-        RegisterDetailsData valid=dataGenerator.getRegisterDetails(Data.WRONG_PHONE);
-        assertEquals(studentRepository.findById(valid.getAlias()).get().getPassword(),
+        //wrong type because valid has hashed password
+        RegisterDetailsData valid=dataGenerator.getRegisterDetails(Data.WRONG_TYPE);
+        assertEquals(userRepository.findById(valid.getAlias()).get().getPassword(),
                 hashSystem.encrypt(valid.getPassword()));
         try {
             Field aliasToCode = RegisterManager.class.getDeclaredField("aliasToCode");
@@ -91,7 +91,7 @@ public class RegisterManagerTestsRealMailSenderStudentRepo extends RegisterManag
     protected void checkWrongRegisterCode(Data dataAlias,Data dataVerification,OpCode opCode){
         super.checkWrongRegisterCode(dataAlias,dataVerification,opCode);
         Student valid=dataGenerator.getStudent(Data.VALID);
-        assertNull(studentRepository.findById(valid.getAlias()).get().getPassword());
+        assertNull(userRepository.findById(valid.getAlias()).get().getPassword());
         try {
             Field aliasToCode = RegisterManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
@@ -105,7 +105,7 @@ public class RegisterManagerTestsRealMailSenderStudentRepo extends RegisterManag
     @Test
     void testRegisterCodeInvalidNotExistInDbStudent(){
         registerCodeSetUp();
-        studentRepository.deleteById(dataGenerator.getStudent(Data.VALID).getAlias());
+        userRepository.deleteById(dataGenerator.getStudent(Data.VALID).getAlias());
         //super because he has to me removed from aliasToCode
         super.checkWrongRegisterCode(Data.VALID,Data.VALID,OpCode.Not_Exist);
         try {

@@ -1,31 +1,29 @@
-package Domain;
+package Domain.Rooms;
 
 import DataAPI.RoomType;
+import Domain.RoomMessage;
+import Domain.RoomTemplate;
+import Domain.Teacher;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Room {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Room {
 
     @Id
-    private String roomId;
-
-    @Enumerated(EnumType.ORDINAL)
-    private RoomType roomType;
+    protected String roomId;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="roomId",referencedColumnName = "roomId")
-    private List<RoomMessage> roomMessages;
+    protected List<RoomMessage> roomMessages;
 
     @OneToOne
-    private Participant participant;
+    protected Teacher teacher;
 
     @OneToOne
-    private Teacher teacher;
-
-    @OneToOne
-    private RoomTemplate roomTemplate;
+    protected RoomTemplate roomTemplate;
 
     public Room() {
     }
