@@ -1,29 +1,45 @@
 package Service;
 
 import DataAPI.*;
+import org.springframework.stereotype.Service;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
+@Service
 public class ServiceAPI {
 
-    /**
-     * req 2.2 - register
-     * @param details - user details
-     * @return if register succeeded
-     */
-    public Response<Boolean> register (RegisterDetailsData details){
-        throw new NotImplementedException();
-    }
+//    @Autowired
+//    private LogicManager logicManager;
+//
+//    /**
+//     * req 2.2 - register
+//     * @param details - user details
+//     * @return if mail with the code was sent successfully
+//     */
+//    public Response<Boolean> register (RegisterDetailsData details){
+//        return logicManager.register(details);
+//    }
+//
+//
+//    /**
+//     * req 2.2 - register code
+//     * * @param alias - user alias
+//     * @param code - user details
+//     * @return if register succeeded
+//     */
+//    public Response<Boolean> registerCode (String alias, String code){
+//        return logicManager.registerCode(alias,code);
+//    }
 
     /**
      * req 2.3 -login
-     * @param mail - user mail
+     * @param alias - user alias
      * @param password - user password
      * @return API key if login succeeded
      */
-    public Response<String> login (String mail, String password){
+    public Response<String> login (String alias, String password){
         throw new NotImplementedException();
     }
 
@@ -156,6 +172,7 @@ public class ServiceAPI {
     }
 
 
+    //TODO change to all answers in one request and return all the answers.
     /**
      * req 3.6.2.6 - answer trivia mission( american question)
      * @param auth - authentication object
@@ -191,6 +208,17 @@ public class ServiceAPI {
         throw new NotImplementedException();
     }
 
+    /**
+     * req 3.9 - send room message
+     * @param auth - authentication object
+     * @param message - message to send to the other user
+     * @param mail - target user mail
+     * @param roomId - the room to send a message to
+     * @return if the message was sent successfully
+     */
+    public Response<Boolean> sendMessage(Auth auth,String message,String mail,String roomId){
+        throw new NotImplementedException();
+    }
 
     /**
      * req 4.1 - create room
@@ -305,13 +333,12 @@ public class ServiceAPI {
 
 
     /**
-     * req 4.12 - approve or deny student's suggestion
+     * req 4.12 - delete student's suggestion
      * @param auth - authentication object
-     * @param suggestionId - identifier of the suggestion need to be approved
-     * @param isApproved - if the suggestion was approved
-     * @return if the suggestion was
+     * @param suggestionId - identifier of the suggestion need to be deleted
+     * @return if the suggestion was deleted successfully
      */
-    public Response<Boolean> responseStudentSuggestion(Auth auth,String suggestionId, boolean isApproved){
+    public Response<Boolean> responseStudentSuggestion(Auth auth,String suggestionId){
         throw new NotImplementedException();
     }
 
