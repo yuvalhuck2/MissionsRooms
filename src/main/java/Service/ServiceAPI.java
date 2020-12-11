@@ -32,15 +32,19 @@ public class ServiceAPI {
 //        return logicManager.registerCode(alias,code);
 //    }
 
-    /**
-     * req 2.3 -login
-     * @param alias - user alias
-     * @param password - user password
-     * @return API key if login succeeded
-     */
-    public Response<String> login (String alias, String password){
-        throw new NotImplementedException();
-    }
+
+
+
+//    /**
+//     * req 2.3 -login
+//     * @param alias - user alias
+//     * @param password - user password
+//     * @return API key if login succeeded
+//     */
+//    public Response<String> login (String alias, String password){
+//        throw new NotImplementedException();
+//    }
+
 
     /**
      * req 3.1 - watch rank Table details
