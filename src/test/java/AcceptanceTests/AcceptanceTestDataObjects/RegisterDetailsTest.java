@@ -9,6 +9,15 @@ public class RegisterDetailsTest {
     private UserTypeTest type;
     private String classRoom;
 
+    public RegisterDetailsTest(String fName, String lName, String hashedPassword, String alias, UserTypeTest type, String classRoom) {
+        this.fName = fName;
+        this.lName = lName;
+        this.hashedPassword = hashedPassword;
+        this.alias = alias;
+        this.type = type;
+        this.classRoom = classRoom;
+    }
+
     public String getfName() {
         return fName;
     }

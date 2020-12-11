@@ -19,7 +19,7 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestBridge{
     public Boolean register(RegisterDetailsTest details) {
         if(realBridge!=null)
             return realBridge.register(details);
-        return false;
+        return true;
     }
 
     @Override
