@@ -9,24 +9,21 @@ public class RegisterDetailsData {
     private String alias;
     private String password;
     private UserType userType;
-    private String phoneNumber;
     private String classroom;
 
-    public RegisterDetailsData(String firstName, String lastName, String alias, String password, UserType userType, String phoneNumber, String classroom) {
+    public RegisterDetailsData(String firstName, String lastName, String alias, String password, UserType userType, String classroom) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.alias = alias;
         this.password = password;
         this.userType = userType;
-        this.phoneNumber = phoneNumber;
         this.classroom = classroom;
     }
 
-    public RegisterDetailsData(String alias, String password, UserType userType, String phoneNumber) {
+    public RegisterDetailsData(String alias, String password, UserType userType) {
         this.alias = alias;
         this.password = password;
         this.userType = userType;
-        this.phoneNumber = phoneNumber;
     }
 
     public String getFirstName() {
@@ -47,10 +44,6 @@ public class RegisterDetailsData {
 
     public UserType getUserType() {
         return userType;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
     }
 
     public String getClassroom() {

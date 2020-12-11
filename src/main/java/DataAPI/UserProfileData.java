@@ -7,16 +7,18 @@ public class UserProfileData {
     private UserType userType;
     private String classRoom;
     private String group;
+    private String phone;
     //TODO talk about picture
 
 
-    public UserProfileData(String firstName, String lastName, String mail, UserType userType, String classRoom, String group) {
+    public UserProfileData(String firstName, String lastName, String mail, UserType userType, String classRoom, String group, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.mail = mail;
         this.userType = userType;
         this.classRoom = classRoom;
         this.group = group;
+        this.phone=phone;
     }
 
     public String getFirstName() {
@@ -41,5 +43,9 @@ public class UserProfileData {
 
     public String getGroup() {
         return group;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 }

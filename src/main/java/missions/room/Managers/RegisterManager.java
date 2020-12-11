@@ -1,26 +1,24 @@
 package missions.room.Managers;
 
 import DataAPI.*;
-import Domain.*;
+import Domain.User;
 import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
 import ExternalSystems.VerificationCodeGenerator;
-import Repositories.StudentRepository;
+import CrudRepositories.UserCrudRepository;
+import missions.room.Repo.UserRepo;
+import Utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import Utils.*;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class RegisterManager {
 
-    //TODO add locks
-    //TODO add user repo
-
     @Autowired
-    private StudentRepository studentRepository;
+    private UserRepo userRepo;
 
     private final HashSystem hashSystem;
     private final MailSender sender;
@@ -30,12 +28,11 @@ public class RegisterManager {
     private final ConcurrentHashMap<String, PasswordCodeAndTime> aliasToCode;
 
     //tests constructor
-    public RegisterManager(StudentRepository studentRepository, MailSender sender) {
-        this.studentRepository = studentRepository;
+    public RegisterManager(UserCrudRepository userCrudRepo, MailSender sender) {
+        this.userRepo = new UserRepo(userCrudRepo);
         hashSystem = new HashSystem();
         this.sender = sender;
         aliasToCode=new ConcurrentHashMap<>();
-
         verificationCodeGenerator = new VerificationCodeGenerator();
     }
 
@@ -63,27 +60,27 @@ public class RegisterManager {
 
 
     private Response<Boolean> updateStudent(RegisterDetailsData details) {
-        //critical read path
-        Optional<Student> studentOption=studentRepository.findById(details.getAlias());
-        if(!studentOption.isPresent()){
+        Response<User> userResponse= userRepo.findUserForRead(details.getAlias());
+        if(userResponse.getReason()!=OpCode.Success){
+            return new Response<>(false,userResponse.getReason());
+        }
+        User user=userResponse.getValue();
+        if(user==null){
             return new Response<>(false, OpCode.Not_Exist);
         }
 
-        Student student=studentOption.get();
-        if(student.getPassword()!=null){
+        if(user.getPassword()!=null){
             return new Response<>(false,OpCode.Already_Exist);
         }
-        //end of critical read path
-        return sendMailAndSave(details, student);
+        return sendMailAndSave(details);
     }
 
     /**
      * send the mail and save the verification code that was sent
      * @param details - user details
-     * @param student - the student himself
      * @return
      */
-    private Response<Boolean> sendMailAndSave(RegisterDetailsData details, Student student) {
+    private Response<Boolean> sendMailAndSave(RegisterDetailsData details) {
         String verificationCode= verificationCodeGenerator.getNext();
         if(!sender.send(Utils.getMailFromAlias(details.getAlias()), verificationCode)){
             return new Response<>(false, OpCode.Mail_Error);
@@ -95,8 +92,7 @@ public class RegisterManager {
 
     /**
      *
-     * @param details - check that details are valid
-     * @return
+     * @return if  details are valid
      */
     private Response<Boolean> checkRegisterDetails(RegisterDetailsData details) {
         if(!Utils.checkString(details.getPassword())){
@@ -107,10 +103,6 @@ public class RegisterManager {
         }
         if(details.getUserType()== UserType.IT){
             return new Response<>(false,OpCode.Wrong_UserType);
-        }
-
-        if(!Utils.checkPhone(details.getPhoneNumber())){
-            return new Response<>(false,OpCode.Wrong_Phone_Number);
         }
 
         return new Response<>(true,OpCode.Success);
@@ -141,31 +133,40 @@ public class RegisterManager {
             return new Response<>(false,OpCode.Code_Not_Match);
         }
 
-        //critical write path
-        Optional<Student> studentOption=studentRepository.findById(alias);
-        if(!studentOption.isPresent()){
+        return checkPasswordAndPersist(alias, passwordCodeAndTime);
+
+    }
+
+    /**
+     *
+     * @param alias - alias of user
+     * @param passwordCodeAndTime - the password and the code match for tat alias
+     * @return if the student was saved
+     */
+    // annotation means that the write lock will be taken until save function
+    @Transactional
+    protected Response<Boolean> checkPasswordAndPersist(String alias, PasswordCodeAndTime passwordCodeAndTime) {
+        Response<User> userResponse= userRepo.findUserForWrite(alias);
+        if(userResponse.getReason()!= OpCode.Success){
+            return new Response<>(false,userResponse.getReason());
+        }
+        User user=userResponse.getValue();
+        if(user==null){
             aliasToCode.remove(alias);
             return new Response<>(false, OpCode.Not_Exist);
         }
 
-        Student student=studentOption.get();
-        if(student.getPassword()!=null){
+        if(user.getPassword()!=null){
             aliasToCode.remove(alias);
             return new Response<>(false,OpCode.Already_Exist);
         }
-        student.setPassword(passwordCodeAndTime.getPassword());
-        //-------------------------------------------
-        try {
-            studentRepository.save(student);
-        }
-        catch (Exception e){
-            return new Response<>(false,OpCode.DB_Error);
-        }
-        //end of critical write path
+        user.setPassword(passwordCodeAndTime.getPassword());
 
+        userResponse= userRepo.save(user);
+        if(userResponse.getReason()!=OpCode.Success){
+            return new Response<>(false,userResponse.getReason());
+        }
         aliasToCode.remove(alias);
         return new Response<>(true,OpCode.Success);
-
-
     }
 }
