@@ -8,10 +8,10 @@ import CrudRepositories.UserCrudRepository;
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
-public class StudentRepositoryExceptionSaveMock implements UserCrudRepository {
+public class UserRepositoryExceptionSaveMock implements UserCrudRepository {
     private DataGenerator dataGenerator;
 
-    public StudentRepositoryExceptionSaveMock(DataGenerator dataGenerator) {
+    public UserRepositoryExceptionSaveMock(DataGenerator dataGenerator) {
         this.dataGenerator = dataGenerator;
     }
 

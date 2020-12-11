@@ -92,8 +92,7 @@ public class RegisterManager {
 
     /**
      *
-     * @param details - check that details are valid
-     * @return
+     * @return if  details are valid
      */
     private Response<Boolean> checkRegisterDetails(RegisterDetailsData details) {
         if(!Utils.checkString(details.getPassword())){
@@ -134,13 +133,19 @@ public class RegisterManager {
             return new Response<>(false,OpCode.Code_Not_Match);
         }
 
-        return getResponse(alias, passwordCodeAndTime);
+        return checkPasswordAndPersist(alias, passwordCodeAndTime);
 
     }
 
-    //means that the write lock will be taken until save function
+    /**
+     *
+     * @param alias - alias of user
+     * @param passwordCodeAndTime - the password and the code match for tat alias
+     * @return if the student was saved
+     */
+    // annotation means that the write lock will be taken until save function
     @Transactional
-    protected Response<Boolean> getResponse(String alias, PasswordCodeAndTime passwordCodeAndTime) {
+    protected Response<Boolean> checkPasswordAndPersist(String alias, PasswordCodeAndTime passwordCodeAndTime) {
         Response<User> userResponse= userRepo.findUserForWrite(alias);
         if(userResponse.getReason()!= OpCode.Success){
             return new Response<>(false,userResponse.getReason());
