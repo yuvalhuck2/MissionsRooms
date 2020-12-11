@@ -5,6 +5,7 @@ import DataAPI.Response;
 import Domain.Ram;
 import Domain.Rooms.User;
 import Domain.SchoolUser;
+import ExternalSystems.HashSystem;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;
 import missions.room.Repo.UserRepo;
@@ -20,9 +21,11 @@ public class LoginManager {
 
     //save verification codes and string for trace and clean old code
     private final Ram ram;
+    private final HashSystem hashSystem;
 
     public LoginManager(){
         this.ram=new Ram();
+        hashSystem = new HashSystem();
     }
 
     /**
@@ -47,7 +50,7 @@ public class LoginManager {
             return new Response<>(null, OpCode.Not_Exist);
         }
         String api=UniqueStringGenerator.getUniqueCode(alias);
-        if(user.getPassword().equals(password)){
+        if(user.getPassword().equals(hashSystem.encrypt(password))){
             this.ram.addApi(api,alias);
             return new Response<>(api,OpCode.Success);
         }
