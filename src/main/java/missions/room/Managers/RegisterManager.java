@@ -1,12 +1,12 @@
 package missions.room.Managers;
 
 import DataAPI.*;
-import Domain.User;
+import Domain.SchoolUser;
 import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
 import ExternalSystems.VerificationCodeGenerator;
-import CrudRepositories.UserCrudRepository;
-import missions.room.Repo.UserRepo;
+import CrudRepositories.SchoolUserCrudRepository;
+import missions.room.Repo.SchoolUserRepo;
 import Utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RegisterManager {
 
     @Autowired
-    private UserRepo userRepo;
+    private SchoolUserRepo schoolUserRepo;
 
     private final HashSystem hashSystem;
     private final MailSender sender;
@@ -28,8 +28,8 @@ public class RegisterManager {
     private final ConcurrentHashMap<String, PasswordCodeAndTime> aliasToCode;
 
     //tests constructor
-    public RegisterManager(UserCrudRepository userCrudRepo, MailSender sender) {
-        this.userRepo = new UserRepo(userCrudRepo);
+    public RegisterManager(SchoolUserCrudRepository userCrudRepo, MailSender sender) {
+        this.schoolUserRepo = new SchoolUserRepo(userCrudRepo);
         hashSystem = new HashSystem();
         this.sender = sender;
         aliasToCode=new ConcurrentHashMap<>();
@@ -60,16 +60,16 @@ public class RegisterManager {
 
 
     private Response<Boolean> updateStudent(RegisterDetailsData details) {
-        Response<User> userResponse= userRepo.findUserForRead(details.getAlias());
+        Response<SchoolUser> userResponse= schoolUserRepo.findUserForRead(details.getAlias());
         if(userResponse.getReason()!=OpCode.Success){
             return new Response<>(false,userResponse.getReason());
         }
-        User user=userResponse.getValue();
-        if(user==null){
+        SchoolUser schoolUser =userResponse.getValue();
+        if(schoolUser ==null){
             return new Response<>(false, OpCode.Not_Exist);
         }
 
-        if(user.getPassword()!=null){
+        if(schoolUser.getPassword()!=null){
             return new Response<>(false,OpCode.Already_Exist);
         }
         return sendMailAndSave(details);
@@ -146,23 +146,23 @@ public class RegisterManager {
     // annotation means that the write lock will be taken until save function
     @Transactional
     protected Response<Boolean> checkPasswordAndPersist(String alias, PasswordCodeAndTime passwordCodeAndTime) {
-        Response<User> userResponse= userRepo.findUserForWrite(alias);
+        Response<SchoolUser> userResponse= schoolUserRepo.findUserForWrite(alias);
         if(userResponse.getReason()!= OpCode.Success){
             return new Response<>(false,userResponse.getReason());
         }
-        User user=userResponse.getValue();
-        if(user==null){
+        SchoolUser schoolUser =userResponse.getValue();
+        if(schoolUser ==null){
             aliasToCode.remove(alias);
             return new Response<>(false, OpCode.Not_Exist);
         }
 
-        if(user.getPassword()!=null){
+        if(schoolUser.getPassword()!=null){
             aliasToCode.remove(alias);
             return new Response<>(false,OpCode.Already_Exist);
         }
-        user.setPassword(passwordCodeAndTime.getPassword());
+        schoolUser.setPassword(passwordCodeAndTime.getPassword());
 
-        userResponse= userRepo.save(user);
+        userResponse= schoolUserRepo.save(schoolUser);
         if(userResponse.getReason()!=OpCode.Success){
             return new Response<>(false,userResponse.getReason());
         }

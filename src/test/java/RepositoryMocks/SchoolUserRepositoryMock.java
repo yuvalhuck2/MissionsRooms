@@ -3,41 +3,41 @@ package RepositoryMocks;
 import Data.Data;
 import Data.DataGenerator;
 
-import Domain.User;
-import CrudRepositories.UserCrudRepository;
+import Domain.SchoolUser;
+import CrudRepositories.SchoolUserCrudRepository;
 
 import java.util.Optional;
 
-public class UserRepositoryMock implements UserCrudRepository {
+public class SchoolUserRepositoryMock implements SchoolUserCrudRepository {
     private DataGenerator dataGenerator;
 
-    public UserRepositoryMock(DataGenerator dataGenerator) {
+    public SchoolUserRepositoryMock(DataGenerator dataGenerator) {
         this.dataGenerator = dataGenerator;
     }
 
 
     @Override
-    public User findUserForWrite(String alias) {
+    public SchoolUser findUserForWrite(String alias) {
         return dataGenerator.getStudent(Data.VALID);
     }
 
     @Override
-    public User findUserForRead(String alias) {
+    public SchoolUser findUserForRead(String alias) {
         return dataGenerator.getStudent(Data.VALID);
     }
 
     @Override
-    public <S extends User> S save(S s) {
+    public <S extends SchoolUser> S save(S s) {
         return (S) dataGenerator.getStudent(Data.VALID);
     }
 
     @Override
-    public <S extends User> Iterable<S> saveAll(Iterable<S> iterable) {
+    public <S extends SchoolUser> Iterable<S> saveAll(Iterable<S> iterable) {
         return null;
     }
 
     @Override
-    public Optional<User> findById(String s) {
+    public Optional<SchoolUser> findById(String s) {
         return Optional.ofNullable(dataGenerator.getStudent(Data.VALID));
     }
 
@@ -47,12 +47,12 @@ public class UserRepositoryMock implements UserCrudRepository {
     }
 
     @Override
-    public Iterable<User> findAll() {
+    public Iterable<SchoolUser> findAll() {
         return null;
     }
 
     @Override
-    public Iterable<User> findAllById(Iterable<String> iterable) {
+    public Iterable<SchoolUser> findAllById(Iterable<String> iterable) {
         return null;
     }
 
@@ -67,12 +67,12 @@ public class UserRepositoryMock implements UserCrudRepository {
     }
 
     @Override
-    public void delete(User user) {
+    public void delete(SchoolUser schoolUser) {
 
     }
 
     @Override
-    public void deleteAll(Iterable<? extends User> iterable) {
+    public void deleteAll(Iterable<? extends SchoolUser> iterable) {
 
     }
 

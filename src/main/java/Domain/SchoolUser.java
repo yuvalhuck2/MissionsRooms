@@ -1,46 +1,34 @@
 package Domain;
 
+import Domain.Rooms.User;
+
 import javax.persistence.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class User  {
+public abstract class SchoolUser extends User {
 
-    @Id
-    protected String alias;
 
     protected String firstName;
 
     protected String lastName;
 
-    protected String password;
 
     @OneToMany(cascade = CascadeType.ALL)
     @MapKeyColumn(name = "id")
     @JoinColumn(name="dest",referencedColumnName = "alias")
     protected Map<String,Message> messages;
 
-    public User() {
+    public SchoolUser() {
     }
 
-    public User(String alias, String firstName, String lastName) {
-        this.alias = alias;
+    public SchoolUser(String alias, String firstName, String lastName) {
+        super(alias);
         this.firstName = firstName;
         this.lastName = lastName;
         messages=new ConcurrentHashMap<>();
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
 }

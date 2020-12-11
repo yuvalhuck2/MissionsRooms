@@ -1,11 +1,9 @@
 package missions.room.Repo;
 
-import CrudRepositories.SchoolUserCrudRepository;
-import CrudRepositories.UserCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
-import Domain.Rooms.User;
 import Domain.SchoolUser;
+import CrudRepositories.SchoolUserCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,19 +11,19 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.LockTimeoutException;
 
 @Service
-public class UserRepo {
+public class SchoolUserRepo {
 
     @Autowired
-    private final UserCrudRepository userCrudRepository;
+    private final SchoolUserCrudRepository schoolUserCrudRepository;
 
-    public UserRepo(UserCrudRepository userCrudRepository) {
-        this.userCrudRepository = userCrudRepository;
+    public SchoolUserRepo(SchoolUserCrudRepository schoolUserCrudRepository) {
+        this.schoolUserCrudRepository = schoolUserCrudRepository;
     }
 
     @Transactional
-    public Response<User> findUserForWrite(String alias){
+    public Response<SchoolUser> findUserForWrite(String alias){
         try {
-            return new Response<>(userCrudRepository.findUserForWrite(alias), OpCode.Success);
+            return new Response<>(schoolUserCrudRepository.findUserForWrite(alias), OpCode.Success);
         }
         catch(LockTimeoutException e){
             return new Response<>(null,OpCode.TimeOut);
@@ -36,9 +34,9 @@ public class UserRepo {
     }
 
     @Transactional
-    public Response<User> findUserForRead(String alias){
+    public Response<SchoolUser> findUserForRead(String alias){
         try {
-            return new Response<>(userCrudRepository.findUserForRead(alias), OpCode.Success);
+            return new Response<>(schoolUserCrudRepository.findUserForRead(alias), OpCode.Success);
         }
         catch(LockTimeoutException e){
             return new Response<>(null,OpCode.TimeOut);
@@ -48,9 +46,9 @@ public class UserRepo {
         }
     }
 
-    public Response<User> save(User user){
+    public Response<SchoolUser> save(SchoolUser schoolUser){
         try {
-            return new Response<>(userCrudRepository.save(user), OpCode.Success);
+            return new Response<>(schoolUserCrudRepository.save(schoolUser), OpCode.Success);
         }
         catch (Exception e){
             return new Response<>(null,OpCode.DB_Error);

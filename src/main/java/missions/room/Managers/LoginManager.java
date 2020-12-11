@@ -1,31 +1,28 @@
 package missions.room.Managers;
 
 import DataAPI.OpCode;
-import DataAPI.PasswordCodeAndTime;
 import DataAPI.Response;
-import Domain.Student;
+import Domain.Ram;
+import Domain.Rooms.User;
+import Domain.SchoolUser;
 import ExternalSystems.UniqueStringGenerator;
-import ExternalSystems.VerificationCodeGenerator;
-import Repositories.StudentRepository;
+import Utils.Utils;
+import missions.room.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class LoginManager {
 
 
     @Autowired
-    private StudentRepository studentRepository;
+    private UserRepo userRepo;
 
     //save verification codes and string for trace and clean old code
-    private final ConcurrentHashMap<String, PasswordCodeAndTime> aliasToCode;
+    private final Ram ram;
 
     public LoginManager(){
-        this.aliasToCode=new ConcurrentHashMap<>();
+        this.ram=new Ram();
     }
 
     /**
@@ -35,12 +32,27 @@ public class LoginManager {
      * @return API key if login succeeded
      */
     public Response<String> login (String alias, String password){
-        if (!studentRepository.existsById(alias)){
-            return new Response<>("user name does not exist", OpCode.Not_Exist);
+        if(!Utils.checkString(password)){
+            return new Response<>(null,OpCode.Wrong_Password);
         }
-        Optional<Student> student=studentRepository.findById(alias);
-
+        if(!Utils.checkString(alias)){
+            return new Response<>(null,OpCode.Wrong_Alias);
+        }
+        Response<User> rsp= userRepo.findUserForRead(alias);
+        if (rsp.getReason()!=OpCode.Success){
+            return new Response<>(null, rsp.getReason());
+        }
+        User user =rsp.getValue();
+        if (user ==null){
+            return new Response<>(null, OpCode.Not_Exist);
+        }
         String api=UniqueStringGenerator.getUniqueCode(alias);
-        return null;
+        if(user.getPassword().equals(password)){
+            this.ram.addApi(api,alias);
+            return new Response<>(api,OpCode.Success);
+        }
+        else{
+            return new Response<>(null,OpCode.Wrong_Password);
+        }
     }
 }

@@ -3,7 +3,7 @@ package Domain;
 import javax.persistence.*;
 
 @Entity
-public class Teacher extends User {
+public class Teacher extends SchoolUser {
 
     @ManyToOne
     private Classroom classroom;

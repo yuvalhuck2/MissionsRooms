@@ -6,7 +6,7 @@ import javax.persistence.InheritanceType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Student extends User{
+public class Student extends SchoolUser {
 
     public Student() {
     }
