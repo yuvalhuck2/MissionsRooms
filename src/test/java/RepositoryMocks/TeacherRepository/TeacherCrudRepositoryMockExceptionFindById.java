@@ -1,8 +1,7 @@
 package RepositoryMocks.TeacherRepository;
 
 import CrudRepositories.TeacherCrudRepository;
-import Domain.Teacher;
-import org.springframework.dao.DataAccessException;
+import missions.room.Domain.Teacher;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;

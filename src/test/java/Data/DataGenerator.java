@@ -3,10 +3,10 @@ package Data;
 import DataAPI.RegisterDetailsData;
 import DataAPI.RoomType;
 import DataAPI.UserType;
-import Domain.Mission;
-import Domain.Student;
-import Domain.Teacher;
-import Domain.missions.KnownAnswerMission;
+import missions.room.Domain.Mission;
+import missions.room.Domain.Student;
+import missions.room.Domain.Teacher;
+import missions.room.Domain.missions.KnownAnswerMission;
 import DomainMocks.TeacherMock;
 
 import java.util.HashMap;

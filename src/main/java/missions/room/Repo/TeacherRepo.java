@@ -1,11 +1,10 @@
 package missions.room.Repo;
 
-import CrudRepositories.SchoolUserCrudRepository;
 import CrudRepositories.TeacherCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
-import Domain.SchoolUser;
-import Domain.Teacher;
+import missions.room.Domain.SchoolUser;
+import missions.room.Domain.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

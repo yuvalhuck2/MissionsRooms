@@ -3,7 +3,7 @@ package RepositoryMocks.SchoolUserRepositry;
 import Data.Data;
 import Data.DataGenerator;
 
-import Domain.SchoolUser;
+import missions.room.Domain.SchoolUser;
 import CrudRepositories.SchoolUserCrudRepository;
 
 import java.util.Optional;

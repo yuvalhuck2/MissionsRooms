@@ -1,7 +1,7 @@
 package CrudRepositories;
 
-import Domain.Rooms.User;
-import Domain.SchoolUser;
+import missions.room.Domain.Rooms.User;
+import missions.room.Domain.SchoolUser;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

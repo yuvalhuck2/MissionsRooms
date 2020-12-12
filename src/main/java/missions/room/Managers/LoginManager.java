@@ -2,9 +2,8 @@ package missions.room.Managers;
 
 import DataAPI.OpCode;
 import DataAPI.Response;
-import Domain.Ram;
-import Domain.Rooms.User;
-import Domain.SchoolUser;
+import missions.room.Domain.Ram;
+import missions.room.Domain.Rooms.User;
 import ExternalSystems.HashSystem;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;

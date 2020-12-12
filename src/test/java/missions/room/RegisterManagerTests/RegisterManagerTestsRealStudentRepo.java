@@ -5,7 +5,7 @@ import DataAPI.OpCode;
 import DataAPI.PasswordCodeAndTime;
 import DataAPI.RegisterDetailsData;
 import DataAPI.Response;
-import Domain.Student;
+import missions.room.Domain.Student;
 import ExternalSystemMocks.MailSenderTrueMock;
 import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;

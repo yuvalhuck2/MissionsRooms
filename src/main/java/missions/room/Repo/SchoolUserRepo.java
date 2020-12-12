@@ -2,7 +2,7 @@ package missions.room.Repo;
 
 import DataAPI.OpCode;
 import DataAPI.Response;
-import Domain.SchoolUser;
+import missions.room.Domain.SchoolUser;
 import CrudRepositories.SchoolUserCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package missions.room.Managers;
 
 import DataAPI.*;
-import Domain.SchoolUser;
+import missions.room.Domain.SchoolUser;
 import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
 import ExternalSystems.VerificationCodeGenerator;
