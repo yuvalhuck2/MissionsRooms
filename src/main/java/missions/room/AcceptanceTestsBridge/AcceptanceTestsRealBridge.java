@@ -1,9 +1,9 @@
-package AcceptanceTests.AcceptanceTestsBridge;
+package missions.room.AcceptanceTestsBridge;
 
-import AcceptanceTests.AcceptanceTestDataObjects.*;
 import DataAPI.RegisterDetailsData;
 import DataAPI.UserType;
-import Service.RegisterService;
+import missions.room.Service.RegisterService;
+import missions.room.AcceptanceTestDataObjects.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestBridge{
     private RegisterService registerService;
 
     public AcceptanceTestsRealBridge(){
-        this.registerService = new RegisterService();
+        //this.registerService = new RegisterService();
     }
 
     @Override

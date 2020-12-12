@@ -1,9 +1,12 @@
-package AcceptanceTests.AcceptanceTests;
+package missions.room.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.RegisterDetailsTest;
-import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
-import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestBridge;
-import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsProxyBridge;
+import missions.room.AcceptanceTestDataObjects.RegisterDetailsTest;
+import missions.room.AcceptanceTestDataObjects.UserTestData;
+import missions.room.AcceptanceTestsBridge.AcceptanceTestsProxyBridge;
+import missions.room.Managers.RegisterManager;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Service;
@@ -15,20 +18,26 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.junit.jupiter.api.Assertions.fail;
 
-@SpringBootTest
+
+@Service
 public class AcceptanceTest {
 
-    @Autowired
-    protected AcceptanceTestsProxyBridge bridge;
 
     protected static List<UserTestData> students = new ArrayList<>();
     protected static List<UserTestData> teacher = new ArrayList<>();
 
+    @Autowired
+    protected AcceptanceTestsProxyBridge bridge;
+
+    @Autowired
+    protected RegisterManager r;
+
 
     public static class TestDataInitializer {
-        private static String studentPath = "src\\test\\java\\AcceptanceTests\\AcceptanceTests\\student_test.csv";
-        private static String teacherPath = "src\\test\\java\\AcceptanceTests\\AcceptanceTests\\teacher_test.csv";
+        private static String studentPath = "src\\test\\java\\missions\\room\\AcceptanceTests\\student_test.csv";
+        private static String teacherPath = "src\\test\\java\\missions\\room\\AcceptanceTests\\teacher_test.csv";
         private static String COMMA_DELIMITER = ",";
 
         public static void getTestDataFromCsvReport() {
@@ -71,11 +80,6 @@ public class AcceptanceTest {
         }
 
     }
-    public AcceptanceTest(){
-        //this.bridge = AcceptanceTestDriver.getBridge();
-
-        TestDataInitializer.getTestDataFromCsvReport();
-    }
 
     protected boolean setUpCSV(){
         return true;
@@ -88,5 +92,10 @@ public class AcceptanceTest {
     protected boolean deleteUser(){
         return true;
     }
+
+//    @Test
+//    public void testtest(){
+//        fail();
+//    }
 
 }

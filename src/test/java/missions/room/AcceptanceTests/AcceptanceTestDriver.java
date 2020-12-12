@@ -1,8 +1,7 @@
-package AcceptanceTests.AcceptanceTests;
+package missions.room.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestBridge;
-import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsProxyBridge;
-import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsRealBridge;
+import missions.room.AcceptanceTestsBridge.AcceptanceTestBridge;
+import missions.room.AcceptanceTestsBridge.AcceptanceTestsProxyBridge;
 
 public class AcceptanceTestDriver {
 

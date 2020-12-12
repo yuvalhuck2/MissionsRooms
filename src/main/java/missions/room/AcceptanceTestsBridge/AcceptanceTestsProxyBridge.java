@@ -1,6 +1,6 @@
-package AcceptanceTests.AcceptanceTestsBridge;
+package missions.room.AcceptanceTestsBridge;
 
-import AcceptanceTests.AcceptanceTestDataObjects.*;
+import missions.room.AcceptanceTestDataObjects.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +8,7 @@ import java.util.List;
 
 @Service
 public class AcceptanceTestsProxyBridge implements AcceptanceTestBridge{
+
     @Autowired
     private AcceptanceTestsRealBridge realBridge;
 

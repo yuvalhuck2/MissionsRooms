@@ -1,4 +1,4 @@
-package AcceptanceTests.AcceptanceTestDataObjects;
+package missions.room.AcceptanceTestDataObjects;
 
 
 import java.util.List;

@@ -1,12 +1,14 @@
-package AcceptanceTests.AcceptanceTests;
+package missions.room.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.RegisterDetailsTest;
-import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.UserTypeTest;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import missions.room.AcceptanceTestDataObjects.UserTestData;
+import missions.room.AcceptanceTestDataObjects.RegisterDetailsTest;
+import missions.room.AcceptanceTestDataObjects.UserTypeTest;
+import missions.room.AcceptanceTestsBridge.AcceptanceTestsProxyBridge;
+import missions.room.Managers.RegisterManager;
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -15,10 +17,13 @@ import static org.junit.Assert.assertTrue;
  * use case 2.2 - Register
  */
 @SpringBootTest
+@TestPropertySource(locations = {"classpath:application-test.properties"})
 public class AcceptanceTestRegister extends AcceptanceTest{
     private RegisterDetailsTest registerDetailsTest;
-    @Before
+
+    @BeforeEach
     public void setup(){
+        TestDataInitializer.getTestDataFromCsvReport();
         setUpCSV();
         UserTestData user = AcceptanceTest.students.get(1);
         this.registerDetailsTest = new RegisterDetailsTest(
@@ -43,7 +48,7 @@ public class AcceptanceTestRegister extends AcceptanceTest{
 
     }
 
-    @After
+    @AfterEach
     public void tearDown(){
 
     }

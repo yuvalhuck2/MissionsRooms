@@ -1,10 +1,8 @@
-package AcceptanceTests.AcceptanceTestsBridge;
+package missions.room.AcceptanceTestsBridge;
 
-import AcceptanceTests.AcceptanceTestDataObjects.*;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import org.assertj.core.api.BooleanArrayAssert;
+//import AcceptanceTests.AcceptanceTestDataObjects.*;
+import missions.room.AcceptanceTestDataObjects.*;
 
-import javax.swing.text.StyledEditorKit;
 import java.util.List;
 
 public interface AcceptanceTestBridge {
