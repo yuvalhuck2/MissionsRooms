@@ -4,6 +4,9 @@ import AcceptanceTests.AcceptanceTestDataObjects.RegisterDetailsTest;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestBridge;
 import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsProxyBridge;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,8 +15,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+@SpringBootTest
 public class AcceptanceTest {
-    protected AcceptanceTestBridge bridge;
+
+    @Autowired
+    protected AcceptanceTestsProxyBridge bridge;
+
     protected static List<UserTestData> students = new ArrayList<>();
     protected static List<UserTestData> teacher = new ArrayList<>();
 
@@ -64,7 +72,8 @@ public class AcceptanceTest {
 
     }
     public AcceptanceTest(){
-        this.bridge = new AcceptanceTestsProxyBridge();
+        //this.bridge = AcceptanceTestDriver.getBridge();
+
         TestDataInitializer.getTestDataFromCsvReport();
     }
 

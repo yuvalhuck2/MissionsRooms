@@ -6,6 +6,7 @@ import AcceptanceTests.AcceptanceTestDataObjects.UserTypeTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -13,6 +14,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * use case 2.2 - Register
  */
+@SpringBootTest
 public class AcceptanceTestRegister extends AcceptanceTest{
     private RegisterDetailsTest registerDetailsTest;
     @Before

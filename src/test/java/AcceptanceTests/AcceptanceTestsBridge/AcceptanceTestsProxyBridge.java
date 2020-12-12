@@ -1,19 +1,23 @@
 package AcceptanceTests.AcceptanceTestsBridge;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AcceptanceTestsProxyBridge implements AcceptanceTestBridge{
-    private AcceptanceTestBridge realBridge;
+    @Autowired
+    private AcceptanceTestsRealBridge realBridge;
 
     public AcceptanceTestsProxyBridge(){
-        this.realBridge = null;
+        //this.realBridge = null;
     }
 
-    public void setRealBridge(AcceptanceTestBridge bridge){
-        this.realBridge = bridge;
-    }
+//    public void setRealBridge(AcceptanceTestBridge bridge){
+//        this.realBridge = bridge;
+//    }
 
     @Override
     public Boolean register(RegisterDetailsTest details) {

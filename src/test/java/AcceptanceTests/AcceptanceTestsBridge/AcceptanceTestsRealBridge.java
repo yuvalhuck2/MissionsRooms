@@ -4,10 +4,15 @@ import AcceptanceTests.AcceptanceTestDataObjects.*;
 import DataAPI.RegisterDetailsData;
 import DataAPI.UserType;
 import Service.RegisterService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AcceptanceTestsRealBridge implements AcceptanceTestBridge{
+
+    @Autowired
     private RegisterService registerService;
 
     public AcceptanceTestsRealBridge(){
