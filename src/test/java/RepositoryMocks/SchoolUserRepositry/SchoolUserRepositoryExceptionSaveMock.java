@@ -1,4 +1,4 @@
-package RepositoryMocks;
+package RepositoryMocks.SchoolUserRepositry;
 
 import Data.Data;
 import Data.DataGenerator;

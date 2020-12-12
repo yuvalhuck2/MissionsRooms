@@ -1,13 +1,15 @@
 package Domain;
 
+import DataAPI.OpCode;
 import DataAPI.RoomType;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Mission {
+public abstract class Mission implements Serializable {
 
     @Id
     protected String missionId;
@@ -22,5 +24,24 @@ public abstract class Mission {
     public Mission(String missionId, Set<RoomType> missionTypes) {
         this.missionId = missionId;
         this.missionTypes = missionTypes;
+    }
+
+    public OpCode validate(){
+        if(missionTypes.isEmpty()){
+            return OpCode.Wrong_Type;
+        }
+        return OpCode.Success;
+    }
+
+    public void setMissionId(String missionId) {
+        this.missionId = missionId;
+    }
+
+    public String getMissionId() {
+        return missionId;
+    }
+
+    public Set<RoomType> getMissionTypes() {
+        return missionTypes;
     }
 }

@@ -1,4 +1,4 @@
-package Domain.Rooms;
+package Domain;
 
 import DataAPI.RoomType;
 import Domain.RoomMessage;

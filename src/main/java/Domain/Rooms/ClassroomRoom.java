@@ -1,7 +1,7 @@
 package Domain.Rooms;
 
 import Domain.Classroom;
-import Domain.Student;
+import Domain.Room;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;

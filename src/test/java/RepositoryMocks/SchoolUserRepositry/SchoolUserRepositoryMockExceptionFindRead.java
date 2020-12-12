@@ -1,4 +1,4 @@
-package RepositoryMocks;
+package RepositoryMocks.SchoolUserRepositry;
 
 import CrudRepositories.SchoolUserCrudRepository;
 import Data.Data;
@@ -8,20 +8,21 @@ import Domain.SchoolUser;
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
-public class SchoolUserRepositoryMockExceptionFindWrite implements SchoolUserCrudRepository {
+public class SchoolUserRepositoryMockExceptionFindRead implements SchoolUserCrudRepository {
+
     private DataGenerator dataGenerator;
 
-    public SchoolUserRepositoryMockExceptionFindWrite(DataGenerator dataGenerator) {
+    public SchoolUserRepositoryMockExceptionFindRead(DataGenerator dataGenerator) {
         this.dataGenerator = dataGenerator;
     }
 
     @Override
-    public SchoolUser findUserForRead(String alias) {
+    public SchoolUser findUserForWrite(String alias) {
         return dataGenerator.getStudent(Data.VALID);
     }
 
     @Override
-    public SchoolUser findUserForWrite(String alias) {
+    public SchoolUser findUserForRead(String alias) {
         throw new EntityNotFoundException();
     }
 

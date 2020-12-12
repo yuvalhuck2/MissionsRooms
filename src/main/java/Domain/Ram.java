@@ -15,4 +15,10 @@ public class Ram {
     }
 
 
+    public String getApi(String apiKey) {
+        if(apiToAlias.containsKey(apiKey)) {
+            return apiToAlias.get(apiKey).getString();
+        }
+        return null;
+    }
 }

@@ -261,15 +261,15 @@ public class ServiceAPI {
     }
 
 
-    /**
-     * req 4.5 - add mission
-     * @param auth - authentication object
-     * @param missionData - details of the mission
-     * @return if the mission was added successfully
-     */
-    public Response<Boolean> createMission(Auth auth, MissionData missionData){
-        throw new NotImplementedException();
-    }
+//    /**
+//     * req 4.5 - add mission
+//     * @param auth - authentication object
+//     * @param missionData - details of the mission
+//     * @return if the mission was added successfully
+//     */
+//    public Response<Boolean> createMission(Auth auth, MissionData missionData){
+//        throw new NotImplementedException();
+//    }
 
 
     /**

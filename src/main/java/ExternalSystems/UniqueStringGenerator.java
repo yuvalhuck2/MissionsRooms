@@ -10,7 +10,7 @@ public class UniqueStringGenerator {
 
     public static String getUniqueCode(String alias){
 
-        String code=LocalDateTime.now().toString().replace(':','_').replace('-','_')+alias;
+        String code=getTimeNameCode(alias);
         return shuffleString(code);
 
     }
@@ -23,6 +23,10 @@ public class UniqueStringGenerator {
             builder.append(letter);
         }
         return builder.toString();
+    }
+
+    public static String getTimeNameCode(String toAdd){
+        return LocalDateTime.now().toString().replace(':','_').replace('-','_')+toAdd;
     }
 
 }
