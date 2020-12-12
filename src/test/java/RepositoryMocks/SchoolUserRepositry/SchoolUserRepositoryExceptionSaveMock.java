@@ -1,42 +1,42 @@
-package RepositoryMocks;
+package RepositoryMocks.SchoolUserRepositry;
 
 import Data.Data;
 import Data.DataGenerator;
-import Domain.User;
-import CrudRepositories.UserCrudRepository;
+import Domain.SchoolUser;
+import CrudRepositories.SchoolUserCrudRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
-public class UserRepositoryExceptionSaveMock implements UserCrudRepository {
+public class SchoolUserRepositoryExceptionSaveMock implements SchoolUserCrudRepository {
     private DataGenerator dataGenerator;
 
-    public UserRepositoryExceptionSaveMock(DataGenerator dataGenerator) {
+    public SchoolUserRepositoryExceptionSaveMock(DataGenerator dataGenerator) {
         this.dataGenerator = dataGenerator;
     }
 
     @Override
-    public User findUserForWrite(String alias) {
+    public SchoolUser findUserForWrite(String alias) {
         return dataGenerator.getStudent(Data.VALID);
     }
 
     @Override
-    public User findUserForRead(String alias) {
+    public SchoolUser findUserForRead(String alias) {
         return dataGenerator.getStudent(Data.VALID);
     }
 
     @Override
-    public Optional<User> findById(String s) {
+    public Optional<SchoolUser> findById(String s) {
         return Optional.ofNullable(dataGenerator.getStudent(Data.VALID));
     }
 
     @Override
-    public <S extends User> S save(S s) {
+    public <S extends SchoolUser> S save(S s) {
         throw new EntityNotFoundException();
     }
 
     @Override
-    public <S extends User> Iterable<S> saveAll(Iterable<S> iterable) {
+    public <S extends SchoolUser> Iterable<S> saveAll(Iterable<S> iterable) {
         return null;
     }
 
@@ -46,12 +46,12 @@ public class UserRepositoryExceptionSaveMock implements UserCrudRepository {
     }
 
     @Override
-    public Iterable<User> findAll() {
+    public Iterable<SchoolUser> findAll() {
         return null;
     }
 
     @Override
-    public Iterable<User> findAllById(Iterable<String> iterable) {
+    public Iterable<SchoolUser> findAllById(Iterable<String> iterable) {
         return null;
     }
 
@@ -66,12 +66,12 @@ public class UserRepositoryExceptionSaveMock implements UserCrudRepository {
     }
 
     @Override
-    public void delete(User user) {
+    public void delete(SchoolUser schoolUser) {
 
     }
 
     @Override
-    public void deleteAll(Iterable<? extends User> iterable) {
+    public void deleteAll(Iterable<? extends SchoolUser> iterable) {
 
     }
 

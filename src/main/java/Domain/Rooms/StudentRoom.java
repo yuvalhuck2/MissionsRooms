@@ -1,5 +1,6 @@
 package Domain.Rooms;
 
+import Domain.Room;
 import Domain.Student;
 
 import javax.persistence.Entity;

@@ -6,15 +6,15 @@ import DataAPI.OpCode;
 import DataAPI.PasswordCodeAndTime;
 import DataAPI.RegisterDetailsData;
 import DataAPI.Response;
-import CrudRepositories.UserCrudRepository;
-import RepositoryMocks.UserRepositoryMockExceptionFindRead;
-import RepositoryMocks.UserRepositoryMockExceptionFindWrite;
+import CrudRepositories.SchoolUserCrudRepository;
+import RepositoryMocks.SchoolUserRepositry.SchoolUserRepositoryMockExceptionFindRead;
+import RepositoryMocks.SchoolUserRepositry.SchoolUserRepositoryMockExceptionFindWrite;
 import missions.room.Managers.RegisterManager;
 import ExternalSystemMocks.MailSenderFalseMock;
 import ExternalSystemMocks.MailSenderTrueMock;
 import ExternalSystems.MailSender;
-import RepositoryMocks.UserRepositoryExceptionSaveMock;
-import RepositoryMocks.UserRepositoryMock;
+import RepositoryMocks.SchoolUserRepositry.SchoolUserRepositoryExceptionSaveMock;
+import RepositoryMocks.SchoolUserRepositry.SchoolUserRepositoryMock;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,13 +25,14 @@ import java.lang.reflect.Field;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 @Service
 public class RegisterManagerTestsAllStubs {
 
     @Autowired
-    protected UserCrudRepository userRepository;
+    protected SchoolUserCrudRepository userRepository;
 
     @Autowired
     protected RegisterManager registerManager;
@@ -48,7 +49,7 @@ public class RegisterManagerTestsAllStubs {
 
     void setUpMocks(){
         MailSender mailSender=new MailSenderTrueMock();
-        userRepository =new UserRepositoryMock(dataGenerator);
+        userRepository =new SchoolUserRepositoryMock(dataGenerator);
         registerManager =new RegisterManager(userRepository,mailSender);
     }
 
@@ -144,7 +145,7 @@ public class RegisterManagerTestsAllStubs {
     void testRegisterInvalidFailMailSender(){
         registerSetUp();
         MailSender mailSender=new MailSenderFalseMock();
-        userRepository =new UserRepositoryMock(dataGenerator);
+        userRepository =new SchoolUserRepositoryMock(dataGenerator);
         registerManager =new RegisterManager(userRepository,mailSender);
         checkWrongRegister(Data.VALID,OpCode.Mail_Error);
         registerTearDown();
@@ -155,7 +156,7 @@ public class RegisterManagerTestsAllStubs {
         registerSetUp();
         //set up exception mock
         MailSender mailSender=new MailSenderTrueMock();
-        registerManager =new RegisterManager(new UserRepositoryMockExceptionFindRead(dataGenerator),mailSender);
+        registerManager =new RegisterManager(new SchoolUserRepositoryMockExceptionFindRead(dataGenerator),mailSender);
         checkWrongRegister(Data.VALID,OpCode.DB_Error);
         registerCodeTearDown();
     }
@@ -241,7 +242,7 @@ public class RegisterManagerTestsAllStubs {
         registerSetUp();
         //set up exception mock
         MailSender mailSender=new MailSenderTrueMock();
-        registerManager =new RegisterManager(new UserRepositoryExceptionSaveMock(dataGenerator),mailSender);
+        registerManager =new RegisterManager(new SchoolUserRepositoryExceptionSaveMock(dataGenerator),mailSender);
 
         //register the user
         RegisterDetailsData validDetails=dataGenerator.getRegisterDetails(Data.VALID);
@@ -268,7 +269,7 @@ public class RegisterManagerTestsAllStubs {
         registerSetUp();
         //set up exception mock
         MailSender mailSender=new MailSenderTrueMock();
-        registerManager =new RegisterManager(new UserRepositoryMockExceptionFindWrite(dataGenerator),mailSender);
+        registerManager =new RegisterManager(new SchoolUserRepositoryMockExceptionFindWrite(dataGenerator),mailSender);
 
         //register the user
         RegisterDetailsData validDetails=dataGenerator.getRegisterDetails(Data.VALID);
