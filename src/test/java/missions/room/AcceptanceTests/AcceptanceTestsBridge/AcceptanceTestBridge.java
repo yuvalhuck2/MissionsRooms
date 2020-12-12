@@ -1,7 +1,7 @@
-package missions.room.AcceptanceTestsBridge;
+package missions.room.AcceptanceTests.AcceptanceTestsBridge;
 
-//import AcceptanceTests.AcceptanceTestDataObjects.*;
-import missions.room.AcceptanceTestDataObjects.*;
+
+import missions.room.AcceptanceTests.AcceptanceTestDataObjects.*;
 
 import java.util.List;
 

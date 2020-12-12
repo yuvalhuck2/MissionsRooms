@@ -1,4 +1,4 @@
-package missions.room.AcceptanceTestDataObjects;
+package missions.room.AcceptanceTests.AcceptanceTestDataObjects;
 
 public enum UserTypeTest {
     Student,

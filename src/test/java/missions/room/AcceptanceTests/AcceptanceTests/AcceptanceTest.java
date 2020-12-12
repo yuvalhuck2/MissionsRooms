@@ -1,14 +1,10 @@
-package missions.room.AcceptanceTests;
+package missions.room.AcceptanceTests.AcceptanceTests;
 
-import missions.room.AcceptanceTestDataObjects.RegisterDetailsTest;
-import missions.room.AcceptanceTestDataObjects.UserTestData;
-import missions.room.AcceptanceTestsBridge.AcceptanceTestsProxyBridge;
+import missions.room.AcceptanceTests.AcceptanceTestDataObjects.RegisterDetailsTest;
+import missions.room.AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import missions.room.AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsProxyBridge;
 import missions.room.Managers.RegisterManager;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -31,13 +27,9 @@ public class AcceptanceTest {
     @Autowired
     protected AcceptanceTestsProxyBridge bridge;
 
-    @Autowired
-    protected RegisterManager r;
-
-
     public static class TestDataInitializer {
-        private static String studentPath = "src\\test\\java\\missions\\room\\AcceptanceTests\\student_test.csv";
-        private static String teacherPath = "src\\test\\java\\missions\\room\\AcceptanceTests\\teacher_test.csv";
+        private static String studentPath = "src\\test\\java\\missions\\room\\AcceptanceTests\\AcceptanceTests\\student_test.csv";
+        private static String teacherPath = "src\\test\\java\\missions\\room\\AcceptanceTests\\AcceptanceTests\\teacher_test.csv";
         private static String COMMA_DELIMITER = ",";
 
         public static void getTestDataFromCsvReport() {
@@ -98,4 +90,8 @@ public class AcceptanceTest {
 //        fail();
 //    }
 
+
+    public AcceptanceTest() {
+        TestDataInitializer.getTestDataFromCsvReport();
+    }
 }

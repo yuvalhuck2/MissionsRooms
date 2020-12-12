@@ -1,9 +1,9 @@
-package missions.room.AcceptanceTestsBridge;
+package missions.room.AcceptanceTests.AcceptanceTestsBridge;
 
 import DataAPI.RegisterDetailsData;
 import DataAPI.UserType;
+import missions.room.AcceptanceTests.AcceptanceTestDataObjects.*;
 import missions.room.Service.RegisterService;
-import missions.room.AcceptanceTestDataObjects.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

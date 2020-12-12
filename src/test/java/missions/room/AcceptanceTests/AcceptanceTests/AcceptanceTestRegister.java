@@ -1,12 +1,9 @@
-package missions.room.AcceptanceTests;
+package missions.room.AcceptanceTests.AcceptanceTests;
 
-import missions.room.AcceptanceTestDataObjects.UserTestData;
-import missions.room.AcceptanceTestDataObjects.RegisterDetailsTest;
-import missions.room.AcceptanceTestDataObjects.UserTypeTest;
-import missions.room.AcceptanceTestsBridge.AcceptanceTestsProxyBridge;
-import missions.room.Managers.RegisterManager;
+import missions.room.AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import missions.room.AcceptanceTests.AcceptanceTestDataObjects.RegisterDetailsTest;
+import missions.room.AcceptanceTests.AcceptanceTestDataObjects.UserTypeTest;
 import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
@@ -23,7 +20,6 @@ public class AcceptanceTestRegister extends AcceptanceTest{
 
     @BeforeEach
     public void setup(){
-        TestDataInitializer.getTestDataFromCsvReport();
         setUpCSV();
         UserTestData user = AcceptanceTest.students.get(1);
         this.registerDetailsTest = new RegisterDetailsTest(

@@ -1,6 +1,4 @@
-package missions.room.AcceptanceTestDataObjects;
-
-import java.util.List;
+package missions.room.AcceptanceTests.AcceptanceTestDataObjects;
 
 public class UserTestData {
     private String fName;

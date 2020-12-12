@@ -1,6 +1,6 @@
-package missions.room.AcceptanceTestsBridge;
+package missions.room.AcceptanceTests.AcceptanceTestsBridge;
 
-import missions.room.AcceptanceTestDataObjects.*;
+import missions.room.AcceptanceTests.AcceptanceTestDataObjects.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
