@@ -23,6 +23,7 @@ public class AcceptanceTest {
 
     protected static List<UserTestData> students = new ArrayList<>();
     protected static List<UserTestData> teacher = new ArrayList<>();
+    protected final String testVerificationCode = "0";
 
     @Autowired
     protected AcceptanceTestsProxyBridge bridge;
@@ -74,11 +75,21 @@ public class AcceptanceTest {
     }
 
     protected boolean setUpCSV(){
+        //login();
         return true;
+    }
+
+    protected boolean registerCode(String alias, String code){
+        return bridge.registerCode(alias, code);
     }
 
     protected boolean register(RegisterDetailsTest registerDetailsTest){
         return bridge.register(registerDetailsTest);
+    }
+
+    protected String login(){
+        String token = bridge.login("admin", "admin");
+        return token;
     }
 
     protected boolean deleteUser(){

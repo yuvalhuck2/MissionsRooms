@@ -5,11 +5,10 @@ public class RegisterDetailsTest {
     private String hashedPassword;
     private String alias;
 
-    public RegisterDetailsTest(String fName, String lName, String hashedPassword, String alias, UserTypeTest type, String classRoom) {
+    public RegisterDetailsTest(String hashedPassword, String alias) {
         this.hashedPassword = hashedPassword;
         this.alias = alias;
     }
-
 
     public String getHashedPassword() {
         return hashedPassword;

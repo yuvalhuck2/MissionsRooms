@@ -1,6 +1,8 @@
 package missions.room.AcceptanceTests.AcceptanceTestsBridge;
 
 
+import ExternalSystems.MailSender;
+import ExternalSystems.VerificationCodeGenerator;
 import missions.room.AcceptanceTests.AcceptanceTestDataObjects.*;
 
 import java.util.List;
@@ -52,6 +54,8 @@ public interface AcceptanceTestBridge {
 
     //IT 6.3 - upload CSV
     Boolean uploadCsv(String token, byte[] csv);
+
+    void setExternalSystems(MailSender mailSender, VerificationCodeGenerator verificationCodeGenerator);
 
 
 

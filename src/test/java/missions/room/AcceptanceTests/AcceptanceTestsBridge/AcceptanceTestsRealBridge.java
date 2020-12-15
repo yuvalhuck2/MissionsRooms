@@ -2,7 +2,10 @@ package missions.room.AcceptanceTests.AcceptanceTestsBridge;
 
 import DataAPI.RegisterDetailsData;
 import DataAPI.UserType;
+import ExternalSystems.MailSender;
+import ExternalSystems.VerificationCodeGenerator;
 import missions.room.AcceptanceTests.AcceptanceTestDataObjects.*;
+import missions.room.Service.LoginService;
 import missions.room.Service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,9 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestBridge{
 
     @Autowired
     private RegisterService registerService;
+
+    @Autowired
+    private LoginService loginService;
 
     public AcceptanceTestsRealBridge(){
         //this.registerService = new RegisterService();
@@ -30,8 +36,8 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestBridge{
     }
 
     @Override
-    public String login(String alias, String hashedPassword) {
-        return null;
+    public String login(String alias, String password) {
+        return loginService.login(alias, password).getValue();
     }
 
     @Override
@@ -89,12 +95,13 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestBridge{
         return null;
     }
 
+    @Override
+    public void setExternalSystems(MailSender mailSender, VerificationCodeGenerator verificationCodeGenerator) {
+        registerService.setExternalSystems(mailSender, verificationCodeGenerator);
+    }
+
     private RegisterDetailsData convertRegisterDetails(RegisterDetailsTest registerDetailsTestData){
-        UserType type = UserType.Student;
-        RegisterDetailsData registerDetailsData = new RegisterDetailsData(
-                "", "",
-                registerDetailsTestData.getAlias(), registerDetailsTestData.getHashedPassword(),
-                type, "");
+        RegisterDetailsData registerDetailsData = new RegisterDetailsData(registerDetailsTestData.getAlias(), registerDetailsTestData.getHashedPassword());
         return registerDetailsData;
     }
 

@@ -1,5 +1,7 @@
 package missions.room.AcceptanceTests.AcceptanceTestsBridge;
 
+import ExternalSystems.MailSender;
+import ExternalSystems.VerificationCodeGenerator;
 import missions.room.AcceptanceTests.AcceptanceTestDataObjects.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,9 +37,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestBridge{
     }
 
     @Override
-    public String login(String alias, String hashedPassword) {
+    public String login(String alias, String password) {
         if(realBridge!=null)
-            return realBridge.login(alias, hashedPassword);
+            return realBridge.login(alias, password);
         return null;
     }
 
@@ -114,5 +116,11 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestBridge{
         if(realBridge!=null)
             return realBridge.uploadCsv(token, csv);
         return false;
+    }
+
+    @Override
+    public void setExternalSystems(MailSender mailSender, VerificationCodeGenerator verificationCodeGenerator) {
+        if(realBridge!=null)
+             realBridge.setExternalSystems(mailSender, verificationCodeGenerator);
     }
 }
