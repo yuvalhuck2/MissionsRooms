@@ -90,11 +90,11 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestBridge{
     }
 
     private RegisterDetailsData convertRegisterDetails(RegisterDetailsTest registerDetailsTestData){
-        UserType type = getUserType(registerDetailsTestData.getType());
+        UserType type = UserType.Student;
         RegisterDetailsData registerDetailsData = new RegisterDetailsData(
-                registerDetailsTestData.getfName(), registerDetailsTestData.getlName(),
+                "", "",
                 registerDetailsTestData.getAlias(), registerDetailsTestData.getHashedPassword(),
-                type, registerDetailsTestData.getClassRoom());
+                type, "");
         return registerDetailsData;
     }
 
