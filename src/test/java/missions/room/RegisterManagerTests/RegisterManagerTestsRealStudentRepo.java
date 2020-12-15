@@ -74,7 +74,7 @@ public class RegisterManagerTestsRealStudentRepo extends RegisterManagerTestsAll
         super.registerCodeTest();
         HashSystem hashSystem=new HashSystem();
         //wrong type because valid has hashed password
-        RegisterDetailsData valid=dataGenerator.getRegisterDetails(Data.WRONG_TYPE);
+        RegisterDetailsData valid=dataGenerator.getRegisterDetails(Data.VALID2);
         assertEquals(userRepository.findById(valid.getAlias()).get().getPassword(),
                 hashSystem.encrypt(valid.getPassword()));
         try {
