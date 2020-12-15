@@ -1,4 +1,4 @@
-package missions.room.Domain.Rooms;
+package missions.room.Domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

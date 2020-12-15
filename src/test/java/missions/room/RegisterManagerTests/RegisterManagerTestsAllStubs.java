@@ -133,13 +133,6 @@ public class RegisterManagerTestsAllStubs {
     }
 
     @Test
-    void testRegisterInvalidUserType(){
-        registerSetUp();
-        checkWrongRegister(Data.WRONG_TYPE,OpCode.Wrong_UserType);
-        registerTearDown();
-    }
-
-    @Test
     void testRegisterInvalidFailMailSender(){
         registerSetUp();
         MailSender mailSender=new MailSenderFalseMock();

@@ -55,13 +55,13 @@ public class DataGenerator {
 
     private void initRegisterDetailsDatas() {
         registerDetailsDatas=new HashMap<Data, RegisterDetailsData>();
-        registerDetailsDatas.put(Data.VALID,new RegisterDetailsData("NoAlasIsExistWithThatName","1234", UserType.Student));
-        registerDetailsDatas.put(Data.NULL_PASSWORD,new RegisterDetailsData("NoAlasIsExistWithThatName",null, UserType.Student));
-        registerDetailsDatas.put(Data.EMPTY_PASSWORD,new RegisterDetailsData("NoAlasIsExistWithThatName","", UserType.Student));
-        registerDetailsDatas.put(Data.NULL_ALIAS,new RegisterDetailsData(null,"1234", UserType.Student));
-        registerDetailsDatas.put(Data.EMPTY_ALIAS,new RegisterDetailsData("","1234", UserType.Student));
-        registerDetailsDatas.put(Data.WRONG_TYPE,new RegisterDetailsData("NoAlasIsExistWithThatName","1234", UserType.IT));
-        registerDetailsDatas.put(Data.WRONG_NAME,new RegisterDetailsData("Wrong","1234", UserType.Student));
+        registerDetailsDatas.put(Data.VALID,new RegisterDetailsData("NoAlasIsExistWithThatName","1234"));
+        registerDetailsDatas.put(Data.VALID2,new RegisterDetailsData("NoAlasIsExistWithThatName","1234"));
+        registerDetailsDatas.put(Data.NULL_PASSWORD,new RegisterDetailsData("NoAlasIsExistWithThatName",null));
+        registerDetailsDatas.put(Data.EMPTY_PASSWORD,new RegisterDetailsData("NoAlasIsExistWithThatName",""));
+        registerDetailsDatas.put(Data.NULL_ALIAS,new RegisterDetailsData(null,"1234"));
+        registerDetailsDatas.put(Data.EMPTY_ALIAS,new RegisterDetailsData("","1234"));
+        registerDetailsDatas.put(Data.WRONG_NAME,new RegisterDetailsData("Wrong","1234"));
 
     }
 

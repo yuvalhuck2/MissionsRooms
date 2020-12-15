@@ -1,7 +1,5 @@
 package missions.room.Domain;
 
-import missions.room.Domain.Rooms.User;
-
 import javax.persistence.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

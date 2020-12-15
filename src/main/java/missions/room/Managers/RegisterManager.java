@@ -101,9 +101,6 @@ public class RegisterManager {
         if(!Utils.checkString(details.getAlias())){
             return new Response<>(false,OpCode.Wrong_Alias);
         }
-        if(details.getUserType()== UserType.IT){
-            return new Response<>(false,OpCode.Wrong_UserType);
-        }
 
         return new Response<>(true,OpCode.Success);
 
