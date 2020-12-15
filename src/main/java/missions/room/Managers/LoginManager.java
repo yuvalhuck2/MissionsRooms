@@ -3,7 +3,7 @@ package missions.room.Managers;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import missions.room.Domain.Ram;
-import missions.room.Domain.Rooms.User;
+import missions.room.Domain.User;
 import ExternalSystems.HashSystem;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;

@@ -1,4 +1,4 @@
-package missions.room.Domain.Rooms;
+package missions.room.Domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,6 +8,7 @@ import javax.persistence.InheritanceType;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
+
     @Id
     protected String alias;
 

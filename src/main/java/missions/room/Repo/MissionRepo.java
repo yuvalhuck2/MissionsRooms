@@ -56,9 +56,6 @@ public class MissionRepo {
             }
             return new Response<>(mission, OpCode.Success);
         }
-        catch(LockTimeoutException e){
-            return new Response<>(null,OpCode.TimeOut);
-        }
         catch(Exception e){
             return new Response<>(null,OpCode.DB_Error);
         }
