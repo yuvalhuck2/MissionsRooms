@@ -2,8 +2,8 @@ package DomainMocks;
 
 import DataAPI.OpCode;
 import DataAPI.Response;
-import Domain.Mission;
-import Domain.Teacher;
+import missions.room.Domain.Mission;
+import missions.room.Domain.Teacher;
 
 public class TeacherMock extends Teacher {
 
@@ -11,8 +11,4 @@ public class TeacherMock extends Teacher {
       super(alias,fName,lName,password);
     }
 
-    @Override
-    public Response<Boolean> addMission(Mission mission) {
-        return new Response<>(true, OpCode.Success);
-    }
 }

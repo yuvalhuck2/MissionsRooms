@@ -2,7 +2,7 @@ package DomainMocks;
 
 import Data.Data;
 import Data.DataGenerator;
-import Domain.Ram;
+import missions.room.Domain.Ram;
 
 public class MockRam extends Ram {
 

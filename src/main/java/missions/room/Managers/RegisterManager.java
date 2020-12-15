@@ -1,7 +1,7 @@
 package missions.room.Managers;
 
 import DataAPI.*;
-import Domain.SchoolUser;
+import missions.room.Domain.SchoolUser;
 import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
 import ExternalSystems.VerificationCodeGenerator;
@@ -100,9 +100,6 @@ public class RegisterManager {
         }
         if(!Utils.checkString(details.getAlias())){
             return new Response<>(false,OpCode.Wrong_Alias);
-        }
-        if(details.getUserType()== UserType.IT){
-            return new Response<>(false,OpCode.Wrong_UserType);
         }
 
         return new Response<>(true,OpCode.Success);

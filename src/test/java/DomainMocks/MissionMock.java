@@ -1,7 +1,7 @@
 package DomainMocks;
 
 import DataAPI.OpCode;
-import Domain.Mission;
+import missions.room.Domain.Mission;
 
 public class MissionMock extends Mission {
     @Override
