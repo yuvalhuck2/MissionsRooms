@@ -33,15 +33,19 @@ public class ServiceAPI {
 //        return logicManager.registerCode(alias,code);
 //    }
 
-    /**
-     * req 2.3 -login
-     * @param alias - user alias
-     * @param password - user password
-     * @return API key if login succeeded
-     */
-    public Response<String> login (String alias, String password){
-        throw new NotImplementedException();
-    }
+
+
+
+//    /**
+//     * req 2.3 -login
+//     * @param alias - user alias
+//     * @param password - user password
+//     * @return API key if login succeeded
+//     */
+//    public Response<String> login (String alias, String password){
+//        throw new NotImplementedException();
+//    }
+
 
     /**
      * req 3.1 - watch rank Table details
@@ -257,15 +261,15 @@ public class ServiceAPI {
     }
 
 
-    /**
-     * req 4.5 - add mission
-     * @param auth - authentication object
-     * @param missionData - details of the mission
-     * @return if the mission was added successfully
-     */
-    public Response<Boolean> createMission(Auth auth, MissionData missionData){
-        throw new NotImplementedException();
-    }
+//    /**
+//     * req 4.5 - add mission
+//     * @param auth - authentication object
+//     * @param missionData - details of the mission
+//     * @return if the mission was added successfully
+//     */
+//    public Response<Boolean> createMission(Auth auth, MissionData missionData){
+//        throw new NotImplementedException();
+//    }
 
 
     /**

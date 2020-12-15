@@ -37,7 +37,7 @@ public class Controller1 {
 //        // @ResponseBody means the returned String is the response, not a view name
 //        // @RequestParam means it is a parameter from the GET or POST request
 //
-//        User n = new User();
+//        SchoolUser n = new SchoolUser();
 //        n.setName(name);
 //        n.setEmail(email);
 //        userRepository.save(n);
