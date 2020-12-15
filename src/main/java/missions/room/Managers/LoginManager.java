@@ -1,9 +1,10 @@
 package missions.room.Managers;
 
+import CrudRepositories.UserCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import missions.room.Domain.Ram;
-import missions.room.Domain.Rooms.User;
+import missions.room.Domain.User;
 import ExternalSystems.HashSystem;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;
@@ -25,6 +26,13 @@ public class LoginManager {
     public LoginManager(){
         this.ram=new Ram();
         hashSystem = new HashSystem();
+    }
+
+    //tests constructor
+    public LoginManager(UserCrudRepository userCrudRepo) {
+        this.userRepo = new UserRepo(userCrudRepo);
+        hashSystem = new HashSystem();
+        this.ram=new Ram();
     }
 
     /**

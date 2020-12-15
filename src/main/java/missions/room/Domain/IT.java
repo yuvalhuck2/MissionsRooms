@@ -1,30 +1,24 @@
 package missions.room.Domain;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 @Entity
-public class IT {
-    @Id
-    protected String id;
-    
-    protected String firstName;
-    protected String lastName;
+@Inheritance(strategy = InheritanceType.JOINED)
+public class IT extends User {
 
-    @Column(unique=true)
-    protected String phoneNumber;
+
 
 
     public IT() {
     }
 
 
-    public IT(String id, String firstName, String lastName, String phoneNumber) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
+    public IT( String alias,String password) {
+        super(alias,password);
+
     }
     
 }
