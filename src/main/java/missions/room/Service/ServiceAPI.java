@@ -225,10 +225,6 @@ public class ServiceAPI {
     }
 
     /**
-     * req 4.1 - create room
-     */
-
-    /**
      * req 4.2 - close missions room
      * @param auth - authentication object
      * @param roomId - the identifier of the room
