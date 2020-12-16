@@ -27,7 +27,7 @@ public abstract class Mission implements Serializable {
     }
 
     public OpCode validate(){
-        if(missionTypes.isEmpty()){
+        if(missionTypes==null|| missionTypes.isEmpty()||missionTypes.contains(null)){
             return OpCode.Wrong_Type;
         }
         return OpCode.Success;

@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 
 @Entity
 public class IT extends User {
+
     public IT() {
     }
 
