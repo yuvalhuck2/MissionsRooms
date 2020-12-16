@@ -1,4 +1,4 @@
-package Service;
+package missions.room.Service;
 
 import DataAPI.OpCode;
 import DataAPI.Response;
