@@ -8,13 +8,14 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 public class MockRoomTemplateSaveCrudRepository implements RoomTemplateCrudRepository {
+
     @Override
-    public Mission findMissionForWrite(String roomTemplateId) {
+    public RoomTemplate findTemplateForWrite(String roomTemplateId) {
         return null;
     }
 
     @Override
-    public Mission findMissionForRead(String roomTemplateId) {
+    public RoomTemplate findTemplateForRead(String roomTemplateId) {
         return null;
     }
 

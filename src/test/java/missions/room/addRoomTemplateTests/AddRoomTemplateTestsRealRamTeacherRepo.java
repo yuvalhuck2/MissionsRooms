@@ -6,6 +6,7 @@ import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
 import RepositoryMocks.RoomTemplateRepository.RoomTemplateCrudRepositoryMock;
 import missions.room.Domain.Ram;
 import missions.room.Managers.AddRoomTemplateManager;
+import missions.room.Managers.TeacherManager;
 import missions.room.Repo.MissionRepo;
 import missions.room.Repo.RoomTemplateRepo;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ public class AddRoomTemplateTestsRealRamTeacherRepo extends AddRoomTemplateTests
     @Override
     void setUpAddRoomTemplate() {
         try {
-            Field managerRam = AddRoomTemplateManager.class.getDeclaredField("ram");
+            Field managerRam = TeacherManager.class.getDeclaredField("ram");
             managerRam.setAccessible(true);
             ram=(Ram)managerRam.get(addRoomTemplateManager);
 

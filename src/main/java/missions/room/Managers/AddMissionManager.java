@@ -17,28 +17,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AddMissionManager {
+public class AddMissionManager extends TeacherManager {
 
-    private final Ram ram;
     private final Gson gson;
     private final String missionName="mis";
-
-    @Autowired
-    private TeacherRepo teacherRepo;
 
     @Autowired
     private MissionRepo missionRepo;
 
     public AddMissionManager() {
-        ram=new Ram();
+        super();
         GsonBuilder builderMission = new GsonBuilder();
         builderMission.registerTypeAdapter(Mission.class, new InterfaceAdapter());
         gson = builderMission.create();
     }
 
     public AddMissionManager(Ram ram, TeacherCrudRepository teacherCrudRepository, MissionCrudRepository missionCrudRepository) {
-        this.ram = ram;
-        teacherRepo=new TeacherRepo(teacherCrudRepository);
+        super(ram,teacherCrudRepository);
         missionRepo=new MissionRepo(missionCrudRepository);
         GsonBuilder builderMission = new GsonBuilder();
         builderMission.registerTypeAdapter(Mission.class, new InterfaceAdapter());
@@ -52,23 +47,15 @@ public class AddMissionManager {
      * @return if the mission was added successfully
      */
     public Response<Boolean> addMission(String apiKey, String missionData){
-        String alias=ram.getApi(apiKey);
-        if(alias==null){
-            return new Response<>(false, OpCode.Wrong_Key);
+        Response<Boolean> teacherResponse=checkTeacher(apiKey);
+        if(teacherResponse.getReason()!=OpCode.Success){
+            return teacherResponse;
         }
-
         Response<Mission> missionResponse=getMissionFromData(missionData);
         if(missionResponse.getReason()!=OpCode.Success){
             return new Response<>(false,missionResponse.getReason());
         }
-        Response<Teacher> teacherResponse=teacherRepo.findTeacherById(alias);
-        if(teacherResponse.getReason()!=OpCode.Success){
-            return new Response<>(false,teacherResponse.getReason());
-        }
-        Teacher teacher=teacherResponse.getValue();
-        if(teacher==null){//teacher repo not mock
-            return new Response<>(false,OpCode.Not_Exist);
-        }
+
         return addMission(missionResponse.getValue());
 
     }

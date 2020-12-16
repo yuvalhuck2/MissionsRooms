@@ -11,10 +11,8 @@ import Utils.Utils;
 import missions.room.Domain.Mission;
 import missions.room.Domain.Ram;
 import missions.room.Domain.RoomTemplate;
-import missions.room.Domain.Teacher;
 import missions.room.Repo.MissionRepo;
 import missions.room.Repo.RoomTemplateRepo;
-import missions.room.Repo.TeacherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,46 +20,32 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
-public class AddRoomTemplateManager {
+public class AddRoomTemplateManager extends TeacherManager{
 
     @Autowired
     private RoomTemplateRepo roomTemplateRepo;
 
     @Autowired
-    private TeacherRepo teacherRepo;
-
-    @Autowired
     private MissionRepo missionRepo;
 
-    private final Ram ram;
-
     public AddRoomTemplateManager() {
-        this.ram = new Ram();
+        super();
     }
 
     public AddRoomTemplateManager(Ram ram, TeacherCrudRepository teacherCrudRepository, MissionCrudRepository missionCrudRepository, RoomTemplateCrudRepository roomTemplateCrudRepository) {
-        this.ram=ram;
-        this.teacherRepo=new TeacherRepo(teacherCrudRepository);
+        super(ram,teacherCrudRepository);
         this.missionRepo=new MissionRepo(missionCrudRepository);
         this.roomTemplateRepo=new RoomTemplateRepo(roomTemplateCrudRepository);
     }
 
     public Response<Boolean> createRoomTemplate(String apiKey, RoomTemplateDetailsData details) {
-        String alias=ram.getApi(apiKey);
-        if(alias==null){
-            return new Response<>(false, OpCode.Wrong_Key);
+        Response<Boolean> checkTeacher=checkTeacher(apiKey);
+        if(checkTeacher.getReason()!=OpCode.Success){
+            return checkTeacher;
         }
         Response<RoomTemplate> templateResponse= validateDetails(details);
         if(templateResponse.getReason()!=OpCode.Success){
             return new Response<>(false,templateResponse.getReason());
-        }
-        Response<Teacher> teacherResponse=teacherRepo.findTeacherById(alias);
-        if(teacherResponse.getReason()!=OpCode.Success){
-            return new Response<>(false,teacherResponse.getReason());
-        }
-        Teacher teacher=teacherResponse.getValue();
-        if(teacher==null){//teacher repo not mock
-            return new Response<>(false,OpCode.Not_Exist);
         }
         return saveRoomTemplate(templateResponse.getValue());
     }
