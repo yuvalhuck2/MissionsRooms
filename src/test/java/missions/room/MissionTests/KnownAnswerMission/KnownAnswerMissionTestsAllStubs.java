@@ -4,11 +4,10 @@ import Data.Data;
 import Data.DataGenerator;
 import DataAPI.OpCode;
 import missions.room.Domain.Mission;
-import missions.room.Domain.missions.KnownAnswerMission;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class KnownAnswerMissionTestsAllStubs {
 
@@ -25,8 +24,18 @@ public class KnownAnswerMissionTestsAllStubs {
     }
 
     @Test
-    void testKnownAnswerMissionInvalidWrongType(){
-        checkMissionValidate(Data.WRONG_TYPE_DETERMINSIC, OpCode.Wrong_Type);
+    void testKnownAnswerMissionInvalidNullTypes(){
+        checkMissionValidate(Data.NULL_TYPES_DETERMINSIC, OpCode.Wrong_Type);
+    }
+
+    @Test
+    void testKnownAnswerMissionInvalidEmptyTypes(){
+        checkMissionValidate(Data.EMPTY_TYPE_DETERMINISTIC, OpCode.Wrong_Type);
+    }
+
+    @Test
+    void testKnownAnswerMissionInvalidTypesWithNull(){
+        checkMissionValidate(Data.TYPES_WITH_NULL_DETERMINISTIC, OpCode.Wrong_Type);
     }
 
     @Test

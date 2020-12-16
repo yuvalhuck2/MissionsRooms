@@ -1,19 +1,12 @@
 package RepositoryMocks.MissionRepository;
 
 import CrudRepositories.MissionCrudRepository;
-import Data.Data;
-import Data.DataGenerator;
 import missions.room.Domain.Mission;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
-public class MissionCrudRepositoryMock implements MissionCrudRepository {
-    private final DataGenerator dataGenerator;
-
-    public MissionCrudRepositoryMock(DataGenerator dataGenerator) {
-        this.dataGenerator=dataGenerator;
-    }
-
+public class MissionCrudRepositoryMockExeptionFindById implements MissionCrudRepository {
     @Override
     public Mission findMissionForWrite(String missionId) {
         return null;
@@ -26,7 +19,7 @@ public class MissionCrudRepositoryMock implements MissionCrudRepository {
 
     @Override
     public <S extends Mission> S save(S s) {
-        return (S) dataGenerator.getMission(Data.Valid_Deterministic);
+        return null;
     }
 
     @Override
@@ -36,7 +29,7 @@ public class MissionCrudRepositoryMock implements MissionCrudRepository {
 
     @Override
     public Optional<Mission> findById(String s) {
-        return Optional.ofNullable(dataGenerator.getMission(Data.Valid_Deterministic));
+        throw new EntityNotFoundException();
     }
 
     @Override

@@ -26,7 +26,7 @@ public class UniqueStringGenerator {
     }
 
     public static String getTimeNameCode(String toAdd){
-        return "a";//LocalDateTime.now().toString().replace(':','_').replace('-','_')+toAdd;
+        return LocalDateTime.now().toString().replace(':','_').replace('-','_')+toAdd;
     }
 
 }

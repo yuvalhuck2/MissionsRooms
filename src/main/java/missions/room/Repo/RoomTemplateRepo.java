@@ -15,6 +15,10 @@ public class RoomTemplateRepo {
     @Autowired
     private RoomTemplateCrudRepository roomTemplateCrudRepository;
 
+    public RoomTemplateRepo(RoomTemplateCrudRepository roomTemplateCrudRepository) {
+        this.roomTemplateCrudRepository=roomTemplateCrudRepository;
+    }
+
     public Response<RoomTemplate> findRoomTemplateById(String roomTemplateId){
         try{
             Optional<RoomTemplate> templateOptional= roomTemplateCrudRepository.findById(roomTemplateId);

@@ -15,7 +15,7 @@ import java.util.Optional;
 public class MissionRepo {
 
     @Autowired
-    private final MissionCrudRepository missionCrudRepository;
+    private MissionCrudRepository missionCrudRepository;
 
     public MissionRepo(MissionCrudRepository missionCrudRepository) {
         this.missionCrudRepository = missionCrudRepository;

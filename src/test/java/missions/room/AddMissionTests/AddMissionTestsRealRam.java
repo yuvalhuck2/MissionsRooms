@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AddMissionTestsRealRam extends AddKnownAnswerMissionTestsAllStubs {
+public class AddMissionTestsRealRam extends AddMissionTestsAllStubs {
 
     @Override
     void setUpMocks() {
