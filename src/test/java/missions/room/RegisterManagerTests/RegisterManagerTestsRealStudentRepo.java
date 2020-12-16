@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static org.junit.Assert.*;
 
 @SpringBootTest
-@TestPropertySource(locations = {"classpath:application-test.properties"})
+@TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
 public class RegisterManagerTestsRealStudentRepo extends RegisterManagerTestsAllStubs {
 
     //clear code to alias map before starting the tests

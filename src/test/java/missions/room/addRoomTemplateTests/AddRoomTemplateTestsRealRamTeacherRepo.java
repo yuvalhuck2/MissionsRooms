@@ -10,12 +10,14 @@ import missions.room.Repo.MissionRepo;
 import missions.room.Repo.RoomTemplateRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
+@TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
 public class AddRoomTemplateTestsRealRamTeacherRepo extends AddRoomTemplateTestsRealRam {
 
     @Override

@@ -12,10 +12,12 @@ import missions.room.Domain.missions.KnownAnswerMission;
 import missions.room.Managers.AddRoomTemplateManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.Assert.*;
 
 @SpringBootTest
+@TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
 public class AddRoomTemplateTestsRealRamTeacherRepoMissionRepoTemplateRepo extends AddRoomTemplateTestsRealRamTeacherRepoMissionRepo {
 
     @Autowired
