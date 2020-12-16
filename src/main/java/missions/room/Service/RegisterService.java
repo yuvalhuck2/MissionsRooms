@@ -1,7 +1,9 @@
-package Service;
+package missions.room.Service;
 
 import DataAPI.RegisterDetailsData;
 import DataAPI.Response;
+import ExternalSystems.MailSender;
+import ExternalSystems.VerificationCodeGenerator;
 import missions.room.Managers.RegisterManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +32,15 @@ public class RegisterService {
      */
     public Response<Boolean> registerCode (String alias, String code){
         return registerManager.registerCode(alias,code);
+    }
+
+    public void setExternalSystems(MailSender mailSender, VerificationCodeGenerator verificationCodeGenerator){
+        if (mailSender != null){
+            registerManager.setSender(mailSender);
+        }
+
+        if(verificationCodeGenerator != null){
+            registerManager.setVerificationCodeGenerator(verificationCodeGenerator);
+        }
     }
 }

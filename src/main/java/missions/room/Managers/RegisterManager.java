@@ -20,9 +20,9 @@ public class RegisterManager {
     @Autowired
     private SchoolUserRepo schoolUserRepo;
 
-    private final HashSystem hashSystem;
-    private final MailSender sender;
-    private final VerificationCodeGenerator verificationCodeGenerator;
+    private  HashSystem hashSystem;
+    private  MailSender sender;
+    private  VerificationCodeGenerator verificationCodeGenerator;
 
     //save verification codes and string for trace and clean old code
     private final ConcurrentHashMap<String, PasswordCodeAndTime> aliasToCode;
@@ -165,5 +165,17 @@ public class RegisterManager {
         }
         aliasToCode.remove(alias);
         return new Response<>(true,OpCode.Success);
+    }
+
+    public void setHashSystem(HashSystem hashSystem) {
+        this.hashSystem = hashSystem;
+    }
+
+    public void setSender(MailSender sender) {
+        this.sender = sender;
+    }
+
+    public void setVerificationCodeGenerator(VerificationCodeGenerator verificationCodeGenerator) {
+        this.verificationCodeGenerator = verificationCodeGenerator;
     }
 }
