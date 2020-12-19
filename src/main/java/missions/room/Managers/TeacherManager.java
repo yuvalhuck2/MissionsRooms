@@ -29,19 +29,19 @@ public abstract class TeacherManager {
         this.ram=ram;
     }
 
-    protected Response<Boolean> checkTeacher(String apiKey){
+    protected Response<Teacher> checkTeacher(String apiKey){
         String alias=ram.getApi(apiKey);
         if(alias==null){
-            return new Response<>(false, OpCode.Wrong_Key);
+            return new Response<>(null, OpCode.Wrong_Key);
         }
         Response<Teacher> teacherResponse=teacherRepo.findTeacherById(alias);
         if(teacherResponse.getReason()!= OpCode.Success){
-            return new Response<>(false,teacherResponse.getReason());
+            return new Response<>(null,teacherResponse.getReason());
         }
         Teacher teacher=teacherResponse.getValue();
         if(teacher==null){//teacher repo not mock
-            return new Response<>(false,OpCode.Not_Exist);
+            return new Response<>(null,OpCode.Not_Exist);
         }
-        return new Response<>(true,OpCode.Success);
+        return new Response<>(teacher,OpCode.Success);
     }
 }

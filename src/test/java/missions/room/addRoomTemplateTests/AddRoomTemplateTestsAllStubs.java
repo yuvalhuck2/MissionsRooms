@@ -136,6 +136,13 @@ public class AddRoomTemplateTestsAllStubs {
     }
 
     @Test
+    void testAddRoomTemplateInvalidNotMatchMissionType(){
+        setUpAddRoomTemplate();
+        checkWrongAddRoomTemplate(Data.TYPE_NOT_MATCH,OpCode.Type_Not_Match);
+        tearDownAddRoomTemplate();
+    }
+
+    @Test
     void testMissionInvalidExceptionTeacherCrudRepository(){
         setUpAddRoomTemplate();
         addRoomTemplateManager=new AddRoomTemplateManager(ram,new TeacherCrudRepositoryMockExceptionFindById(),missionCrudRepository,roomTemplateCrudRepository);

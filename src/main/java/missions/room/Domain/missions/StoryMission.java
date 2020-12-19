@@ -8,7 +8,7 @@ import javax.persistence.Transient;
 import java.util.Set;
 
 @Entity
-public class StoryMission extends Mission {
+public class StoryMission extends Mission{
 
     private int secondsForEachStudent;
 

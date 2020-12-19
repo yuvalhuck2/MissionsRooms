@@ -6,11 +6,13 @@ import CrudRepositories.TeacherCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import DataAPI.RoomTemplateDetailsData;
+import DataAPI.RoomType;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;
 import missions.room.Domain.Mission;
 import missions.room.Domain.Ram;
 import missions.room.Domain.RoomTemplate;
+import missions.room.Domain.Teacher;
 import missions.room.Repo.MissionRepo;
 import missions.room.Repo.RoomTemplateRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +41,9 @@ public class AddRoomTemplateManager extends TeacherManager{
     }
 
     public Response<Boolean> createRoomTemplate(String apiKey, RoomTemplateDetailsData details) {
-        Response<Boolean> checkTeacher=checkTeacher(apiKey);
+        Response<Teacher> checkTeacher=checkTeacher(apiKey);
         if(checkTeacher.getReason()!=OpCode.Success){
-            return checkTeacher;
+            return new Response<>(false,checkTeacher.getReason());
         }
         Response<RoomTemplate> templateResponse= validateDetails(details);
         if(templateResponse.getReason()!=OpCode.Success){
@@ -72,7 +74,7 @@ public class AddRoomTemplateManager extends TeacherManager{
             return new Response<>(null,OpCode.Wrong_Type);
         }
 
-        Response<HashMap<String,Mission>> missionsResponse=getMissions(details.getMissions());
+        Response<HashMap<String,Mission>> missionsResponse=getMissions(details.getMissions(),details.getType());
         if(missionsResponse.getReason()!=OpCode.Success){
             return new Response<>(null,missionsResponse.getReason());
         }
@@ -85,7 +87,7 @@ public class AddRoomTemplateManager extends TeacherManager{
         return new Response<>(new RoomTemplate(details,missionsResponse.getValue()),OpCode.Success);
     }
 
-    private Response<HashMap<String,Mission>> getMissions(List<String> missions) {
+    private Response<HashMap<String,Mission>> getMissions(List<String> missions, RoomType roomType) {
         HashMap<String,Mission> missionMap=new HashMap<>();
         if(missions==null||missions.isEmpty()){
             return new Response<>(null,OpCode.Wrong_List);
@@ -98,6 +100,9 @@ public class AddRoomTemplateManager extends TeacherManager{
             Mission mission=missionResponse.getValue();
             if(mission==null){
                 return new Response<>(null,OpCode.Not_Mission);
+            }
+            if(!mission.containType(roomType)){
+                return new Response<>(null,OpCode.Type_Not_Match);
             }
             missionMap.put(missionId,mission);
         }

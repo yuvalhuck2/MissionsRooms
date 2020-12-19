@@ -15,7 +15,6 @@ import javax.persistence.*;
 
 @Entity
 @Configurable
-//@EntityListeners(RepositoryAwareListener.class)
 public class Teacher extends SchoolUser {
 
     @ManyToOne
@@ -23,10 +22,6 @@ public class Teacher extends SchoolUser {
 
     @Enumerated(EnumType.ORDINAL)
     private GroupType groupType;
-
-    @Autowired
-    private transient MissionRepo missionRepo;
-
 
     public Teacher() {
     }
@@ -43,4 +38,15 @@ public class Teacher extends SchoolUser {
     }
 
 
+    public Student getStudent(String alias) {
+        return classroom.getStudent(alias,groupType);
+    }
+
+    public ClassGroup getGroup(String participantKey) {
+        return classroom.getGroup(participantKey);
+    }
+
+    public Classroom getClassroom() {
+        return classroom;
+    }
 }

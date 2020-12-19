@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginManager {
 
-
+//TODO merge into register manger
     @Autowired
     private UserRepo userRepo;
 

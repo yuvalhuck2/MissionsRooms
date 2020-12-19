@@ -44,4 +44,8 @@ public abstract class Mission implements Serializable {
     public Set<RoomType> getMissionTypes() {
         return missionTypes;
     }
+
+    public boolean containType(RoomType roomType){
+        return missionTypes.contains(roomType);
+    }
 }

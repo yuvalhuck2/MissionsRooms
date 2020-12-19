@@ -4,15 +4,14 @@ import CrudRepositories.MissionCrudRepository;
 import CrudRepositories.TeacherCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
-import missions.room.Domain.Mission;
-import missions.room.Domain.Ram;
-import missions.room.Domain.Teacher;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import missions.room.Domain.Mission;
+import missions.room.Domain.Ram;
+import missions.room.Domain.Teacher;
 import missions.room.Repo.MissionRepo;
-import missions.room.Repo.TeacherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,9 +46,9 @@ public class AddMissionManager extends TeacherManager {
      * @return if the mission was added successfully
      */
     public Response<Boolean> addMission(String apiKey, String missionData){
-        Response<Boolean> teacherResponse=checkTeacher(apiKey);
+        Response<Teacher> teacherResponse=checkTeacher(apiKey);
         if(teacherResponse.getReason()!=OpCode.Success){
-            return teacherResponse;
+            return new Response<>(false,teacherResponse.getReason());
         }
         Response<Mission> missionResponse=getMissionFromData(missionData);
         if(missionResponse.getReason()!=OpCode.Success){

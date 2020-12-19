@@ -9,12 +9,8 @@ public class ClassGroup {
     @Id
     private String groupName;
 
-    //one to one example
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name="CLASSROOM_ALIAS")
-//    @ManyToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
-//    //@JoinColumn(name="CLASSROOM_ALIAS")
-//    private Classroom classroom;
+    @Enumerated(EnumType.ORDINAL)
+    private GroupType groupType;
 
     @OneToMany(cascade = CascadeType.ALL)
     @MapKeyColumn(name = "alias")
@@ -27,5 +23,19 @@ public class ClassGroup {
     public ClassGroup(String id, Map<String, Student> students) {
         this.groupName=id;
         this.students = students;
+    }
+
+    public Student getStudent(String alias,GroupType groupType) {
+        if(this.groupType==groupType||groupType==GroupType.BOTH)
+            return students.get(alias);
+        return null;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public GroupType getGroupType() {
+        return groupType;
     }
 }

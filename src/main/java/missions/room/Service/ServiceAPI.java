@@ -146,7 +146,7 @@ public class ServiceAPI {
      * @param falseSentence - incorrect sentence about the student
      * @return if the sentences were added to the mission
      */
-    public Response<Boolean> answerTrueLieQuestion(Auth auth, String roomId,String trueSentence, String falseSentence){
+    public Response<Boolean> fillTrueLieSentences(Auth auth, String roomId, String trueSentence, String falseSentence){
         throw new NotImplementedException();
     }
 
@@ -155,11 +155,11 @@ public class ServiceAPI {
      * req 3.6.2.4.2 - answer true lie sentence
      * @param auth - authentication object
      * @param roomId - room id
-     * @param mail - th mail of the
+     * @param otherAlias - the alias of the other student
      * @param trueAnswer - true if the sentence the student think the first sentence is correct
      * @return if the answer was correct
      */
-    public Response<Boolean> answerTrueLieQuestion(Auth auth, String roomId,String mail, boolean trueAnswer){
+    public Response<Boolean> answerTrueLieMission(Auth auth, String roomId, String otherAlias, int trueAnswer){
         throw new NotImplementedException();
     }
 

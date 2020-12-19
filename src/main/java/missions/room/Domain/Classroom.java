@@ -26,4 +26,28 @@ public class Classroom{
         this.classGroups.add(classGroupA);
         this.classGroups.add(classGroupB);
     }
+
+    public Student getStudent(String alias,GroupType groupType) {
+        Student student=null;
+        for(ClassGroup classGroup: classGroups){
+            student=classGroup.getStudent(alias,groupType);
+            if(student!=null){
+                break;
+            }
+        }
+        return student;
+    }
+
+    public ClassGroup getGroup(String participantKey) {
+        for(ClassGroup classGroup: classGroups){
+            if(classGroup.getGroupName().equals(participantKey)){
+                return classGroup;
+            }
+        }
+        return null;
+    }
+
+    public String getClassName() {
+        return className;
+    }
 }
