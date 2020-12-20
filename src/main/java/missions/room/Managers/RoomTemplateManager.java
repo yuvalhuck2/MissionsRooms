@@ -19,11 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
-public class AddRoomTemplateManager extends TeacherManager{
+public class RoomTemplateManager extends TeacherManager{
 
     @Autowired
     private RoomTemplateRepo roomTemplateRepo;
@@ -31,11 +30,11 @@ public class AddRoomTemplateManager extends TeacherManager{
     @Autowired
     private MissionRepo missionRepo;
 
-    public AddRoomTemplateManager() {
+    public RoomTemplateManager() {
         super();
     }
 
-    public AddRoomTemplateManager(Ram ram, TeacherCrudRepository teacherCrudRepository, MissionCrudRepository missionCrudRepository, RoomTemplateCrudRepository roomTemplateCrudRepository) {
+    public RoomTemplateManager(Ram ram, TeacherCrudRepository teacherCrudRepository, MissionCrudRepository missionCrudRepository, RoomTemplateCrudRepository roomTemplateCrudRepository) {
         super(ram,teacherCrudRepository);
         this.missionRepo=new MissionRepo(missionCrudRepository);
         this.roomTemplateRepo=new RoomTemplateRepo(roomTemplateCrudRepository);

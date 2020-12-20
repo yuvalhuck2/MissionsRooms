@@ -1,4 +1,4 @@
-package missions.room.AddMissionTests;
+package missions.room.MissionManagerTests;
 
 import Data.Data;
 import DataAPI.OpCode;
@@ -6,13 +6,12 @@ import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
 import missions.room.Domain.Mission;
 import missions.room.Domain.Ram;
-import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMockTeacherMock;
-import missions.room.Managers.AddMissionManager;
+import missions.room.Managers.MissionManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AddMissionTestsRealRamMission extends AddMissionTestsRealRam {
+public class MissionTestsRealRamMissionManager extends MissionManagerTestsRealRam {
 
     @Override
     void setUpMocks() {
@@ -20,7 +19,7 @@ public class AddMissionTestsRealRamMission extends AddMissionTestsRealRam {
         missionCrudRepository=new MissionCrudRepositoryMock(dataGenerator);
         ram=new Ram();
         missionString=gson.toJson(dataGenerator.getMission(Data.Valid_Deterministic), Mission.class);
-        addMissionManager=new AddMissionManager(ram,teacherCrudRepository,missionCrudRepository);
+        missionManager =new MissionManager(ram,teacherCrudRepository,missionCrudRepository);
     }
 
     @Test

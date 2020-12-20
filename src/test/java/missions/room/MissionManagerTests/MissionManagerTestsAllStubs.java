@@ -1,4 +1,4 @@
-package missions.room.AddMissionTests;
+package missions.room.MissionManagerTests;
 
 import CrudRepositories.MissionCrudRepository;
 import CrudRepositories.TeacherCrudRepository;
@@ -17,7 +17,7 @@ import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMockExceptionFindB
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import missions.room.Managers.AddMissionManager;
+import missions.room.Managers.MissionManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import static org.junit.Assert.*;
 
 @Service
-public class AddMissionTestsAllStubs {
+public class MissionManagerTestsAllStubs {
 
     @Autowired
     protected TeacherCrudRepository teacherCrudRepository;
@@ -35,7 +35,7 @@ public class AddMissionTestsAllStubs {
     protected MissionCrudRepository missionCrudRepository;
 
     @Autowired
-    protected AddMissionManager addMissionManager;
+    protected MissionManager missionManager;
 
     protected DataGenerator dataGenerator;
 
@@ -62,7 +62,7 @@ public class AddMissionTestsAllStubs {
         missionCrudRepository=new MissionCrudRepositoryMock(dataGenerator);
         ram=new MockRam(dataGenerator);
         missionString=gson.toJson(new MissionMock(),Mission.class);
-        addMissionManager=new AddMissionManager(ram,teacherCrudRepository,missionCrudRepository);
+        missionManager =new MissionManager(ram,teacherCrudRepository,missionCrudRepository);
     }
 
     void setUpAddMission(){
@@ -79,7 +79,7 @@ public class AddMissionTestsAllStubs {
     }
 
     protected void testAddMissionValidTest() {
-        Response<Boolean> response= addMissionManager.addMission(apiKey,missionString);
+        Response<Boolean> response= missionManager.addMission(apiKey,missionString);
         assertTrue(response.getValue());
         assertEquals(response.getReason(), OpCode.Success);
     }
@@ -103,7 +103,7 @@ public class AddMissionTestsAllStubs {
     @Test
     void testMissionInvalidExceptionTeacherCrudRepository(){
         setUpAddMission();
-        addMissionManager=new AddMissionManager(ram,new TeacherCrudRepositoryMockExceptionFindById(),missionCrudRepository);
+        missionManager =new MissionManager(ram,new TeacherCrudRepositoryMockExceptionFindById(),missionCrudRepository);
         checkWrongAddMission(OpCode.DB_Error);
         tearDownAddMission();
     }
@@ -112,7 +112,7 @@ public class AddMissionTestsAllStubs {
     void testMissionInvalidExceptionMissionCrudRepository(){
         setUpAddMission();
         missionCrudRepository=new MissionCrudRepositoryMockExeptionSave();
-        addMissionManager=new AddMissionManager(ram,teacherCrudRepository,missionCrudRepository);
+        missionManager =new MissionManager(ram,teacherCrudRepository,missionCrudRepository);
         checkWrongAddMission(OpCode.DB_Error);
         tearDownAddMission();
     }
@@ -120,7 +120,7 @@ public class AddMissionTestsAllStubs {
 
 
     protected void checkWrongAddMission(OpCode opCode) {
-        Response<Boolean> response= addMissionManager.addMission(apiKey,missionString);
+        Response<Boolean> response= missionManager.addMission(apiKey,missionString);
         assertFalse(response.getValue());
         assertEquals(response.getReason(), opCode);
     }

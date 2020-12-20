@@ -7,6 +7,7 @@ import missions.room.Domain.Teacher;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 public class ClassroomRoom extends Room {
@@ -17,6 +18,7 @@ public class ClassroomRoom extends Room {
     public ClassroomRoom() {
     }
 
+    //TODO implement
     @Override
     protected String drawMissionInCharge() {
         return null;

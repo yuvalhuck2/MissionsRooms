@@ -9,7 +9,7 @@ import missions.room.Domain.Student;
 import ExternalSystemMocks.MailSenderTrueMock;
 import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
-import missions.room.Managers.RegisterManager;
+import missions.room.Managers.UserAuthenticationManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 
 @SpringBootTest
 @TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
-public class RegisterManagerTestsRealStudentRepo extends RegisterManagerTestsAllStubs {
+public class UserAuthenticationManagerTestsRealStudentRepo extends UserAuthenticationManagerTestsAllStubs {
 
     //clear code to alias map before starting the tests
     @BeforeEach
@@ -30,13 +30,13 @@ public class RegisterManagerTestsRealStudentRepo extends RegisterManagerTestsAll
         super.setUp();
         Field aliasToCode= null;
         try {
-            aliasToCode = RegisterManager.class.getDeclaredField("aliasToCode");
+            aliasToCode = UserAuthenticationManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
-            ((ConcurrentHashMap)aliasToCode.get(registerManager)).clear();
+            ((ConcurrentHashMap)aliasToCode.get(userAuthenticationManager)).clear();
             MailSender mailSender=new MailSenderTrueMock();
-            Field logicMailSender=RegisterManager.class.getDeclaredField("sender");
+            Field logicMailSender= UserAuthenticationManager.class.getDeclaredField("sender");
             logicMailSender.setAccessible(true);
-            logicMailSender.set(registerManager,mailSender);
+            logicMailSender.set(userAuthenticationManager,mailSender);
         } catch (NoSuchFieldException | IllegalAccessException e) {
            fail();
         }
@@ -58,8 +58,8 @@ public class RegisterManagerTestsRealStudentRepo extends RegisterManagerTestsAll
     void testRegisterInvalidAlreadyRegisteredStudent(){
         registerCodeSetUp();
         RegisterDetailsData detailsData=dataGenerator.getRegisterDetails(Data.VALID);
-        registerManager.registerCode(detailsData.getAlias(),dataGenerator.getVerificationCode(Data.VALID));
-        Response<Boolean> response= registerManager.register(detailsData);
+        userAuthenticationManager.registerCode(detailsData.getAlias(),dataGenerator.getVerificationCode(Data.VALID));
+        Response<Boolean> response= userAuthenticationManager.register(detailsData);
         assertFalse(response.getValue());
         assertEquals(response.getReason(), OpCode.Already_Exist);
         registerCodeTearDown();
@@ -78,9 +78,9 @@ public class RegisterManagerTestsRealStudentRepo extends RegisterManagerTestsAll
         assertEquals(userRepository.findById(valid.getAlias()).get().getPassword(),
                 hashSystem.encrypt(valid.getPassword()));
         try {
-            Field aliasToCode = RegisterManager.class.getDeclaredField("aliasToCode");
+            Field aliasToCode = UserAuthenticationManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
-            assertTrue(((ConcurrentHashMap)aliasToCode.get(registerManager)).isEmpty());
+            assertTrue(((ConcurrentHashMap)aliasToCode.get(userAuthenticationManager)).isEmpty());
         } catch (NoSuchFieldException | IllegalAccessException e) {
             fail();
         }
@@ -93,9 +93,9 @@ public class RegisterManagerTestsRealStudentRepo extends RegisterManagerTestsAll
         Student valid=dataGenerator.getStudent(Data.VALID);
         assertNull(userRepository.findById(valid.getAlias()).get().getPassword());
         try {
-            Field aliasToCode = RegisterManager.class.getDeclaredField("aliasToCode");
+            Field aliasToCode = UserAuthenticationManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
-            assertTrue(((ConcurrentHashMap)aliasToCode.get(registerManager)).containsKey(valid.getAlias()));
+            assertTrue(((ConcurrentHashMap)aliasToCode.get(userAuthenticationManager)).containsKey(valid.getAlias()));
         } catch (NoSuchFieldException | IllegalAccessException e) {
             fail();
         }
@@ -109,9 +109,9 @@ public class RegisterManagerTestsRealStudentRepo extends RegisterManagerTestsAll
         //super because he has to me removed from aliasToCode
         super.checkWrongRegisterCode(Data.VALID,Data.VALID,OpCode.Not_Exist);
         try {
-            Field aliasToCode = RegisterManager.class.getDeclaredField("aliasToCode");
+            Field aliasToCode = UserAuthenticationManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
-            assertTrue(((ConcurrentHashMap)aliasToCode.get(registerManager)).isEmpty());
+            assertTrue(((ConcurrentHashMap)aliasToCode.get(userAuthenticationManager)).isEmpty());
         } catch (NoSuchFieldException | IllegalAccessException e) {
             fail();
         }
@@ -123,13 +123,13 @@ public class RegisterManagerTestsRealStudentRepo extends RegisterManagerTestsAll
         registerCodeSetUp();
         String code=dataGenerator.getVerificationCode(Data.VALID);
         String alias=dataGenerator.getStudent(Data.VALID).getAlias();
-        registerManager.registerCode(alias,code);
+        userAuthenticationManager.registerCode(alias,code);
         //inject alias with password code
         try {
-            Field aliasToCode = RegisterManager.class.getDeclaredField("aliasToCode");
+            Field aliasToCode = UserAuthenticationManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
             ((ConcurrentHashMap<String, PasswordCodeAndTime>)aliasToCode.
-                    get(registerManager)).put(alias,new PasswordCodeAndTime(code,code));
+                    get(userAuthenticationManager)).put(alias,new PasswordCodeAndTime(code,code));
         } catch (IllegalAccessException | NoSuchFieldException e) {
             fail();
         }

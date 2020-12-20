@@ -2,15 +2,15 @@ package missions.room.Service;
 
 import DataAPI.Auth;
 import DataAPI.Response;
-import missions.room.Managers.AddMissionManager;
+import missions.room.Managers.MissionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AddMissionService {
+public class MissionService {
 
     @Autowired
-    private AddMissionManager addMissionManager;
+    private MissionManager missionManager;
 
     /**
      * req 4.5 - add mission
@@ -19,7 +19,7 @@ public class AddMissionService {
      * @return if the mission was added successfully
      */
     public Response<Boolean> createMission(Auth auth, String missionData){
-        return addMissionManager.addMission(auth.getApiKey(),missionData);
+        return missionManager.addMission(auth.getApiKey(),missionData);
 
     }
 

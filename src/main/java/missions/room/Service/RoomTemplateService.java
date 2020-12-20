@@ -3,16 +3,15 @@ package missions.room.Service;
 import DataAPI.Auth;
 import DataAPI.Response;
 import DataAPI.RoomTemplateDetailsData;
-import missions.room.Managers.AddRoomTemplateManager;
+import missions.room.Managers.RoomTemplateManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 @Service
-public class AddRoomTemplateService {
+public class RoomTemplateService {
 
     @Autowired
-    private AddRoomTemplateManager addRoomTemplateManager;
+    private RoomTemplateManager roomTemplateManager;
 
     /**
      * req 4.4 - add room template
@@ -21,7 +20,7 @@ public class AddRoomTemplateService {
      * @return if the template was added successfully
      */
     public Response<Boolean> createRoomTemplate(Auth auth, RoomTemplateDetailsData details){
-        return addRoomTemplateManager.createRoomTemplate(auth.getApiKey(),details);
+        return roomTemplateManager.createRoomTemplate(auth.getApiKey(),details);
     }
 
 }

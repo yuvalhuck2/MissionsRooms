@@ -3,7 +3,6 @@ package missions.room.Repo;
 import CrudRepositories.RoomCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
-import missions.room.Domain.Classroom;
 import missions.room.Domain.Room;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;

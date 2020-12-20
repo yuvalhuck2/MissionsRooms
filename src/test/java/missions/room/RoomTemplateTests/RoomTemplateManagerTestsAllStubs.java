@@ -1,4 +1,4 @@
-package missions.room.addRoomTemplateTests;
+package missions.room.RoomTemplateTests;
 
 import CrudRepositories.MissionCrudRepository;
 import CrudRepositories.RoomTemplateCrudRepository;
@@ -18,7 +18,7 @@ import Utils.InterfaceAdapter;
 import com.google.gson.GsonBuilder;
 import missions.room.Domain.Mission;
 import missions.room.Domain.Ram;
-import missions.room.Managers.AddRoomTemplateManager;
+import missions.room.Managers.RoomTemplateManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 import static org.junit.Assert.*;
 
 @Service
-public class AddRoomTemplateTestsAllStubs {
+public class RoomTemplateManagerTestsAllStubs {
 
     @Autowired
     protected TeacherCrudRepository teacherCrudRepository;
@@ -39,7 +39,7 @@ public class AddRoomTemplateTestsAllStubs {
     protected RoomTemplateCrudRepository roomTemplateCrudRepository;
 
     @Autowired
-    protected AddRoomTemplateManager addRoomTemplateManager;
+    protected RoomTemplateManager roomTemplateManager;
 
     protected DataGenerator dataGenerator;
 
@@ -62,7 +62,7 @@ public class AddRoomTemplateTestsAllStubs {
         missionCrudRepository=new MissionCrudRepositoryMock(dataGenerator);
         roomTemplateCrudRepository=new RoomTemplateCrudRepositoryMock(dataGenerator);
         ram=new MockRam(dataGenerator);
-        addRoomTemplateManager=new AddRoomTemplateManager(ram,teacherCrudRepository,missionCrudRepository,roomTemplateCrudRepository);
+        roomTemplateManager =new RoomTemplateManager(ram,teacherCrudRepository,missionCrudRepository,roomTemplateCrudRepository);
     }
 
     void setUpAddRoomTemplate(){
@@ -81,7 +81,7 @@ public class AddRoomTemplateTestsAllStubs {
     }
 
     protected void testAddRoomTemplateValidTest(){
-        Response<Boolean> response=addRoomTemplateManager.createRoomTemplate(apiKey,dataGenerator.getRoomTemplateData(Data.VALID));
+        Response<Boolean> response= roomTemplateManager.createRoomTemplate(apiKey,dataGenerator.getRoomTemplateData(Data.VALID));
         assertTrue(response.getValue());
         assertEquals(response.getReason(), OpCode.Success);
     }
@@ -145,7 +145,7 @@ public class AddRoomTemplateTestsAllStubs {
     @Test
     void testMissionInvalidExceptionTeacherCrudRepository(){
         setUpAddRoomTemplate();
-        addRoomTemplateManager=new AddRoomTemplateManager(ram,new TeacherCrudRepositoryMockExceptionFindById(),missionCrudRepository,roomTemplateCrudRepository);
+        roomTemplateManager =new RoomTemplateManager(ram,new TeacherCrudRepositoryMockExceptionFindById(),missionCrudRepository,roomTemplateCrudRepository);
         checkWrongAddRoomTemplate(Data.VALID,OpCode.DB_Error);
         tearDownAddRoomTemplate();
     }
@@ -154,7 +154,7 @@ public class AddRoomTemplateTestsAllStubs {
     void testMissionInvalidExceptionMissionCrudRepository(){
         setUpAddRoomTemplate();
         missionCrudRepository=new MissionCrudRepositoryMockExeptionFindById();
-        addRoomTemplateManager=new AddRoomTemplateManager(ram,teacherCrudRepository,missionCrudRepository,roomTemplateCrudRepository);
+        roomTemplateManager =new RoomTemplateManager(ram,teacherCrudRepository,missionCrudRepository,roomTemplateCrudRepository);
         checkWrongAddRoomTemplate(Data.VALID,OpCode.DB_Error);
         tearDownAddRoomTemplate();
     }
@@ -163,13 +163,13 @@ public class AddRoomTemplateTestsAllStubs {
     void testMissionInvalidExceptionRoomTemplateSaveCrudRepository(){
         setUpAddRoomTemplate();
         roomTemplateCrudRepository=new MockRoomTemplateSaveCrudRepository();
-        addRoomTemplateManager=new AddRoomTemplateManager(ram,teacherCrudRepository,missionCrudRepository,roomTemplateCrudRepository);
+        roomTemplateManager =new RoomTemplateManager(ram,teacherCrudRepository,missionCrudRepository,roomTemplateCrudRepository);
         checkWrongAddRoomTemplate(Data.VALID,OpCode.DB_Error);
         tearDownAddRoomTemplate();
     }
 
     protected void checkWrongAddRoomTemplate(Data data,OpCode opCode){
-        Response<Boolean> response=addRoomTemplateManager.createRoomTemplate(apiKey,dataGenerator.getRoomTemplateData(data));
+        Response<Boolean> response= roomTemplateManager.createRoomTemplate(apiKey,dataGenerator.getRoomTemplateData(data));
         assertFalse(response.getValue());
         assertEquals(response.getReason(), opCode);
     }

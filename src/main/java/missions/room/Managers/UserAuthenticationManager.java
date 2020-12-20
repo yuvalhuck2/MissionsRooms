@@ -1,13 +1,17 @@
 package missions.room.Managers;
 
 import DataAPI.*;
+import ExternalSystems.UniqueStringGenerator;
+import missions.room.Domain.Ram;
 import missions.room.Domain.SchoolUser;
 import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
 import ExternalSystems.VerificationCodeGenerator;
 import CrudRepositories.SchoolUserCrudRepository;
+import missions.room.Domain.User;
 import missions.room.Repo.SchoolUserRepo;
 import Utils.Utils;
+import missions.room.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,32 +19,38 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
-public class RegisterManager {
+public class UserAuthenticationManager {
 
     @Autowired
     private SchoolUserRepo schoolUserRepo;
 
+    @Autowired
+    private UserRepo userRepo;
+
     private  HashSystem hashSystem;
     private  MailSender sender;
     private  VerificationCodeGenerator verificationCodeGenerator;
+    private  Ram ram;
 
     //save verification codes and string for trace and clean old code
     private final ConcurrentHashMap<String, PasswordCodeAndTime> aliasToCode;
 
     //tests constructor
-    public RegisterManager(SchoolUserCrudRepository userCrudRepo, MailSender sender) {
+    public UserAuthenticationManager(SchoolUserCrudRepository userCrudRepo, MailSender sender) {
         this.schoolUserRepo = new SchoolUserRepo(userCrudRepo);
         hashSystem = new HashSystem();
         this.sender = sender;
         aliasToCode=new ConcurrentHashMap<>();
         verificationCodeGenerator = new VerificationCodeGenerator();
+        this.ram=new Ram();
     }
 
-    public RegisterManager() {
+    public UserAuthenticationManager() {
         hashSystem=new HashSystem();
         sender=new MailSender();
         aliasToCode=new ConcurrentHashMap<>();
         verificationCodeGenerator = new VerificationCodeGenerator();
+        this.ram=new Ram();
     }
 
     /**
@@ -167,6 +177,37 @@ public class RegisterManager {
         return new Response<>(true,OpCode.Success);
     }
 
+    /**
+     * req 2.3 -login
+     * @param alias - user alias
+     * @param password - user password
+     * @return API key if login succeeded
+     */
+    public Response<String> login (String alias, String password){
+        if(!Utils.checkString(password)){
+            return new Response<>(null,OpCode.Wrong_Password);
+        }
+        if(!Utils.checkString(alias)){
+            return new Response<>(null,OpCode.Wrong_Alias);
+        }
+        Response<User> rsp= userRepo.findUserForRead(alias);
+        if (rsp.getReason()!=OpCode.Success){
+            return new Response<>(null, rsp.getReason());
+        }
+        User user =rsp.getValue();
+        if (user ==null){
+            return new Response<>(null, OpCode.Not_Exist);
+        }
+        String api= UniqueStringGenerator.getUniqueCode(alias);
+        if(user.getPassword().equals(hashSystem.encrypt(password))){
+            this.ram.addApi(api,alias);
+            return new Response<>(api,OpCode.Success);
+        }
+        else{
+            return new Response<>(null,OpCode.Wrong_Password);
+        }
+    }
+
     public void setHashSystem(HashSystem hashSystem) {
         this.hashSystem = hashSystem;
     }
@@ -177,5 +218,9 @@ public class RegisterManager {
 
     public void setVerificationCodeGenerator(VerificationCodeGenerator verificationCodeGenerator) {
         this.verificationCodeGenerator = verificationCodeGenerator;
+    }
+
+    public void setRam(Ram ram) {
+        this.ram = ram;
     }
 }

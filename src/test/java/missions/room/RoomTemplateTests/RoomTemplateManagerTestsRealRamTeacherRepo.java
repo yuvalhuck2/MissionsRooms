@@ -1,14 +1,12 @@
-package missions.room.addRoomTemplateTests;
+package missions.room.RoomTemplateTests;
 
 import Data.Data;
 import DataAPI.OpCode;
 import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
 import RepositoryMocks.RoomTemplateRepository.RoomTemplateCrudRepositoryMock;
 import missions.room.Domain.Ram;
-import missions.room.Managers.AddRoomTemplateManager;
+import missions.room.Managers.RoomTemplateManager;
 import missions.room.Managers.TeacherManager;
-import missions.room.Repo.MissionRepo;
-import missions.room.Repo.RoomTemplateRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -19,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
 @TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
-public class AddRoomTemplateTestsRealRamTeacherRepo extends AddRoomTemplateTestsRealRam {
+public class RoomTemplateManagerTestsRealRamTeacherRepo extends RoomTemplateManagerTestsRealRam {
 
     @Override
     void setUpMocks(){
         missionCrudRepository=new MissionCrudRepositoryMock(dataGenerator);
         roomTemplateCrudRepository=new RoomTemplateCrudRepositoryMock(dataGenerator);
-        addRoomTemplateManager=new AddRoomTemplateManager(ram,teacherCrudRepository,missionCrudRepository,roomTemplateCrudRepository);
+        roomTemplateManager =new RoomTemplateManager(ram,teacherCrudRepository,missionCrudRepository,roomTemplateCrudRepository);
     }
 
     @Override
@@ -33,7 +31,7 @@ public class AddRoomTemplateTestsRealRamTeacherRepo extends AddRoomTemplateTests
         try {
             Field managerRam = TeacherManager.class.getDeclaredField("ram");
             managerRam.setAccessible(true);
-            ram=(Ram)managerRam.get(addRoomTemplateManager);
+            ram=(Ram)managerRam.get(roomTemplateManager);
 
         } catch (IllegalAccessException | NoSuchFieldException e) {
             fail();

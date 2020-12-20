@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class AddRoomManager extends TeacherManager {
+public class RoomManager extends TeacherManager {
 
     @Autowired
     private RoomRepo roomRepo;
@@ -26,11 +26,11 @@ public class AddRoomManager extends TeacherManager {
     @Autowired
     private RoomTemplateRepo roomTemplateRepo;
 
-    public AddRoomManager() {
+    public RoomManager() {
         super();
     }
 
-    public AddRoomManager(Ram ram, TeacherCrudRepository teacherCrudRepository, RoomCrudRepository roomCrudRepository, RoomTemplateCrudRepository roomTemplateCrudRepository) {
+    public RoomManager(Ram ram, TeacherCrudRepository teacherCrudRepository, RoomCrudRepository roomCrudRepository, RoomTemplateCrudRepository roomTemplateCrudRepository) {
         super(ram, teacherCrudRepository);
         this.roomRepo = new RoomRepo(roomCrudRepository);
         this.roomTemplateRepo=new RoomTemplateRepo(roomTemplateCrudRepository);

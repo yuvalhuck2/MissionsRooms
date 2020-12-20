@@ -3,7 +3,6 @@ package missions.room.AcceptanceTests.AcceptanceTests;
 import missions.room.AcceptanceTests.AcceptanceTestDataObjects.RegisterDetailsTest;
 import missions.room.AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import missions.room.AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsProxyBridge;
-import missions.room.Managers.RegisterManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

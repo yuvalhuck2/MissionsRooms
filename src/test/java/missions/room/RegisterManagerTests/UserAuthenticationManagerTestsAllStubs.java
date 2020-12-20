@@ -8,7 +8,7 @@ import DataAPI.RegisterDetailsData;
 import DataAPI.Response;
 import CrudRepositories.SchoolUserCrudRepository;
 import RepositoryMocks.SchoolUserRepositry.*;
-import missions.room.Managers.RegisterManager;
+import missions.room.Managers.UserAuthenticationManager;
 import ExternalSystemMocks.MailSenderFalseMock;
 import ExternalSystemMocks.MailSenderTrueMock;
 import ExternalSystems.MailSender;
@@ -26,13 +26,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 
 @Service
-public class RegisterManagerTestsAllStubs {
+public class UserAuthenticationManagerTestsAllStubs {
 
     @Autowired
     protected SchoolUserCrudRepository userRepository;
 
     @Autowired
-    protected RegisterManager registerManager;
+    protected UserAuthenticationManager userAuthenticationManager;
 
     protected DataGenerator dataGenerator;
 
@@ -47,7 +47,7 @@ public class RegisterManagerTestsAllStubs {
     void setUpMocks(){
         MailSender mailSender=new MailSenderTrueMock();
         userRepository =new SchoolUserRepositoryMock(dataGenerator);
-        registerManager =new RegisterManager(userRepository,mailSender);
+        userAuthenticationManager =new UserAuthenticationManager(userRepository,mailSender);
     }
 
     void registerSetUp(){
@@ -59,17 +59,17 @@ public class RegisterManagerTestsAllStubs {
     void registerCodeSetUp(){
         registerSetUp();
         RegisterDetailsData validDetails=dataGenerator.getRegisterDetails(Data.VALID);
-        Response<Boolean> r= registerManager.register(validDetails);
+        Response<Boolean> r= userAuthenticationManager.register(validDetails);
         if(!r.getValue()){
             System.out.println(r.getReason());
             fail();
         }
         String code=null;
         try {
-            Field aliasToCode = RegisterManager.class.getDeclaredField("aliasToCode");
+            Field aliasToCode = UserAuthenticationManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
             code=(((ConcurrentHashMap<String, PasswordCodeAndTime>)aliasToCode.
-                    get(registerManager)).get(validDetails.getAlias())).getCode();
+                    get(userAuthenticationManager)).get(validDetails.getAlias())).getCode();
         } catch (IllegalAccessException | NoSuchFieldException e) {
             fail();
         }
@@ -90,14 +90,14 @@ public class RegisterManagerTestsAllStubs {
     }
 
     protected void testRegisterValidTest(){
-        Response<Boolean> response= registerManager.register(dataGenerator.getRegisterDetails(Data.VALID));
+        Response<Boolean> response= userAuthenticationManager.register(dataGenerator.getRegisterDetails(Data.VALID));
         assertTrue(response.getValue());
         assertEquals(response.getReason(), OpCode.Success);
         //check containing verification code
         try {
-            Field aliasToCode=RegisterManager.class.getDeclaredField("aliasToCode");
+            Field aliasToCode= UserAuthenticationManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
-            assertTrue(((ConcurrentHashMap)aliasToCode.get(registerManager)).containsKey(dataGenerator.getStudent(Data.VALID).getAlias()));
+            assertTrue(((ConcurrentHashMap)aliasToCode.get(userAuthenticationManager)).containsKey(dataGenerator.getStudent(Data.VALID).getAlias()));
         } catch (NoSuchFieldException | IllegalAccessException e) {
             fail();
         }
@@ -137,7 +137,7 @@ public class RegisterManagerTestsAllStubs {
         registerSetUp();
         MailSender mailSender=new MailSenderFalseMock();
         userRepository =new SchoolUserRepositoryMock(dataGenerator);
-        registerManager =new RegisterManager(userRepository,mailSender);
+        userAuthenticationManager =new UserAuthenticationManager(userRepository,mailSender);
         checkWrongRegister(Data.VALID,OpCode.Mail_Error);
         registerTearDown();
     }
@@ -147,7 +147,7 @@ public class RegisterManagerTestsAllStubs {
         registerSetUp();
         //set up exception mock
         MailSender mailSender=new MailSenderTrueMock();
-        registerManager =new RegisterManager(new SchoolUserRepositoryMockExceptionFindRead(dataGenerator),mailSender);
+        userAuthenticationManager =new UserAuthenticationManager(new SchoolUserRepositoryMockExceptionFindRead(dataGenerator),mailSender);
         checkWrongRegister(Data.VALID,OpCode.DB_Error);
         registerCodeTearDown();
     }
@@ -157,21 +157,21 @@ public class RegisterManagerTestsAllStubs {
         registerSetUp();
         //set up exception mock
         MailSender mailSender=new MailSenderTrueMock();
-        registerManager =new RegisterManager(new SchoolUserRepositoryMockLockExceptionFindRead(dataGenerator),mailSender);
+        userAuthenticationManager =new UserAuthenticationManager(new SchoolUserRepositoryMockLockExceptionFindRead(dataGenerator),mailSender);
         checkWrongRegister(Data.VALID,OpCode.TimeOut);
         registerCodeTearDown();
     }
 
 
     protected void checkWrongRegister(Data data,OpCode opCode){
-        Response<Boolean> response= registerManager.register(dataGenerator.getRegisterDetails(data));
+        Response<Boolean> response= userAuthenticationManager.register(dataGenerator.getRegisterDetails(data));
         assertFalse(response.getValue());
         assertEquals(response.getReason(), opCode);
         //check not containing verification code
         try {
-            Field aliasToCode=RegisterManager.class.getDeclaredField("aliasToCode");
+            Field aliasToCode= UserAuthenticationManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
-            assertFalse(((ConcurrentHashMap)aliasToCode.get(registerManager)).containsKey(dataGenerator.getStudent(Data.VALID).getAlias()));
+            assertFalse(((ConcurrentHashMap)aliasToCode.get(userAuthenticationManager)).containsKey(dataGenerator.getStudent(Data.VALID).getAlias()));
         } catch (NoSuchFieldException | IllegalAccessException e) {
             fail();
         }
@@ -190,7 +190,7 @@ public class RegisterManagerTestsAllStubs {
     protected void registerCodeTest() {
         String code=dataGenerator.getVerificationCode(Data.VALID);
         String alias=dataGenerator.getStudent(Data.VALID).getAlias();
-        Response<Boolean> response= registerManager.registerCode(alias,code);
+        Response<Boolean> response= userAuthenticationManager.registerCode(alias,code);
         assertTrue(response.getValue());
         assertEquals(response.getReason(), OpCode.Success);
 
@@ -243,23 +243,23 @@ public class RegisterManagerTestsAllStubs {
         registerSetUp();
         //set up exception mock
         MailSender mailSender=new MailSenderTrueMock();
-        registerManager =new RegisterManager(new SchoolUserRepositoryExceptionSaveMock(dataGenerator),mailSender);
+        userAuthenticationManager =new UserAuthenticationManager(new SchoolUserRepositoryExceptionSaveMock(dataGenerator),mailSender);
 
         //register the user
         RegisterDetailsData validDetails=dataGenerator.getRegisterDetails(Data.VALID);
-        registerManager.register(validDetails);
+        userAuthenticationManager.register(validDetails);
         String code=null;
         try {
-            Field aliasToCode = RegisterManager.class.getDeclaredField("aliasToCode");
+            Field aliasToCode = UserAuthenticationManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
             code=(((ConcurrentHashMap<String, PasswordCodeAndTime>)aliasToCode.
-                    get(registerManager)).get(validDetails.getAlias())).getCode();
+                    get(userAuthenticationManager)).get(validDetails.getAlias())).getCode();
         } catch (IllegalAccessException | NoSuchFieldException e) {
             fail();
         }
         dataGenerator.setValidVerificationCode(code);
 
-        Response<Boolean> response= registerManager.registerCode(validDetails.getAlias(),code);
+        Response<Boolean> response= userAuthenticationManager.registerCode(validDetails.getAlias(),code);
         assertFalse(response.getValue());
         assertEquals(response.getReason(), OpCode.DB_Error);
         registerCodeTearDown();
@@ -270,23 +270,23 @@ public class RegisterManagerTestsAllStubs {
         registerSetUp();
         //set up exception mock
         MailSender mailSender=new MailSenderTrueMock();
-        registerManager =new RegisterManager(new SchoolUserRepositoryMockExceptionFindWrite(dataGenerator),mailSender);
+        userAuthenticationManager =new UserAuthenticationManager(new SchoolUserRepositoryMockExceptionFindWrite(dataGenerator),mailSender);
 
         //register the user
         RegisterDetailsData validDetails=dataGenerator.getRegisterDetails(Data.VALID);
-        registerManager.register(validDetails);
+        userAuthenticationManager.register(validDetails);
         String code=null;
         try {
-            Field aliasToCode = RegisterManager.class.getDeclaredField("aliasToCode");
+            Field aliasToCode = UserAuthenticationManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
             code=(((ConcurrentHashMap<String, PasswordCodeAndTime>)aliasToCode.
-                    get(registerManager)).get(validDetails.getAlias())).getCode();
+                    get(userAuthenticationManager)).get(validDetails.getAlias())).getCode();
         } catch (IllegalAccessException | NoSuchFieldException e) {
             fail();
         }
         dataGenerator.setValidVerificationCode(code);
 
-        Response<Boolean> response= registerManager.registerCode(validDetails.getAlias(),code);
+        Response<Boolean> response= userAuthenticationManager.registerCode(validDetails.getAlias(),code);
         assertFalse(response.getValue());
         assertEquals(response.getReason(), OpCode.DB_Error);
         registerCodeTearDown();
@@ -297,23 +297,23 @@ public class RegisterManagerTestsAllStubs {
         registerSetUp();
         //set up exception mock
         MailSender mailSender=new MailSenderTrueMock();
-        registerManager =new RegisterManager(new SchoolUserRepositoryMockLockExceptionFindWrite(dataGenerator),mailSender);
+        userAuthenticationManager =new UserAuthenticationManager(new SchoolUserRepositoryMockLockExceptionFindWrite(dataGenerator),mailSender);
 
         //register the user
         RegisterDetailsData validDetails=dataGenerator.getRegisterDetails(Data.VALID);
-        registerManager.register(validDetails);
+        userAuthenticationManager.register(validDetails);
         String code=null;
         try {
-            Field aliasToCode = RegisterManager.class.getDeclaredField("aliasToCode");
+            Field aliasToCode = UserAuthenticationManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
             code=(((ConcurrentHashMap<String, PasswordCodeAndTime>)aliasToCode.
-                    get(registerManager)).get(validDetails.getAlias())).getCode();
+                    get(userAuthenticationManager)).get(validDetails.getAlias())).getCode();
         } catch (IllegalAccessException | NoSuchFieldException e) {
             fail();
         }
         dataGenerator.setValidVerificationCode(code);
 
-        Response<Boolean> response= registerManager.registerCode(validDetails.getAlias(),code);
+        Response<Boolean> response= userAuthenticationManager.registerCode(validDetails.getAlias(),code);
         assertFalse(response.getValue());
         assertEquals(response.getReason(), OpCode.TimeOut);
         registerCodeTearDown();
@@ -323,7 +323,7 @@ public class RegisterManagerTestsAllStubs {
     protected void checkWrongRegisterCode(Data dataAlias,Data dataVerification,OpCode opCode){
         String alias=dataGenerator.getRegisterDetails(dataAlias).getAlias();
         String code=dataGenerator.getVerificationCode(dataVerification);
-        Response<Boolean> response= registerManager.registerCode(alias,code);
+        Response<Boolean> response= userAuthenticationManager.registerCode(alias,code);
         assertFalse(response.getValue());
         assertEquals(response.getReason(), opCode);
     }

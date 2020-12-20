@@ -4,7 +4,7 @@ import DataAPI.RegisterDetailsData;
 import DataAPI.Response;
 import ExternalSystems.MailSender;
 import ExternalSystems.VerificationCodeGenerator;
-import missions.room.Managers.RegisterManager;
+import missions.room.Managers.UserAuthenticationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class RegisterService {
 
     @Autowired
-    private RegisterManager registerManager;
+    private UserAuthenticationManager userAuthenticationManager;
 
     /**
      * req 2.2 - register
@@ -20,7 +20,7 @@ public class RegisterService {
      * @return if mail with the code was sent successfully
      */
     public Response<Boolean> register (RegisterDetailsData details){
-        return registerManager.register(details);
+        return userAuthenticationManager.register(details);
     }
 
 
@@ -31,16 +31,28 @@ public class RegisterService {
      * @return if register succeeded
      */
     public Response<Boolean> registerCode (String alias, String code){
-        return registerManager.registerCode(alias,code);
+        return userAuthenticationManager.registerCode(alias,code);
+    }
+
+    /**
+     * req 2.3 -login
+     * @param alias - user alias
+     * @param password - user password
+     * @return API key if login succeeded
+     */
+    public Response<String> login (String alias, String password){
+        return userAuthenticationManager.login(alias,password);
     }
 
     public void setExternalSystems(MailSender mailSender, VerificationCodeGenerator verificationCodeGenerator){
         if (mailSender != null){
-            registerManager.setSender(mailSender);
+            userAuthenticationManager.setSender(mailSender);
         }
 
         if(verificationCodeGenerator != null){
-            registerManager.setVerificationCodeGenerator(verificationCodeGenerator);
+            userAuthenticationManager.setVerificationCodeGenerator(verificationCodeGenerator);
         }
     }
+
+
 }

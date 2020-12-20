@@ -1,25 +1,25 @@
-package missions.room.AddMissionTests;
+package missions.room.MissionManagerTests;
 
 import Data.Data;
 import DataAPI.OpCode;
 import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
 import missions.room.Domain.Mission;
 import missions.room.Domain.Ram;
-import missions.room.Managers.AddMissionManager;
+import missions.room.Managers.MissionManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
 @TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
-public class AddMissionTestsRealRamMissionTeacherRepo extends AddMissionTestsRealRamMission {
+public class MissionTestsRealRamMissionManagerTeacherRepo extends MissionTestsRealRamMissionManager {
 
     @Override
     void setUpMocks() {
         missionCrudRepository=new MissionCrudRepositoryMock(dataGenerator);
         missionString=gson.toJson(dataGenerator.getMission(Data.Valid_Deterministic), Mission.class);
         ram=new Ram();
-        addMissionManager=new AddMissionManager(ram,teacherCrudRepository,missionCrudRepository);
+        missionManager =new MissionManager(ram,teacherCrudRepository,missionCrudRepository);
     }
 
 

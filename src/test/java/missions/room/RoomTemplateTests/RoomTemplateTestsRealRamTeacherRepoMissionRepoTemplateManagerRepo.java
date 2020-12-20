@@ -1,15 +1,11 @@
-package missions.room.addRoomTemplateTests;
+package missions.room.RoomTemplateTests;
 
 import CrudRepositories.RoomTemplateCrudRepository;
 import Data.Data;
 import DataAPI.OpCode;
 import DataAPI.RoomTemplateDetailsData;
-import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
-import RepositoryMocks.RoomTemplateRepository.RoomTemplateCrudRepositoryMock;
-import missions.room.Domain.Mission;
 import missions.room.Domain.RoomTemplate;
 import missions.room.Domain.missions.KnownAnswerMission;
-import missions.room.Managers.AddRoomTemplateManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -18,7 +14,7 @@ import static org.junit.Assert.*;
 
 @SpringBootTest
 @TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
-public class AddRoomTemplateTestsRealRamTeacherRepoMissionRepoTemplateRepo extends AddRoomTemplateTestsRealRamTeacherRepoMissionRepo {
+public class RoomTemplateTestsRealRamTeacherRepoMissionRepoTemplateManagerRepo extends RoomTemplateManagerTestsRealRamTeacherRepoMissionRepo {
 
     @Autowired
     protected RoomTemplateCrudRepository roomTemplateCrudRepository2;

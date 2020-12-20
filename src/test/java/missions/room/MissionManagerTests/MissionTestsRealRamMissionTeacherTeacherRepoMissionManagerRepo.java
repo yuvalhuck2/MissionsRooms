@@ -1,4 +1,4 @@
-package missions.room.AddMissionTests;
+package missions.room.MissionManagerTests;
 
 import CrudRepositories.MissionCrudRepository;
 import Data.Data;
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
 @TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
-public class AddMissionTestsRealRamMissionTeacherTeacherRepoMissionRepo extends AddMissionTestsRealRamMissionTeacherRepo {
+public class MissionTestsRealRamMissionTeacherTeacherRepoMissionManagerRepo extends MissionTestsRealRamMissionManagerTeacherRepo {
 
     @Autowired
     private MissionCrudRepository missionCrudRepositoryNotMock;
@@ -34,7 +34,7 @@ public class AddMissionTestsRealRamMissionTeacherTeacherRepoMissionRepo extends 
         try {
             Field managerRam = TeacherManager.class.getDeclaredField("ram");
             managerRam.setAccessible(true);
-            ram=(Ram)managerRam.get(addMissionManager);
+            ram=(Ram)managerRam.get(missionManager);
         } catch (IllegalAccessException | NoSuchFieldException e) {
             fail();
         }

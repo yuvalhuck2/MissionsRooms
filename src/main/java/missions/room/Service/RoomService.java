@@ -3,17 +3,17 @@ package missions.room.Service;
 import DataAPI.Auth;
 import DataAPI.Response;
 import DataAPI.newRoomDetails;
-import missions.room.Managers.AddRoomManager;
+import missions.room.Managers.RoomManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AddRoomService {
+public class RoomService {
 
     @Autowired
-    private AddRoomManager addRoomManager;
+    private RoomManager roomManager;
 
     public Response<Boolean> createRoom(Auth auth, newRoomDetails roomDetails){
-        return addRoomManager.createRoom(auth.getApiKey(),roomDetails);
+        return roomManager.createRoom(auth.getApiKey(),roomDetails);
     }
 }

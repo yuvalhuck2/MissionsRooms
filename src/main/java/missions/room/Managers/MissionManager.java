@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AddMissionManager extends TeacherManager {
+public class MissionManager extends TeacherManager {
 
     private final Gson gson;
     private final String missionName="mis";
@@ -24,14 +24,14 @@ public class AddMissionManager extends TeacherManager {
     @Autowired
     private MissionRepo missionRepo;
 
-    public AddMissionManager() {
+    public MissionManager() {
         super();
         GsonBuilder builderMission = new GsonBuilder();
         builderMission.registerTypeAdapter(Mission.class, new InterfaceAdapter());
         gson = builderMission.create();
     }
 
-    public AddMissionManager(Ram ram, TeacherCrudRepository teacherCrudRepository, MissionCrudRepository missionCrudRepository) {
+    public MissionManager(Ram ram, TeacherCrudRepository teacherCrudRepository, MissionCrudRepository missionCrudRepository) {
         super(ram,teacherCrudRepository);
         missionRepo=new MissionRepo(missionCrudRepository);
         GsonBuilder builderMission = new GsonBuilder();

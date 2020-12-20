@@ -1,4 +1,4 @@
-package missions.room.addRoomTemplateTests;
+package missions.room.RoomTemplateTests;
 
 import Data.Data;
 import DataAPI.OpCode;
@@ -6,12 +6,12 @@ import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
 import RepositoryMocks.RoomTemplateRepository.RoomTemplateCrudRepositoryMock;
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
 import missions.room.Domain.Ram;
-import missions.room.Managers.AddRoomTemplateManager;
+import missions.room.Managers.RoomTemplateManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AddRoomTemplateTestsRealRam extends AddRoomTemplateTestsAllStubs {
+public class RoomTemplateManagerTestsRealRam extends RoomTemplateManagerTestsAllStubs {
 
     @Override
     void setUpMocks(){
@@ -19,7 +19,7 @@ public class AddRoomTemplateTestsRealRam extends AddRoomTemplateTestsAllStubs {
         missionCrudRepository=new MissionCrudRepositoryMock(dataGenerator);
         roomTemplateCrudRepository=new RoomTemplateCrudRepositoryMock(dataGenerator);
         ram=new Ram();
-        addRoomTemplateManager=new AddRoomTemplateManager(ram,teacherCrudRepository,missionCrudRepository,roomTemplateCrudRepository);
+        roomTemplateManager =new RoomTemplateManager(ram,teacherCrudRepository,missionCrudRepository,roomTemplateCrudRepository);
     }
 
     @Override
