@@ -56,9 +56,9 @@ public class DataGenerator {
         roomTemplates=new HashMap<Data, RoomTemplate>();
         RoomTemplateDetailsData templateDetailsData=getRoomTemplateData(Data.VALID);
         templateDetailsData.setId("rt");
-        HashMap<String,Mission> missionsMap=new HashMap<>();
+        List<Mission> missionsMap=new ArrayList<>();
         Mission detMission=getMission(Data.Valid_Deterministic);
-        missionsMap.put(detMission.getMissionId(),detMission);
+        missionsMap.add(detMission);
         roomTemplates.put(Data.VALID,new RoomTemplate(templateDetailsData,missionsMap));
     }
 

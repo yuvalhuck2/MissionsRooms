@@ -366,13 +366,13 @@ public class ServiceAPI {
     }
 
     /**
-     * req 6.1 - transfer student classroom
+     * req 6.1 - transfer student group
     * @param auth - authentication object
-     * @param studentMail - the identifier of the student that needs to change his classroom.
-     * @param newClassroom - new classroom
+     * @param alias - the identifier of the student that needs to change his ערםופ.
+     * @param newGroup - new classGroup
      * @return if classroom changed successfully
      */
-    public Response<Boolean> changeStudentClassroom(Auth auth,String studentMail, String newClassroom){
+    public Response<Boolean> changeStudentClassroom(Auth auth,String alias, String newGroup){
         throw new NotImplementedException();
     }
 

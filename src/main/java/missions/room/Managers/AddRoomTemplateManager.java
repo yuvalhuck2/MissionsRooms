@@ -18,6 +18,7 @@ import missions.room.Repo.RoomTemplateRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -74,7 +75,7 @@ public class AddRoomTemplateManager extends TeacherManager{
             return new Response<>(null,OpCode.Wrong_Type);
         }
 
-        Response<HashMap<String,Mission>> missionsResponse=getMissions(details.getMissions(),details.getType());
+        Response<List<Mission>> missionsResponse=getMissions(details.getMissions(),details.getType());
         if(missionsResponse.getReason()!=OpCode.Success){
             return new Response<>(null,missionsResponse.getReason());
         }
@@ -87,8 +88,8 @@ public class AddRoomTemplateManager extends TeacherManager{
         return new Response<>(new RoomTemplate(details,missionsResponse.getValue()),OpCode.Success);
     }
 
-    private Response<HashMap<String,Mission>> getMissions(List<String> missions, RoomType roomType) {
-        HashMap<String,Mission> missionMap=new HashMap<>();
+    private Response<List<Mission>> getMissions(List<String> missions, RoomType roomType) {
+        List<Mission> missionList=new ArrayList<>();
         if(missions==null||missions.isEmpty()){
             return new Response<>(null,OpCode.Wrong_List);
         }
@@ -104,9 +105,9 @@ public class AddRoomTemplateManager extends TeacherManager{
             if(!mission.containType(roomType)){
                 return new Response<>(null,OpCode.Type_Not_Match);
             }
-            missionMap.put(missionId,mission);
+            missionList.add(mission);
         }
-        return new Response<>(missionMap,OpCode.Success);
+        return new Response<>(missionList,OpCode.Success);
 
     }
 }
