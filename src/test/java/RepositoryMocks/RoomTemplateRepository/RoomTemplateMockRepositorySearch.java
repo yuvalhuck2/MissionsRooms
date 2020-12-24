@@ -3,18 +3,22 @@ package RepositoryMocks.RoomTemplateRepository;
 import CrudRepositories.RoomTemplateCrudRepository;
 import Data.Data;
 import Data.DataGenerator;
-import missions.room.Domain.Mission;
+import javassist.bytecode.Opcode;
 import missions.room.Domain.RoomTemplate;
+import org.springframework.dao.DataAccessException;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
-public class RoomTemplateCrudRepositoryMock implements RoomTemplateCrudRepository {
+public class RoomTemplateMockRepositorySearch implements RoomTemplateCrudRepository {
 
-    private DataGenerator dataGenerator;
+        private DataGenerator dataGenerator;
+        private Data opcode;
 
-    public RoomTemplateCrudRepositoryMock(DataGenerator dataGenerator) {
-        this.dataGenerator=dataGenerator;
-    }
+        public RoomTemplateMockRepositorySearch(DataGenerator dataGenerator,Data opcode){
+            this.dataGenerator=dataGenerator;
+            this.opcode=opcode;
+        }
 
     @Override
     public RoomTemplate findTemplateForWrite(String roomTemplateId) {
@@ -28,7 +32,7 @@ public class RoomTemplateCrudRepositoryMock implements RoomTemplateCrudRepositor
 
     @Override
     public <S extends RoomTemplate> S save(S s) {
-        return (S) dataGenerator.getRoomTemplate(Data.VALID);
+        return null;
     }
 
     @Override
@@ -38,17 +42,7 @@ public class RoomTemplateCrudRepositoryMock implements RoomTemplateCrudRepositor
 
     @Override
     public Optional<RoomTemplate> findById(String s) {
-
-        if(s.equals("rt")) {
-            return Optional.ofNullable(dataGenerator.getRoomTemplate(Data.VALID));
-        }
-
-        else if(s.equals("group")){
-            return Optional.ofNullable(dataGenerator.getRoomTemplate(Data.Valid_Group));
-        }
-
-        return Optional.ofNullable(dataGenerator.getRoomTemplate(Data.Valid_Classroom));
-
+        return Optional.empty();
     }
 
     @Override
@@ -58,7 +52,16 @@ public class RoomTemplateCrudRepositoryMock implements RoomTemplateCrudRepositor
 
     @Override
     public Iterable<RoomTemplate> findAll() {
+         Iterable<RoomTemplate> roomTemplates=new ArrayList<>();
+        if(this.opcode== Data.VALID){
+            ((ArrayList<RoomTemplate>) roomTemplates).add(dataGenerator.getRoomTemplate(Data.VALID));
+            return roomTemplates;
+        }
+        else if(this.opcode==Data.EMPTY){
+            return roomTemplates;
+        }
         return null;
+
     }
 
     @Override

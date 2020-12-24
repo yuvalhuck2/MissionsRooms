@@ -36,4 +36,44 @@ public class TriviaQuestion {
         this.answers = answers;
         this.correctAnswer = correctAnswer;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public List<String> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<String> answers) {
+        this.answers = answers;
+    }
+
+    public List<TriviaMission> getTriviaMissions() {
+        return triviaMissions;
+    }
+
+    public void setTriviaMissions(List<TriviaMission> triviaMissions) {
+        this.triviaMissions = triviaMissions;
+    }
+
+    public int getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    public void setCorrectAnswer(int correctAnswer) {
+        this.correctAnswer = correctAnswer;
+    }
 }

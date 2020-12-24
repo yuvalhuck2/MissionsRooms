@@ -8,6 +8,7 @@ import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
 import missions.room.Domain.Rooms.StudentRoom;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,6 +78,9 @@ public class RoomRepo {
         try{
             return new Response<>(roomCrudRepository.findStudentRoomForWriteByAlias(alias), OpCode.Success);
         }
+        catch(InvalidDataAccessApiUsageException e){
+            return new Response<>(null, OpCode.Success);
+        }
         catch(LockTimeoutException e){
             return new Response<>(null,OpCode.TimeOut);
         }
@@ -88,6 +92,9 @@ public class RoomRepo {
     public Response<GroupRoom> findGroupRoomForWriteByAlias(String groupName) {
         try{
             return new Response<>(roomCrudRepository.findGroupRoomForWriteByAlias(groupName), OpCode.Success);
+        }
+        catch(InvalidDataAccessApiUsageException e){
+            return new Response<>(null, OpCode.Success);
         }
         catch(LockTimeoutException e){
             return new Response<>(null,OpCode.TimeOut);
@@ -101,11 +108,24 @@ public class RoomRepo {
         try{
             return new Response<>(roomCrudRepository.findClassroomRoomForWriteByAlias(classroomName), OpCode.Success);
         }
+        catch(InvalidDataAccessApiUsageException e){
+            return new Response<>(null, OpCode.Success);
+        }
         catch(LockTimeoutException e){
             return new Response<>(null,OpCode.TimeOut);
         }
         catch(Exception e){
             return new Response<>(null,OpCode.DB_Error);
+        }
+    }
+
+    public Response<Boolean> deleteRoom(Room room){
+        try {
+            roomCrudRepository.delete(room);
+            return new Response<>(true,OpCode.Success);
+        }
+        catch (Exception e){
+            return new Response<>(false,OpCode.DB_Error);
         }
     }
 }

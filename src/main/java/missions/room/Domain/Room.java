@@ -45,4 +45,28 @@ public abstract class Room {
         this.currentMission=0;
     }
      protected abstract String drawMissionInCharge();
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getBonus() {
+        return bonus;
+    }
+
+    public int getCurrentMission() {
+        return currentMission;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public RoomTemplate getRoomTemplate() {
+        return roomTemplate;
+    }
 }

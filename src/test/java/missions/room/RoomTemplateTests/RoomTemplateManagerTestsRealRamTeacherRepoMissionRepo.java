@@ -3,6 +3,7 @@ package missions.room.RoomTemplateTests;
 import Data.Data;
 import DataAPI.OpCode;
 import RepositoryMocks.RoomTemplateRepository.RoomTemplateCrudRepositoryMock;
+import RepositoryMocks.RoomTemplateRepository.RoomTemplateMockRepositorySearch;
 import missions.room.Managers.RoomTemplateManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +26,8 @@ public class RoomTemplateManagerTestsRealRamTeacherRepoMissionRepo extends RoomT
         checkWrongAddRoomTemplate(Data.WRONG_ID, OpCode.Not_Mission);
         tearDownAddRoomTemplate();
     }
+
+
 
     @Override
     protected void tearDownAddRoomTemplate() {

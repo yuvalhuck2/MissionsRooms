@@ -3,16 +3,16 @@ package RepositoryMocks.RoomTemplateRepository;
 import CrudRepositories.RoomTemplateCrudRepository;
 import Data.Data;
 import Data.DataGenerator;
-import missions.room.Domain.Mission;
 import missions.room.Domain.RoomTemplate;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataAccessResourceFailureException;
 
 import java.util.Optional;
 
-public class RoomTemplateCrudRepositoryMock implements RoomTemplateCrudRepository {
-
+public class RoomTemplateCrudRepositoryExceptionFindByIdMock implements RoomTemplateCrudRepository {
     private DataGenerator dataGenerator;
 
-    public RoomTemplateCrudRepositoryMock(DataGenerator dataGenerator) {
+    public RoomTemplateCrudRepositoryExceptionFindByIdMock(DataGenerator dataGenerator) {
         this.dataGenerator=dataGenerator;
     }
 
@@ -38,17 +38,7 @@ public class RoomTemplateCrudRepositoryMock implements RoomTemplateCrudRepositor
 
     @Override
     public Optional<RoomTemplate> findById(String s) {
-
-        if(s.equals("rt")) {
-            return Optional.ofNullable(dataGenerator.getRoomTemplate(Data.VALID));
-        }
-
-        else if(s.equals("group")){
-            return Optional.ofNullable(dataGenerator.getRoomTemplate(Data.Valid_Group));
-        }
-
-        return Optional.ofNullable(dataGenerator.getRoomTemplate(Data.Valid_Classroom));
-
+        throw new DataAccessResourceFailureException("d");
     }
 
     @Override

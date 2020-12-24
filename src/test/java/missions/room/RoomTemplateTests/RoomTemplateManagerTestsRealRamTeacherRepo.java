@@ -4,6 +4,8 @@ import Data.Data;
 import DataAPI.OpCode;
 import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
 import RepositoryMocks.RoomTemplateRepository.RoomTemplateCrudRepositoryMock;
+import RepositoryMocks.RoomTemplateRepository.RoomTemplateMockRepositorySearch;
+import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMockNotExist;
 import missions.room.Domain.Ram;
 import missions.room.Managers.RoomTemplateManager;
 import missions.room.Managers.TeacherManager;
@@ -39,6 +41,20 @@ public class RoomTemplateManagerTestsRealRamTeacherRepo extends RoomTemplateMana
         super.setUpAddRoomTemplate();
     }
 
+    @Override
+    void setupSearchRoomTemplate() {
+        try {
+            Field managerRam = TeacherManager.class.getDeclaredField("ram");
+            managerRam.setAccessible(true);
+            ram=(Ram)managerRam.get(roomTemplateManager);
+
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            fail();
+        }
+        super.setupSearchRoomTemplate();
+
+    }
+
     @Test
     void testAddRoomTemplateInvalidWrongTeacher(){
         setUpAddRoomTemplate();
@@ -46,6 +62,25 @@ public class RoomTemplateManagerTestsRealRamTeacherRepo extends RoomTemplateMana
         ram.addApi(apiKey,dataGenerator.getTeacher(Data.WRONG_NAME).getAlias());
         checkWrongAddRoomTemplate(Data.VALID,OpCode.Not_Exist);
         tearDownAddRoomTemplate();
+    }
+
+
+
+    @Test
+    @Override
+    void testSearchRoomTemplateInvalidTeacher(){
+        setupSearchRoomTemplate();
+
+        teacherCrudRepository.save(dataGenerator.getTeacher(Data.WRONG_NAME));
+        roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.VALID));
+        //roomTemplateCrudRepository=new RoomTemplateMockRepositorySearch(dataGenerator,Data.VALID);
+        //ram.addApi(apiKey,dataGenerator.getTeacher(Data.WRONG_NAME).getAlias());
+        roomTemplateManager=new RoomTemplateManager(ram,new TeacherCrudRepositoryMockNotExist(dataGenerator),missionCrudRepository,roomTemplateCrudRepository);
+        testSearchRoomTemplateInvalidTeacherTest();
+        teardownSearchTemplate();
+        roomTemplateCrudRepository.delete(dataGenerator.getRoomTemplate(Data.VALID));
+        teacherCrudRepository.delete(dataGenerator.getTeacher(Data.WRONG_NAME));
+
     }
 
 }

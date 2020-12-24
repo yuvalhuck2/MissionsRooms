@@ -30,4 +30,20 @@ public class TriviaMission extends Mission {
         this.secondsForAnswer = secondsForAnswer;
         this.questions = questions;
     }
+
+    public int getSecondsForAnswer() {
+        return secondsForAnswer;
+    }
+
+    public void setSecondsForAnswer(int secondsForAnswer) {
+        this.secondsForAnswer = secondsForAnswer;
+    }
+
+    public Map<String, TriviaQuestion> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(Map<String, TriviaQuestion> questions) {
+        this.questions = questions;
+    }
 }

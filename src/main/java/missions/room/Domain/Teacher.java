@@ -32,6 +32,13 @@ public class Teacher extends SchoolUser {
         this.groupType = groupType;
     }
 
+    public Teacher(String alias, String firstName, String lastName, Classroom classroom, GroupType groupType,String password) {
+        super(alias, firstName, lastName);
+        this.classroom = classroom;
+        this.groupType = groupType;
+        this.password=password;
+    }
+
     public Teacher(String alias, String firstName, String lastName,String password) {
         super(alias, firstName, lastName);
         this.password=password;
