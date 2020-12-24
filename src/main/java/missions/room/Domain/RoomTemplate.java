@@ -22,22 +22,24 @@ public class RoomTemplate {
 
     private String name;
 
-    private int  minimalMissionsToPass;
+    private int minimalMissionsToPass;
 
     @Enumerated(EnumType.ORDINAL)
     private RoomType type;
 
-
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(cascade = CascadeType.ALL)
-    @MapKeyColumn(name = "missionId")
-    @JoinColumn(name="roomTemplateId",referencedColumnName = "roomTemplateId")
-    private Map<String,Mission> missions;
+    @ManyToMany(cascade =CascadeType.ALL,fetch = FetchType.EAGER)
+    @OrderColumn(name="INDEX")
+    @JoinTable(name="missionTemplates",
+            joinColumns ={@JoinColumn(name = "roomTemplateId")},
+            inverseJoinColumns={@JoinColumn(name="missionId")}
+    )
+    private List<Mission> missions;
 
     public RoomTemplate() {
+
     }
 
-    public RoomTemplate(RoomTemplateDetailsData details, HashMap<String, Mission> missions) {
+    public RoomTemplate(RoomTemplateDetailsData details, List<Mission> missions) {
         this.name=details.getName();
         this.type=details.getType();
         this.roomTemplateId=details.getId();
@@ -62,6 +64,10 @@ public class RoomTemplate {
     }
 
     public Mission getMission(String missionId) {
-        return missions.get(missionId);
+        for(Mission m: missions){
+            if(missionId.equals(m.getMissionId()))
+                return m;
+        }
+        return null;
     }
 }
