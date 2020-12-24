@@ -4,8 +4,9 @@ import CrudRepositories.MissionCrudRepository;
 import Data.Data;
 import Data.DataGenerator;
 import missions.room.Domain.Mission;
+import sun.awt.util.IdentityArrayList;
 
-import java.util.Optional;
+import java.util.*;
 
 public class MissionCrudRepositoryMock implements MissionCrudRepository {
     private final DataGenerator dataGenerator;
@@ -46,7 +47,10 @@ public class MissionCrudRepositoryMock implements MissionCrudRepository {
 
     @Override
     public Iterable<Mission> findAll() {
-        return null;
+        List<Mission> list=new ArrayList<>();
+        list.add(dataGenerator.getMission(Data.Valid_Deterministic));
+        Iterable<Mission> missions= list;
+        return missions;
     }
 
     @Override

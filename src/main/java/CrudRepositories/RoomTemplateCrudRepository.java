@@ -15,9 +15,9 @@ public interface RoomTemplateCrudRepository extends CrudRepository<RoomTemplate,
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select a from RoomTemplate a where a.roomTemplateId = :roomTemplateId")
-    Mission findMissionForWrite(@Param("roomTemplateId") String roomTemplateId);
+    RoomTemplate findTemplateForWrite(@Param("roomTemplateId") String roomTemplateId);
 
     @Lock(LockModeType.PESSIMISTIC_READ)
     @Query("select a from RoomTemplate a where a.roomTemplateId = :roomTemplateId")
-    Mission findMissionForRead(@Param("roomTemplateId") String roomTemplateId);
+    RoomTemplate findTemplateForRead(@Param("roomTemplateId") String roomTemplateId);
 }

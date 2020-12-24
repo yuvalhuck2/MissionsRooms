@@ -1,10 +1,6 @@
 package Utils;
 
 import DataAPI.UserType;
-import javafx.util.Pair;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Utils {
     //TODO update leoback suffix
@@ -61,5 +57,9 @@ public class Utils {
             return new Pair<>(m.group(1), m.group(2));
         }
         return null;
+    }
+
+    public static int getNextRandom(int number){
+        return random.nextInt(number);
     }
 }

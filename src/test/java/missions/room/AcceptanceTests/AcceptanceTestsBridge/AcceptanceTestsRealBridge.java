@@ -5,8 +5,7 @@ import DataAPI.UserType;
 import ExternalSystems.MailSender;
 import ExternalSystems.VerificationCodeGenerator;
 import missions.room.AcceptanceTests.AcceptanceTestDataObjects.*;
-import missions.room.Service.LoginService;
-import missions.room.Service.RegisterService;
+import missions.room.Service.UserAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +15,8 @@ import java.util.List;
 public class AcceptanceTestsRealBridge implements AcceptanceTestBridge{
 
     @Autowired
-    private RegisterService registerService;
+    private UserAuthenticationService userAuthenticationService;
 
-    @Autowired
-    private LoginService loginService;
 
     public AcceptanceTestsRealBridge(){
         //this.registerService = new RegisterService();
@@ -27,17 +24,17 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestBridge{
 
     @Override
     public Boolean register(RegisterDetailsTest details) {
-        return registerService.register(convertRegisterDetails(details)).getValue();
+        return userAuthenticationService.register(convertRegisterDetails(details)).getValue();
     }
 
     @Override
     public Boolean registerCode(String alias, String code) {
-        return registerService.registerCode(alias, code).getValue();
+        return userAuthenticationService.registerCode(alias, code).getValue();
     }
 
     @Override
     public String login(String alias, String password) {
-        return loginService.login(alias, password).getValue();
+        return userAuthenticationService.login(alias, password).getValue();
     }
 
     @Override
@@ -97,7 +94,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestBridge{
 
     @Override
     public void setExternalSystems(MailSender mailSender, VerificationCodeGenerator verificationCodeGenerator) {
-        registerService.setExternalSystems(mailSender, verificationCodeGenerator);
+        userAuthenticationService.setExternalSystems(mailSender, verificationCodeGenerator);
     }
 
     private RegisterDetailsData convertRegisterDetails(RegisterDetailsTest registerDetailsTestData){

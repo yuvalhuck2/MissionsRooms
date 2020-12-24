@@ -4,12 +4,17 @@ import DataAPI.RegisterDetailsData;
 import DataAPI.RoomTemplateDetailsData;
 import DataAPI.RoomType;
 import DataAPI.UserType;
+import ExternalSystems.HashSystem;
+import javafx.util.Pair;
+import missions.room.Domain.IT;
 import missions.room.Domain.Mission;
+import missions.room.Domain.User;
 import missions.room.Domain.RoomTemplate;
 import missions.room.Domain.Student;
 import missions.room.Domain.Teacher;
 import missions.room.Domain.missions.KnownAnswerMission;
 import DomainMocks.TeacherMock;
+import missions.room.Domain.missions.StoryMission;
 
 import java.util.*;
 
@@ -20,6 +25,9 @@ public class DataGenerator {
     private HashMap<Data,String> verificationCodes;
     private HashMap<Data, Teacher> teachers;
     private HashMap<Data, Mission> missions;
+    private HashMap<Data, Pair<String,String>> loginDatas;
+    private HashMap<Data, User> users;
+    private final HashSystem hashSystem= new HashSystem();;
     private HashMap<Data, RoomTemplate> roomTemplates;
     private HashMap<Data, RoomTemplateDetailsData> roomTemplatesDatas;
 
@@ -29,6 +37,23 @@ public class DataGenerator {
         initVerificationCodes();
         initTeacher();
         initMissions();
+        initLoginDatas();
+        initUsers();
+    }
+
+    private void initUsers(){
+        users=new HashMap<Data, User>();
+        User validStudent=new Student("ExistAliasStudent","Gal","Haviv");
+        validStudent.setPassword(hashSystem.encrypt("1234"));
+        users.put(Data.VALID_STUDENT,validStudent);
+
+        User validTeacher=new Teacher("ExistAliasTeacher","Tal","Cohen",hashSystem.encrypt("1234"));
+        users.put(Data.VALID_TEACHER,validTeacher);
+
+        User validIT=new IT("ExistAliasIT",hashSystem.encrypt("1234"));
+        users.put(Data.VALID_IT,validIT);
+
+
         initRoomTemplateDatas();
         initRoomTemplates();
     }
@@ -46,6 +71,7 @@ public class DataGenerator {
         roomTemplatesDatas.put(Data.NULL_TYPE,new RoomTemplateDetailsData(missions,"name",1,null));
         roomTemplatesDatas.put(Data.NULL_LIST,new RoomTemplateDetailsData(null,"name",1,RoomType.Personal));
         roomTemplatesDatas.put(Data.EMPTY_LIST,new RoomTemplateDetailsData(new ArrayList<>(),"name",0,RoomType.Personal));
+        roomTemplatesDatas.put(Data.TYPE_NOT_MATCH,new RoomTemplateDetailsData(missions,"name",1,RoomType.Group));
         List<String> missionsWithNull=new ArrayList<>();
         missionsWithNull.add("not exist");
         roomTemplatesDatas.put(Data.WRONG_ID,new RoomTemplateDetailsData(missionsWithNull,"name",1,RoomType.Personal));
@@ -55,9 +81,9 @@ public class DataGenerator {
         roomTemplates=new HashMap<Data, RoomTemplate>();
         RoomTemplateDetailsData templateDetailsData=getRoomTemplateData(Data.VALID);
         templateDetailsData.setId("rt");
-        HashMap<String,Mission> missionsMap=new HashMap<>();
+        List<Mission> missionsMap=new ArrayList<>();
         Mission detMission=getMission(Data.Valid_Deterministic);
-        missionsMap.put(detMission.getMissionId(),detMission);
+        missionsMap.add(detMission);
         roomTemplates.put(Data.VALID,new RoomTemplate(templateDetailsData,missionsMap));
     }
 
@@ -75,6 +101,7 @@ public class DataGenerator {
         missions.put(Data.EMPTY_QUESTION_DETERMINISTIC,new KnownAnswerMission("ddd",types,"","answer"));
         missions.put(Data.NULL_ANSWER_DETERMINISTIC,new KnownAnswerMission("ddd",types,"question",null));
         missions.put(Data.EMPTY_ANSWER_DETERMINISTIC,new KnownAnswerMission("ddd",types,"question",""));
+        missions.put(Data.VALID_STORY,new StoryMission("ggg",types,5,4,"story"));
     }
 
     private void initTeacher() {
@@ -107,6 +134,22 @@ public class DataGenerator {
         students.put(Data.VALID,new Student("NoAlasIsExistWithThatName","Yuval","Sabag"));
     }
 
+
+
+    private void initLoginDatas(){
+        loginDatas=new HashMap<Data, Pair<String, String>>();
+        loginDatas.put(Data.VALID_STUDENT,new Pair<>("ExistAliasStudent","1234"));
+        loginDatas.put(Data.VALID_TEACHER,new Pair<>("ExistAliasTeacher","1234"));
+        loginDatas.put(Data.VALID_IT,new Pair<>("ExistAliasIT","1234"));
+        loginDatas.put(Data.NULL_ALIAS,new Pair<>(null,"1234"));
+        loginDatas.put(Data.NULL_PASSWORD,new Pair<>("ExistAlias",null));
+        loginDatas.put(Data.EMPTY_ALIAS,new Pair<>("","1234"));
+        loginDatas.put(Data.EMPTY_PASSWORD,new Pair<>("ExistAlias",""));
+        loginDatas.put(Data.NOT_EXIST_ALIAS,new Pair<>("NotExistAlias","1234"));
+        loginDatas.put(Data.WRONG_PASSWORD,new Pair<>("ExistAliasStudent","1111"));
+
+    }
+
     public Student getStudent(Data data){
         return students.get(data);
     }
@@ -130,6 +173,14 @@ public class DataGenerator {
 
     public Mission getMission(Data data) {
         return missions.get(data);
+    }
+
+    public Pair<String,String> getLoginDetails(Data data){
+        return loginDatas.get(data);
+    }
+
+    public User getUser(Data data){
+        return users.get(data);
     }
 
     public RoomTemplateDetailsData getRoomTemplateData(Data data){

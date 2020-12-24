@@ -146,7 +146,7 @@ public class ServiceAPI {
      * @param falseSentence - incorrect sentence about the student
      * @return if the sentences were added to the mission
      */
-    public Response<Boolean> answerTrueLieQuestion(Auth auth, String roomId,String trueSentence, String falseSentence){
+    public Response<Boolean> fillTrueLieSentences(Auth auth, String roomId, String trueSentence, String falseSentence){
         throw new NotImplementedException();
     }
 
@@ -155,11 +155,11 @@ public class ServiceAPI {
      * req 3.6.2.4.2 - answer true lie sentence
      * @param auth - authentication object
      * @param roomId - room id
-     * @param mail - th mail of the
+     * @param otherAlias - the alias of the other student
      * @param trueAnswer - true if the sentence the student think the first sentence is correct
      * @return if the answer was correct
      */
-    public Response<Boolean> answerTrueLieQuestion(Auth auth, String roomId,String mail, boolean trueAnswer){
+    public Response<Boolean> answerTrueLieMission(Auth auth, String roomId, String otherAlias, int trueAnswer){
         throw new NotImplementedException();
     }
 
@@ -225,10 +225,6 @@ public class ServiceAPI {
     }
 
     /**
-     * req 4.1 - create room
-     */
-
-    /**
      * req 4.2 - close missions room
      * @param auth - authentication object
      * @param roomId - the identifier of the room
@@ -239,15 +235,15 @@ public class ServiceAPI {
     }
 
 
-    /**
-     * req 4.3 - search missions
-     * @param auth - authentication object
-     * @param filter - details about how to filter the missions
-     * @return - list of the missions were filtered
-     */
-    public Response<List<MissionData>> searchMissions(Auth auth, MissionFilterData filter){
-        throw new NotImplementedException();
-    }
+//    /**
+//     * req 4.3 - search missions
+//     * @param auth - authentication object
+//     * @param filter - details about how to filter the missions
+//     * @return - list of the missions were filtered
+//     */
+//    public Response<List<MissionData>> searchMissions(Auth auth, MissionFilterData filter){
+//        throw new NotImplementedException();
+//    }
 
 
 //    /**
@@ -370,13 +366,13 @@ public class ServiceAPI {
     }
 
     /**
-     * req 6.1 - transfer student classroom
+     * req 6.1 - transfer student group
     * @param auth - authentication object
-     * @param studentMail - the identifier of the student that needs to change his classroom.
-     * @param newClassroom - new classroom
+     * @param alias - the identifier of the student that needs to change his ערםופ.
+     * @param newGroup - new classGroup
      * @return if classroom changed successfully
      */
-    public Response<Boolean> changeStudentClassroom(Auth auth,String studentMail, String newClassroom){
+    public Response<Boolean> changeStudentClassroom(Auth auth,String alias, String newGroup){
         throw new NotImplementedException();
     }
 

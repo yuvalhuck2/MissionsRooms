@@ -80,7 +80,8 @@ public class UploadCsvManager {
         }
         for(int i =1; i < classesRows.length; i++){
             String[] classData = classesRows[i].split((COMMA_DEL));
-            Pair<String, String> classPair = Utils.getYearAndClassFromEmail(classData[CLASS_EMAIL]);
+            //Pair<String, String> classPair = Utils.getYearAndClassFromEmail(classData[CLASS_EMAIL]);
+
 
         }
         return null;
