@@ -11,12 +11,7 @@ import DataAPI.RoomType;
 import DataAPI.UserType;
 import ExternalSystems.HashSystem;
 import javafx.util.Pair;
-import missions.room.Domain.IT;
-import missions.room.Domain.Mission;
-import missions.room.Domain.User;
-import missions.room.Domain.RoomTemplate;
-import missions.room.Domain.Student;
-import missions.room.Domain.Teacher;
+import missions.room.Domain.*;
 import missions.room.Domain.missions.KnownAnswerMission;
 import DomainMocks.TeacherMock;
 import missions.room.Domain.missions.StoryMission;
@@ -85,8 +80,8 @@ public class DataGenerator {
         classGroupMap=new HashMap<Data, ClassGroup>();
         HashMap<String,Student> studentHashMap=new HashMap<>();
         studentHashMap.put(students.get(Data.VALID).getAlias(),students.get(Data.VALID));
-        classGroupMap.put(Data.Valid_Group,new ClassGroup("g2",studentHashMap));
-        classGroupMap.put(Data.Empty_Students,new ClassGroup("g1",new HashMap<>()));
+        classGroupMap.put(Data.Valid_Group,new ClassGroup("g2",GroupType.B,studentHashMap));
+        classGroupMap.put(Data.Empty_Students,new ClassGroup("g1",GroupType.A,new HashMap<>()));
     }
 
     private void initNewRoomDetails() {

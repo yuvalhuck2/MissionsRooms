@@ -3,6 +3,7 @@ package missions.room.Managers;
 import CrudRepositories.RoomCrudRepository;
 import CrudRepositories.RoomTemplateCrudRepository;
 import CrudRepositories.TeacherCrudRepository;
+import DataAPI.Auth;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import DataAPI.newRoomDetails;
@@ -16,6 +17,7 @@ import missions.room.Repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 @Service
 public class RoomManager extends TeacherManager {
@@ -140,4 +142,29 @@ public class RoomManager extends TeacherManager {
         }
         return saveRoom(new StudentRoom(roomDetails.getRoomId(),roomDetails.getRoomName(),student,teacher,roomTemplate,roomDetails.getBonus()));
     }
+
+    /**
+     * req 4.2 - close missions room
+     * @param apiKey - authentication object
+     * @param roomId - the identifier of the room
+     * @return if the room was closed successfully
+     */
+    
+    public Response<Boolean> closeRoom(String apiKey, String roomId){
+        Response<Teacher> checkTeacher=checkTeacher(apiKey);
+        if(checkTeacher.getReason()!=OpCode.Success){
+            return new Response<>(false,checkTeacher.getReason());
+        }
+        Response<Room> roomResponse=roomRepo.findRoomById(roomId);
+        if(roomResponse.getReason()!=OpCode.Success){
+            return new Response<>(false,roomResponse.getReason());
+        }
+        Room room=roomResponse.getValue();
+
+        return roomRepo.deleteRoom(room);
+    }
+
+
+
+
 }

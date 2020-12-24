@@ -121,4 +121,14 @@ public class RoomRepo {
             return new Response<>(null,OpCode.DB_Error);
         }
     }
+
+    public Response<Boolean> deleteRoom(Room room){
+        try {
+            roomCrudRepository.delete(room);
+            return new Response<>(true,OpCode.Success);
+        }
+        catch (Exception e){
+            return new Response<>(false,OpCode.DB_Error);
+        }
+    }
 }

@@ -27,9 +27,10 @@ public class ClassGroup {
     public ClassGroup() {
     }
 
-    public ClassGroup(String id, Map<String, Student> students) {
+    public ClassGroup(String id, GroupType groupType,Map<String, Student> students) {
         this.groupName=id;
         this.students = students;
+        this.groupType=groupType;
     }
 
     public Student getStudent(String alias,GroupType groupType) {
