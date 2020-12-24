@@ -149,7 +149,7 @@ public class RoomManager extends TeacherManager {
      * @param roomId - the identifier of the room
      * @return if the room was closed successfully
      */
-    @Transactional
+    
     public Response<Boolean> closeRoom(String apiKey, String roomId){
         Response<Teacher> checkTeacher=checkTeacher(apiKey);
         if(checkTeacher.getReason()!=OpCode.Success){
