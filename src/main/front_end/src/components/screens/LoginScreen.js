@@ -4,14 +4,21 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged } from '../../actions';
 import { theme } from '../../core/theme';
+import { loginStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
 import Header from '../common/Header';
 import TextInput from '../common/TextInput';
-import {registerStrings} from '../../locale/locale_heb'
 
-const {header, enter_email, enter_password, register_btn, already_user, already_user_sign_in} = registerStrings
+const {
+  header,
+  enter_email,
+  enter_password,
+  login_btn,
+  no_user,
+  no_user_sign_up,
+} = loginStrings;
 
-class RegisterForm extends Component {
+class LoginForm extends Component {
   constructor(...args) {
     super(...args);
     this.onEmailChange = this.onEmailChange.bind(this);
@@ -47,14 +54,18 @@ class RegisterForm extends Component {
           secureTextEntry
         />
 
-        <Button mode='contained' style={styles.button} onPress={()=> console.log("there")}>
-          {register_btn}
+        <Button
+          mode='contained'
+          style={styles.button}
+          onPress={() => console.log('there')}
+        >
+          {login_btn}
         </Button>
 
         <View style={styles.row}>
-          <Text style={styles.label}>{already_user}</Text>
-          <TouchableOpacity onPress={()=> console.log("hey")}>
-            <Text style={styles.link}>{already_user_sign_in}</Text>
+          <Text style={styles.label}>{no_user}</Text>
+          <TouchableOpacity onPress={() => console.log('hey')}>
+            <Text style={styles.link}>{no_user_sign_up}</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAwareScrollView>
@@ -93,4 +104,4 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   emailChanged,
   passwordChanged,
-})(RegisterForm);
+})(LoginForm);
