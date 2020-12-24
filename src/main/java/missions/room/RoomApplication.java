@@ -2,12 +2,12 @@ package missions.room;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@RestController
+@EnableJpaRepositories("CrudRepositories")//let spring to read from repositories
+@EntityScan("missions/room/Domain")// let spring to scan all the entities and crete or update table accordingly
 public class RoomApplication {
 
     public static void main(String[] args) {
@@ -15,9 +15,6 @@ public class RoomApplication {
         System.out.println("started!!!!!!!!!!!!!!!!!");
     }
 
-    @GetMapping("/hello")
-    public String sayHello(@RequestParam(value = "myName", defaultValue = "World") String name) {
-        System.out.println("got hello");
-        return String.format("Hello %s!", name);
-    }
+
+
 }
