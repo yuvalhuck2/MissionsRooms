@@ -224,15 +224,15 @@ public class ServiceAPI {
         throw new NotImplementedException();
     }
 
-    /**
-     * req 4.2 - close missions room
-     * @param auth - authentication object
-     * @param roomId - the identifier of the room
-     * @return if the room was closed successfully
-     */
-    public Response<Boolean> closeRoom(Auth auth, String roomId){
-        throw new NotImplementedException();
-    }
+//    /**
+//     * req 4.2 - close missions room
+//     * @param auth - authentication object
+//     * @param roomId - the identifier of the room
+//     * @return if the room was closed successfully
+//     */
+//    public Response<Boolean> closeRoom(Auth auth, String roomId){
+//        throw new NotImplementedException();
+//    }
 
 
 //    /**

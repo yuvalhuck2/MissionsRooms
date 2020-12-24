@@ -6,12 +6,7 @@ import DataAPI.RoomType;
 import DataAPI.UserType;
 import ExternalSystems.HashSystem;
 import javafx.util.Pair;
-import missions.room.Domain.IT;
-import missions.room.Domain.Mission;
-import missions.room.Domain.User;
-import missions.room.Domain.RoomTemplate;
-import missions.room.Domain.Student;
-import missions.room.Domain.Teacher;
+import missions.room.Domain.*;
 import missions.room.Domain.missions.KnownAnswerMission;
 import DomainMocks.TeacherMock;
 import missions.room.Domain.missions.StoryMission;
@@ -30,6 +25,7 @@ public class DataGenerator {
     private final HashSystem hashSystem= new HashSystem();;
     private HashMap<Data, RoomTemplate> roomTemplates;
     private HashMap<Data, RoomTemplateDetailsData> roomTemplatesDatas;
+    private HashMap<Data, Room> roomClose;
 
     public DataGenerator() {
         initStudents();
@@ -104,6 +100,7 @@ public class DataGenerator {
         missions.put(Data.VALID_STORY,new StoryMission("ggg",types,5,4,"story"));
     }
 
+
     private void initTeacher() {
         teachers=new HashMap<Data, Teacher>();
         teachers.put(Data.VALID_WITH_PASSWORD,new Teacher("NoAlasTeacher","Avi","Ron","1234"));
@@ -148,6 +145,27 @@ public class DataGenerator {
         loginDatas.put(Data.NOT_EXIST_ALIAS,new Pair<>("NotExistAlias","1234"));
         loginDatas.put(Data.WRONG_PASSWORD,new Pair<>("ExistAliasStudent","1111"));
 
+    }
+
+    private void initRoomClose(){
+        /*
+        roomClose=new HashMap<Data, Room>();
+        //create classroom
+        ClassGroup classGroup1=new ClassGroup("g1",GroupType.A,null);
+        ClassGroup classGroup2=new ClassGroup("g2",GroupType.B,null);
+        //create classroom
+        Classroom classroom=new Classroom("g2",classGroup1,classGroup2);
+        //create teacher
+        Teacher teacher=new Teacher("teacher","Ronit","Levy",classroom,GroupType.A);
+
+
+        RoomTemplateDetailsData templateDetailsData=getRoomTemplateData(Data.VALID);
+        templateDetailsData.setId("rt");
+        List<Mission> missionsMap=new ArrayList<>();
+        Mission detMission=getMission(Data.Valid_Deterministic);
+        missionsMap.add(detMission);
+        roomTemplates.put(Data.VALID,new RoomTemplate(templateDetailsData,missionsMap));
+        roomClose.put(Data.VALID,new Room("123","room",teacher,))*/
     }
 
     public Student getStudent(Data data){
