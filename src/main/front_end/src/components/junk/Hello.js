@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
-import SayHelloApi from '../api/SayHelloApi';
+import SayHelloApi from '../../api/SayHelloApi';
 import axios from 'axios'
 
 const Hello = () => {

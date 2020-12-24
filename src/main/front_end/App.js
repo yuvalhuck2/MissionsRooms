@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import Hello from './Components/Hello';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { Provider as StoreProvider } from 'react-redux';
+import App from './src'
+import store from './src/store/store'
 
 // export default function App() {
 //     let onPressLearnMore = () => fetch('https://localhost:8443/hello', {
@@ -20,15 +22,31 @@ import Hello from './Components/Hello';
 //     );
 // }
 
-export default App = () => {
-  return <View><Hello /></View>;
+// const appbarActions = [
+//   { icon: 'archive', onPress: () => console.log('pressed archive') },
+// ];
+
+// const store = createStore(() => [], {}, applyMiddleware());
+
+// const App = () => {
+//   const styles = {
+//     location: {
+//       position: 'absolute',
+//       left: 0,
+//       right: 0,
+//       bottom: 0,
+//     },
+//   };
+
+const Main = () => {
+
+  return (
+    <StoreProvider store={store}>
+      <PaperProvider>
+        <App />
+      </PaperProvider>
+    </StoreProvider>
+  );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default Main;
