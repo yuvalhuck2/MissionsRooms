@@ -211,7 +211,7 @@ public class UserAuthenticationManager {
         String api= UniqueStringGenerator.getUniqueCode(alias);
         if(user.getPassword().equals(hashSystem.encrypt(password))){
             this.ram.addApi(api,alias);
-            return new Response<>(api,OpCode.Success);
+            return new Response<>(api,user.getOpcode());
         }
         else{
             return new Response<>(null,OpCode.Wrong_Password);

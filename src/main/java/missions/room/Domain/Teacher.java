@@ -26,6 +26,11 @@ public class Teacher extends SchoolUser {
     public Teacher() {
     }
 
+    @Override
+    public OpCode getOpcode() {
+        return OpCode.Teacher;
+    }
+
     public Teacher(String alias, String firstName, String lastName, Classroom classroom, GroupType groupType) {
         super(alias, firstName, lastName);
         this.classroom = classroom;
