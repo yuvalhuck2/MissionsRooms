@@ -38,16 +38,16 @@ public class RoomManager extends TeacherManager {
 
     public Response<Boolean> createRoom(String apiKey, newRoomDetails roomDetails){
         Response<Teacher> checkTeacher=checkTeacher(apiKey);
-        if(checkTeacher.getReason()!=OpCode.Success){
+        if(checkTeacher.getReason()!=OpCode.Success){// teacher real
             return new Response<>(false,checkTeacher.getReason());
         }
         Response<Room> roomResponse= validateDetails(roomDetails,checkTeacher.getValue());
-        return new Response<>(roomResponse.getReason()!=OpCode.Success,roomResponse.getReason());
+        return new Response<>(roomResponse.getReason()==OpCode.Success,roomResponse.getReason());
     }
 
     private Response<Room> saveRoom(Room room) {
         Response<Room> roomResponse=roomRepo.save(room);
-        if(roomResponse.getReason()!= OpCode.Success){
+        if(roomResponse.getReason()!= OpCode.Success){//roomReal and exception
             return new Response<>(null,roomResponse.getReason());
         }
 
@@ -55,35 +55,38 @@ public class RoomManager extends TeacherManager {
     }
 
     private Response<Room> validateDetails(newRoomDetails roomDetails, Teacher teacher) {
-        if(!Utils.checkString(roomDetails.getRoomName())){
+        if(roomDetails==null){/****/
+            return new Response<>(null,OpCode.Null_Error);
+        }
+        if(!Utils.checkString(roomDetails.getRoomName())){/****/
             return new Response<>(null,OpCode.Wrong_Name);
         }
-        if(roomDetails.getBonus()<=0){
+        if(roomDetails.getBonus()<0){/****/
             return new Response<>(null,OpCode.Wrong_Bonus);
         }
-        roomDetails.setRoomId(UniqueStringGenerator.getUniqueCode("room"));
+        roomDetails.setRoomId(UniqueStringGenerator.getTimeNameCode("room"));
         return saveRoomByType(roomDetails,teacher);
     }
 
     @Transactional
     protected Response<Room> saveRoomByType(newRoomDetails roomDetails, Teacher teacher) {
         Response<RoomTemplate> roomTemplateResponse=roomTemplateRepo.findRoomTemplateById(roomDetails.getRoomTemplateId());
-        if(roomTemplateResponse.getReason()!=OpCode.Success){
+        if(roomTemplateResponse.getReason()!=OpCode.Success){//template real
             return new Response<>(null,roomTemplateResponse.getReason());
         }
         RoomTemplate roomTemplate=roomTemplateResponse.getValue();
-        if(roomTemplate==null){
+        if(roomTemplate==null){//template real
             return new Response<>(null,OpCode.Not_Exist_Template);
         }
-        if(roomTemplate.getType()!=roomDetails.getRoomType()){
+        if(roomTemplate.getType()!=roomDetails.getRoomType()){/****/
             return new Response<>(null,OpCode.Type_Not_Match);
         }
         switch(roomDetails.getRoomType()){
             case Personal:
                 return getStudentRoomResponse(roomDetails,roomTemplate,teacher);
-            case Class:
-                return getGroupRoomResponse(roomDetails,roomTemplate,teacher);
             case Group:
+                return getGroupRoomResponse(roomDetails,roomTemplate,teacher);
+            case Class:
                 return getClassroomRoomResponse(roomDetails,roomTemplate,teacher);
             default:
                 return new Response<>(null,OpCode.Wrong_Type);
@@ -93,7 +96,7 @@ public class RoomManager extends TeacherManager {
     @Transactional
     protected Response<Room> getClassroomRoomResponse(newRoomDetails roomDetails, RoomTemplate roomTemplate, Teacher teacher) {
         Classroom classroom=teacher.getClassroom();
-        if(classroom==null || !classroom.getClassName().equals(roomDetails.getParticipantKey())){
+        if(classroom==null || !classroom.getClassName().equals(roomDetails.getParticipantKey())){//real teacher
             return new Response<>(null, OpCode.Not_Exist_Classroom);
         }
         Response<ClassroomRoom> classroomResponse=roomRepo.findClassroomRoomForWriteByAlias(roomDetails.getParticipantKey());

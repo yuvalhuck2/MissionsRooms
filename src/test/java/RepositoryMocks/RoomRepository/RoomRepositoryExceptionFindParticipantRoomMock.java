@@ -7,14 +7,15 @@ import missions.room.Domain.Room;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
 import missions.room.Domain.Rooms.StudentRoom;
+import org.springframework.dao.DataAccessResourceFailureException;
 
 import java.util.Optional;
 
-public class RoomCrudRepositoryMock implements RoomCrudRepository {
+public class RoomRepositoryExceptionFindParticipantRoomMock implements RoomCrudRepository {
 
     private DataGenerator dataGenerator;
 
-    public RoomCrudRepositoryMock(DataGenerator dataGenerator) {
+    public RoomRepositoryExceptionFindParticipantRoomMock(DataGenerator dataGenerator) {
         this.dataGenerator = dataGenerator;
     }
 
@@ -30,28 +31,26 @@ public class RoomCrudRepositoryMock implements RoomCrudRepository {
 
     @Override
     public StudentRoom findStudentRoomForWriteByAlias(String alias) {
-        return null;
+        throw new DataAccessResourceFailureException("d");
     }
 
     @Override
     public GroupRoom findGroupRoomForWriteByAlias(String groupName) {
-        return null;
+        throw new DataAccessResourceFailureException("d");
     }
 
     @Override
     public ClassroomRoom findClassroomRoomForWriteByAlias(String classroomName) {
-        return null;
+        throw new DataAccessResourceFailureException("d");
     }
 
     @Override
     public <S extends Room> S save(S s) {
-        if(s instanceof StudentRoom ) {
+        if (s instanceof StudentRoom) {
             return (S) dataGenerator.getRoom(Data.Valid_Student);
-        }
-        else if(s instanceof GroupRoom){
+        } else if (s instanceof GroupRoom) {
             return (S) dataGenerator.getRoom(Data.Valid_Group);
-        }
-        else{
+        } else {
             return (S) dataGenerator.getRoom(Data.Valid_Classroom);
         }
     }

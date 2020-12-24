@@ -8,13 +8,14 @@ import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
 import missions.room.Domain.Rooms.StudentRoom;
 
+import javax.persistence.LockTimeoutException;
 import java.util.Optional;
 
-public class RoomCrudRepositoryMock implements RoomCrudRepository {
+public class RoomRepositoryTimeOutExceptionFindParticipantRoomMock implements RoomCrudRepository {
 
     private DataGenerator dataGenerator;
 
-    public RoomCrudRepositoryMock(DataGenerator dataGenerator) {
+    public RoomRepositoryTimeOutExceptionFindParticipantRoomMock(DataGenerator dataGenerator) {
         this.dataGenerator = dataGenerator;
     }
 
@@ -30,28 +31,26 @@ public class RoomCrudRepositoryMock implements RoomCrudRepository {
 
     @Override
     public StudentRoom findStudentRoomForWriteByAlias(String alias) {
-        return null;
+        throw new LockTimeoutException();
     }
 
     @Override
     public GroupRoom findGroupRoomForWriteByAlias(String groupName) {
-        return null;
+        throw new LockTimeoutException();
     }
 
     @Override
     public ClassroomRoom findClassroomRoomForWriteByAlias(String classroomName) {
-        return null;
+        throw new LockTimeoutException();
     }
 
     @Override
     public <S extends Room> S save(S s) {
-        if(s instanceof StudentRoom ) {
+        if (s instanceof StudentRoom) {
             return (S) dataGenerator.getRoom(Data.Valid_Student);
-        }
-        else if(s instanceof GroupRoom){
+        } else if (s instanceof GroupRoom) {
             return (S) dataGenerator.getRoom(Data.Valid_Group);
-        }
-        else{
+        } else {
             return (S) dataGenerator.getRoom(Data.Valid_Classroom);
         }
     }

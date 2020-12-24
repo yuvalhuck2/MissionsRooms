@@ -7,14 +7,16 @@ import missions.room.Domain.Room;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
 import missions.room.Domain.Rooms.StudentRoom;
+import org.springframework.dao.DataAccessResourceFailureException;
 
 import java.util.Optional;
+import java.util.zip.DataFormatException;
 
-public class RoomCrudRepositoryMock implements RoomCrudRepository {
+public class RoomCrudRepositoryExceptionSave implements RoomCrudRepository {
 
     private DataGenerator dataGenerator;
 
-    public RoomCrudRepositoryMock(DataGenerator dataGenerator) {
+    public RoomCrudRepositoryExceptionSave(DataGenerator dataGenerator) {
         this.dataGenerator = dataGenerator;
     }
 
@@ -45,15 +47,7 @@ public class RoomCrudRepositoryMock implements RoomCrudRepository {
 
     @Override
     public <S extends Room> S save(S s) {
-        if(s instanceof StudentRoom ) {
-            return (S) dataGenerator.getRoom(Data.Valid_Student);
-        }
-        else if(s instanceof GroupRoom){
-            return (S) dataGenerator.getRoom(Data.Valid_Group);
-        }
-        else{
-            return (S) dataGenerator.getRoom(Data.Valid_Classroom);
-        }
+        throw new DataAccessResourceFailureException("d");
     }
 
     @Override
