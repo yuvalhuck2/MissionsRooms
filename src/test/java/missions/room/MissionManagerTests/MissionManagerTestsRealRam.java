@@ -29,6 +29,12 @@ public class MissionManagerTestsRealRam extends MissionManagerTestsAllStubs {
         ram.addApi(apiKey,dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD).getAlias());
     }
 
+    @Override
+    void setupSearch(){
+        super.setupSearch();
+        ram.addApi(apiKey,dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD).getAlias());
+    }
+
     @Test
     void testMissionInvalidWrongApiKey(){
         setUpAddMission();

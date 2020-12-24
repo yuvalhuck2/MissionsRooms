@@ -42,6 +42,19 @@ public class MissionTestsRealRamMissionTeacherTeacherRepoMissionManagerRepo exte
     }
 
     @Override
+    void setupSearch(){
+        try {
+            Field managerRam = TeacherManager.class.getDeclaredField("ram");
+            managerRam.setAccessible(true);
+            ram=(Ram)managerRam.get(missionManager);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            fail();
+        }
+        super.setupSearch();
+
+    }
+
+    @Override
     protected void testAddMissionValidTest() {
         super.testAddMissionValidTest();
         //check the new mission added to the db

@@ -27,8 +27,28 @@ public class TrueLieMission extends Mission {
         this.truthAndLiesSentences = truthAndLiesSentences;
         this.answerTimeForStudent = answerTimeForStudent;
     }
-    
 
-    
-    
+    public int getAnswerTimeForStudent() {
+        return answerTimeForStudent;
+    }
+
+    public void setAnswerTimeForStudent(int answerTimeForStudent) {
+        this.answerTimeForStudent = answerTimeForStudent;
+    }
+
+    public int getFillTimeForStudent() {
+        return fillTimeForStudent;
+    }
+
+    public void setFillTimeForStudent(int fillTimeForStudent) {
+        this.fillTimeForStudent = fillTimeForStudent;
+    }
+
+    public Map<String, TrueLie> getTruthAndLiesSentences() {
+        return truthAndLiesSentences;
+    }
+
+    public void setTruthAndLiesSentences(Map<String, TrueLie> truthAndLiesSentences) {
+        this.truthAndLiesSentences = truthAndLiesSentences;
+    }
 }

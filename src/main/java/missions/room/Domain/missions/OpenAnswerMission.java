@@ -23,4 +23,20 @@ public class OpenAnswerMission extends Mission {
 
     public OpenAnswerMission() {
     }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public SolutionData getSolution() {
+        return solution;
+    }
+
+    public void setSolution(SolutionData solution) {
+        this.solution = solution;
+    }
 }

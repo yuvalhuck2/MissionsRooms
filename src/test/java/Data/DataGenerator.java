@@ -14,6 +14,7 @@ import missions.room.Domain.Student;
 import missions.room.Domain.Teacher;
 import missions.room.Domain.missions.KnownAnswerMission;
 import DomainMocks.TeacherMock;
+import missions.room.Domain.missions.StoryMission;
 
 import java.util.*;
 
@@ -100,6 +101,7 @@ public class DataGenerator {
         missions.put(Data.EMPTY_QUESTION_DETERMINISTIC,new KnownAnswerMission("ddd",types,"","answer"));
         missions.put(Data.NULL_ANSWER_DETERMINISTIC,new KnownAnswerMission("ddd",types,"question",null));
         missions.put(Data.EMPTY_ANSWER_DETERMINISTIC,new KnownAnswerMission("ddd",types,"question",""));
+        missions.put(Data.VALID_STORY,new StoryMission("ggg",types,5,4,"story"));
     }
 
     private void initTeacher() {

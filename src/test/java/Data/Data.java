@@ -44,6 +44,8 @@ public enum Data {
     VALID_WITH_PASSWORD,
     MOCK,
     Valid_Deterministic,
+    VALID_TRIVIA,
+    VALID_STORY,
     NULL_QUESTION,
     EMPTY_QUESTION,
     NULL_ANSWER,

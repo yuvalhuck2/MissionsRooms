@@ -4,10 +4,13 @@ import CrudRepositories.MissionCrudRepository;
 import CrudRepositories.TeacherCrudRepository;
 import Data.Data;
 import Data.DataGenerator;
+import DataAPI.MissionData;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
+import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock2TypesMission;
 import RepositoryMocks.MissionRepository.MissionCrudRepositoryMockExeptionSave;
+import RepositoryMocks.MissionRepository.MissionCrudRepositoryMockNoMissions;
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
 import missions.room.Domain.Mission;
 import missions.room.Domain.Ram;
@@ -22,6 +25,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -69,6 +74,12 @@ public class MissionManagerTestsAllStubs {
         setUpMocks();
         teacherCrudRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
     }
+
+    void setupSearch(){
+        setUpMocks();
+    }
+
+
 
     //------------------------------tests------------------------------------------------//
     @Test
@@ -124,6 +135,80 @@ public class MissionManagerTestsAllStubs {
         assertFalse(response.getValue());
         assertEquals(response.getReason(), opCode);
     }
+
+
+    @Test
+    void testSearchMissionsValid(){
+        setupSearch();
+        teacherCrudRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
+        missionCrudRepository.save(dataGenerator.getMission(Data.Valid_Deterministic));
+        testSearchMissionsValidTest();
+        teacherCrudRepository.delete(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
+        missionCrudRepository.delete(dataGenerator.getMission(Data.Valid_Deterministic));
+    }
+
+    protected void testSearchMissionsValidTest(){
+        Response<List<MissionData>> response=missionManager.searchMissions(apiKey);
+        assertEquals(response.getReason(),OpCode.Success);
+        assertNotNull(response.getValue());
+        assertEquals(response.getValue().size(),1);
+    }
+
+    @Test
+    void testSearchMissionsNull(){
+        setupSearch();
+        teacherCrudRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
+        missionManager =new MissionManager(ram,teacherCrudRepository,new MissionCrudRepositoryMockNoMissions(dataGenerator));
+        testSearchMissionsNullTest();
+        teacherCrudRepository.delete(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
+    }
+
+    protected void testSearchMissionsNullTest(){
+        Response<List<MissionData>> response=missionManager.searchMissions(apiKey);
+        assertEquals(response.getReason(),OpCode.DB_Error);
+        assertNull(response.getValue());
+    }
+
+    @Test
+    void testSearchTwoMissionsDiffTypes(){
+        setupSearch();
+        teacherCrudRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
+        missionCrudRepository.save(dataGenerator.getMission(Data.VALID_STORY));
+        missionCrudRepository.save(dataGenerator.getMission(Data.Valid_Deterministic));
+        missionManager=new MissionManager(ram,teacherCrudRepository,new MissionCrudRepositoryMock2TypesMission(dataGenerator));
+        testSearchTwoMissionsDiffTypesTest();
+        teacherCrudRepository.delete(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
+        missionCrudRepository.delete(dataGenerator.getMission(Data.VALID_STORY));
+        missionCrudRepository.delete(dataGenerator.getMission(Data.Valid_Deterministic));
+    }
+
+    protected void testSearchTwoMissionsDiffTypesTest(){
+        Response<List<MissionData>> response=missionManager.searchMissions(apiKey);
+        assertEquals(response.getReason(),OpCode.Success);
+        assertNotNull(response.getValue());
+        assertEquals(response.getValue().size(),2);
+    }
+
+
+    @Test
+    void testSearchMissionsTeacherNotFoundError(){
+        setupSearch();
+        teacherCrudRepository.save(dataGenerator.getTeacher(Data.WRONG_NAME));
+        missionCrudRepository.save(dataGenerator.getMission(Data.Valid_Deterministic));
+        missionManager =new MissionManager(ram,new TeacherCrudRepositoryMockExceptionFindById(),missionCrudRepository);
+        testSearchMissionsTeacherNotFoundErrorTest();
+        teacherCrudRepository.delete(dataGenerator.getTeacher(Data.WRONG_NAME));
+        missionCrudRepository.delete(dataGenerator.getMission(Data.Valid_Deterministic));
+
+    }
+    protected void testSearchMissionsTeacherNotFoundErrorTest(){
+
+        Response<List<MissionData>> response=missionManager.searchMissions(apiKey);
+        assertEquals(response.getReason(),OpCode.DB_Error);
+        assertNull(response.getValue());
+
+    }
+
 
     //---------------------------------------tearDown-------------------------------------//
     protected void tearDownAddMission() {
