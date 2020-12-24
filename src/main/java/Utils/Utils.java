@@ -1,6 +1,10 @@
 package Utils;
 
 import DataAPI.UserType;
+import javafx.util.Pair;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Utils {
     //TODO update leoback suffix
@@ -47,7 +51,7 @@ public class Utils {
      */
     public static Pair<String,String> getYearAndClassFromEmail(String email){
         String alias = Utils.getAlias(email);
-        String pattern = "lb(..)-(..)";
+        String pattern = "(..)-(..?)";
         // Create a Pattern object
         Pattern r = Pattern.compile(pattern);
 
@@ -59,7 +63,7 @@ public class Utils {
         return null;
     }
 
-    public static int getNextRandom(int number){
+    /*public static int getNextRandom(int number){
         return random.nextInt(number);
-    }
+    }*/
 }

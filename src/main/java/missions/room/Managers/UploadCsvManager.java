@@ -2,8 +2,12 @@ package missions.room.Managers;
 
 import DataAPI.OpCode;
 import DataAPI.Response;
+import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;
 import javafx.util.Pair;
+import missions.room.Domain.ClassGroup;
+import missions.room.Domain.Classroom;
+import missions.room.Domain.GroupType;
 import missions.room.Domain.Student;
 import missions.room.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +45,6 @@ public class UploadCsvManager {
     ////
     public Response<Boolean> uploadCsv(String token, MultipartFile[] CSVs) throws IOException {
         // TODO: check token belongs to IT
-        byte[] test = CSVs[0].getBytes();
         String studentsFile, classesFile, teacherFile;
         try{
             studentsFile = getFileStringByName(CSVs, STUDENT_FILE);
@@ -54,14 +57,15 @@ public class UploadCsvManager {
         }
 
         String studentsRows[] = splitNewLine(studentsFile);
-        String classesRows[] = splitNewLine(classesFile);
+        String[] classesRows = classesFile.split("lb");
         //String teachersRows[] = splitNewLine(teacherFile);
-        List<Student> lst = createClassesFromCsv(studentsRows, classesRows);
+        List<Classroom> classes = createClassesFromCsv(studentsRows, classesRows);
+
         return null;
     }
 
     public String getFileStringByName(MultipartFile[] CSVs, String name) throws IOException {
-        Stream<MultipartFile> filesStream = Arrays.stream(CSVs).filter(x -> x.getName().equals(name));
+        Stream<MultipartFile> filesStream = Arrays.stream(CSVs).filter(x -> x.getOriginalFilename().equals(name));
         Optional<MultipartFile> fileOpt = filesStream.findFirst();
         MultipartFile file =  fileOpt.get();
         return new String(file.getBytes(),StandardCharsets.UTF_8);
@@ -71,26 +75,47 @@ public class UploadCsvManager {
         return true;
     }
 
-    public List<Student> createClassesFromCsv(String studentRows[], String[] classesRows){
+    public List<Classroom> createClassesFromCsv(String studentRows[], String[] classesRows){
         HashMap<String,Student> students = new HashMap<>();
+        List<Classroom> classes = new ArrayList<>();
         for(int i = 1; i < studentRows.length; i++){
             String[] studentData = studentRows[i].split(COMMA_DEL);
             String alias = Utils.getAlias(studentData[EMAIL]);
             students.put(alias, new Student(alias, studentData[FIRST_NAME], studentData[LAST_NAME]));
         }
-        for(int i =1; i < classesRows.length; i++){
-            String[] classData = classesRows[i].split((COMMA_DEL));
-            //Pair<String, String> classPair = Utils.getYearAndClassFromEmail(classData[CLASS_EMAIL]);
-
-
+        for(int i = 1 ; i < classesRows.length; i ++){
+            String[] classData = classesRows[i].split(COMMA_DEL);
+            Pair<String, String> classPair = Utils.getYearAndClassFromEmail(classData[CLASS_EMAIL]);
+            HashMap<String, Student> studentsInClass = getStudentInClass(classData[MEMBERS], students);
+            //TODO: check compatible with members count
+            classes.add(creatClass(studentsInClass, classPair));
         }
-        return null;
+
+        return classes;
+    }
+
+    private HashMap<String, Student> getStudentInClass(String membersString, HashMap<String, Student> students) {
+        String[] membersEmails = membersString.split(NEW_LINE_DEL);
+        HashMap<String, Student> studentsInClass = new HashMap<>();
+        for (int i = 0; i < membersEmails.length; i++){
+            String alias = Utils.getAlias(membersEmails[i]);
+            Student stud = students.get(alias);
+            if ( stud != null){
+                studentsInClass.put(alias, stud);
+            }
+        }
+        return studentsInClass;
     }
 
     private String[] splitNewLine(String csv){
         return csv.split(NEW_LINE_DEL);
     }
 
+    private Classroom creatClass(HashMap<String, Student> studentsInClass, Pair<String, String> className){
+        ClassGroup tempGroup = new ClassGroup(UniqueStringGenerator.getTimeNameCode("GR"), GroupType.C, studentsInClass);
+        Classroom classRoom = new Classroom(className.toString(), new ArrayList<ClassGroup>(Arrays.asList(tempGroup)));
+        return classRoom;
+    }
     private Boolean checkCsvValidity(){
         //TODO
         return true;
