@@ -25,7 +25,23 @@ public class RoomManagerRealRamTeacherTemplateRoom extends RoomManagerRealRamTea
     void testAddRoomInvalidAlreadyExistStudentWithRoom(){
         setUpAddRoom();
         roomCrudRepository.save(dataGenerator.getRoom(Data.Valid_Student));
-        //testAddRoomInValid(Data.Valid_Student,OpCode.Already_Exist_Student);
+        testAddRoomInValid(Data.Valid_Student,OpCode.Already_Exist_Student);
+        tearDownAddRoom();
+    }
+
+    @Test
+    void testAddRoomInvalidAlreadyExistGroupWithRoom(){
+        setUpAddRoom();
+        roomCrudRepository.save(dataGenerator.getRoom(Data.Valid_Group));
+        testAddRoomInValid(Data.Valid_Group,OpCode.Already_Exist_Group);
+        tearDownAddRoom();
+    }
+
+    @Test
+    void testAddRoomInvalidAlreadyExistClassroomWithRoom(){
+        setUpAddRoom();
+        roomCrudRepository.save(dataGenerator.getRoom(Data.Valid_Classroom));
+        testAddRoomInValid(Data.Valid_Classroom,OpCode.Already_Exist_Class);
         tearDownAddRoom();
     }
 
