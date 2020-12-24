@@ -74,13 +74,14 @@ public class RoomRepo {
         }
     }
 
+    @Transactional
     public Response<StudentRoom> findStudentRoomForWriteByAlias(String alias) {
         try{
             return new Response<>(roomCrudRepository.findStudentRoomForWriteByAlias(alias), OpCode.Success);
         }
-        catch(InvalidDataAccessApiUsageException e){
-            return new Response<>(null, OpCode.Success);
-        }
+//        catch(InvalidDataAccessApiUsageException e){
+//            return new Response<>(null, OpCode.Success);
+//        }
         catch(LockTimeoutException e){
             return new Response<>(null,OpCode.TimeOut);
         }
@@ -89,13 +90,14 @@ public class RoomRepo {
         }
     }
 
+    @Transactional
     public Response<GroupRoom> findGroupRoomForWriteByAlias(String groupName) {
         try{
             return new Response<>(roomCrudRepository.findGroupRoomForWriteByAlias(groupName), OpCode.Success);
         }
-        catch(InvalidDataAccessApiUsageException e){
-            return new Response<>(null, OpCode.Success);
-        }
+//        catch(InvalidDataAccessApiUsageException e){
+//            return new Response<>(null, OpCode.Success);
+//        }
         catch(LockTimeoutException e){
             return new Response<>(null,OpCode.TimeOut);
         }
@@ -104,13 +106,14 @@ public class RoomRepo {
         }
     }
 
+    @Transactional
     public Response<ClassroomRoom> findClassroomRoomForWriteByAlias(String classroomName) {
         try{
             return new Response<>(roomCrudRepository.findClassroomRoomForWriteByAlias(classroomName), OpCode.Success);
         }
-        catch(InvalidDataAccessApiUsageException e){
-            return new Response<>(null, OpCode.Success);
-        }
+//        catch(InvalidDataAccessApiUsageException e){
+//            return new Response<>(null, OpCode.Success);
+//        }
         catch(LockTimeoutException e){
             return new Response<>(null,OpCode.TimeOut);
         }
