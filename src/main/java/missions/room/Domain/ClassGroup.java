@@ -1,5 +1,10 @@
 package missions.room.Domain;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.Map;
 
@@ -7,13 +12,15 @@ import java.util.Map;
 public class ClassGroup {
 
     @Id
+    @Column(nullable = true)
     private String groupName;
 
     @Enumerated(EnumType.ORDINAL)
     private GroupType groupType;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @MapKeyColumn(name = "alias")
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @MapKey
     @JoinColumn(name="classgroup",referencedColumnName = "groupName")
     private Map<String, Student> students;
 

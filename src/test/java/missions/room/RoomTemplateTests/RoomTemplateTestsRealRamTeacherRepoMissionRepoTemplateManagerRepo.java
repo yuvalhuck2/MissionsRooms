@@ -1,6 +1,7 @@
 package missions.room.RoomTemplateTests;
 
 import CrudRepositories.RoomTemplateCrudRepository;
+import CrudRepositories.TeacherCrudRepository;
 import Data.Data;
 import DataAPI.OpCode;
 import DataAPI.RoomTemplateDetailsData;
@@ -21,6 +22,7 @@ public class RoomTemplateTestsRealRamTeacherRepoMissionRepoTemplateManagerRepo e
 
     @Autowired
     protected RoomTemplateCrudRepository roomTemplateCrudRepository2;
+
 
     @Override
     void setUpMocks() {
