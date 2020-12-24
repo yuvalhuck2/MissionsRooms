@@ -3,6 +3,7 @@ package missions.room.Repo;
 import CrudRepositories.TeacherCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
+import missions.room.Domain.Classroom;
 import missions.room.Domain.SchoolUser;
 import missions.room.Domain.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.LockTimeoutException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -59,6 +61,15 @@ public class TeacherRepo {
         }
         catch(Exception e){
             return new Response<>(null,OpCode.DB_Error);
+        }
+    }
+
+    public Response<Boolean> saveAll(List<Teacher> teachers) {
+        try{
+            teacherCrudRepository.saveAll(teachers);
+            return new Response<Boolean>(true, OpCode.Success);
+        } catch (Exception e) {
+            return new Response<>(false,OpCode.DB_Error);
         }
     }
 

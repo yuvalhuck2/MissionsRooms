@@ -51,7 +51,7 @@ public class Utils {
      */
     public static Pair<String,String> getYearAndClassFromEmail(String email){
         String alias = Utils.getAlias(email);
-        String pattern = "(..)-(..?)";
+        String pattern = "(.)-(..?)";
         // Create a Pattern object
         Pattern r = Pattern.compile(pattern);
 
@@ -62,6 +62,7 @@ public class Utils {
         }
         return null;
     }
+
 
     /*public static int getNextRandom(int number){
         return random.nextInt(number);
