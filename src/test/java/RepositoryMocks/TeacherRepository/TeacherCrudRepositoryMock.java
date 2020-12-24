@@ -7,6 +7,8 @@ import missions.room.Domain.Teacher;
 
 import java.util.Optional;
 
+import static Data.Data.VALID_WITH_CLASSROOM;
+
 public class TeacherCrudRepositoryMock implements TeacherCrudRepository {
 
     private DataGenerator dataGenerator;
@@ -37,7 +39,7 @@ public class TeacherCrudRepositoryMock implements TeacherCrudRepository {
 
     @Override
     public Optional<Teacher> findById(String s) {
-        return Optional.ofNullable(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
+        return Optional.ofNullable(dataGenerator.getTeacher(VALID_WITH_CLASSROOM));
     }
 
     @Override

@@ -1,11 +1,13 @@
 package missions.room.RoomTemplateTests;
 
 import CrudRepositories.RoomTemplateCrudRepository;
+import CrudRepositories.TeacherCrudRepository;
 import Data.Data;
 import DataAPI.OpCode;
 import DataAPI.RoomTemplateDetailsData;
 import missions.room.Domain.RoomTemplate;
 import missions.room.Domain.missions.KnownAnswerMission;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -18,6 +20,7 @@ public class RoomTemplateTestsRealRamTeacherRepoMissionRepoTemplateManagerRepo e
 
     @Autowired
     protected RoomTemplateCrudRepository roomTemplateCrudRepository2;
+
 
     @Override
     void setUpMocks() {
@@ -52,4 +55,6 @@ public class RoomTemplateTestsRealRamTeacherRepoMissionRepoTemplateManagerRepo e
         super.tearDownAddRoomTemplate();
         roomTemplateCrudRepository2.deleteAll();
     }
+
+
 }

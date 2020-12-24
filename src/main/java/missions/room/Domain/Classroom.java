@@ -1,5 +1,8 @@
 package missions.room.Domain;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +14,7 @@ public class Classroom{
     @Id
     private String className;
 
-    //@LazyCollection(LazyCollectionOption.FALSE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="classroom",referencedColumnName = "className")
     private List<ClassGroup> classGroups;

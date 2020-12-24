@@ -1,5 +1,8 @@
 package missions.room.Domain;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.util.Map;
 
@@ -12,6 +15,7 @@ public class ClassGroup {
     @Enumerated(EnumType.ORDINAL)
     private GroupType groupType;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.ALL)
     @MapKeyColumn(name = "alias")
     @JoinColumn(name="classgroup",referencedColumnName = "groupName")

@@ -1,13 +1,8 @@
 package Data;
 
-import DataAPI.RegisterDetailsData;
-import DataAPI.RoomTemplateDetailsData;
-import DataAPI.RoomType;
-import DataAPI.UserType;
-import missions.room.Domain.Mission;
-import missions.room.Domain.RoomTemplate;
-import missions.room.Domain.Student;
-import missions.room.Domain.Teacher;
+import DataAPI.*;
+import missions.room.Domain.*;
+import missions.room.Domain.Rooms.StudentRoom;
 import missions.room.Domain.missions.KnownAnswerMission;
 import DomainMocks.TeacherMock;
 
@@ -22,15 +17,53 @@ public class DataGenerator {
     private HashMap<Data, Mission> missions;
     private HashMap<Data, RoomTemplate> roomTemplates;
     private HashMap<Data, RoomTemplateDetailsData> roomTemplatesDatas;
+    private HashMap<Data, Room> roomsMap;
+    private HashMap<Data,newRoomDetails> newRoomDetailsMap;
+    private HashMap<Data,Classroom> classRoomMap;
+    private HashMap<Data,ClassGroup> classGroupMap;
 
     public DataGenerator() {
         initStudents();
+        initGroups();
+        initClassrooms();
         initRegisterDetailsDatas();
         initVerificationCodes();
         initTeacher();
         initMissions();
         initRoomTemplateDatas();
         initRoomTemplates();
+        initRooms();
+        initRoomDetailsData();
+    }
+
+    private void initClassrooms() {
+        classRoomMap=new HashMap<Data, Classroom>();
+        Classroom valid=new Classroom("class",classGroupMap.get(Data.Empty_Students),classGroupMap.get(Data.Valid_Group));
+        classRoomMap.put(Data.Valid_Classrom,valid);
+    }
+
+    private void initGroups() {
+        classGroupMap=new HashMap<Data, ClassGroup>();
+        HashMap<String,Student> studentHashMap=new HashMap<>();
+        studentHashMap.put(students.get(Data.VALID).getAlias(),students.get(Data.VALID));
+        classGroupMap.put(Data.Valid_Group,new ClassGroup("g2",studentHashMap));
+        classGroupMap.put(Data.Empty_Students,new ClassGroup("g1",new HashMap<>()));
+    }
+
+    private void initRoomDetailsData() {
+        newRoomDetailsMap =new HashMap<Data, newRoomDetails>();
+        String participantStudent=students.get(Data.VALID).getAlias();
+        String teacher=teachers.get(Data.VALID_WITH_PASSWORD).getAlias();
+        String roomTemplateID=roomTemplates.get(Data.VALID).getRoomTemplateId();
+        newRoomDetails roomDetailsDataStudent=new newRoomDetails(participantStudent,RoomType.Personal,"name"
+                ,teacher,roomTemplateID,3);
+        newRoomDetailsMap.put(Data.Valid_Student,roomDetailsDataStudent);
+    }
+
+    private void initRooms() {
+        roomsMap=new HashMap<Data, Room>();
+        Room studentRoom=new StudentRoom("roomId","",students.get(Data.VALID),teachers.get(Data.VALID),roomTemplates.get(Data.VALID),4);
+        roomsMap.put(Data.Valid_Student,studentRoom);
     }
 
     private void initRoomTemplateDatas() {
@@ -81,6 +114,8 @@ public class DataGenerator {
     private void initTeacher() {
         teachers=new HashMap<Data, Teacher>();
         teachers.put(Data.VALID_WITH_PASSWORD,new Teacher("NoAlasTeacher","Avi","Ron","1234"));
+        teachers.put(Data.VALID_WITH_CLASSROOM,new Teacher("NoAlasTeacher","Avi","Ron",
+                classRoomMap.get(Data.Valid_Classrom),GroupType.BOTH,"1234"));
         teachers.put(Data.MOCK,new TeacherMock("NoAlasTeacher","Avi","Ron","1234"));
         teachers.put(Data.WRONG_NAME,new Teacher("Wrong","Avi","Ron","1234"));
     }
@@ -139,5 +174,13 @@ public class DataGenerator {
 
     public RoomTemplate getRoomTemplate(Data data){
         return roomTemplates.get(Data.VALID);
+    }
+
+    public Room getRoom(Data data) {
+        return roomsMap.get(data);
+    }
+
+    public newRoomDetails getNewRoomDetails(Data data) {
+        return newRoomDetailsMap.get(data);
     }
 }

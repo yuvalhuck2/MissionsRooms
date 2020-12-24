@@ -1,12 +1,14 @@
 package missions.room.MissionManagerTests;
 
 import CrudRepositories.MissionCrudRepository;
+import CrudRepositories.TeacherCrudRepository;
 import Data.Data;
 import DataAPI.OpCode;
 import missions.room.Domain.Mission;
 import missions.room.Domain.Ram;
 import missions.room.Domain.missions.KnownAnswerMission;
 import missions.room.Managers.TeacherManager;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -59,4 +61,6 @@ public class MissionTestsRealRamMissionTeacherTeacherRepoMissionManagerRepo exte
         //check no new mission added to the db
         assertFalse(missionCrudRepositoryNotMock.findAll().iterator().hasNext());
     }
+
+
 }
