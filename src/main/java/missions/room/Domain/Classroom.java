@@ -2,6 +2,8 @@ package missions.room.Domain;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,9 +16,10 @@ public class Classroom{
     @Id
     private String className;
 
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(cascade = CascadeType.ALL)
+    //@LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name="classroom",referencedColumnName = "className")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ClassGroup> classGroups;
 
     public Classroom() {

@@ -2,6 +2,8 @@ package Data;
 
 import DataAPI.*;
 import missions.room.Domain.*;
+import missions.room.Domain.Rooms.ClassroomRoom;
+import missions.room.Domain.Rooms.GroupRoom;
 import missions.room.Domain.Rooms.StudentRoom;
 import missions.room.Domain.missions.KnownAnswerMission;
 import DomainMocks.TeacherMock;
@@ -55,7 +57,7 @@ public class DataGenerator {
         String student=students.get(Data.VALID).getAlias();
         String group=classGroupMap.get(Data.Valid_Group).getGroupName();
         String classroom =classRoomMap.get(Data.Valid_Classroom).getClassName();
-        String teacher=teachers.get(Data.VALID_WITH_PASSWORD).getAlias();
+        String teacher=teachers.get(Data.VALID_WITH_CLASSROOM).getAlias();
         String roomTemplateStudent=roomTemplates.get(Data.VALID).getRoomTemplateId();
         String roomTemplateGroup=roomTemplates.get(Data.Valid_Group).getRoomTemplateId();
         String roomTemplateClassroom=roomTemplates.get(Data.Valid_Classroom).getRoomTemplateId();
@@ -67,14 +69,20 @@ public class DataGenerator {
         newRoomDetailsMap.put(Data.NULL,null);
         newRoomDetailsMap.put(Data.NEG_AMOUNT,new newRoomDetails(student,RoomType.Personal,"name",teacher,roomTemplateStudent,-1));
         newRoomDetailsMap.put(Data.TYPE_NOT_MATCH,new newRoomDetails(group,RoomType.Group,"name",teacher,roomTemplateStudent,3));
+        newRoomDetailsMap.put(Data.NOT_EXIST_CLASSROOM,new newRoomDetails("Wrong",RoomType.Class,"name",teacher,roomTemplateClassroom,3));
+        newRoomDetailsMap.put(Data.NOT_EXIST_CLASSGROUP,new newRoomDetails("Wrong",RoomType.Group,"name",teacher,roomTemplateGroup,3));
+        newRoomDetailsMap.put(Data.NOT_EXIST_STUDENT,new newRoomDetails("Wrong",RoomType.Personal,"name",teacher,roomTemplateStudent,3));
+        newRoomDetailsMap.put(Data.NOT_EXIST_TEMPLATE,new newRoomDetails(student,RoomType.Personal,"name",teacher,roomTemplateStudent+"1",3));
     }
 
     private void initRooms() {
         roomsMap=new HashMap<Data, Room>();
-        Room studentRoom=new StudentRoom("roomId","name",students.get(Data.VALID),teachers.get(Data.VALID),roomTemplates.get(Data.VALID),4);
+        Room studentRoom=new StudentRoom("roomId","name",students.get(Data.VALID),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.VALID),3);
         roomsMap.put(Data.Valid_Student,studentRoom);
-        roomsMap.put(Data.NULL_NAME,new StudentRoom("roomId",null,students.get(Data.VALID),teachers.get(Data.VALID),roomTemplates.get(Data.VALID),4));
-        roomsMap.put(Data.EMPTY_NAME,new StudentRoom("roomId","",students.get(Data.VALID),teachers.get(Data.VALID),roomTemplates.get(Data.VALID),4));
+        roomsMap.put(Data.Valid_Group,new GroupRoom("roomId1","name",classGroupMap.get(Data.Valid_Group),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.Valid_Group),3));
+        roomsMap.put(Data.Valid_Classroom,new ClassroomRoom("roomId2","name",classRoomMap.get(Data.Valid_Classroom),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.Valid_Classroom),3));
+        roomsMap.put(Data.NULL_NAME,new StudentRoom("roomId",null,students.get(Data.VALID),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.VALID),3));
+        roomsMap.put(Data.EMPTY_NAME,new StudentRoom("roomId","",students.get(Data.VALID),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.VALID),3));
     }
 
     private void initRoomTemplateDatas() {

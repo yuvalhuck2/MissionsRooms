@@ -38,7 +38,7 @@ public class RoomManager extends TeacherManager {
 
     public Response<Boolean> createRoom(String apiKey, newRoomDetails roomDetails){
         Response<Teacher> checkTeacher=checkTeacher(apiKey);
-        if(checkTeacher.getReason()!=OpCode.Success){// teacher real
+        if(checkTeacher.getReason()!=OpCode.Success){
             return new Response<>(false,checkTeacher.getReason());
         }
         Response<Room> roomResponse= validateDetails(roomDetails,checkTeacher.getValue());
@@ -47,7 +47,7 @@ public class RoomManager extends TeacherManager {
 
     private Response<Room> saveRoom(Room room) {
         Response<Room> roomResponse=roomRepo.save(room);
-        if(roomResponse.getReason()!= OpCode.Success){//roomReal and exception
+        if(roomResponse.getReason()!= OpCode.Success){
             return new Response<>(null,roomResponse.getReason());
         }
 
@@ -55,13 +55,13 @@ public class RoomManager extends TeacherManager {
     }
 
     private Response<Room> validateDetails(newRoomDetails roomDetails, Teacher teacher) {
-        if(roomDetails==null){/****/
+        if(roomDetails==null){
             return new Response<>(null,OpCode.Null_Error);
         }
-        if(!Utils.checkString(roomDetails.getRoomName())){/****/
+        if(!Utils.checkString(roomDetails.getRoomName())){
             return new Response<>(null,OpCode.Wrong_Name);
         }
-        if(roomDetails.getBonus()<0){/****/
+        if(roomDetails.getBonus()<0){
             return new Response<>(null,OpCode.Wrong_Bonus);
         }
         roomDetails.setRoomId(UniqueStringGenerator.getTimeNameCode("room"));
@@ -71,14 +71,14 @@ public class RoomManager extends TeacherManager {
     @Transactional
     protected Response<Room> saveRoomByType(newRoomDetails roomDetails, Teacher teacher) {
         Response<RoomTemplate> roomTemplateResponse=roomTemplateRepo.findRoomTemplateById(roomDetails.getRoomTemplateId());
-        if(roomTemplateResponse.getReason()!=OpCode.Success){//template real
+        if(roomTemplateResponse.getReason()!=OpCode.Success){
             return new Response<>(null,roomTemplateResponse.getReason());
         }
         RoomTemplate roomTemplate=roomTemplateResponse.getValue();
-        if(roomTemplate==null){//template real
+        if(roomTemplate==null){
             return new Response<>(null,OpCode.Not_Exist_Template);
         }
-        if(roomTemplate.getType()!=roomDetails.getRoomType()){/****/
+        if(roomTemplate.getType()!=roomDetails.getRoomType()){
             return new Response<>(null,OpCode.Type_Not_Match);
         }
         switch(roomDetails.getRoomType()){
@@ -101,7 +101,7 @@ public class RoomManager extends TeacherManager {
         }
         Response<ClassroomRoom> classroomResponse=roomRepo.findClassroomRoomForWriteByAlias(roomDetails.getParticipantKey());
         if(classroomResponse.getValue()!=null){//if the group is already in a room personal type
-            return new Response<>(null,OpCode.Already_Exist);
+            return new Response<>(null,OpCode.Already_Exist_Class);
         }
         if(classroomResponse.getReason()!=OpCode.Success){//check if there is db error or lock error
             return new Response<>(null,classroomResponse.getReason());
@@ -115,9 +115,9 @@ public class RoomManager extends TeacherManager {
         if(group==null){
             return new Response<>(null, OpCode.Not_Exist_Group);
         }
-        Response<GroupRoom> groupRoomResponse=roomRepo.findGroupRoomForWriteByAlias(group.getGroupName());
+        Response<GroupRoom> groupRoomResponse=roomRepo.findGroupRoomForWriteByAlias(group.getGroupName());//all real
         if(groupRoomResponse.getValue()!=null){//if the group is already in a room personal type
-            return new Response<>(null,OpCode.Already_Exist);
+            return new Response<>(null,OpCode.Already_Exist_Group);
         }
         if(groupRoomResponse.getReason()!=OpCode.Success){//check if there is db error or lock error
             return new Response<>(null,groupRoomResponse.getReason());
@@ -133,7 +133,7 @@ public class RoomManager extends TeacherManager {
         }
         Response<StudentRoom> studentRoomResponse=roomRepo.findStudentRoomForWriteByAlias(student.getAlias());
         if(studentRoomResponse.getValue()!=null){//if the student is already in a room personal type
-            return new Response<>(null,OpCode.Already_Exist);
+            return new Response<>(null,OpCode.Already_Exist_Student);
         }
         if(studentRoomResponse.getReason()!=OpCode.Success){//check if there is db error or lock error
             return new Response<>(null,studentRoomResponse.getReason());

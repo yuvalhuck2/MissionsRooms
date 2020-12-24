@@ -71,7 +71,7 @@ public class RoomManagerTestsAllStubs {
     void setUpAddRoom(){
         setUpMocks();
         classroomRepository.save(dataGenerator.getClassroom(Data.Valid_Classroom));
-        teacherCrudRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
+        teacherCrudRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM));
         missionCrudRepository.save(dataGenerator.getMission(Data.Valid_Deterministic));
         roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.VALID));
         roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.Valid_Group));
@@ -142,10 +142,30 @@ public class RoomManagerTestsAllStubs {
     }
 
     @Test
+    void testAddRoomInvalidClassName(){
+        setUpAddRoom();
+        testAddRoomInValid(Data.NOT_EXIST_CLASSROOM,OpCode.Not_Exist_Classroom);
+        tearDownAddRoom();
+    }
+
+    @Test
+    void testAddRoomInvalidGroupName(){
+        setUpAddRoom();
+        testAddRoomInValid(Data.NOT_EXIST_CLASSGROUP,OpCode.Not_Exist_Group);
+        tearDownAddRoom();
+    }
+
+    @Test
+    void testAddRoomInvalidStudentName(){
+        setUpAddRoom();
+        testAddRoomInValid(Data.NOT_EXIST_STUDENT,OpCode.Not_Exist_Student);
+        tearDownAddRoom();
+    }
+
+    @Test
     void testAddRoomExceptionTeacherRepo(){
         setUpAddRoom();
-        teacherCrudRepository=new TeacherCrudRepositoryMockExceptionFindById();
-        roomManger=new RoomManager(ram,teacherCrudRepository,roomCrudRepository,roomTemplateCrudRepository);
+        roomManger=new RoomManager(ram,new TeacherCrudRepositoryMockExceptionFindById(),roomCrudRepository,roomTemplateCrudRepository);
         testAddRoomInValid(Data.Valid_Student,OpCode.DB_Error);
         tearDownAddRoom();
     }
@@ -153,8 +173,7 @@ public class RoomManagerTestsAllStubs {
     @Test
     void testAddRoomExceptionRoomTemplateRepo(){
         setUpAddRoom();
-        roomTemplateCrudRepository=new RoomTemplateCrudRepositoryExceptionFindByIdMock(dataGenerator);
-        roomManger=new RoomManager(ram,teacherCrudRepository,roomCrudRepository,roomTemplateCrudRepository);
+        roomManger=new RoomManager(ram,teacherCrudRepository,roomCrudRepository,new RoomTemplateCrudRepositoryExceptionFindByIdMock(dataGenerator));
         testAddRoomInValid(Data.Valid_Student,OpCode.DB_Error);
         tearDownAddRoom();
     }
@@ -162,8 +181,7 @@ public class RoomManagerTestsAllStubs {
     @Test
     void testAddRoomExceptionFindStudentRoomRoomRepo(){
         setUpAddRoom();
-        roomCrudRepository=new RoomRepositoryExceptionFindParticipantRoomMock(dataGenerator);
-        roomManger=new RoomManager(ram,teacherCrudRepository,roomCrudRepository,roomTemplateCrudRepository);
+        roomManger=new RoomManager(ram,teacherCrudRepository,new RoomRepositoryExceptionFindParticipantRoomMock(dataGenerator),roomTemplateCrudRepository);
         testAddRoomInValid(Data.Valid_Student,OpCode.DB_Error);
         tearDownAddRoom();
     }
@@ -171,8 +189,7 @@ public class RoomManagerTestsAllStubs {
     @Test
     void testAddRoomTimeOutExceptionFindStudentRoomRoomRepo(){
         setUpAddRoom();
-        roomCrudRepository=new RoomRepositoryTimeOutExceptionFindParticipantRoomMock(dataGenerator);
-        roomManger=new RoomManager(ram,teacherCrudRepository,roomCrudRepository,roomTemplateCrudRepository);
+        roomManger=new RoomManager(ram,teacherCrudRepository,new RoomRepositoryTimeOutExceptionFindParticipantRoomMock(dataGenerator),roomTemplateCrudRepository);
         testAddRoomInValid(Data.Valid_Student,OpCode.TimeOut);
         tearDownAddRoom();
     }
@@ -180,8 +197,7 @@ public class RoomManagerTestsAllStubs {
     @Test
     void testAddRoomExceptionFindGroupRoomRoomRepo(){
         setUpAddRoom();
-        roomCrudRepository=new RoomRepositoryExceptionFindParticipantRoomMock(dataGenerator);
-        roomManger=new RoomManager(ram,teacherCrudRepository,roomCrudRepository,roomTemplateCrudRepository);
+        roomManger=new RoomManager(ram,teacherCrudRepository,new RoomRepositoryExceptionFindParticipantRoomMock(dataGenerator),roomTemplateCrudRepository);
         testAddRoomInValid(Data.Valid_Group,OpCode.DB_Error);
         tearDownAddRoom();
     }
@@ -189,8 +205,7 @@ public class RoomManagerTestsAllStubs {
     @Test
     void testAddRoomTimeOutExceptionFindGroupRoomRoomRepo(){
         setUpAddRoom();
-        roomCrudRepository=new RoomRepositoryTimeOutExceptionFindParticipantRoomMock(dataGenerator);
-        roomManger=new RoomManager(ram,teacherCrudRepository,roomCrudRepository,roomTemplateCrudRepository);
+        roomManger=new RoomManager(ram,teacherCrudRepository,new RoomRepositoryTimeOutExceptionFindParticipantRoomMock(dataGenerator),roomTemplateCrudRepository);
         testAddRoomInValid(Data.Valid_Group,OpCode.TimeOut);
         tearDownAddRoom();
     }
@@ -198,8 +213,7 @@ public class RoomManagerTestsAllStubs {
     @Test
     void testAddRoomExceptionFindClassroomRoomRoomRepo(){
         setUpAddRoom();
-        roomCrudRepository=new RoomRepositoryExceptionFindParticipantRoomMock(dataGenerator);
-        roomManger=new RoomManager(ram,teacherCrudRepository,roomCrudRepository,roomTemplateCrudRepository);
+        roomManger=new RoomManager(ram,teacherCrudRepository,new RoomRepositoryExceptionFindParticipantRoomMock(dataGenerator),roomTemplateCrudRepository);
         testAddRoomInValid(Data.Valid_Classroom,OpCode.DB_Error);
         tearDownAddRoom();
     }
@@ -207,8 +221,7 @@ public class RoomManagerTestsAllStubs {
     @Test
     void testAddRoomTimeOutExceptionFindClassroomRoomRoomRepo(){
         setUpAddRoom();
-        roomCrudRepository=new RoomRepositoryTimeOutExceptionFindParticipantRoomMock(dataGenerator);
-        roomManger=new RoomManager(ram,teacherCrudRepository,roomCrudRepository,roomTemplateCrudRepository);
+        roomManger=new RoomManager(ram,teacherCrudRepository,new RoomRepositoryTimeOutExceptionFindParticipantRoomMock(dataGenerator),roomTemplateCrudRepository);
         testAddRoomInValid(Data.Valid_Classroom,OpCode.TimeOut);
         tearDownAddRoom();
     }
@@ -216,8 +229,7 @@ public class RoomManagerTestsAllStubs {
     @Test
     void testAddRoomExceptionSaveRoomRepo(){
         setUpAddRoom();
-        roomCrudRepository=new RoomCrudRepositoryExceptionSave(dataGenerator);
-        roomManger=new RoomManager(ram,teacherCrudRepository,roomCrudRepository,roomTemplateCrudRepository);
+        roomManger=new RoomManager(ram,teacherCrudRepository,new RoomCrudRepositoryExceptionSave(dataGenerator),roomTemplateCrudRepository);
         testAddRoomInValid(Data.Valid_Student,OpCode.DB_Error);
         tearDownAddRoom();
     }

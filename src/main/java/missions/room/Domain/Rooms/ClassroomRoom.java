@@ -28,4 +28,8 @@ public class ClassroomRoom extends Room {
         super(roomId,roomName,teacher,roomTemplate,bonus);
         this.participant = participant;
     }
+
+    public Classroom getParticipant() {
+        return participant;
+    }
 }
