@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import static org.junit.Assert.*;
 
 @Service
-public class AddKnownAnswerMissionTestsAllStubs {
+public class AddMissionTestsAllStubs {
 
     @Autowired
     protected TeacherCrudRepository teacherCrudRepository;

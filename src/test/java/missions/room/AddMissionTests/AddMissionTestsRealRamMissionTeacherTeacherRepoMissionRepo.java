@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
-@TestPropertySource(locations = {"classpath:application-test.properties"})
+@TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
 public class AddMissionTestsRealRamMissionTeacherTeacherRepoMissionRepo extends AddMissionTestsRealRamMissionTeacherRepo {
 
     @Autowired
@@ -33,11 +33,23 @@ public class AddMissionTestsRealRamMissionTeacherTeacherRepoMissionRepo extends 
     }
 
     @Override
+    void setUpAddMission(){
+        try {
+            Field managerRam = AddMissionManager.class.getDeclaredField("ram");
+            managerRam.setAccessible(true);
+            ram=(Ram)managerRam.get(addMissionManager);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            fail();
+        }
+        super.setUpAddMission();
+    }
+
+    @Override
     protected void testAddMissionValidTest() {
         super.testAddMissionValidTest();
         //check the new mission added to the db
         KnownAnswerMission dataMission= (KnownAnswerMission) dataGenerator.getMission(Data.Valid_Deterministic);
-        KnownAnswerMission mission= (KnownAnswerMission) missionCrudRepository.findAll().iterator().next();
+        KnownAnswerMission mission= (KnownAnswerMission) missionCrudRepositoryNotMock.findAll().iterator().next();
         assertEquals(mission.getMissionTypes().iterator().next(),dataMission.getMissionTypes().iterator().next());
         assertEquals(mission.getQuestion(),dataMission.getQuestion());
         assertEquals(mission.getRealAnswer(),dataMission.getRealAnswer());

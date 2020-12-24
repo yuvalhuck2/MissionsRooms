@@ -3,10 +3,11 @@ package DataAPI;
 import java.util.List;
 
 public class RoomTemplateDetailsData {
-    List<String> missions;
-    String name;
-    int minimalMissionsToPass;
-    RoomType type;
+    private String id;
+    private List<String> missions;
+    private String name;
+    private int minimalMissionsToPass;
+    private RoomType type;
 
     public RoomTemplateDetailsData(List<String> missions, String name, int minimalMissionsToPass, RoomType type) {
         this.missions = missions;
@@ -29,5 +30,13 @@ public class RoomTemplateDetailsData {
 
     public RoomType getType() {
         return type;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
