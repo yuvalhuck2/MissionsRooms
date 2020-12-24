@@ -78,7 +78,7 @@ public class LoginManagerTestsAllStubs {
         Pair<String,String> details=dataGenerator.getLoginDetails(Data.VALID_STUDENT);
         Response<String> response= loginManager.login(details.getKey(),details.getValue());
         assertNotEquals(response.getValue(),null);
-        assertEquals(response.getReason(), OpCode.Success);
+        assertEquals(response.getReason(), OpCode.Student);
 
     }
 
@@ -93,7 +93,7 @@ public class LoginManagerTestsAllStubs {
         Pair<String,String> details=dataGenerator.getLoginDetails(Data.VALID_TEACHER);
         Response<String> response= loginManager.login(details.getKey(),details.getValue());
         assertNotEquals(response.getValue(),null);
-        assertEquals(response.getReason(), OpCode.Success);
+        assertEquals(response.getReason(), OpCode.Teacher);
 
     }
 
@@ -108,7 +108,7 @@ public class LoginManagerTestsAllStubs {
         Pair<String,String> details=dataGenerator.getLoginDetails(Data.VALID_IT);
         Response<String> response= loginManager.login(details.getKey(),details.getValue());
         assertNotEquals(response.getValue(),null);
-        assertEquals(response.getReason(), OpCode.Success);
+        assertEquals(response.getReason(), OpCode.IT);
 
     }
 
@@ -122,7 +122,7 @@ public class LoginManagerTestsAllStubs {
     protected void testLoginNullAliasTest(){
         Pair<String,String> details=dataGenerator.getLoginDetails(Data.NULL_ALIAS);
         Response<String> response= loginManager.login(details.getKey(),details.getValue());
-        assertEquals(response.getValue(),null);
+        assertNull(response.getValue());
         assertEquals(response.getReason(), OpCode.Wrong_Alias);
 
     }
@@ -137,7 +137,7 @@ public class LoginManagerTestsAllStubs {
     protected void testLoginNullPasswordTest(){
         Pair<String,String> details=dataGenerator.getLoginDetails(Data.NULL_PASSWORD);
         Response<String> response= loginManager.login(details.getKey(),details.getValue());
-        assertEquals(response.getValue(),null);
+        assertNull(response.getValue());
         assertEquals(response.getReason(), OpCode.Wrong_Password);
 
     }
@@ -152,7 +152,7 @@ public class LoginManagerTestsAllStubs {
     protected void testLoginEmptyAliasTest(){
         Pair<String,String> details=dataGenerator.getLoginDetails(Data.EMPTY_ALIAS);
         Response<String> response= loginManager.login(details.getKey(),details.getValue());
-        assertEquals(response.getValue(),null);
+        assertNull(response.getValue());
         assertEquals(response.getReason(), OpCode.Wrong_Alias);
 
     }
@@ -167,7 +167,7 @@ public class LoginManagerTestsAllStubs {
     protected void testLoginEmptyPasswordTest(){
         Pair<String,String> details=dataGenerator.getLoginDetails(Data.EMPTY_PASSWORD);
         Response<String> response= loginManager.login(details.getKey(),details.getValue());
-        assertEquals(response.getValue(),null);
+        assertNull(response.getValue());
         assertEquals(response.getReason(), OpCode.Wrong_Password);
 
     }
@@ -182,7 +182,7 @@ public class LoginManagerTestsAllStubs {
     protected void testLoginNotExistAliasTest(){
         Pair<String,String> details=dataGenerator.getLoginDetails(Data.NOT_EXIST_ALIAS);
         Response<String> response= loginManager.login(details.getKey(),details.getValue());
-        assertEquals(response.getValue(),null);
+        assertNull(response.getValue());
         assertEquals(response.getReason(), OpCode.Not_Exist);
 
     }
@@ -197,7 +197,7 @@ public class LoginManagerTestsAllStubs {
     protected void testLoginWrongPasswordTest(){
         Pair<String,String> details=dataGenerator.getLoginDetails(Data.WRONG_PASSWORD);
         Response<String> response= loginManager.login(details.getKey(),details.getValue());
-        assertEquals(response.getValue(),null);
+        assertNull(response.getValue());
         assertEquals(response.getReason(), OpCode.Wrong_Password);
 
     }

@@ -1,5 +1,7 @@
 package missions.room.Domain;
 
+import DataAPI.OpCode;
+
 import javax.persistence.Entity;
 
 @Entity
@@ -15,5 +17,10 @@ public class Supervisor extends Teacher {
     @Override
     public boolean isSupervisor() {
         return true;
+    }
+
+    @Override
+    public OpCode getOpcode() {
+        return OpCode.Supervisor;
     }
 }
