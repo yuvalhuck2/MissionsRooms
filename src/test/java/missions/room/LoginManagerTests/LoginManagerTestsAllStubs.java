@@ -5,12 +5,14 @@ import Data.Data;
 import Data.DataGenerator;
 import DataAPI.OpCode;
 import DataAPI.Response;
+import ExternalSystemMocks.MailSenderTrueMock;
+import ExternalSystems.MailSender;
 import RepositoryMocks.UserRepository.UserRepositoryMock;
 import javafx.util.Pair;
 import missions.room.Domain.IT;
 import missions.room.Domain.Student;
 import missions.room.Domain.Teacher;
-import missions.room.Managers.LoginManager;
+import missions.room.Managers.UserAuthenticationManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +29,7 @@ public class LoginManagerTestsAllStubs {
     protected UserCrudRepository userRepository;
 
     @Autowired
-    protected LoginManager loginManager;
+    protected UserAuthenticationManager loginManager;
 
     protected DataGenerator dataGenerator;
 
@@ -37,8 +39,9 @@ public class LoginManagerTestsAllStubs {
     }
 
     void setUpMocks(){
+        MailSender mailSender=new MailSenderTrueMock();
         userRepository =new UserRepositoryMock(dataGenerator);
-        loginManager =new LoginManager(userRepository);
+        loginManager =new UserAuthenticationManager(userRepository);
     }
 
     void loginSetUp(){

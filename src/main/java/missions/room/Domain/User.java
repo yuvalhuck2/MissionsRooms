@@ -8,6 +8,7 @@ import javax.persistence.InheritanceType;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
+
     @Id
     protected String alias;
 

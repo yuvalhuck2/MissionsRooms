@@ -13,7 +13,8 @@ import DataAPI.RoomType;
 @Entity
 public class TrueLieMission extends Mission {
     
-    private String answerTimeForStudent;
+    private int answerTimeForStudent;
+    private int fillTimeForStudent;
 
     @Transient
     private Map<String, TrueLie> truthAndLiesSentences;
@@ -22,7 +23,7 @@ public class TrueLieMission extends Mission {
     public TrueLieMission() {
     }
 
-    public TrueLieMission(String missionId, Set<RoomType> missionTypes, Map<String, TrueLie>  truthAndLiesSentences, String answerTimeForStudent) {
+    public TrueLieMission(String missionId, Set<RoomType> missionTypes, Map<String, TrueLie>  truthAndLiesSentences, int answerTimeForStudent,int fillTimeForStudent) {
         this.truthAndLiesSentences = truthAndLiesSentences;
         this.answerTimeForStudent = answerTimeForStudent;
     }

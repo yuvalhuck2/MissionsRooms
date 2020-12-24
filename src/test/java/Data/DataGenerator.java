@@ -1,6 +1,7 @@
 package Data;
 
 import DataAPI.RegisterDetailsData;
+import DataAPI.RoomTemplateDetailsData;
 import DataAPI.RoomType;
 import DataAPI.UserType;
 import ExternalSystems.HashSystem;
@@ -8,14 +9,13 @@ import javafx.util.Pair;
 import missions.room.Domain.IT;
 import missions.room.Domain.Mission;
 import missions.room.Domain.User;
+import missions.room.Domain.RoomTemplate;
 import missions.room.Domain.Student;
 import missions.room.Domain.Teacher;
 import missions.room.Domain.missions.KnownAnswerMission;
 import DomainMocks.TeacherMock;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class DataGenerator {
 
@@ -27,6 +27,8 @@ public class DataGenerator {
     private HashMap<Data, Pair<String,String>> loginDatas;
     private HashMap<Data, User> users;
     private final HashSystem hashSystem= new HashSystem();;
+    private HashMap<Data, RoomTemplate> roomTemplates;
+    private HashMap<Data, RoomTemplateDetailsData> roomTemplatesDatas;
 
     public DataGenerator() {
         initStudents();
@@ -51,14 +53,49 @@ public class DataGenerator {
         users.put(Data.VALID_IT,validIT);
 
 
+        initRoomTemplateDatas();
+        initRoomTemplates();
+    }
+
+    private void initRoomTemplateDatas() {
+        roomTemplatesDatas=new HashMap<Data, RoomTemplateDetailsData>();
+        String missionId=getMission(Data.Valid_Deterministic).getMissionId();
+        List<String> missions=new ArrayList<>();
+        missions.add(missionId);
+        roomTemplatesDatas.put(Data.VALID,new RoomTemplateDetailsData(missions,"name",1,RoomType.Personal));
+        roomTemplatesDatas.put(Data.NULL_NAME,new RoomTemplateDetailsData(missions,null,1,RoomType.Personal));
+        roomTemplatesDatas.put(Data.EMPTY_NAME,new RoomTemplateDetailsData(missions,"",1,RoomType.Personal));
+        roomTemplatesDatas.put(Data.NEG_AMOUNT,new RoomTemplateDetailsData(missions,"name",-1,RoomType.Personal));
+        roomTemplatesDatas.put(Data.BIG_AMOUNT,new RoomTemplateDetailsData(missions,"name",2,RoomType.Personal));
+        roomTemplatesDatas.put(Data.NULL_TYPE,new RoomTemplateDetailsData(missions,"name",1,null));
+        roomTemplatesDatas.put(Data.NULL_LIST,new RoomTemplateDetailsData(null,"name",1,RoomType.Personal));
+        roomTemplatesDatas.put(Data.EMPTY_LIST,new RoomTemplateDetailsData(new ArrayList<>(),"name",0,RoomType.Personal));
+        roomTemplatesDatas.put(Data.TYPE_NOT_MATCH,new RoomTemplateDetailsData(missions,"name",1,RoomType.Group));
+        List<String> missionsWithNull=new ArrayList<>();
+        missionsWithNull.add("not exist");
+        roomTemplatesDatas.put(Data.WRONG_ID,new RoomTemplateDetailsData(missionsWithNull,"name",1,RoomType.Personal));
+    }
+
+    private void initRoomTemplates() {
+        roomTemplates=new HashMap<Data, RoomTemplate>();
+        RoomTemplateDetailsData templateDetailsData=getRoomTemplateData(Data.VALID);
+        templateDetailsData.setId("rt");
+        List<Mission> missionsMap=new ArrayList<>();
+        Mission detMission=getMission(Data.Valid_Deterministic);
+        missionsMap.add(detMission);
+        roomTemplates.put(Data.VALID,new RoomTemplate(templateDetailsData,missionsMap));
     }
 
     private void initMissions() {
         missions=new HashMap<Data, Mission>();
         Set<RoomType> types=new HashSet<>();
+        Set<RoomType> typesNull=new HashSet<>();
+        typesNull.add(null);
         types.add(RoomType.Personal);
         missions.put(Data.Valid_Deterministic,new KnownAnswerMission("ddd",types,"question","answer"));
-        missions.put(Data.WRONG_TYPE_DETERMINSIC,new KnownAnswerMission("ddd",new HashSet<>(),"question","answer"));
+        missions.put(Data.NULL_TYPES_DETERMINSIC,new KnownAnswerMission("ddd",null,"question","answer"));
+        missions.put(Data.EMPTY_TYPE_DETERMINISTIC,new KnownAnswerMission("ddd",new HashSet<>(),"question","answer"));
+        missions.put(Data.TYPES_WITH_NULL_DETERMINISTIC,new KnownAnswerMission("ddd",typesNull,"question","answer"));
         missions.put(Data.NULL_QUESTION_DETERMINISTIC,new KnownAnswerMission("ddd",types,null,"answer"));
         missions.put(Data.EMPTY_QUESTION_DETERMINISTIC,new KnownAnswerMission("ddd",types,"","answer"));
         missions.put(Data.NULL_ANSWER_DETERMINISTIC,new KnownAnswerMission("ddd",types,"question",null));
@@ -69,6 +106,7 @@ public class DataGenerator {
         teachers=new HashMap<Data, Teacher>();
         teachers.put(Data.VALID_WITH_PASSWORD,new Teacher("NoAlasTeacher","Avi","Ron","1234"));
         teachers.put(Data.MOCK,new TeacherMock("NoAlasTeacher","Avi","Ron","1234"));
+        teachers.put(Data.WRONG_NAME,new Teacher("Wrong","Avi","Ron","1234"));
     }
 
     private void initVerificationCodes() {
@@ -79,13 +117,13 @@ public class DataGenerator {
 
     private void initRegisterDetailsDatas() {
         registerDetailsDatas=new HashMap<Data, RegisterDetailsData>();
-        registerDetailsDatas.put(Data.VALID,new RegisterDetailsData("NoAlasIsExistWithThatName","1234", UserType.Student));
-        registerDetailsDatas.put(Data.NULL_PASSWORD,new RegisterDetailsData("NoAlasIsExistWithThatName",null, UserType.Student));
-        registerDetailsDatas.put(Data.EMPTY_PASSWORD,new RegisterDetailsData("NoAlasIsExistWithThatName","", UserType.Student));
-        registerDetailsDatas.put(Data.NULL_ALIAS,new RegisterDetailsData(null,"1234", UserType.Student));
-        registerDetailsDatas.put(Data.EMPTY_ALIAS,new RegisterDetailsData("","1234", UserType.Student));
-        registerDetailsDatas.put(Data.WRONG_TYPE,new RegisterDetailsData("NoAlasIsExistWithThatName","1234", UserType.IT));
-        registerDetailsDatas.put(Data.WRONG_NAME,new RegisterDetailsData("Wrong","1234", UserType.Student));
+        registerDetailsDatas.put(Data.VALID,new RegisterDetailsData("NoAlasIsExistWithThatName","1234"));
+        registerDetailsDatas.put(Data.VALID2,new RegisterDetailsData("NoAlasIsExistWithThatName","1234"));
+        registerDetailsDatas.put(Data.NULL_PASSWORD,new RegisterDetailsData("NoAlasIsExistWithThatName",null));
+        registerDetailsDatas.put(Data.EMPTY_PASSWORD,new RegisterDetailsData("NoAlasIsExistWithThatName",""));
+        registerDetailsDatas.put(Data.NULL_ALIAS,new RegisterDetailsData(null,"1234"));
+        registerDetailsDatas.put(Data.EMPTY_ALIAS,new RegisterDetailsData("","1234"));
+        registerDetailsDatas.put(Data.WRONG_NAME,new RegisterDetailsData("Wrong","1234"));
 
     }
 
@@ -141,5 +179,13 @@ public class DataGenerator {
 
     public User getUser(Data data){
         return users.get(data);
+    }
+
+    public RoomTemplateDetailsData getRoomTemplateData(Data data){
+        return roomTemplatesDatas.get(data);
+    }
+
+    public RoomTemplate getRoomTemplate(Data data){
+        return roomTemplates.get(Data.VALID);
     }
 }

@@ -36,7 +36,7 @@ public class MissionCrudRepositoryMock implements MissionCrudRepository {
 
     @Override
     public Optional<Mission> findById(String s) {
-        return Optional.empty();
+        return Optional.ofNullable(dataGenerator.getMission(Data.Valid_Deterministic));
     }
 
     @Override

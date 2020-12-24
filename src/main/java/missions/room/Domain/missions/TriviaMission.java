@@ -5,9 +5,7 @@ import DataAPI.RoomType;
 import missions.room.Domain.Mission;
 import missions.room.Domain.TriviaQuestion;
 
-import javax.persistence.Entity;
-import javax.persistence.MapKey;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,6 +16,10 @@ public class TriviaMission extends Mission {
 
     @OneToMany
     @MapKey(name = "id")
+    @JoinTable(name="TriviaMissionQuestions",
+            joinColumns ={@JoinColumn(name = "missionId")},
+            inverseJoinColumns={@JoinColumn(name="id")}
+    )
     private Map<String, TriviaQuestion> questions;
 
     public TriviaMission() {
