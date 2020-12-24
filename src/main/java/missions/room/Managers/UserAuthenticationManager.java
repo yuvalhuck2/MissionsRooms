@@ -1,5 +1,6 @@
 package missions.room.Managers;
 
+import CrudRepositories.UserCrudRepository;
 import DataAPI.*;
 import ExternalSystems.UniqueStringGenerator;
 import missions.room.Domain.Ram;
@@ -40,6 +41,15 @@ public class UserAuthenticationManager {
         this.schoolUserRepo = new SchoolUserRepo(userCrudRepo);
         hashSystem = new HashSystem();
         this.sender = sender;
+        aliasToCode=new ConcurrentHashMap<>();
+        verificationCodeGenerator = new VerificationCodeGenerator();
+        this.ram=new Ram();
+    }
+
+    //login test constructor
+    public UserAuthenticationManager(UserCrudRepository userCrudRepo) {
+        this.userRepo = new UserRepo(userCrudRepo);
+        hashSystem = new HashSystem();
         aliasToCode=new ConcurrentHashMap<>();
         verificationCodeGenerator = new VerificationCodeGenerator();
         this.ram=new Ram();

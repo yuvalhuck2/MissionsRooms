@@ -1,11 +1,12 @@
 package missions.room.Service;
 
-import DataAPI.Auth;
-import DataAPI.Response;
-import DataAPI.RoomTemplateDetailsData;
+import DataAPI.*;
 import missions.room.Managers.RoomTemplateManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.util.List;
 
 @Service
 public class RoomTemplateService {
@@ -21,6 +22,15 @@ public class RoomTemplateService {
      */
     public Response<Boolean> createRoomTemplate(Auth auth, RoomTemplateDetailsData details){
         return roomTemplateManager.createRoomTemplate(auth.getApiKey(),details);
+    }
+
+    /**
+     * req 4.14 - look for room templates
+     * @param auth - authentication object
+     * @return list of filtered room templates
+     */
+    public Response<List<RoomTemplateForSearch>> searchRoomTemplates(Auth auth){
+        return roomTemplateManager.searchRoomTemplates(auth.getApiKey());
     }
 
 }

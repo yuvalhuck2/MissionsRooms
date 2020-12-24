@@ -1,12 +1,20 @@
 package RepositoryMocks.TeacherRepository;
 
 import CrudRepositories.TeacherCrudRepository;
+import Data.Data;
+import Data.DataGenerator;
 import missions.room.Domain.Teacher;
+import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
-public class TeacherCrudRepositoryMockExceptionFindById  implements TeacherCrudRepository {
+
+public class TeacherRepositoryMock implements TeacherCrudRepository {
+    private DataGenerator dataGenerator;
+
+    public TeacherRepositoryMock(DataGenerator dataGenerator) {
+        this.dataGenerator = dataGenerator;
+    }
 
     @Override
     public Teacher findTeacherForWrite(String alias) {
@@ -30,14 +38,13 @@ public class TeacherCrudRepositoryMockExceptionFindById  implements TeacherCrudR
 
     @Override
     public Optional<Teacher> findById(String s) {
-
-
-        throw new EntityNotFoundException();
+        return Optional.ofNullable((Teacher)dataGenerator.getUser(Data.VALID_TEACHER));
     }
 
     @Override
     public boolean existsById(String s) {
-        return false;
+
+        return dataGenerator.getUser(Data.VALID_TEACHER).getAlias().equals(s);
     }
 
     @Override

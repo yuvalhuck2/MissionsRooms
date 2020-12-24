@@ -28,6 +28,12 @@ public class RoomTemplateManagerTestsRealRam extends RoomTemplateManagerTestsAll
         ram.addApi(apiKey,dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD).getAlias());
     }
 
+    @Override
+    void setupSearchRoomTemplate(){
+        super.setupSearchRoomTemplate();
+        ram.addApi(apiKey,dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD).getAlias());
+    }
+
     @Test
     void testMissionInvalidWrongApiKey(){
         setUpAddRoomTemplate();

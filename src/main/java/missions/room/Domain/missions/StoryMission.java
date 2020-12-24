@@ -26,4 +26,28 @@ public class StoryMission extends Mission{
         this.amountOfSentencesForEachStudent = amountOfSentencesForEachStudent;
         this.story = story;
     }
+
+    public int getSecondsForEachStudent() {
+        return secondsForEachStudent;
+    }
+
+    public void setSecondsForEachStudent(int secondsForEachStudent) {
+        this.secondsForEachStudent = secondsForEachStudent;
+    }
+
+    public int getAmountOfSentencesForEachStudent() {
+        return amountOfSentencesForEachStudent;
+    }
+
+    public void setAmountOfSentencesForEachStudent(int amountOfSentencesForEachStudent) {
+        this.amountOfSentencesForEachStudent = amountOfSentencesForEachStudent;
+    }
+
+    public String getStory() {
+        return story;
+    }
+
+    public void setStory(String story) {
+        this.story = story;
+    }
 }

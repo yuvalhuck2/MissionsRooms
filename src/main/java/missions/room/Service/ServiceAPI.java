@@ -235,15 +235,15 @@ public class ServiceAPI {
     }
 
 
-    /**
-     * req 4.3 - search missions
-     * @param auth - authentication object
-     * @param filter - details about how to filter the missions
-     * @return - list of the missions were filtered
-     */
-    public Response<List<MissionData>> searchMissions(Auth auth, MissionFilterData filter){
-        throw new NotImplementedException();
-    }
+//    /**
+//     * req 4.3 - search missions
+//     * @param auth - authentication object
+//     * @param filter - details about how to filter the missions
+//     * @return - list of the missions were filtered
+//     */
+//    public Response<List<MissionData>> searchMissions(Auth auth, MissionFilterData filter){
+//        throw new NotImplementedException();
+//    }
 
 
 //    /**
@@ -355,15 +355,15 @@ public class ServiceAPI {
     }
 
 
-    /**
-     * req 4.14 - look for room templates
-     * @param auth - authentication object
-     * @param filter - details about how to filter the rooms
-     * @return list of filtered room templates
-     */
-    public Response<List<RoomTemplateDetailsData>> searchRoomTemplates(Auth auth, TemplateFilerData filter){
-        throw new NotImplementedException();
-    }
+//    /**
+//     * req 4.14 - look for room templates
+//     * @param auth - authentication object
+//     * @param filter - details about how to filter the rooms
+//     * @return list of filtered room templates
+//     */
+//    public Response<List<RoomTemplateDetailsData>> searchRoomTemplates(Auth auth, TemplateFilerData filter){
+//        throw new NotImplementedException();
+//    }
 
     /**
      * req 6.1 - transfer student group

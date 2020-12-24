@@ -4,14 +4,15 @@ import CrudRepositories.MissionCrudRepository;
 import Data.Data;
 import Data.DataGenerator;
 import missions.room.Domain.Mission;
-import sun.awt.util.IdentityArrayList;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-public class MissionCrudRepositoryMock implements MissionCrudRepository {
+public class MissionCrudRepositoryMock2TypesMission implements MissionCrudRepository {
     private final DataGenerator dataGenerator;
 
-    public MissionCrudRepositoryMock(DataGenerator dataGenerator) {
+    public MissionCrudRepositoryMock2TypesMission(DataGenerator dataGenerator){
         this.dataGenerator=dataGenerator;
     }
 
@@ -27,7 +28,7 @@ public class MissionCrudRepositoryMock implements MissionCrudRepository {
 
     @Override
     public <S extends Mission> S save(S s) {
-        return (S) dataGenerator.getMission(Data.Valid_Deterministic);
+        return null;
     }
 
     @Override
@@ -37,7 +38,7 @@ public class MissionCrudRepositoryMock implements MissionCrudRepository {
 
     @Override
     public Optional<Mission> findById(String s) {
-        return Optional.ofNullable(dataGenerator.getMission(Data.Valid_Deterministic));
+        return Optional.empty();
     }
 
     @Override
@@ -49,6 +50,7 @@ public class MissionCrudRepositoryMock implements MissionCrudRepository {
     public Iterable<Mission> findAll() {
         List<Mission> list=new ArrayList<>();
         list.add(dataGenerator.getMission(Data.Valid_Deterministic));
+        list.add(dataGenerator.getMission(Data.VALID_STORY));
         Iterable<Mission> missions= list;
         return missions;
     }
