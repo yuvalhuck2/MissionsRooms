@@ -93,8 +93,8 @@ public class RoomManager extends TeacherManager {
     @Transactional
     protected Response<Room> getClassroomRoomResponse(newRoomDetails roomDetails, RoomTemplate roomTemplate, Teacher teacher) {
         Classroom classroom=teacher.getClassroom();
-        if(!classroom.getClassName().equals(roomDetails.getParticipantKey())){
-            return new Response<>(null, OpCode.Not_Exist_Group);
+        if(classroom==null || !classroom.getClassName().equals(roomDetails.getParticipantKey())){
+            return new Response<>(null, OpCode.Not_Exist_Classroom);
         }
         Response<ClassroomRoom> classroomResponse=roomRepo.findClassroomRoomForWriteByAlias(roomDetails.getParticipantKey());
         if(classroomResponse.getValue()!=null){//if the group is already in a room personal type

@@ -21,7 +21,7 @@ public class Teacher extends SchoolUser {
     private Classroom classroom;
 
     @Enumerated(EnumType.ORDINAL)
-    private GroupType groupType;
+    protected GroupType groupType;
 
     public Teacher() {
     }
@@ -39,14 +39,24 @@ public class Teacher extends SchoolUser {
 
 
     public Student getStudent(String alias) {
-        return classroom.getStudent(alias,groupType);
+        if(classroom!=null){
+            return classroom.getStudent(alias,groupType);
+        }
+        return null;
     }
 
     public ClassGroup getGroup(String participantKey) {
-        return classroom.getGroup(participantKey);
+        if(classroom!=null) {
+            return classroom.getGroup(participantKey);
+        }
+        return null;
     }
 
     public Classroom getClassroom() {
         return classroom;
+    }
+
+    public boolean isSupervisor() {
+        return false;
     }
 }
