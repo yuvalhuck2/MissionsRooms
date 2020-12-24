@@ -3,6 +3,7 @@ package missions.room.MissionManagerTests;
 import Data.Data;
 import DataAPI.OpCode;
 import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
+import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMockExceptionFindById;
 import missions.room.Domain.Mission;
 import missions.room.Domain.Ram;
 import missions.room.Managers.MissionManager;
@@ -29,6 +30,18 @@ public class MissionTestsRealRamMissionManagerTeacherRepo extends MissionTestsRe
         ram.addApi(apiKey,dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD).getPassword());
         checkWrongAddMission(OpCode.Not_Exist);
         tearDownAddMission();
+    }
+
+    @Test
+    @Override
+    void testSearchMissionsTeacherNotFoundError(){
+        setupSearch();
+        teacherCrudRepository.save(dataGenerator.getTeacher(Data.WRONG_NAME));
+        missionCrudRepository.save(dataGenerator.getMission(Data.Valid_Deterministic));
+        testSearchMissionsTeacherNotFoundErrorTest();
+        teacherCrudRepository.delete(dataGenerator.getTeacher(Data.WRONG_NAME));
+        missionCrudRepository.delete(dataGenerator.getMission(Data.Valid_Deterministic));
+
     }
 
 }

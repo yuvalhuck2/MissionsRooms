@@ -3,10 +3,14 @@ package missions.room.MissionManagerTests;
 import CrudRepositories.MissionCrudRepository;
 import Data.Data;
 import DataAPI.OpCode;
+import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock2TypesMission;
+import RepositoryMocks.MissionRepository.MissionCrudRepositoryMockNoMissions;
 import missions.room.Domain.Mission;
 import missions.room.Domain.Ram;
 import missions.room.Domain.missions.KnownAnswerMission;
+import missions.room.Managers.MissionManager;
 import missions.room.Managers.TeacherManager;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -72,4 +76,28 @@ public class MissionTestsRealRamMissionTeacherTeacherRepoMissionManagerRepo exte
         //check no new mission added to the db
         assertFalse(missionCrudRepositoryNotMock.findAll().iterator().hasNext());
     }
+
+    @Test
+    @Override
+    void testSearchTwoMissionsDiffTypes(){
+        setupSearch();
+        teacherCrudRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
+        missionCrudRepository.save(dataGenerator.getMission(Data.VALID_STORY));
+        missionCrudRepository.save(dataGenerator.getMission(Data.Valid_Deterministic));
+        testSearchTwoMissionsDiffTypesTest();
+        teacherCrudRepository.delete(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
+        missionCrudRepository.delete(dataGenerator.getMission(Data.VALID_STORY));
+        missionCrudRepository.delete(dataGenerator.getMission(Data.Valid_Deterministic));
+    }
+
+    @Test
+    @Override
+    void testSearchMissionsNull(){
+        setupSearch();
+        teacherCrudRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
+        testSearchMissionsNullTest();
+        teacherCrudRepository.delete(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
+    }
+
+
 }

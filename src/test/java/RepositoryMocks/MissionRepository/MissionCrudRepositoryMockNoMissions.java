@@ -46,7 +46,7 @@ public class MissionCrudRepositoryMockNoMissions implements MissionCrudRepositor
 
     @Override
     public Iterable<Mission> findAll() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override

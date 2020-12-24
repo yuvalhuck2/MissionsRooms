@@ -70,4 +70,8 @@ public class RoomTemplate {
         }
         return null;
     }
+
+    public List<Mission> getMissions() {
+        return missions;
+    }
 }

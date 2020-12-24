@@ -188,6 +188,6 @@ public class DataGenerator {
     }
 
     public RoomTemplate getRoomTemplate(Data data){
-        return roomTemplates.get(Data.VALID);
+        return roomTemplates.get(data);
     }
 }

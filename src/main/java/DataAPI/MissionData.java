@@ -39,4 +39,24 @@ public class MissionData {
     public void setTimeForAns(int timeForAns) {
         this.timeForAns = timeForAns;
     }
+
+    public String getMissionId() {
+        return missionId;
+    }
+
+    public Set<RoomType> getMissionTypes() {
+        return missionTypes;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<String> getQuestion() {
+        return question;
+    }
+
+    public int getTimeForAns() {
+        return timeForAns;
+    }
 }

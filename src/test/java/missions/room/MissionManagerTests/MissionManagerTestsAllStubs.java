@@ -12,6 +12,7 @@ import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock2TypesMission;
 import RepositoryMocks.MissionRepository.MissionCrudRepositoryMockExeptionSave;
 import RepositoryMocks.MissionRepository.MissionCrudRepositoryMockNoMissions;
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
+import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMockNotExist;
 import missions.room.Domain.Mission;
 import missions.room.Domain.Ram;
 import DomainMocks.MockRam;
@@ -20,6 +21,8 @@ import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMockExceptionFindB
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import missions.room.Domain.missions.KnownAnswerMission;
+import missions.room.Domain.missions.StoryMission;
 import missions.room.Managers.MissionManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -152,6 +155,12 @@ public class MissionManagerTestsAllStubs {
         assertEquals(response.getReason(),OpCode.Success);
         assertNotNull(response.getValue());
         assertEquals(response.getValue().size(),1);
+        Mission mission=dataGenerator.getMission(Data.Valid_Deterministic);
+        MissionData missionData=response.getValue().get(0);
+        assertEquals(mission.getMissionId(),missionData.getMissionId());
+        assertEquals(mission.getMissionTypes(),missionData.getMissionTypes());
+        assertEquals(((KnownAnswerMission)mission).getQuestion(),missionData.getQuestion().get(0));
+        assertEquals(missionData.getTimeForAns(),-1);
     }
 
     @Test
@@ -165,8 +174,8 @@ public class MissionManagerTestsAllStubs {
 
     protected void testSearchMissionsNullTest(){
         Response<List<MissionData>> response=missionManager.searchMissions(apiKey);
-        assertEquals(response.getReason(),OpCode.DB_Error);
-        assertNull(response.getValue());
+        assertEquals(response.getReason(),OpCode.Success);
+        assertEquals(response.getValue().size(),0);
     }
 
     @Test
@@ -195,7 +204,8 @@ public class MissionManagerTestsAllStubs {
         setupSearch();
         teacherCrudRepository.save(dataGenerator.getTeacher(Data.WRONG_NAME));
         missionCrudRepository.save(dataGenerator.getMission(Data.Valid_Deterministic));
-        missionManager =new MissionManager(ram,new TeacherCrudRepositoryMockExceptionFindById(),missionCrudRepository);
+        ram.addApi(apiKey,dataGenerator.getTeacher(Data.WRONG_NAME).getAlias());
+        missionManager =new MissionManager(ram,new TeacherCrudRepositoryMockNotExist(dataGenerator),missionCrudRepository);
         testSearchMissionsTeacherNotFoundErrorTest();
         teacherCrudRepository.delete(dataGenerator.getTeacher(Data.WRONG_NAME));
         missionCrudRepository.delete(dataGenerator.getMission(Data.Valid_Deterministic));
@@ -204,7 +214,7 @@ public class MissionManagerTestsAllStubs {
     protected void testSearchMissionsTeacherNotFoundErrorTest(){
 
         Response<List<MissionData>> response=missionManager.searchMissions(apiKey);
-        assertEquals(response.getReason(),OpCode.DB_Error);
+        assertEquals(response.getReason(),OpCode.Not_Exist);
         assertNull(response.getValue());
 
     }
