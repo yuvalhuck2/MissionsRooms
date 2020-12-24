@@ -11,6 +11,8 @@ import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
 import missions.room.Domain.Ram;
 import missions.room.Managers.RoomManager;
 import org.junit.jupiter.api.Test;
+import org.springframework.stereotype.Service;
+
 
 public class RoomMangerTestsRealRam extends RoomManagerTestsAllStubs{
     void setUpMocks(){

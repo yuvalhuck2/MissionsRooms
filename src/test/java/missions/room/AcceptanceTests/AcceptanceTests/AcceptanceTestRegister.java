@@ -20,13 +20,14 @@ import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
  */
 @TestInstance(PER_CLASS)
 @SpringBootTest
-@TestPropertySource(locations = {"classpath:application-test.properties"})
+//@TestPropertySource(locations = {"classpath:application-test.properties"})
 public class AcceptanceTestRegister extends AcceptanceTest{
     private RegisterDetailsTest goodRegisterDetailsTest0; // in CSV
     private RegisterDetailsTest goodRegisterDetailsTest1;
     private RegisterDetailsTest goodRegisterDetailsTest2;
     private RegisterDetailsTest badRegisterDetailsTest; // not in CSV
 
+    /*
     @BeforeAll
     public void setup(){
         setUpCSV();
@@ -38,8 +39,8 @@ public class AcceptanceTestRegister extends AcceptanceTest{
         this.goodRegisterDetailsTest1 = new RegisterDetailsTest(user1.getAlias(), user1.getAlias());
         this.goodRegisterDetailsTest2 = new RegisterDetailsTest(user2.getAlias(), user2.getAlias());
         this.badRegisterDetailsTest = new RegisterDetailsTest("error", "error");
-    }
-
+    }*/
+/*
     @Test
     public void testRegisterSuccess(){
         bridge.setExternalSystems(new MailSenderAlwaysTrueMock(), new VerificationCodeGeneratorMock());
@@ -85,12 +86,12 @@ public class AcceptanceTestRegister extends AcceptanceTest{
 
     }
 
-
-
+*/
+/*
     @AfterAll
     public void tearDown(){
         //TODO: delete the students
-    }
+    }*/
 
 
 
