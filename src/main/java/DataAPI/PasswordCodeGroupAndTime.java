@@ -1,13 +1,15 @@
 package DataAPI;
 
+import missions.room.Domain.GroupType;
+
 import java.time.LocalDateTime;
 
-public class PasswordCodeAndTime {
+public class PasswordCodeGroupAndTime {
     private final String password;
     private final String code;
     private final LocalDateTime time;
 
-    public PasswordCodeAndTime(String code,String password) {
+    public PasswordCodeGroupAndTime(String code, String password) {
         this.code = code;
         this.password=password;
         time=LocalDateTime.now();
@@ -24,4 +26,5 @@ public class PasswordCodeAndTime {
     public String getPassword() {
         return password;
     }
+
 }

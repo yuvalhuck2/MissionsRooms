@@ -2,6 +2,7 @@ package missions.room.Domain;
 
 import DataAPI.OpCode;
 import DataAPI.Response;
+import DataAPI.TeacherData;
 import missions.room.Repo.MissionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -11,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import missions.room.*;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 
 
 @Entity
@@ -70,5 +72,17 @@ public class Teacher extends SchoolUser {
 
     public boolean isSupervisor() {
         return false;
+    }
+
+    public TeacherData getData() {
+        return new TeacherData(alias,lastName,firstName,groupType);
+    }
+
+    @Transactional
+    public Response<Boolean> moveStudentToMyGroup(String student, GroupType groupType) {
+        if(this.groupType==GroupType.BOTH||this.groupType==groupType){
+           return classroom.moveStudentToMyGroup(student,groupType);
+        }
+        return new Response<>(false,OpCode.Not_Exist_Group);
     }
 }

@@ -1,20 +1,14 @@
 package RepositoryMocks.TeacherRepository;
 
 import CrudRepositories.TeacherCrudRepository;
-import Data.DataGenerator;
 import missions.room.Domain.Teacher;
 
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.LockTimeoutException;
 import java.util.List;
 import java.util.Optional;
 
-public class TeacherCrudRepositoryMockNotExist implements TeacherCrudRepository {
-
-    private DataGenerator dataGenerator;
-
-    public TeacherCrudRepositoryMockNotExist(DataGenerator dataGenerator){
-        this.dataGenerator=dataGenerator;
-    }
-
+public class TeacherCrudRepositoryMockExceptionTimeoutFindByIdFor implements TeacherCrudRepository {
     @Override
     public Teacher findTeacherForWrite(String alias) {
         return null;
@@ -22,7 +16,7 @@ public class TeacherCrudRepositoryMockNotExist implements TeacherCrudRepository 
 
     @Override
     public Teacher findTeacherForRead(String alias) {
-        return null;
+        throw new LockTimeoutException();
     }
 
     @Override
@@ -42,7 +36,9 @@ public class TeacherCrudRepositoryMockNotExist implements TeacherCrudRepository 
 
     @Override
     public Optional<Teacher> findById(String s) {
-        return Optional.empty();
+
+
+        throw new LockTimeoutException();
     }
 
     @Override

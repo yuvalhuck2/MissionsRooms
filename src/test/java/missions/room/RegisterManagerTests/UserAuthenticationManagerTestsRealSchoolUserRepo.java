@@ -1,19 +1,20 @@
 package missions.room.RegisterManagerTests;
 
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.PasswordCodeAndTime;
-import DataAPI.RegisterDetailsData;
-import DataAPI.Response;
+import DataAPI.*;
+import javafx.scene.chart.XYChart;
+import missions.room.Domain.GroupType;
 import missions.room.Domain.Student;
 import ExternalSystemMocks.MailSenderTrueMock;
 import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
+import missions.room.Domain.Teacher;
 import missions.room.Managers.UserAuthenticationManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+import java.util.List;
 
 import java.lang.reflect.Field;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,7 +23,7 @@ import static org.junit.Assert.*;
 
 @SpringBootTest
 @TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
-public class UserAuthenticationManagerTestsRealStudentRepo extends UserAuthenticationManagerTestsAllStubs {
+public class UserAuthenticationManagerTestsRealSchoolUserRepo extends UserAuthenticationManagerTestsAllStubs {
 
     //clear code to alias map before starting the tests
     @BeforeEach
@@ -42,10 +43,11 @@ public class UserAuthenticationManagerTestsRealStudentRepo extends UserAuthentic
         }
 
     }
-    @Override
-    void setUpMocks(){
-    }
 
+    @Override
+    public void setUpMocks(){
+
+    }
 
     @Test
     void testRegisterInvalidNotExistInDBStudent(){
@@ -58,9 +60,9 @@ public class UserAuthenticationManagerTestsRealStudentRepo extends UserAuthentic
     void testRegisterInvalidAlreadyRegisteredStudent(){
         registerCodeSetUp();
         RegisterDetailsData detailsData=dataGenerator.getRegisterDetails(Data.VALID);
-        userAuthenticationManager.registerCode(detailsData.getAlias(),dataGenerator.getVerificationCode(Data.VALID));
-        Response<Boolean> response= userAuthenticationManager.register(detailsData);
-        assertFalse(response.getValue());
+        userAuthenticationManager.registerCode(detailsData.getAlias(),dataGenerator.getVerificationCode(Data.VALID),dataGenerator.getTeacher(Data.VALID_WITH_GROUP_C).getAlias(), GroupType.A);
+        Response<List<TeacherData>> response= userAuthenticationManager.register(detailsData);
+        assertNull(response.getValue());
         assertEquals(response.getReason(), OpCode.Already_Exist);
         registerCodeTearDown();
     }
@@ -123,13 +125,13 @@ public class UserAuthenticationManagerTestsRealStudentRepo extends UserAuthentic
         registerCodeSetUp();
         String code=dataGenerator.getVerificationCode(Data.VALID);
         String alias=dataGenerator.getStudent(Data.VALID).getAlias();
-        userAuthenticationManager.registerCode(alias,code);
+        userAuthenticationManager.registerCode(alias,code,dataGenerator.getTeacher(Data.VALID_WITH_GROUP_C).getAlias(), GroupType.A);
         //inject alias with password code
         try {
             Field aliasToCode = UserAuthenticationManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
-            ((ConcurrentHashMap<String, PasswordCodeAndTime>)aliasToCode.
-                    get(userAuthenticationManager)).put(alias,new PasswordCodeAndTime(code,code));
+            ((ConcurrentHashMap<String, PasswordCodeGroupAndTime>)aliasToCode.
+                    get(userAuthenticationManager)).put(alias,new PasswordCodeGroupAndTime(code,code));
         } catch (IllegalAccessException | NoSuchFieldException e) {
             fail();
         }

@@ -1,15 +1,16 @@
 package missions.room.Managers;
 
+import CrudRepositories.ClassroomRepository;
+import CrudRepositories.TeacherCrudRepository;
 import CrudRepositories.UserCrudRepository;
 import DataAPI.*;
 import ExternalSystems.UniqueStringGenerator;
-import missions.room.Domain.Ram;
-import missions.room.Domain.SchoolUser;
+import missions.room.Domain.*;
 import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
 import ExternalSystems.VerificationCodeGenerator;
 import CrudRepositories.SchoolUserCrudRepository;
-import missions.room.Domain.User;
+import missions.room.Repo.ClassroomRepo;
 import missions.room.Repo.SchoolUserRepo;
 import Utils.Utils;
 import missions.room.Repo.UserRepo;
@@ -17,10 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
-public class UserAuthenticationManager {
+public class UserAuthenticationManager extends TeacherManager {
 
     @Autowired
     private SchoolUserRepo schoolUserRepo;
@@ -28,39 +32,49 @@ public class UserAuthenticationManager {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private ClassroomRepo classroomRepo;
+
     private  HashSystem hashSystem;
     private  MailSender sender;
     private  VerificationCodeGenerator verificationCodeGenerator;
-    private  Ram ram;
 
     //save verification codes and string for trace and clean old code
-    private final ConcurrentHashMap<String, PasswordCodeAndTime> aliasToCode;
+    private final ConcurrentHashMap<String, PasswordCodeGroupAndTime> aliasToCode;
 
     //tests constructor
-    public UserAuthenticationManager(SchoolUserCrudRepository userCrudRepo, MailSender sender) {
+    public UserAuthenticationManager(ClassroomRepository classroomRepository,TeacherCrudRepository teacherCrudRepository,SchoolUserCrudRepository userCrudRepo, MailSender sender) {
+        super(teacherCrudRepository);
+        this.classroomRepo=new ClassroomRepo(classroomRepository);
         this.schoolUserRepo = new SchoolUserRepo(userCrudRepo);
         hashSystem = new HashSystem();
         this.sender = sender;
         aliasToCode=new ConcurrentHashMap<>();
         verificationCodeGenerator = new VerificationCodeGenerator();
-        this.ram=new Ram();
     }
 
     //login test constructor
     public UserAuthenticationManager(UserCrudRepository userCrudRepo) {
+        super();
         this.userRepo = new UserRepo(userCrudRepo);
         hashSystem = new HashSystem();
         aliasToCode=new ConcurrentHashMap<>();
         verificationCodeGenerator = new VerificationCodeGenerator();
-        this.ram=new Ram();
+    }
+
+    public UserAuthenticationManager(TeacherCrudRepository teacherCrudRepository) {
+        super(teacherCrudRepository);
+        hashSystem = new HashSystem();
+        aliasToCode=new ConcurrentHashMap<>();
+        verificationCodeGenerator = new VerificationCodeGenerator();
     }
 
     public UserAuthenticationManager() {
+        super();
         hashSystem=new HashSystem();
         sender=new MailSender();
         aliasToCode=new ConcurrentHashMap<>();
         verificationCodeGenerator = new VerificationCodeGenerator();
-        this.ram=new Ram();
     }
 
     /**
@@ -68,9 +82,9 @@ public class UserAuthenticationManager {
      * @param details - user details
      * @return if mail with the code was sent successfully
      */
-    public Response<Boolean> register (RegisterDetailsData details){
-        Response<Boolean> checkDetails= checkRegisterDetails(details);
-        if(!checkDetails.getValue()){
+    public Response<List<TeacherData>> register (RegisterDetailsData details){
+        Response<List<TeacherData>> checkDetails= checkRegisterDetails(details);
+        if(checkDetails.getReason()!=OpCode.Success){
             return checkDetails;
         }
         details.setPassword(hashSystem.encrypt(details.getPassword()));
@@ -79,34 +93,48 @@ public class UserAuthenticationManager {
     }
 
 
-    private Response<Boolean> updateStudent(RegisterDetailsData details) {
+    protected Response<List<TeacherData>> updateStudent(RegisterDetailsData details) {
         Response<SchoolUser> userResponse= schoolUserRepo.findUserForRead(details.getAlias());
         if(userResponse.getReason()!=OpCode.Success){
-            return new Response<>(false,userResponse.getReason());
+            return new Response<>(null,userResponse.getReason());
         }
         SchoolUser schoolUser =userResponse.getValue();
         if(schoolUser ==null){
-            return new Response<>(false, OpCode.Not_Exist);
+            return new Response<>(null, OpCode.Not_Exist);
         }
 
         if(schoolUser.getPassword()!=null){
-            return new Response<>(false,OpCode.Already_Exist);
+            return new Response<>(null,OpCode.Already_Exist);
         }
-        return sendMailAndSave(details);
+        List<TeacherData> teacherDataList=new ArrayList<>();
+        OpCode userType=schoolUser.getOpcode();
+        if(userType==OpCode.Student){
+            Response<List<Teacher>> teacherListResponse=teacherRepo.findTeacherByStudent(details.getAlias());
+            if(teacherListResponse.getReason()!=OpCode.Success){
+                return new Response<>(null,teacherListResponse.getReason());
+            }
+            for (Teacher teacher : teacherListResponse.getValue()) {
+                teacherDataList.add(teacher.getData());
+            }
+        }
+
+        return sendMailAndSave(details,teacherDataList,userType);
     }
 
     /**
      * send the mail and save the verification code that was sent
      * @param details - user details
+     * @param teacherDataList
+     * @param userType
      * @return
      */
-    private Response<Boolean> sendMailAndSave(RegisterDetailsData details) {
+    private Response<List<TeacherData>> sendMailAndSave(RegisterDetailsData details, List<TeacherData> teacherDataList, OpCode userType) {
         String verificationCode= verificationCodeGenerator.getNext();
         if(!sender.send(Utils.getMailFromAlias(details.getAlias()), verificationCode)){
-            return new Response<>(false, OpCode.Mail_Error);
+            return new Response<>(null, OpCode.Mail_Error);
         }
-        this.aliasToCode.put(details.getAlias(),new PasswordCodeAndTime(verificationCode,details.getPassword()));
-        return new Response<>(true,OpCode.Success);
+        this.aliasToCode.put(details.getAlias(),new PasswordCodeGroupAndTime(verificationCode,details.getPassword()));
+        return new Response<>(teacherDataList,userType);
     }
 
 
@@ -114,15 +142,15 @@ public class UserAuthenticationManager {
      *
      * @return if  details are valid
      */
-    private Response<Boolean> checkRegisterDetails(RegisterDetailsData details) {
+    private Response<List<TeacherData>> checkRegisterDetails(RegisterDetailsData details) {
         if(!Utils.checkString(details.getPassword())){
-            return new Response<>(false,OpCode.Wrong_Password);
+            return new Response<>(null,OpCode.Wrong_Password);
         }
         if(!Utils.checkString(details.getAlias())){
-            return new Response<>(false,OpCode.Wrong_Alias);
+            return new Response<>(null,OpCode.Wrong_Alias);
         }
 
-        return new Response<>(true,OpCode.Success);
+        return new Response<>(null,OpCode.Success);
 
     }
 
@@ -131,9 +159,10 @@ public class UserAuthenticationManager {
      * req 2.2 - register code
      * * @param alias - user alias
      * @param code - user details
+     * @param groupType - group type if it is student and c if it is a teacher
      * @return if register succeeded
      */
-    public Response<Boolean> registerCode(String alias, String code) {
+    public Response<Boolean> registerCode(String alias, String code,String teacherAlias,GroupType groupType) {
         if(!Utils.checkString(alias)){
             return new Response<>(false,OpCode.Wrong_Alias);
         }
@@ -142,48 +171,72 @@ public class UserAuthenticationManager {
             return new Response<>(false,OpCode.Wrong_Code);
         }
 
-        PasswordCodeAndTime passwordCodeAndTime=aliasToCode.get(alias);
-        if(passwordCodeAndTime==null) {
+        PasswordCodeGroupAndTime passwordCodeGroupAndTime =aliasToCode.get(alias);
+        if(passwordCodeGroupAndTime ==null) {
             return new Response<>(false, OpCode.Not_Registered);
         }
-        if(!code.equals(passwordCodeAndTime.getCode())){
+        if(!code.equals(passwordCodeGroupAndTime.getCode())){
             return new Response<>(false,OpCode.Code_Not_Match);
         }
+        if(groupType==null){
+            return new Response<>(false,OpCode.Wrong_Type);
+        }
 
-        return checkPasswordAndPersist(alias, passwordCodeAndTime);
+        return checkPasswordAndPersist(alias, passwordCodeGroupAndTime,teacherAlias,groupType);
 
     }
 
     /**
      *
-     * @param alias - alias of user
-     * @param passwordCodeAndTime - the password and the code match for tat alias
+     * @param studentAlias - studentAlias of user
+     * @param passwordCodeGroupAndTime - the password and the code match for tat studentAlias
+     * @param teacherAlias
      * @return if the student was saved
      */
     // annotation means that the write lock will be taken until save function
     @Transactional
-    protected Response<Boolean> checkPasswordAndPersist(String alias, PasswordCodeAndTime passwordCodeAndTime) {
-        Response<SchoolUser> userResponse= schoolUserRepo.findUserForWrite(alias);
-        if(userResponse.getReason()!= OpCode.Success){
-            return new Response<>(false,userResponse.getReason());
+    protected Response<Boolean> checkPasswordAndPersist(String studentAlias, PasswordCodeGroupAndTime passwordCodeGroupAndTime, String teacherAlias,GroupType groupType) {
+        Response<Teacher> teacherResponse=checkTeacherForRead(teacherAlias);
+        if(teacherResponse.getReason()!=OpCode.Success){
+            return new Response<>(false,teacherResponse.getReason());
         }
-        SchoolUser schoolUser =userResponse.getValue();
-        if(schoolUser ==null){
-            aliasToCode.remove(alias);
-            return new Response<>(false, OpCode.Not_Exist);
+        Teacher teacher=teacherResponse.getValue();
+        SchoolUser schoolUser;
+        if(groupType==GroupType.C){//if it is registration of a teacher
+            schoolUser=teacher;
+        }
+        else{
+            schoolUser=teacher.getStudent(studentAlias);
+            if(schoolUser ==null){
+                aliasToCode.remove(studentAlias);
+                return new Response<>(false, OpCode.Not_Exist);
+            }
         }
 
         if(schoolUser.getPassword()!=null){
-            aliasToCode.remove(alias);
+            aliasToCode.remove(schoolUser.getAlias());
             return new Response<>(false,OpCode.Already_Exist);
         }
-        schoolUser.setPassword(passwordCodeAndTime.getPassword());
+        schoolUser.setPassword(passwordCodeGroupAndTime.getPassword());
+        //move from group
+        Response userResponse;
+        if(groupType!=GroupType.C) {//student
+            Response<Boolean> moveStudentResponse=teacher.moveStudentToMyGroup(schoolUser.getAlias(),groupType);
+            if(moveStudentResponse.getReason()!=OpCode.Success){
+                //student without password and with group
+                return moveStudentResponse;
+            }
+            userResponse=classroomRepo.save(teacher.getClassroom());
+        }
+        else {
+            userResponse = schoolUserRepo.save(teacher);
+        }
 
-        userResponse= schoolUserRepo.save(schoolUser);
         if(userResponse.getReason()!=OpCode.Success){
             return new Response<>(false,userResponse.getReason());
         }
-        aliasToCode.remove(alias);
+
+        aliasToCode.remove(schoolUser.getAlias());
         return new Response<>(true,OpCode.Success);
     }
 

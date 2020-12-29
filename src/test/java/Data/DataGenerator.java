@@ -74,6 +74,10 @@ public class DataGenerator {
         classRoomMap=new HashMap<Data, Classroom>();
         Classroom valid=new Classroom("class",classGroupMap.get(Data.Empty_Students),classGroupMap.get(Data.Valid_Group));
         classRoomMap.put(Data.Valid_Classroom,valid);
+        List<ClassGroup> groups=new ArrayList<>();
+        groups.add(classGroupMap.get(Data.Empty_Students));
+        groups.add(classGroupMap.get(Data.VALID_WITH_GROUP_C));
+        classRoomMap.put(Data.VALID_WITH_GROUP_C,new Classroom("class",groups));
     }
 
     private void initGroups() {
@@ -82,6 +86,7 @@ public class DataGenerator {
         studentHashMap.put(students.get(Data.VALID).getAlias(),students.get(Data.VALID));
         classGroupMap.put(Data.Valid_Group,new ClassGroup("g2",GroupType.B,studentHashMap));
         classGroupMap.put(Data.Empty_Students,new ClassGroup("g1",GroupType.A,new HashMap<>()));
+        classGroupMap.put(Data.VALID_WITH_GROUP_C,new ClassGroup("g3",GroupType.C,studentHashMap));
     }
 
     private void initNewRoomDetails() {
@@ -187,6 +192,8 @@ public class DataGenerator {
         teachers.put(Data.VALID_WITH_PASSWORD,new Teacher("NoAlasTeacher","Avi","Ron","1234"));
         teachers.put(Data.VALID_WITH_CLASSROOM,new Teacher("NoAlasTeacher","Avi","Ron",
                 classRoomMap.get(Data.Valid_Classroom),GroupType.BOTH,"1234"));
+        teachers.put(Data.VALID_WITH_GROUP_C,new Teacher("NoAlasTeacher","Avi","Ron",
+                classRoomMap.get(Data.VALID_WITH_GROUP_C),GroupType.BOTH,"1234"));
         teachers.put(Data.MOCK,new TeacherMock("NoAlasTeacher","Avi","Ron","1234"));
         teachers.put(Data.WRONG_NAME,new Teacher("Wrong","Avi","Ron","1234"));
     }
@@ -282,4 +289,5 @@ public class DataGenerator {
     public Classroom getClassroom(Data data){
         return classRoomMap.get(data);
     }
+
 }
