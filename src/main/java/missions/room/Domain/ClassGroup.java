@@ -1,10 +1,5 @@
 package missions.room.Domain;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.Map;
@@ -27,10 +22,10 @@ public class ClassGroup {
     public ClassGroup() {
     }
 
-    public ClassGroup(String id, GroupType groupType,Map<String, Student> students) {
+    public ClassGroup(String id,GroupType groupType, Map<String, Student> students) {
         this.groupName=id;
         this.students = students;
-        this.groupType=groupType;
+        this.groupType = groupType;
     }
 
     public Student getStudent(String alias,GroupType groupType) {

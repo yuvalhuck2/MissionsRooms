@@ -25,7 +25,18 @@ public enum OpCode implements Serializable {
     TimeOut,
     Wrong_Key,
     System_Error,
-    Null_Error, Wrong_Question, Wrong_Answer, Wrong_Type, Not_Mission, Wrong_Name, Wrong_Amount, Wrong_List, Too_Large_Amount, Too_Big_Amount, Type_Not_Match, Not_Exist_Template, Not_Exist_Student, Not_Exist_Group, Wrong_Bonus, Not_Exist_Classroom, Already_Exist_Group, Already_Exist_Class, Already_Exist_Student, Teacher, Student, IT, Supervisor,
+    Null_Error, Wrong_Question,
+    Wrong_Answer, Wrong_Type,
+    Not_Mission, Wrong_Name,
+    Wrong_Amount, Wrong_List,
+    Too_Large_Amount, Too_Big_Amount,
+    Type_Not_Match, Not_Exist_Template,
+    Not_Exist_Student, Not_Exist_Group,
+    Wrong_Bonus, Not_Exist_Classroom,
+    Already_Exist_Group, Already_Exist_Class,
+    Already_Exist_Student, Teacher,
+    Student, IT, Supervisor,
+    Wrong_File_Name, Failed_To_Read_Bytes
 
 
 }

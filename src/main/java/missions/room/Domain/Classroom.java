@@ -38,7 +38,12 @@ public class Classroom{
         this.classGroups.add(classGroupB);
     }
 
-    public Student getStudent(String alias,GroupType groupType) {
+    public Classroom(String className, List<ClassGroup> classGroups) {
+        this.className = className;
+        this.classGroups = new ArrayList<>(classGroups);
+    }
+
+    public Student getStudent(String alias, GroupType groupType) {
         Student student=null;
         for(ClassGroup classGroup: classGroups){
             student=classGroup.getStudent(alias,groupType);
