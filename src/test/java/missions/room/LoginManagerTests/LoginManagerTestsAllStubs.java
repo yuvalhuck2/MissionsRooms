@@ -4,10 +4,12 @@ import CrudRepositories.*;
 import Data.Data;
 import Data.DataGenerator;
 import DataAPI.OpCode;
+import DataAPI.RegisterDetailsData;
 import DataAPI.Response;
 import ExternalSystemMocks.MailSenderTrueMock;
 import ExternalSystems.MailSender;
 import RepositoryMocks.UserRepository.UserRepositoryMock;
+import com.google.gson.Gson;
 import javafx.util.Pair;
 import missions.room.Domain.IT;
 import missions.room.Domain.Student;
@@ -32,6 +34,13 @@ public class LoginManagerTestsAllStubs {
     protected UserAuthenticationManager loginManager;
 
     protected DataGenerator dataGenerator;
+
+    @Test
+    void ha(){
+        Gson gson=new Gson();
+        String f=gson.toJson(dataGenerator.getRegisterDetails(Data.VALID));
+        System.out.println();
+    }
 
     @BeforeEach
     void setUp() {

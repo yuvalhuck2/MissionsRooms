@@ -1,5 +1,7 @@
 package missions.room.Managers;
 
+import CrudRepositories.ClassroomRepository;
+import CrudRepositories.TeacherCrudRepository;
 import CrudRepositories.UserCrudRepository;
 import DataAPI.*;
 import ExternalSystems.UniqueStringGenerator;
@@ -8,6 +10,7 @@ import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
 import ExternalSystems.VerificationCodeGenerator;
 import CrudRepositories.SchoolUserCrudRepository;
+import missions.room.Repo.ClassroomRepo;
 import missions.room.Repo.SchoolUserRepo;
 import Utils.Utils;
 import missions.room.Repo.UserRepo;
@@ -29,6 +32,9 @@ public class UserAuthenticationManager extends TeacherManager {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private ClassroomRepo classroomRepo;
+
     private  HashSystem hashSystem;
     private  MailSender sender;
     private  VerificationCodeGenerator verificationCodeGenerator;
@@ -37,8 +43,9 @@ public class UserAuthenticationManager extends TeacherManager {
     private final ConcurrentHashMap<String, PasswordCodeGroupAndTime> aliasToCode;
 
     //tests constructor
-    public UserAuthenticationManager(SchoolUserCrudRepository userCrudRepo, MailSender sender) {
-        super();
+    public UserAuthenticationManager(ClassroomRepository classroomRepository,TeacherCrudRepository teacherCrudRepository,SchoolUserCrudRepository userCrudRepo, MailSender sender) {
+        super(teacherCrudRepository);
+        this.classroomRepo=new ClassroomRepo(classroomRepository);
         this.schoolUserRepo = new SchoolUserRepo(userCrudRepo);
         hashSystem = new HashSystem();
         this.sender = sender;
@@ -50,6 +57,13 @@ public class UserAuthenticationManager extends TeacherManager {
     public UserAuthenticationManager(UserCrudRepository userCrudRepo) {
         super();
         this.userRepo = new UserRepo(userCrudRepo);
+        hashSystem = new HashSystem();
+        aliasToCode=new ConcurrentHashMap<>();
+        verificationCodeGenerator = new VerificationCodeGenerator();
+    }
+
+    public UserAuthenticationManager(TeacherCrudRepository teacherCrudRepository) {
+        super(teacherCrudRepository);
         hashSystem = new HashSystem();
         aliasToCode=new ConcurrentHashMap<>();
         verificationCodeGenerator = new VerificationCodeGenerator();
@@ -79,7 +93,7 @@ public class UserAuthenticationManager extends TeacherManager {
     }
 
 
-    private Response<List<TeacherData>> updateStudent(RegisterDetailsData details) {
+    protected Response<List<TeacherData>> updateStudent(RegisterDetailsData details) {
         Response<SchoolUser> userResponse= schoolUserRepo.findUserForRead(details.getAlias());
         if(userResponse.getReason()!=OpCode.Success){
             return new Response<>(null,userResponse.getReason());
@@ -143,13 +157,13 @@ public class UserAuthenticationManager extends TeacherManager {
 
     /**
      * req 2.2 - register code
-     * * @param studentAlias - user studentAlias
+     * * @param alias - user alias
      * @param code - user details
      * @param groupType - group type if it is student and c if it is a teacher
      * @return if register succeeded
      */
-    public Response<Boolean> registerCode(String studentAlias, String code,String teacherAlias,GroupType groupType) {
-        if(!Utils.checkString(studentAlias)){
+    public Response<Boolean> registerCode(String alias, String code,String teacherAlias,GroupType groupType) {
+        if(!Utils.checkString(alias)){
             return new Response<>(false,OpCode.Wrong_Alias);
         }
 
@@ -157,7 +171,7 @@ public class UserAuthenticationManager extends TeacherManager {
             return new Response<>(false,OpCode.Wrong_Code);
         }
 
-        PasswordCodeGroupAndTime passwordCodeGroupAndTime =aliasToCode.get(studentAlias);
+        PasswordCodeGroupAndTime passwordCodeGroupAndTime =aliasToCode.get(alias);
         if(passwordCodeGroupAndTime ==null) {
             return new Response<>(false, OpCode.Not_Registered);
         }
@@ -168,7 +182,7 @@ public class UserAuthenticationManager extends TeacherManager {
             return new Response<>(false,OpCode.Wrong_Type);
         }
 
-        return checkPasswordAndPersist(studentAlias, passwordCodeGroupAndTime,teacherAlias,groupType);
+        return checkPasswordAndPersist(alias, passwordCodeGroupAndTime,teacherAlias,groupType);
 
     }
 
@@ -199,27 +213,24 @@ public class UserAuthenticationManager extends TeacherManager {
             }
         }
 
-//        Response<SchoolUser> userResponse= schoolUserRepo.findUserForWrite(studentAlias);
-//        if(userResponse.getReason()!= OpCode.Success){
-//            return new Response<>(false,userResponse.getReason());
-//        }
-//        SchoolUser schoolUser =userResponse.getValue();
-
         if(schoolUser.getPassword()!=null){
             aliasToCode.remove(schoolUser.getAlias());
             return new Response<>(false,OpCode.Already_Exist);
         }
         schoolUser.setPassword(passwordCodeGroupAndTime.getPassword());
         //move from group
-        Response<SchoolUser> userResponse;
+        Response userResponse;
         if(groupType!=GroupType.C) {//student
             Response<Boolean> moveStudentResponse=teacher.moveStudentToMyGroup(schoolUser.getAlias(),groupType);
             if(moveStudentResponse.getReason()!=OpCode.Success){
                 //student without password and with group
                 return moveStudentResponse;
             }
+            userResponse=classroomRepo.save(teacher.getClassroom());
         }
-        userResponse = schoolUserRepo.save(teacher);
+        else {
+            userResponse = schoolUserRepo.save(teacher);
+        }
 
         if(userResponse.getReason()!=OpCode.Success){
             return new Response<>(false,userResponse.getReason());

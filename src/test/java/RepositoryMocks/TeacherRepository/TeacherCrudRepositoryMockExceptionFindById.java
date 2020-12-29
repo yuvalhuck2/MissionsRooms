@@ -16,7 +16,7 @@ public class TeacherCrudRepositoryMockExceptionFindById  implements TeacherCrudR
 
     @Override
     public Teacher findTeacherForRead(String alias) {
-        return null;
+        throw new EntityNotFoundException();
     }
 
     @Override

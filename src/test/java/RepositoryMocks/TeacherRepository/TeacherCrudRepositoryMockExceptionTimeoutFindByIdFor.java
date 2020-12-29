@@ -1,24 +1,14 @@
 package RepositoryMocks.TeacherRepository;
 
 import CrudRepositories.TeacherCrudRepository;
-import Data.Data;
-import Data.DataGenerator;
 import missions.room.Domain.Teacher;
 
-import java.util.ArrayList;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.LockTimeoutException;
 import java.util.List;
 import java.util.Optional;
 
-import static Data.Data.VALID_WITH_CLASSROOM;
-
-public class TeacherCrudRepositoryMock implements TeacherCrudRepository {
-
-    private DataGenerator dataGenerator;
-
-    public TeacherCrudRepositoryMock(DataGenerator dataGenerator) {
-        this.dataGenerator = dataGenerator;
-    }
-
+public class TeacherCrudRepositoryMockExceptionTimeoutFindByIdFor implements TeacherCrudRepository {
     @Override
     public Teacher findTeacherForWrite(String alias) {
         return null;
@@ -26,14 +16,12 @@ public class TeacherCrudRepositoryMock implements TeacherCrudRepository {
 
     @Override
     public Teacher findTeacherForRead(String alias) {
-        return dataGenerator.getTeacher(Data.VALID_WITH_GROUP_C);
+        throw new LockTimeoutException();
     }
 
     @Override
     public List<Teacher> findTeacherByStudent(String student) {
-        List<Teacher> teachers=new ArrayList<>();
-        teachers.add(dataGenerator.getTeacher(VALID_WITH_CLASSROOM));
-        return teachers;
+        return null;
     }
 
     @Override
@@ -48,7 +36,9 @@ public class TeacherCrudRepositoryMock implements TeacherCrudRepository {
 
     @Override
     public Optional<Teacher> findById(String s) {
-        return Optional.ofNullable(dataGenerator.getTeacher(VALID_WITH_CLASSROOM));
+
+
+        throw new LockTimeoutException();
     }
 
     @Override

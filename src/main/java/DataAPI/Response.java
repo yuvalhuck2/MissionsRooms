@@ -5,10 +5,17 @@ import java.io.Serializable;
 public class Response<T> implements Serializable {
     private T value;
     private OpCode reason;
+    private  String msg;
 
     public Response(T value, OpCode reason) {
         this.value = value;
         this.reason = reason;
+    }
+
+    public Response(T value, OpCode reason, String msg) {
+        this.value = value;
+        this.reason = reason;
+        this.msg = msg;
     }
 
     public T getValue() {

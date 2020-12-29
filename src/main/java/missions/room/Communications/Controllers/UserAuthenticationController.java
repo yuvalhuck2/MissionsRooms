@@ -27,10 +27,10 @@ public class UserAuthenticationController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> addStore(@RequestBody String registerDetailsDataStr){
+    public Response<?> register(@RequestBody String registerDetailsDataStr){
         RegisterDetailsData registerDetailsData= json.fromJson(registerDetailsDataStr,RegisterDetailsData.class);
         Response<List<TeacherData>> listResponse=authenticationService.register(registerDetailsData);
-        return getResponseEntity(listResponse);
+        return listResponse;//getResponseEntity(listResponse);
     }
 
     private ResponseEntity<?> getResponseEntity(Response<?> response) {
