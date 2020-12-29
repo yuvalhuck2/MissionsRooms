@@ -1,6 +1,6 @@
 package missions.room.Repo;
 
-import CrudRepositories.ClassRoomRepository;
+import CrudRepositories.ClassroomRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import missions.room.Domain.Classroom;
@@ -13,9 +13,9 @@ import java.util.List;
 public class ClassroomRepo {
 
     @Autowired
-    private final ClassRoomRepository classRoomRepository;
+    private final ClassroomRepository classRoomRepository;
 
-    public ClassroomRepo(ClassRoomRepository classRoomRepository) {
+    public ClassroomRepo(ClassroomRepository classRoomRepository) {
         this.classRoomRepository = classRoomRepository;
     }
 

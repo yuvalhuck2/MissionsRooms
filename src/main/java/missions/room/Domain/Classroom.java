@@ -40,7 +40,7 @@ public class Classroom{
 
     public Classroom(String className, List<ClassGroup> classGroups) {
         this.className = className;
-        this.classGroups = new ArrayList<>(classGroups);
+        this.classGroups = new HashSet<>(classGroups);
     }
 
     public Student getStudent(String alias, GroupType groupType) {

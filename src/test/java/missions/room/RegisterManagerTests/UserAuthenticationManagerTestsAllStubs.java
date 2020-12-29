@@ -1,13 +1,19 @@
 package missions.room.RegisterManagerTests;
 
+import CrudRepositories.ClassroomRepository;
 import CrudRepositories.TeacherCrudRepository;
 import Data.Data;
 import Data.DataGenerator;
 import DataAPI.*;
 import CrudRepositories.SchoolUserCrudRepository;
+import RepositoryMocks.ClassroomRepository.ClassRoomRepositoryExemptionSaveMock;
+import RepositoryMocks.ClassroomRepository.ClassRoomRepositoryMock;
 import RepositoryMocks.SchoolUserRepositry.*;
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
+import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMockExceptionFindById;
+import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMockExceptionTimeoutFindByIdFor;
 import missions.room.Domain.GroupType;
+import missions.room.Domain.SchoolUser;
 import missions.room.Domain.Teacher;
 import missions.room.Managers.UserAuthenticationManager;
 import ExternalSystemMocks.MailSenderFalseMock;
@@ -39,6 +45,9 @@ public class UserAuthenticationManagerTestsAllStubs {
     @Autowired
     protected UserAuthenticationManager userAuthenticationManager;
 
+    @Autowired
+    protected ClassroomRepository classroomRepository;
+
     protected DataGenerator dataGenerator;
 
 
@@ -49,16 +58,20 @@ public class UserAuthenticationManagerTestsAllStubs {
         dataGenerator=new DataGenerator();
     }
 
-    void setUpMocks(){
+    public void setUpMocks(){
         MailSender mailSender=new MailSenderTrueMock();
+        classroomRepository=new ClassRoomRepositoryMock(dataGenerator);
         userRepository =new SchoolUserRepositoryMock(dataGenerator);
         teacherCrudRepository=new TeacherCrudRepositoryMock(dataGenerator);
-        userAuthenticationManager =new UserAuthenticationManager(teacherCrudRepository,userRepository,mailSender);
+        userAuthenticationManager =new UserAuthenticationManager(new ClassRoomRepositoryMock(dataGenerator),new TeacherCrudRepositoryMock(dataGenerator),new SchoolUserRepositoryMock(dataGenerator),mailSender);
     }
 
     void registerSetUp(){
         setUpMocks();
+
         userRepository.save(dataGenerator.getStudent(Data.VALID));
+        classroomRepository.save(dataGenerator.getClassroom(Data.VALID_WITH_GROUP_C));
+        userRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_GROUP_C));
 
     }
 
@@ -99,10 +112,10 @@ public class UserAuthenticationManagerTestsAllStubs {
         Response<List<TeacherData>> response= userAuthenticationManager.register(dataGenerator.getRegisterDetails(Data.VALID));
         assertEquals(response.getReason(), OpCode.Student);
         assertFalse(response.getValue().isEmpty());
-        assertEquals(response.getValue().get(0).getAlias(),dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getData().getAlias());
-        assertEquals(response.getValue().get(0).getAlias(),dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getData().getAlias());
-        assertEquals(response.getValue().get(0).getFirstName(),dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getData().getFirstName());
-        assertEquals(response.getValue().get(0).getLastName(),dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getData().getLastName());
+        assertEquals(response.getValue().get(0).getAlias(),dataGenerator.getTeacher(Data.VALID_WITH_GROUP_C).getData().getAlias());
+        assertEquals(response.getValue().get(0).getAlias(),dataGenerator.getTeacher(Data.VALID_WITH_GROUP_C).getData().getAlias());
+        assertEquals(response.getValue().get(0).getFirstName(),dataGenerator.getTeacher(Data.VALID_WITH_GROUP_C).getData().getFirstName());
+        assertEquals(response.getValue().get(0).getLastName(),dataGenerator.getTeacher(Data.VALID_WITH_GROUP_C).getData().getLastName());
         //check containing verification code
         try {
             Field aliasToCode= UserAuthenticationManager.class.getDeclaredField("aliasToCode");
@@ -147,7 +160,7 @@ public class UserAuthenticationManagerTestsAllStubs {
         registerSetUp();
         MailSender mailSender=new MailSenderFalseMock();
         userRepository =new SchoolUserRepositoryMock(dataGenerator);
-        userAuthenticationManager =new UserAuthenticationManager(teacherCrudRepository,userRepository,mailSender);
+        userAuthenticationManager =new UserAuthenticationManager(classroomRepository,teacherCrudRepository,userRepository,mailSender);
         checkWrongRegister(Data.VALID,OpCode.Mail_Error);
         registerTearDown();
     }
@@ -157,7 +170,7 @@ public class UserAuthenticationManagerTestsAllStubs {
         registerSetUp();
         //set up exception mock
         MailSender mailSender=new MailSenderTrueMock();
-        userAuthenticationManager =new UserAuthenticationManager(teacherCrudRepository,new SchoolUserRepositoryMockExceptionFindRead(dataGenerator),mailSender);
+        userAuthenticationManager =new UserAuthenticationManager(classroomRepository,teacherCrudRepository,new SchoolUserRepositoryMockExceptionFindRead(dataGenerator),mailSender);
         checkWrongRegister(Data.VALID,OpCode.DB_Error);
         registerCodeTearDown();
     }
@@ -167,8 +180,8 @@ public class UserAuthenticationManagerTestsAllStubs {
         registerSetUp();
         //set up exception mock
         MailSender mailSender=new MailSenderTrueMock();
-        userAuthenticationManager =new UserAuthenticationManager(teacherCrudRepository,new SchoolUserRepositoryMockLockExceptionFindRead(dataGenerator),mailSender);
-        checkWrongRegister(Data.VALID,OpCode.TimeOut);
+        userAuthenticationManager =new UserAuthenticationManager(classroomRepository,teacherCrudRepository,new SchoolUserRepositoryMockLockExceptionFindRead(dataGenerator),mailSender);
+        checkWrongRegister(Data.VALID,OpCode.DB_Error);
         registerCodeTearDown();
     }
 
@@ -250,11 +263,11 @@ public class UserAuthenticationManagerTestsAllStubs {
     }
 
     @Test
-    void testRegisterCodeInvalidExceptionUserRepositorySave(){
+    void testRegisterCodeInvalidExceptionClassroomRepositorySave(){
         registerSetUp();
         //set up exception mock
         MailSender mailSender=new MailSenderTrueMock();
-        userAuthenticationManager =new UserAuthenticationManager(teacherCrudRepository,new SchoolUserRepositoryExceptionSaveMock(dataGenerator),mailSender);
+        userAuthenticationManager =new UserAuthenticationManager(new ClassRoomRepositoryExemptionSaveMock(),teacherCrudRepository,userRepository,mailSender);
 
         //register the user
         RegisterDetailsData validDetails=dataGenerator.getRegisterDetails(Data.VALID);
@@ -264,24 +277,25 @@ public class UserAuthenticationManagerTestsAllStubs {
             Field aliasToCode = UserAuthenticationManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
             code=(((ConcurrentHashMap<String, PasswordCodeGroupAndTime>)aliasToCode.
-                    get(userAuthenticationManager)).get(validDetails.getAlias())).getCode();
+                    get(userAuthenticationManager)).get(validDetails.getAlias()))
+                    .getCode();
         } catch (IllegalAccessException | NoSuchFieldException e) {
             fail();
         }
         dataGenerator.setValidVerificationCode(code);
 
-        Response<Boolean> response= userAuthenticationManager.registerCode(validDetails.getAlias(),code,dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getAlias(), GroupType.A);
+        Response<Boolean> response= userAuthenticationManager.registerCode(validDetails.getAlias(),code,dataGenerator.getTeacher(Data.VALID_WITH_GROUP_C).getAlias(), GroupType.A);
         assertFalse(response.getValue());
         assertEquals(response.getReason(), OpCode.DB_Error);
         registerCodeTearDown();
     }
 
     @Test
-    void testRegisterCodeInvalidExceptionUserRepositoryFind(){
+    void testRegisterCodeInvalidExceptionTeacherRepositoryFind(){
         registerSetUp();
         //set up exception mock
         MailSender mailSender=new MailSenderTrueMock();
-        userAuthenticationManager =new UserAuthenticationManager(teacherCrudRepository,new SchoolUserRepositoryMockExceptionFindWrite(dataGenerator),mailSender);
+        userAuthenticationManager =new UserAuthenticationManager(classroomRepository,new TeacherCrudRepositoryMockExceptionFindById(),userRepository,mailSender);
 
         //register the user
         RegisterDetailsData validDetails=dataGenerator.getRegisterDetails(Data.VALID);
@@ -296,20 +310,20 @@ public class UserAuthenticationManagerTestsAllStubs {
             fail();
         }
         dataGenerator.setValidVerificationCode(code);
-
-        Response<Boolean> response= userAuthenticationManager.registerCode(validDetails.getAlias(),code,dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getAlias(), GroupType.A);
+        Response<Boolean> response= userAuthenticationManager.registerCode(validDetails.getAlias(),code,dataGenerator.getTeacher(Data.VALID_WITH_GROUP_C).getAlias(), GroupType.C);
         assertFalse(response.getValue());
         assertEquals(response.getReason(), OpCode.DB_Error);
         registerCodeTearDown();
     }
 
     @Test
-    void testRegisterCodeInvalidLockExceptionUserRepositoryFind(){
+    void testRegisterCodeInvalidLockExceptionTeacherRepositoryFind(){
         registerSetUp();
         //set up exception mock
         MailSender mailSender=new MailSenderTrueMock();
-        userAuthenticationManager =new UserAuthenticationManager(teacherCrudRepository,new SchoolUserRepositoryMockLockExceptionFindWrite(dataGenerator),mailSender);
-
+        //SchoolUser d=userRepository.findUserForRead(dataGenerator.getStudent(Data.VALID).getAlias());
+        //teacherCrudRepository=new TeacherCrudRepositoryMockExceptionTimeoutFindByIdFor();
+        userAuthenticationManager =new UserAuthenticationManager(classroomRepository,new TeacherCrudRepositoryMockExceptionTimeoutFindByIdFor()/*new TeacherCrudRepositoryMockExceptionTimeoutFindByIdFor()*/,userRepository,mailSender);
         //register the user
         RegisterDetailsData validDetails=dataGenerator.getRegisterDetails(Data.VALID);
         userAuthenticationManager.register(validDetails);
@@ -324,8 +338,7 @@ public class UserAuthenticationManagerTestsAllStubs {
         }
         dataGenerator.setValidVerificationCode(code);
 
-        //TODO
-        Response<Boolean> response= userAuthenticationManager.registerCode(validDetails.getAlias(),code,dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getAlias(), GroupType.A);
+        Response<Boolean> response= userAuthenticationManager.registerCode(validDetails.getAlias(),code,dataGenerator.getTeacher(Data.VALID_WITH_GROUP_C).getAlias(), GroupType.A);
         assertFalse(response.getValue());
         assertEquals(response.getReason(), OpCode.TimeOut);
         registerCodeTearDown();
@@ -335,7 +348,7 @@ public class UserAuthenticationManagerTestsAllStubs {
     protected void checkWrongRegisterCode(Data dataAlias,Data dataVerification,OpCode opCode){
         String alias=dataGenerator.getRegisterDetails(dataAlias).getAlias();
         String code=dataGenerator.getVerificationCode(dataVerification);
-        Response<Boolean> response= userAuthenticationManager.registerCode(alias,code,dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getAlias(), GroupType.A);
+        Response<Boolean> response= userAuthenticationManager.registerCode(alias,code,dataGenerator.getTeacher(Data.VALID_WITH_GROUP_C).getAlias(), GroupType.A);
         assertFalse(response.getValue());
         assertEquals(response.getReason(), opCode);
     }
@@ -351,9 +364,13 @@ public class UserAuthenticationManagerTestsAllStubs {
 
     void registerTearDown(){
         userRepository.delete(dataGenerator.getStudent(Data.VALID));
+        teacherCrudRepository.delete(dataGenerator.getTeacher(Data.VALID_WITH_GROUP_C));
+        classroomRepository.delete(dataGenerator.getClassroom(Data.Valid_Classroom));
+
     }
     @AfterEach
     void tearDown(){
+
 
     }
 }

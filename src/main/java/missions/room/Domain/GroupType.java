@@ -5,5 +5,4 @@ public enum GroupType {
     B,
     C,
     BOTH,
-    C,
 }

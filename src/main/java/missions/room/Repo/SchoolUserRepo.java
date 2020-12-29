@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.LockTimeoutException;
+import java.util.Optional;
 
 @Service
 public class SchoolUserRepo {
@@ -33,10 +34,11 @@ public class SchoolUserRepo {
         }
     }
 
-    @Transactional
+
     public Response<SchoolUser> findUserForRead(String alias){
         try {
-            return new Response<>(schoolUserCrudRepository.findUserForRead(alias), OpCode.Success);
+            Optional<SchoolUser> schoolUser=schoolUserCrudRepository.findById(alias);
+            return schoolUser.map(user -> new Response<>(user, OpCode.Success)).orElseGet(() -> new Response<>(null, OpCode.Success));
         }
         catch(LockTimeoutException e){
             return new Response<>(null,OpCode.TimeOut);

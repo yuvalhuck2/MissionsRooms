@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.LockTimeoutException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,7 +87,11 @@ public class TeacherRepo {
     public Response<List<Teacher>> findTeacherByStudent(String student) {
 
         try {
-            return new Response<>(teacherCrudRepository.findTeacherByStudent(student), OpCode.Success);
+            List<Teacher> teachers=teacherCrudRepository.findTeacherByStudent(student);
+            if(teachers==null){
+                teachers=new ArrayList<>();
+            }
+            return new Response<>(teachers, OpCode.Success);
         }
         catch (Exception e){
             return new Response<>(null,OpCode.DB_Error);
