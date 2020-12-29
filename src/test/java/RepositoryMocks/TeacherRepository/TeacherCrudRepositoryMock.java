@@ -5,6 +5,7 @@ import Data.Data;
 import Data.DataGenerator;
 import missions.room.Domain.Teacher;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +31,9 @@ public class TeacherCrudRepositoryMock implements TeacherCrudRepository {
 
     @Override
     public List<Teacher> findTeacherByStudent(String student) {
-        return null;
+        List<Teacher> teachers=new ArrayList<>();
+        teachers.add(dataGenerator.getTeacher(VALID_WITH_CLASSROOM));
+        return teachers;
     }
 
     @Override

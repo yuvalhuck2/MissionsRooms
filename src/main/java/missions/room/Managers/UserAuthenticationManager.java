@@ -1,5 +1,6 @@
 package missions.room.Managers;
 
+import CrudRepositories.TeacherCrudRepository;
 import CrudRepositories.UserCrudRepository;
 import DataAPI.*;
 import ExternalSystems.UniqueStringGenerator;
@@ -37,8 +38,8 @@ public class UserAuthenticationManager extends TeacherManager {
     private final ConcurrentHashMap<String, PasswordCodeGroupAndTime> aliasToCode;
 
     //tests constructor
-    public UserAuthenticationManager(SchoolUserCrudRepository userCrudRepo, MailSender sender) {
-        super();
+    public UserAuthenticationManager(TeacherCrudRepository teacherCrudRepository,SchoolUserCrudRepository userCrudRepo, MailSender sender) {
+        super(teacherCrudRepository);
         this.schoolUserRepo = new SchoolUserRepo(userCrudRepo);
         hashSystem = new HashSystem();
         this.sender = sender;

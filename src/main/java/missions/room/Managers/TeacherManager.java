@@ -31,6 +31,11 @@ public abstract class TeacherManager {
         this.ram=ram;
     }
 
+    public TeacherManager(TeacherCrudRepository teacherCrudRepository) {
+        this.teacherRepo = new TeacherRepo(teacherCrudRepository);
+        this.ram=new Ram();
+    }
+
     protected Response<Teacher> checkTeacher(String apiKey){
         String alias=ram.getApi(apiKey);
         if(alias==null){
