@@ -2,11 +2,14 @@ package missions.room.Service;
 
 import DataAPI.RegisterDetailsData;
 import DataAPI.Response;
+import DataAPI.TeacherData;
 import ExternalSystems.MailSender;
 import ExternalSystems.VerificationCodeGenerator;
+import missions.room.Domain.GroupType;
 import missions.room.Managers.UserAuthenticationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class UserAuthenticationService {
@@ -19,7 +22,7 @@ public class UserAuthenticationService {
      * @param details - user details
      * @return if mail with the code was sent successfully
      */
-    public Response<Boolean> register (RegisterDetailsData details){
+    public Response<List<TeacherData>> register (RegisterDetailsData details){
         return userAuthenticationManager.register(details);
     }
 
@@ -30,8 +33,8 @@ public class UserAuthenticationService {
      * @param code - user details
      * @return if register succeeded
      */
-    public Response<Boolean> registerCode (String alias, String code){
-        return userAuthenticationManager.registerCode(alias,code);
+    public Response<Boolean> registerCode (String alias, String code, String teacherAlias, GroupType groupType){
+        return userAuthenticationManager.registerCode(alias,code,teacherAlias,groupType);
     }
 
     /**

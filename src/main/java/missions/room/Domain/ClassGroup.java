@@ -6,13 +6,13 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.Map;
 
 @Entity
 public class ClassGroup {
 
     @Id
-    @Column(nullable = true)
     private String groupName;
 
     @Enumerated(EnumType.ORDINAL)
@@ -21,7 +21,7 @@ public class ClassGroup {
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @MapKey
-    @JoinColumn(name="classgroup",referencedColumnName = "groupName")
+    @JoinColumn(name="classGroup",referencedColumnName = "groupName")
     private Map<String, Student> students;
 
     public ClassGroup() {
@@ -45,5 +45,17 @@ public class ClassGroup {
 
     public GroupType getGroupType() {
         return groupType;
+    }
+
+    @Transactional
+    public void addStudent(Student student) {
+        students.put(student.getAlias(),student);
+    }
+
+    @Transactional
+    public Student removeStudent(String studentAlias) {
+        Student student=students.get(studentAlias);
+        students.remove(studentAlias);
+        return student;
     }
 }

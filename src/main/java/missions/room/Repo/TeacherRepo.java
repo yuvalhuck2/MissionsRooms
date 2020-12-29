@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.LockTimeoutException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -65,6 +66,17 @@ public class TeacherRepo {
     public Response<SchoolUser> save(Teacher teacher){
         try {
             return new Response<>(teacherCrudRepository.save(teacher), OpCode.Success);
+        }
+        catch (Exception e){
+            return new Response<>(null,OpCode.DB_Error);
+        }
+    }
+
+
+    public Response<List<Teacher>> findTeacherByStudent(String student) {
+
+        try {
+            return new Response<>(teacherCrudRepository.findTeacherByStudent(student), OpCode.Success);
         }
         catch (Exception e){
             return new Response<>(null,OpCode.DB_Error);

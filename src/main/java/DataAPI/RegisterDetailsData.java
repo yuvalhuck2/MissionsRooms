@@ -1,5 +1,7 @@
 package DataAPI;
 
+import missions.room.Domain.GroupType;
+
 /**
  * user type - enum that tell if it is student, teacher, supervisor or IT
  */
@@ -20,7 +22,6 @@ public class RegisterDetailsData {
     public String getPassword() {
         return password;
     }
-
 
     public void setPassword(String password) {
         this.password = password;
