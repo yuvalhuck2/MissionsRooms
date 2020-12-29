@@ -4,6 +4,7 @@ import CrudRepositories.TeacherCrudRepository;
 import missions.room.Domain.Teacher;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 
 public class TeacherCrudRepositoryMockExceptionFindById  implements TeacherCrudRepository {
@@ -19,6 +20,11 @@ public class TeacherCrudRepositoryMockExceptionFindById  implements TeacherCrudR
     }
 
     @Override
+    public List<Teacher> findTeacherByStudent(String student) {
+        return null;
+    }
+
+    @Override
     public <S extends Teacher> S save(S s) {
         return null;
     }
@@ -30,6 +36,8 @@ public class TeacherCrudRepositoryMockExceptionFindById  implements TeacherCrudR
 
     @Override
     public Optional<Teacher> findById(String s) {
+
+
         throw new EntityNotFoundException();
     }
 

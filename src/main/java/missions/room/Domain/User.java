@@ -1,5 +1,7 @@
 package missions.room.Domain;
 
+import DataAPI.OpCode;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -38,5 +40,7 @@ public abstract class User {
     public String getAlias() {
         return alias;
     }
+
+    public abstract OpCode getOpcode();
 }
 

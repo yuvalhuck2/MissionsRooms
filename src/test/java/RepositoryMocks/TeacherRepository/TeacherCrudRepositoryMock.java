@@ -5,7 +5,10 @@ import Data.Data;
 import Data.DataGenerator;
 import missions.room.Domain.Teacher;
 
+import java.util.List;
 import java.util.Optional;
+
+import static Data.Data.VALID_WITH_CLASSROOM;
 
 public class TeacherCrudRepositoryMock implements TeacherCrudRepository {
 
@@ -26,6 +29,11 @@ public class TeacherCrudRepositoryMock implements TeacherCrudRepository {
     }
 
     @Override
+    public List<Teacher> findTeacherByStudent(String student) {
+        return null;
+    }
+
+    @Override
     public <S extends Teacher> S save(S s) {
         return null;
     }
@@ -37,7 +45,7 @@ public class TeacherCrudRepositoryMock implements TeacherCrudRepository {
 
     @Override
     public Optional<Teacher> findById(String s) {
-        return Optional.ofNullable(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
+        return Optional.ofNullable(dataGenerator.getTeacher(VALID_WITH_CLASSROOM));
     }
 
     @Override
