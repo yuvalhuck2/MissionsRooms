@@ -12,7 +12,6 @@ import {
 export default (state = initialState, action) => {
   switch (action.type) {
     case EMAIL_CHANGED:
-      console.log(action.payload);
       return { ...state, email: action.payload };
     case PASSWORD_CHANGED:
       return { ...state, password: action.payload };
