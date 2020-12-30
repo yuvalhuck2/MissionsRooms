@@ -15,3 +15,11 @@ export const loginStrings = {
     no_user: 'אין ברשותך משתמש? ',
     no_user_sign_up: 'הירשם כאן',
   };
+
+  export const authStrings = {
+    header: 'הכנס קוד אימות',
+    enter_code: 'הכנס קוד',
+    choose_group: 'בחר קבוצה',
+    send_btn: 'שלח',
+    no_code: 'לא קיבלת קוד? ',
+  };
