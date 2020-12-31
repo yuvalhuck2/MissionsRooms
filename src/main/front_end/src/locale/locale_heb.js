@@ -23,3 +23,16 @@ export const loginStrings = {
     no_user: 'אין ברשותך משתמש? ',
     no_user_sign_up: 'הירשם כאן',
   };
+
+export const AddDeterministicMissionStrings = {
+    header: ' הוספת משימת מענה דטרמיניסטי',
+    enter_quesion: 'הכנס/י שאלה',
+    enter_answer: 'הכנס/י תשובה',
+    personal: 'אישית',
+    group:'קבוצתית',
+    classroom:'כיתתית',
+  };
+
+  export const AddMissionStrings = {
+    addMissionButton: 'הוספה',
+  };
