@@ -17,12 +17,12 @@ public class RoomTemplateCrudRepositoryMock implements RoomTemplateCrudRepositor
     }
 
     @Override
-    public Mission findMissionForWrite(String roomTemplateId) {
+    public RoomTemplate findTemplateForWrite(String roomTemplateId) {
         return null;
     }
 
     @Override
-    public Mission findMissionForRead(String roomTemplateId) {
+    public RoomTemplate findTemplateForRead(String roomTemplateId) {
         return null;
     }
 
@@ -38,7 +38,17 @@ public class RoomTemplateCrudRepositoryMock implements RoomTemplateCrudRepositor
 
     @Override
     public Optional<RoomTemplate> findById(String s) {
-        return Optional.ofNullable(dataGenerator.getRoomTemplate(Data.VALID));
+
+        if(s.equals("rt")) {
+            return Optional.ofNullable(dataGenerator.getRoomTemplate(Data.VALID));
+        }
+
+        else if(s.equals("group")){
+            return Optional.ofNullable(dataGenerator.getRoomTemplate(Data.Valid_Group));
+        }
+
+        return Optional.ofNullable(dataGenerator.getRoomTemplate(Data.Valid_Classroom));
+
     }
 
     @Override

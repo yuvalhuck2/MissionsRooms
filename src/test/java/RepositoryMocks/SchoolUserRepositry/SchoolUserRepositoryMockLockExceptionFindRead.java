@@ -5,6 +5,7 @@ import Data.Data;
 import Data.DataGenerator;
 import missions.room.Domain.SchoolUser;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.LockTimeoutException;
 import java.util.Optional;
 
@@ -37,7 +38,7 @@ public class SchoolUserRepositoryMockLockExceptionFindRead implements SchoolUser
 
     @Override
     public Optional<SchoolUser> findById(String s) {
-        return Optional.empty();
+        throw new EntityNotFoundException();
     }
 
     @Override
