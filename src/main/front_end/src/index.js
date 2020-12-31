@@ -9,11 +9,11 @@ const Stack = createStackNavigator();
 const App = () =>{
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="AddMission">
-        {/* { <Stack.Screen name="AddMission" component={AddDeterministicMissionScreen}/> } */}
+      <Stack.Navigator initialRouteName="Register">
+        {<Stack.Screen name="AddDeteministicMission" component={AddDeterministicMissionScreen}/> }
         {<Stack.Screen name="AddMission" component={ChooseMissionToAddScreen}/> }
-        {/* <Stack.Screen name="Register" component={RegisterScreen}/> */}
-        {/* <Stack.Screen name="Login" component={LoginScreen}/> */}
+        {<Stack.Screen name="Register" component={RegisterScreen}/>}
+        {<Stack.Screen name="Login" component={LoginScreen}/>}
       </Stack.Navigator>
     </NavigationContainer>
   )
