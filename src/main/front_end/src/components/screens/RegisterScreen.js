@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { ActivityIndicator } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, registerUser } from '../../actions';
 import { theme } from '../../core/theme';
@@ -39,6 +40,55 @@ class RegisterForm extends Component {
     this.props.registerUser({ email, password });
   }
 
+  renderSpinner() {
+    return <ActivityIndicator animating={true} color={theme.colors.primary} size='large'/>;
+  }
+
+  renderButtonAction() {
+    const { loading } = this.props;
+
+    return loading ? (
+      this.renderSpinner()
+    ) : (
+      <View style={styles.row}>
+        <Text style={styles.label}>{already_user}</Text>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate('Login')}
+        >
+          <Text style={styles.link}>{already_user_sign_in}</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  renderButton(){
+    const {loading} = this.props
+
+    return loading ? (
+      this.renderSpinner()
+    ) : (
+      <Button
+      mode='contained'
+      style={styles.button}
+      onPress={this.onButtonPress}
+      >
+      {register_btn}
+      </Button>
+    )
+  }
+
+  renderError() {
+    const { errorMessage } = this.props;
+
+    if (errorMessage && errorMessage !== '') {
+      return (
+        <View>
+          <Text style={styles.errorTextStyle}>{errorMessage}</Text>
+        </View>
+      );
+    }
+  }
+
   render() {
     const { email, password } = this.props;
 
@@ -59,23 +109,8 @@ class RegisterForm extends Component {
           placeholder='Th1sI5@passWord'
           secureTextEntry
         />
-
-        <Button
-          mode='contained'
-          style={styles.button}
-          onPress={this.onButtonPress}
-        >
-          {register_btn}
-        </Button>
-
-        <View style={styles.row}>
-          <Text style={styles.label}>{already_user}</Text>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Login')}
-          >
-            <Text style={styles.link}>{already_user_sign_in}</Text>
-          </TouchableOpacity>
-        </View>
+        {this.renderButton()}
+        {this.renderError()}
       </KeyboardAwareScrollView>
     );
   }
@@ -102,11 +137,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: theme.colors.primary,
   },
+  errorTextStyle: {
+    fontSize: 25,
+    alignSelf: 'center',
+    color: theme.colors.error,
+  },
 });
 
 const mapStateToProps = (state) => {
-  const { email, password } = state.auth;
-  return { email, password };
+  const { email, password, loading, errorMessage } = state.auth;
+  return { email, password, loading, errorMessage };
 };
 
 export default connect(mapStateToProps, {

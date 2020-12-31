@@ -1,4 +1,5 @@
 import API from '../api/API';
+import { registerErrors } from '../locale/locale_heb';
 import {
   Already_Exist,
   DB_Error,
@@ -17,17 +18,13 @@ import {
   UPDATE_ERROR,
 } from './types';
 
-import {
-  registerErrors
-} from '../locale/locale_heb'
-
 const {
   wrong_password,
   wrong_alias,
   server_error,
   not_exist,
-  already_exist
-} = registerErrors
+  already_exist,
+} = registerErrors;
 
 // const { manifest } = Constants;
 
@@ -62,8 +59,11 @@ export const registerUser = ({ email, password }) => {
 
 const checkRegisterUserResponse = (data, dispatch) => {
   const { reason, value } = data;
+  console.log(reason);
+
   switch (reason) {
     case Wrong_Password:
+      console.log(wrong_password)
       dispatch({ type: UPDATE_ERROR, payload: wrong_password });
     case Wrong_Alias:
       dispatch({ type: UPDATE_ERROR, payload: wrong_alias });

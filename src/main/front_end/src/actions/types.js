@@ -5,3 +5,4 @@ export const LOGIN_USER_FAIL = 'login_user_fail';
 export const LOGIN_USER = 'login_user';
 export const REGISTER_USER = 'register_user'
 export const UPDATE_ERROR = 'update_error'
+export const CLEAR_STATE = 'clear_state'
