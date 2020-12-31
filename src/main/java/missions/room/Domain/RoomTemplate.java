@@ -74,4 +74,11 @@ public class RoomTemplate {
     public List<Mission> getMissions() {
         return missions;
     }
+
+    public Mission getMission(int missionIndex){
+        if(this.missions.size()>=missionIndex){
+            return null;
+        }
+        else return this.missions.get(missionIndex);
+    }
 }

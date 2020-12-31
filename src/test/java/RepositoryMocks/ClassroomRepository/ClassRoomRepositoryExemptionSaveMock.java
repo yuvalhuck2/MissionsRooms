@@ -7,6 +7,11 @@ import org.springframework.dao.DataAccessResourceFailureException;
 import java.util.Optional;
 
 public class ClassRoomRepositoryExemptionSaveMock implements ClassroomRepository {
+
+
+    public ClassRoomRepositoryExemptionSaveMock() {
+    }
+
     @Override
     public <S extends Classroom> S save(S s) {
         throw new DataAccessResourceFailureException("s");
@@ -60,5 +65,10 @@ public class ClassRoomRepositoryExemptionSaveMock implements ClassroomRepository
     @Override
     public void deleteAll() {
 
+    }
+
+    @Override
+    public Classroom findClassroomByStudent(String student) {
+        return null;
     }
 }
