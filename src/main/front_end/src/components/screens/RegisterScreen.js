@@ -36,8 +36,8 @@ class RegisterForm extends Component {
   }
 
   onButtonPress() {
-    const { email, password } = this.props;
-    this.props.registerUser({ email, password });
+    const { email, password, navigation } = this.props;
+    this.props.registerUser({ email, password, navigation });
   }
 
   renderSpinner() {

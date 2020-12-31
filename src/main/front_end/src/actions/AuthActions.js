@@ -14,10 +14,10 @@ import {
 import {
   EMAIL_CHANGED,
   PASSWORD_CHANGED,
+  REGISTER_STUDENT,
+  REGISTER_TEACHER,
   REGISTER_USER,
   UPDATE_ERROR,
-  REGISTER_TEACHER,
-  REGISTER_STUDENT,
 } from './types';
 
 const {
@@ -49,24 +49,24 @@ export const passwordChanged = (text) => {
   };
 };
 
-export const registerUser = ({ email, password }) => {
+export const registerUser = ({ email, password, navigation }) => {
   return async (dispatch) => {
-    dispatch({ type: REGISTER_USER });
+    dispatch({ type: REGISTER_USER});
     const res = await API.post('/UserAuth', { alias: email, password });
     console.log(res.data);
     if (res) {
-      checkRegisterUserResponse(res.data, dispatch);
+      checkRegisterUserResponse(res.data, dispatch, navigation);
     }
   };
 };
 
-const checkRegisterUserResponse = (data, dispatch) => {
+const checkRegisterUserResponse = (data, dispatch, navigation) => {
   const { reason, value } = data;
   console.log(reason);
 
   switch (reason) {
     case Wrong_Password:
-      console.log(wrong_password)
+      console.log(wrong_password);
       return dispatch({ type: UPDATE_ERROR, payload: wrong_password });
     case Wrong_Alias:
       return dispatch({ type: UPDATE_ERROR, payload: wrong_alias });
@@ -81,8 +81,11 @@ const checkRegisterUserResponse = (data, dispatch) => {
     case Mail_Error:
       return dispatch({ type: UPDATE_ERROR, payload: server_error });
     case Teacher:
-      return dispatch({ type: REGISTER_TEACHER});
+      // TODO: navigate to add activation code when it is done
+      navigation.navigate('Login');
+      return dispatch({ type: REGISTER_TEACHER });
     case Student:
+      navigation.navigate('Login');
       return dispatch({ type: REGISTER_STUDENT, payload: value });
     default:
       return dispatch({ type: UPDATE_ERROR, payload: server_error });

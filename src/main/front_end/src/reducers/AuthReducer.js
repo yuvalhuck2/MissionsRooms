@@ -23,24 +23,18 @@ export default (state = initialState, action) => {
     case PASSWORD_CHANGED:
       return { ...state, password: action.payload };
     case REGISTER_USER:
-      return { ...state, loading: true, errorMessage: '' };
+      return { ...state, loading: true, errorMessage: ''};
     case UPDATE_ERROR:
       return { ...state, errorMessage: action.payload, loading: false };
     case REGISTER_STUDENT:
       return {
-        ...state,
+        ...initialState,
         is_student: true,
         teachers_data: action.payload,
-        loading: false,
-        errorMessage: false,
       };
     case REGISTER_TEACHER:
       return {
-        ...state,
-        is_student: false,
-        teachers_data: [],
-        loading: false,
-        errorMessage: false,
+        ...initialState,
       };
     case CLEAR_STATE:
       return initialState;
