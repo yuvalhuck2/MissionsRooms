@@ -6,3 +6,5 @@ export const LOGIN_USER = 'login_user';
 export const REGISTER_USER = 'register_user'
 export const UPDATE_ERROR = 'update_error'
 export const CLEAR_STATE = 'clear_state'
+export const REGISTER_STUDENT = 'register_student'
+export const REGISTER_TEACHER = 'register_teacher'

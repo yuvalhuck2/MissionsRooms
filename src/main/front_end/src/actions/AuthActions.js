@@ -16,6 +16,8 @@ import {
   PASSWORD_CHANGED,
   REGISTER_USER,
   UPDATE_ERROR,
+  REGISTER_TEACHER,
+  REGISTER_STUDENT,
 } from './types';
 
 const {
@@ -26,6 +28,7 @@ const {
   already_exist,
 } = registerErrors;
 
+// THIS IS FOR CHECKING DNS ADDRESS WHEN RUNNING EXPO ON PHYSICAL DEVICE
 // const { manifest } = Constants;
 
 // const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080`;
@@ -64,24 +67,24 @@ const checkRegisterUserResponse = (data, dispatch) => {
   switch (reason) {
     case Wrong_Password:
       console.log(wrong_password)
-      dispatch({ type: UPDATE_ERROR, payload: wrong_password });
+      return dispatch({ type: UPDATE_ERROR, payload: wrong_password });
     case Wrong_Alias:
-      dispatch({ type: UPDATE_ERROR, payload: wrong_alias });
+      return dispatch({ type: UPDATE_ERROR, payload: wrong_alias });
     case TimeOut:
-      dispatch({ type: UPDATE_ERROR, payload: server_error });
+      return dispatch({ type: UPDATE_ERROR, payload: server_error });
     case DB_Error:
-      dispatch({ type: UPDATE_ERROR, payload: server_error });
+      return dispatch({ type: UPDATE_ERROR, payload: server_error });
     case Not_Exist:
-      dispatch({ type: UPDATE_ERROR, payload: not_exist });
+      return dispatch({ type: UPDATE_ERROR, payload: not_exist });
     case Already_Exist:
-      dispatch({ type: UPDATE_ERROR, payload: already_exist });
+      return dispatch({ type: UPDATE_ERROR, payload: already_exist });
     case Mail_Error:
-      dispatch({ type: UPDATE_ERROR, payload: server_error });
+      return dispatch({ type: UPDATE_ERROR, payload: server_error });
     case Teacher:
-      dispatch({ type: '', payload: '' });
+      return dispatch({ type: REGISTER_TEACHER});
     case Student:
-      dispatch({ type: '', payload: '' });
+      return dispatch({ type: REGISTER_STUDENT, payload: value });
     default:
-      dispatch({ type: UPDATE_ERROR, payload: server_error });
+      return dispatch({ type: UPDATE_ERROR, payload: server_error });
   }
 };
