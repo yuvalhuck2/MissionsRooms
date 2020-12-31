@@ -3,6 +3,7 @@ import {
     ANSWER_CHANGED,
     TYPES_CHANGED,
     ADD_MISSON,
+    DETERMINISTIC,
     UPDATE_ERROR,
   } from '../actions/types';
   
@@ -24,6 +25,13 @@ export const questionChanged = (text) => {
     return {
       type: TYPES_CHANGED,
       payload: list,
+    };
+  };
+
+  export const navigateToMission = (type) => {
+    return {
+      type,
+      payload:type,
     };
   };
   

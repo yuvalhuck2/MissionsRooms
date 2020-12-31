@@ -12,10 +12,15 @@ const initialState = {
     ADD_MISSON,
     UPDATE_ERROR,
     CLEAR_STATE,
+    DETERMINISTIC,
   } from '../actions/types';
   
   export default (state = initialState, action) => {
     switch (action.type) {
+      case DETERMINISTIC:
+        //navigation
+        console.log('move to detemistic')
+        return state;
       case QUESTION_CHANGED:
         return { ...state, question: action.payload };
       case ANSWER_CHANGED:

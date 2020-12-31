@@ -36,3 +36,8 @@ export const AddDeterministicMissionStrings = {
   export const AddMissionStrings = {
     addMissionButton: 'הוספה',
   };
+
+  export const ChooseMissionToAddStrings = {
+    header: ' יש לבחור משימה להוספה',
+    deterministicButton: 'שאלה עם פתרון יחיד',
+  };
