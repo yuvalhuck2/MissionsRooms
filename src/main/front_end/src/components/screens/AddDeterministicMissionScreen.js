@@ -3,10 +3,9 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ActivityIndicator } from 'react-native-paper';
 import { Checkbox } from 'react-native-paper';
-import { AddDeterministicMissionStrings,AddMissionStrings } from '../../locale/locale_heb';
-import { questionChanged, answerChanged, typesChanged ,addMission,checkDeterministicParams } from '../../actions';
+import { AddDeterministicMissionStrings,AddStrings } from '../../locale/locale_heb';
+import { questionChanged, answerChanged, typesChanged ,addMission } from '../../actions';
 import { connect } from 'react-redux';
-import {DETERMINISTIC} from '../../actions/types'
 import { theme } from '../../core/theme';
 import Button from '../common/Button';
 import Header from '../common/Header';
@@ -14,7 +13,7 @@ import TextInput from '../common/TextInput';
 
 const {
     header,
-    enter_quesion,
+    enter_question,
     enter_answer,
     personal,
     group,
@@ -22,8 +21,8 @@ const {
   } = AddDeterministicMissionStrings;
   
 const {
-    addMissionButton,
-  } = AddMissionStrings;
+  addButton,
+  } = AddStrings;
 
 class AddDeterministicMissionForm extends Component{
     constructor(... args){
@@ -73,7 +72,7 @@ class AddDeterministicMissionForm extends Component{
           style={styles.button}
           onPress={this.onButtonPress}
           >
-          {addMissionButton}
+          {addButton}
           </Button>
         )
       }
@@ -98,7 +97,7 @@ class AddDeterministicMissionForm extends Component{
         <KeyboardAwareScrollView style={styles.container}>
             <Header>{header}</Header>
             <TextInput
-            label={enter_quesion}
+            label={enter_question}
             value={question}
             onChangeText={this.onQuestionChanged}
             placeholder='שאלה'
