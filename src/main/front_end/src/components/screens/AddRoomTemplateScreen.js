@@ -92,14 +92,6 @@ class AddTemplateForm extends Component{
           })
           
           return lst
-        //   return(
-        //     roomTypes.map((roomType)=>{
-        //         <RadioButton.Item label='d' value='u' />
-        //     }
-        // // [<RadioButton.Item label="First item" value="first" />,
-        // // <RadioButton.Item label="Second item" value="second" />]
-        //   )
-        //   )
       }
 
     render(){
@@ -164,7 +156,7 @@ const styles = StyleSheet.create({
   });
 
 const mapStateToProps = (state) => {
-    const { name,minimalMissions,type, loading, errorMessage } = state.addMission;
+    const { name,minimalMissions,type, loading, errorMessage } = state.addRoomTemplate;
     return { name,minimalMissions,type, loading, errorMessage };
   };
   
