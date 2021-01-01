@@ -9,7 +9,7 @@ const Stack = createStackNavigator();
 const App = () =>{
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Register">
+      <Stack.Navigator initialRouteName="AddDeteministicMission">
         {<Stack.Screen name="AddDeteministicMission" component={AddDeterministicMissionScreen}/> }
         {<Stack.Screen name="AddMission" component={ChooseMissionToAddScreen}/> }
         {<Stack.Screen name="Register" component={RegisterScreen}/>}

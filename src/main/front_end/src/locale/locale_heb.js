@@ -33,6 +33,12 @@ export const AddDeterministicMissionStrings = {
     classroom:'כיתתית',
   };
 
+  export const AddDeterministicMissionErrors={
+    question_empty:'יש להזין שאלה',
+    answer_empty:'יש להזין תשובה',
+    types_empty:'יש לבחור לפחות סוג משימה אחד',
+  }
+
   export const AddMissionStrings = {
     addMissionButton: 'הוספה',
   };

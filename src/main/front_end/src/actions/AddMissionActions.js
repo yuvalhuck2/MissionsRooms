@@ -1,3 +1,5 @@
+import { AddDeterministicMissionErrors } from '../locale/locale_heb';
+
 import {
     QUESTION_CHANGED,
     ANSWER_CHANGED,
@@ -7,6 +9,12 @@ import {
     UPDATE_ERROR,
   } from '../actions/types';
   
+  const {
+    question_empty,
+    answer_empty,
+    types_empty,
+  } = AddDeterministicMissionErrors;
+
 export const questionChanged = (text) => {
     return {
       type: QUESTION_CHANGED,
@@ -35,15 +43,30 @@ export const questionChanged = (text) => {
     };
   };
   
-  export const addMission = (mission) => {
-      console.log(mission)
-    return async (dispatch) => {
-        dispatch({ type: ADD_MISSON });
-        alert(mission)
-        //const res = await API.post('/UserAuth', { alias: email, password });
-        // console.log(res.data);
-        // if (res) {
-        //   alert("wow")
-        // }
-    };
+  export const addMission = (question,realAnswer,missionTypes) => {
+    return async (dispatch)=>{
+      if(question.trim()===""){
+        dispatch({ type: UPDATE_ERROR, payload: question_empty });
+      }
+      else if(realAnswer.trim()===""){
+        dispatch({ type: UPDATE_ERROR, payload: answer_empty });
+      }
+      else if(missionTypes.length==0){
+        dispatch({ type: UPDATE_ERROR, payload: types_empty });
+      }
+      else{
+        sendMission({CLASSNAME:DETERMINISTIC,
+          DATA:{question,realAnswer,missionTypes}},dispatch)
+      }
+    }
   };
+
+  const sendMission= (mission,dispatch) =>{
+    dispatch({ type: ADD_MISSON });
+    alert(mission)
+      //const res = await API.post('/UserAuth', { alias: email, password });
+      // console.log(res.data);
+      // if (res) {
+      //   alert("wow")
+      // }
+  }

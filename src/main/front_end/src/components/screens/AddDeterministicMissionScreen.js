@@ -4,8 +4,9 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { ActivityIndicator } from 'react-native-paper';
 import { Checkbox } from 'react-native-paper';
 import { AddDeterministicMissionStrings,AddMissionStrings } from '../../locale/locale_heb';
-import { questionChanged, answerChanged, typesChanged ,addMission } from '../../actions';
+import { questionChanged, answerChanged, typesChanged ,addMission,checkDeterministicParams } from '../../actions';
 import { connect } from 'react-redux';
+import {DETERMINISTIC} from '../../actions/types'
 import { theme } from '../../core/theme';
 import Button from '../common/Button';
 import Header from '../common/Header';
@@ -54,8 +55,7 @@ class AddDeterministicMissionForm extends Component{
 
     onButtonPress() {
         const {question,realAnswer,missionTypes} = this.props;
-        this.props.addMission( {CLASSNAME:"missions.room.Domain.missions.KnownAnswerMission",
-        DATA:{question,realAnswer,missionTypes}} );
+        this.props.addMission( question,realAnswer,missionTypes );
     }
 
     renderSpinner() {
