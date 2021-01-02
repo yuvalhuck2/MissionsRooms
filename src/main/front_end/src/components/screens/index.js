@@ -6,3 +6,4 @@ export {default as AddRoomTemplateScreen} from './AddRoomTemplateScreen'
 export {default as ChooseMissionsForTemplateScreen} from './ChooseMissionsForTemplateScreen'
 export {default as TeacherScreen} from './TeacherScreen'
 export { default as AuthScreen } from './AuthenticationScreen';
+export { default as AddRoomScreen } from './AddRoomScreen';

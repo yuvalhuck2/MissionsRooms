@@ -4,7 +4,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { ActivityIndicator,RadioButton } from 'react-native-paper';
 import { AddRoomTempalteStrings,roomTypes } from '../../locale/locale_heb';
 import { nameChanged,typeChanged,minimalMissionsChanged,passToMissions } from '../../actions';
-import { Dropdown } from 'react-native-material-dropdown';
 import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
 import Button from '../common/Button';

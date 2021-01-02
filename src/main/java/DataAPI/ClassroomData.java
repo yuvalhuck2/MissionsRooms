@@ -2,7 +2,7 @@ package DataAPI;
 
 import java.util.List;
 
-public class ClassRoomData {
-    private String classroomName;
+public class ClassroomData {
+    private String name;
     private List<GroupData> groups;
 }

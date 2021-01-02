@@ -47,7 +47,7 @@ class TeacherForm extends Component {
           <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]} />
         </View>
         <View>
-          <Button  onPress={()=>this.navigate(NavPaths.addTemplate)} mode="contained" style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >
+          <Button  onPress={()=>this.navigate(NavPaths.AddRoom)} mode="contained" style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >
             <Text style={{color:"white"}}>{createRoom}</Text> 
             <Icon name='create' />
           </Button>

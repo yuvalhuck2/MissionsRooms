@@ -99,3 +99,15 @@ export const roomTypes = [
     createRoom:'יצירת חדר',
     closeRoom:'סגירת חדר',
   }
+
+  export const AddRoomStrings={
+    header:'הוספת חדר',
+    enter_name:'שם החדר',
+    enter_bonus:'בונוס על סיום החדר',
+    enter_student:'בחר/י קבוצה',
+    enter_group:'בחר/י תלמיד',
+    classroom_add:'הוספת חדר כיתתי',
+    group_add:'הוספת חדר קבוצתי',
+    student_add:'הוספת חדר אישי',
+    
+  }

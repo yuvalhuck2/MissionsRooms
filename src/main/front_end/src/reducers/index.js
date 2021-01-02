@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import addMissionReducer from './addMissionReducer';
+import addMissionReducer from './AddMissionReducer';
 import AuthReducer from './AuthReducer'
-import addRoomTemplateReducer from './addRoomTemlateReducer'
+import addRoomTemplateReducer from './AddRoomTemlateReducer'
+import addRoomReducer from './AddRoomReducer'
 
 export default combineReducers({
   auth: AuthReducer,
   addMission: addMissionReducer,
-  addRoomTemplate: addRoomTemplateReducer
+  addRoomTemplate: addRoomTemplateReducer,
+  addRoom: addRoomReducer,
 });
