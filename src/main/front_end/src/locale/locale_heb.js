@@ -76,3 +76,9 @@ export const AddDeterministicMissionStrings = {
       translate:'כיתתי'
     },
   ]
+
+  export const ChooseMissionsTemplateStrings={
+    header: 'יש לבחור משימות לתבנית',
+    deterministic_name:'סוג : שאלת פתרון יחיד',
+    question:'שאלה: ',
+  }
