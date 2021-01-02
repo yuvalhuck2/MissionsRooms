@@ -30,7 +30,7 @@ const initialState = {
       case ADD_MISSON:
         return { ...state, loading: true };
       case UPDATE_ERROR:
-        console.log(`payload is:${action.payload}`)
+        alert(action.payload)
         return { ...state, errorMessage: action.payload, loading: false };
       case CLEAR_STATE:
         return initialState;

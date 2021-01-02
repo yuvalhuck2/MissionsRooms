@@ -33,6 +33,13 @@ public class UserAuthenticationController {
         return listResponse;//getResponseEntity(listResponse);
     }
 
+    @PostMapping("/login")
+    public Response<?> login(@RequestBody String loginDetailsDataStr){
+        RegisterDetailsData registerDetailsData= json.fromJson(loginDetailsDataStr,RegisterDetailsData.class);
+        Response<String> loginResponse=authenticationService.login(registerDetailsData.getAlias(),registerDetailsData.getPassword());
+        return loginResponse;//getResponseEntity(listResponse);
+    }
+
     private ResponseEntity<?> getResponseEntity(Response<?> response) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
