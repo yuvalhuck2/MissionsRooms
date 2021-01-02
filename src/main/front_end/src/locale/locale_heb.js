@@ -7,13 +7,14 @@ export const registerStrings = {
   already_user_sign_in: 'התחבר כאן',
 };
 
-export const registerErrors = {
+export const authErrors = {
+  wrong_password_login: 'סיסמא לא תקנית או לא תואמת',
   wrong_password: 'אנא הכנס סיסמא תקנית',
   wrong_alias: 'אנא הכנס שם משתמש תקין',
   server_error: 'שגיאת שרת',
   not_exist: 'שם משתמש לא קיים',
   already_exist: 'משתמש בשם הנ"ל כבר קיים',
-}
+};
 
 export const loginStrings = {
     header: 'התחבר כאן',

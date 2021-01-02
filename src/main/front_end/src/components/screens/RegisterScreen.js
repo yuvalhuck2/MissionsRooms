@@ -36,12 +36,18 @@ class RegisterForm extends Component {
   }
 
   onButtonPress() {
-    const { email, password } = this.props;
-    this.props.registerUser({ email, password });
+    const { email, password, navigation } = this.props;
+    this.props.registerUser({ email, password, navigation });
   }
 
   renderSpinner() {
-    return <ActivityIndicator animating={true} color={theme.colors.primary} size='large'/>;
+    return (
+      <ActivityIndicator
+        animating={true}
+        color={theme.colors.primary}
+        size='large'
+      />
+    );
   }
 
   renderButtonAction() {
@@ -61,20 +67,35 @@ class RegisterForm extends Component {
     );
   }
 
-  renderButton(){
-    const {loading} = this.props
+  renderButton() {
+    const { loading } = this.props;
 
     return loading ? (
       this.renderSpinner()
     ) : (
       <Button
-      mode='contained'
-      style={styles.button}
-      onPress={this.onButtonPress}
+        mode='contained'
+        style={styles.button}
+        onPress={this.onButtonPress}
       >
-      {register_btn}
+        {register_btn}
       </Button>
-    )
+    );
+  }
+
+  renderLoginLabel() {
+    const { loading } = this.props;
+
+    return loading ? null : (
+      <View style={styles.row}>
+        <Text style={styles.label}>{already_user}</Text>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate('Login')}
+        >
+          <Text style={styles.link}>{already_user_sign_in}</Text>
+        </TouchableOpacity>
+      </View>
+    );
   }
 
   renderError() {
@@ -111,6 +132,7 @@ class RegisterForm extends Component {
         />
         {this.renderButton()}
         {this.renderError()}
+        {this.renderLoginLabel()}
       </KeyboardAwareScrollView>
     );
   }
@@ -138,13 +160,14 @@ const styles = StyleSheet.create({
     color: theme.colors.primary,
   },
   errorTextStyle: {
-    fontSize: 25,
+    fontSize: 22,
     alignSelf: 'center',
     color: theme.colors.error,
   },
 });
 
 const mapStateToProps = (state) => {
+  console.log(state);
   const { email, password, loading, errorMessage } = state.auth;
   return { email, password, loading, errorMessage };
 };
