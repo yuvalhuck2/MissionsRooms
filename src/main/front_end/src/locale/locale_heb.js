@@ -23,3 +23,9 @@ export const loginStrings = {
     no_user: 'אין ברשותך משתמש? ',
     no_user_sign_up: 'הירשם כאן',
   };
+
+  export const uploadStrings = {
+    header: 'העלאת קבצים',
+    choose_btn: 'בחר קבצים',
+    approve_btn: 'אישור',
+  };
