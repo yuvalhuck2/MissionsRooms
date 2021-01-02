@@ -83,3 +83,10 @@ export const AddDeterministicMissionStrings = {
     deterministic_name:'סוג : שאלת פתרון יחיד',
     question:'שאלה: ',
   }
+
+  export const TeacherStrings={
+    addMission:'הוספת משימה',
+    addTemplate:'בניית תבנית לחדר',
+    createRoom:'יצירת חדר',
+    closeRoom:'סגירת חדר',
+  }
