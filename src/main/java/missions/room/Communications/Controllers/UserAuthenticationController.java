@@ -1,48 +1,49 @@
 package missions.room.Communications.Controllers;
 
+import DataAPI.RegisterCodeDetailsData;
 import DataAPI.RegisterDetailsData;
 import DataAPI.Response;
 import DataAPI.TeacherData;
-import com.google.gson.Gson;
 import missions.room.Service.UserAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 
 @RestController // This means that this class is a Controller
 @RequestMapping(path="/UserAuth") // This means URL's start with /demo (after Application path)
-public class UserAuthenticationController {
+public class UserAuthenticationController extends AbsController{
 
     @Autowired
     private UserAuthenticationService authenticationService;
 
-    private Gson json ;
-
     public UserAuthenticationController() {
-        json=new Gson();
+        super();
     }
 
     @PostMapping()
-    public Response<?> register(@RequestBody String registerDetailsDataStr){
-        RegisterDetailsData registerDetailsData= json.fromJson(registerDetailsDataStr,RegisterDetailsData.class);
+    public Response<?> register(@RequestBody String registerCodeDetailsDataStr){
+        RegisterDetailsData registerDetailsData= json.fromJson(registerCodeDetailsDataStr,RegisterDetailsData.class);
         Response<List<TeacherData>> listResponse=authenticationService.register(registerDetailsData);
-        return listResponse;//getResponseEntity(listResponse);
+        return listResponse;
+    }
+
+    @PostMapping("/code")
+    public Response<?> registerCode(@RequestBody String registerDetailsDataStr){
+        RegisterCodeDetailsData registerDetailsData= json.fromJson(registerDetailsDataStr, RegisterCodeDetailsData.class);
+        Response<Boolean> listResponse=authenticationService.registerCode(registerDetailsData.getAlias(),
+                registerDetailsData.getCode(),registerDetailsData.getTeacherAlias(),registerDetailsData.getGroupType());
+        return listResponse;
     }
 
     @PostMapping("/login")
     public Response<?> login(@RequestBody String loginDetailsDataStr){
         RegisterDetailsData registerDetailsData= json.fromJson(loginDetailsDataStr,RegisterDetailsData.class);
         Response<String> loginResponse=authenticationService.login(registerDetailsData.getAlias(),registerDetailsData.getPassword());
-        return loginResponse;//getResponseEntity(listResponse);
+        return loginResponse;
     }
 
-    private ResponseEntity<?> getResponseEntity(Response<?> response) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-        return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
-    }
 }

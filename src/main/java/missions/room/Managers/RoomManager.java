@@ -3,10 +3,9 @@ package missions.room.Managers;
 import CrudRepositories.RoomCrudRepository;
 import CrudRepositories.RoomTemplateCrudRepository;
 import CrudRepositories.TeacherCrudRepository;
-import DataAPI.Auth;
 import DataAPI.OpCode;
 import DataAPI.Response;
-import DataAPI.newRoomDetails;
+import DataAPI.NewRoomDetails;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;
 import missions.room.Domain.*;
@@ -17,7 +16,6 @@ import missions.room.Repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 @Service
 public class RoomManager extends TeacherManager {
@@ -38,7 +36,13 @@ public class RoomManager extends TeacherManager {
         this.roomTemplateRepo=new RoomTemplateRepo(roomTemplateCrudRepository);
     }
 
-    public Response<Boolean> createRoom(String apiKey, newRoomDetails roomDetails){
+    /**
+     * req 4.1 -create room
+     * @param apiKey -  authentication object
+     * @param roomDetails - the room details
+     * @return if the room was added
+     */
+    public Response<Boolean> createRoom(String apiKey, NewRoomDetails roomDetails){
         Response<Teacher> checkTeacher=checkTeacher(apiKey);
         if(checkTeacher.getReason()!=OpCode.Success){
             return new Response<>(false,checkTeacher.getReason());
@@ -56,7 +60,7 @@ public class RoomManager extends TeacherManager {
         return new Response<>(room,OpCode.Success);
     }
 
-    private Response<Room> validateDetails(newRoomDetails roomDetails, Teacher teacher) {
+    private Response<Room> validateDetails(NewRoomDetails roomDetails, Teacher teacher) {
         if(roomDetails==null){
             return new Response<>(null,OpCode.Null_Error);
         }
@@ -71,7 +75,7 @@ public class RoomManager extends TeacherManager {
     }
 
     @Transactional
-    protected Response<Room> saveRoomByType(newRoomDetails roomDetails, Teacher teacher) {
+    protected Response<Room> saveRoomByType(NewRoomDetails roomDetails, Teacher teacher) {
         Response<RoomTemplate> roomTemplateResponse=roomTemplateRepo.findRoomTemplateById(roomDetails.getRoomTemplateId());
         if(roomTemplateResponse.getReason()!=OpCode.Success){
             return new Response<>(null,roomTemplateResponse.getReason());
@@ -96,7 +100,7 @@ public class RoomManager extends TeacherManager {
     }
 
     @Transactional
-    protected Response<Room> getClassroomRoomResponse(newRoomDetails roomDetails, RoomTemplate roomTemplate, Teacher teacher) {
+    protected Response<Room> getClassroomRoomResponse(NewRoomDetails roomDetails, RoomTemplate roomTemplate, Teacher teacher) {
         Classroom classroom=teacher.getClassroom();
         if(classroom==null || !classroom.getClassName().equals(roomDetails.getParticipantKey())){//real teacher
             return new Response<>(null, OpCode.Not_Exist_Classroom);
@@ -112,7 +116,7 @@ public class RoomManager extends TeacherManager {
     }
 
     @Transactional
-    protected Response<Room> getGroupRoomResponse(newRoomDetails roomDetails, RoomTemplate roomTemplate, Teacher teacher) {
+    protected Response<Room> getGroupRoomResponse(NewRoomDetails roomDetails, RoomTemplate roomTemplate, Teacher teacher) {
         ClassGroup group=teacher.getGroup(roomDetails.getParticipantKey());
         if(group==null){
             return new Response<>(null, OpCode.Not_Exist_Group);
@@ -128,7 +132,7 @@ public class RoomManager extends TeacherManager {
     }
 
     @Transactional
-    protected Response<Room> getStudentRoomResponse(newRoomDetails roomDetails, RoomTemplate roomTemplate, Teacher teacher) {
+    protected Response<Room> getStudentRoomResponse(NewRoomDetails roomDetails, RoomTemplate roomTemplate, Teacher teacher) {
         Student student=teacher.getStudent(roomDetails.getParticipantKey());
         if(student==null){
             return new Response<>(null, OpCode.Not_Exist_Student);
