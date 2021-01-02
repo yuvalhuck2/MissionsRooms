@@ -7,6 +7,15 @@ export const registerStrings = {
   already_user_sign_in: 'התחבר כאן',
 };
 
+export const authErrors = {
+  wrong_password_login: 'סיסמא לא תקנית או לא תואמת',
+  wrong_password: 'אנא הכנס סיסמא תקנית',
+  wrong_alias: 'אנא הכנס שם משתמש תקין',
+  server_error: 'שגיאת שרת',
+  not_exist: 'שם משתמש לא קיים',
+  already_exist: 'משתמש בשם הנ"ל כבר קיים',
+};
+
 export const loginStrings = {
     header: 'התחבר כאן',
     enter_email: 'הכנס מייל',
@@ -16,6 +25,7 @@ export const loginStrings = {
     no_user_sign_up: 'הירשם כאן',
   };
 
+<<<<<<< HEAD
   export const authStrings = {
     header: 'הכנס קוד אימות',
     enter_code: 'הכנס קוד',
@@ -23,3 +33,22 @@ export const loginStrings = {
     send_btn: 'שלח',
     no_code: 'לא קיבלת קוד? ',
   };
+=======
+export const AddDeterministicMissionStrings = {
+    header: ' הוספת משימת מענה דטרמיניסטי',
+    enter_quesion: 'הכנס/י שאלה',
+    enter_answer: 'הכנס/י תשובה',
+    personal: 'אישית',
+    group:'קבוצתית',
+    classroom:'כיתתית',
+  };
+
+  export const AddMissionStrings = {
+    addMissionButton: 'הוספה',
+  };
+
+  export const ChooseMissionToAddStrings = {
+    header: ' יש לבחור משימה להוספה',
+    deterministicButton: 'שאלה עם פתרון יחיד',
+  };
+>>>>>>> 0516af71282661f0800c2e793fee6e348bd90356

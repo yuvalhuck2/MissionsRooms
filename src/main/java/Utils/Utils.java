@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 public class Utils {
     //TODO update leoback suffix
     final static String LEOBAECK_SUFFIX="@leobaeck.net";
+    // TODO delete when testing is done
+    final static String TEST_SUFFIX = "@post.bgu.ac.il";
 
     public static boolean checkString(String string){
         return (string!=null && !string.isEmpty());
@@ -25,7 +27,9 @@ public class Utils {
     }
 
     public static String getMailFromAlias(String alias) {
-        return alias+LEOBAECK_SUFFIX;
+        // return alias+LEOBAECK_SUFFIX;
+        // TODO: remove when testing is done
+        return alias+TEST_SUFFIX;
     }
 
     public static String getAlias(String email){
