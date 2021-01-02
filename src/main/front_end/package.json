@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-navigation/compat": "^5.3.10",
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
     "axios": "^0.21.0",

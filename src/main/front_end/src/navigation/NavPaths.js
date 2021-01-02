@@ -1,0 +1,6 @@
+export const register = "Register"
+export const login = "Login"
+export const supMainScreen = ""
+export const ITMainScreen = ""
+export const teacherMainScreen = ""
+export const studentMainScreen = ""
