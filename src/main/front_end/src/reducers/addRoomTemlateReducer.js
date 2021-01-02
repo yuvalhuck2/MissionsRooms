@@ -1,11 +1,13 @@
 const initialState = {
     name: '',
     minimalMissions: 0,
-    missionsToAdd: [],
+    missionsToAdd:[],
     loading: false,
     type: 'Personal',
     allMissions:[],
-    presentedMissions:[],
+    presentedMissions:[{missionId:"3",name:"Known answer mission",question:['שאלה']
+    ,missionTypes:['Personal']},{missionId:"6",name:"Known answer mission",question:['שאלה אחרת']
+    ,missionTypes:['Personal']}],
   };
 
   import {

@@ -38,6 +38,7 @@ export const nameChanged = (text) => {
   };
 
   export const missionsChanged = (list) => {
+    console.log('action')
     return {
       type: MISSIONS_CHANGED,
       payload: list,
@@ -62,13 +63,13 @@ export const nameChanged = (text) => {
     }
   };
 
-  export const addTemplate = (name,minimalMissions,missions,type) => {
+  export const addTemplate = ({name,minimalMissions,missionsToAdd,type}) => {
     return async (dispatch)=>{
-      if(missionTypes.length==0){
+      if(missionsToAdd.length==0){
         dispatch({ type: UPDATE_ERROR, payload: missions_empty });
       }
       else{
-        sendTemplate({name,minimalMissions,missions,type},dispatch)
+        sendTemplate({name,minimalMissions,missionsToAdd,type},dispatch)
       }
     }
   };
