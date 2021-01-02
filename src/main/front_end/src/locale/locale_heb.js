@@ -60,7 +60,8 @@ export const AddDeterministicMissionStrings = {
   export const AddTemplateErrors={
     name_empty:'יש לבחור שם תבנית לא ריק ',
     minimal_negative:'כמות המשימות המינימלית כדי לקבל בונוס לא יכולה להיות שלילית',
-    missions_empty:'יש לבחור לפחות משימה אחת לתבנית',
+    missions_empty:'  יש לבחור לפחות משימה אחת לתבנית',
+    missions_to_small:'יש לבחור מספר משימות הגדול מהמספר המינימלי כדי לקבל בונוס',
     type_empty:'יש לבחור את סוג החדר',
   }
 

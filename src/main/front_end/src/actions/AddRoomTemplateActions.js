@@ -1,4 +1,5 @@
 import { AddTemplateErrors } from '../locale/locale_heb';
+import * as NavPaths from '../navigation/NavPaths'
 import {
     NAME_CHANGED,
     MINIMAL_MISSIONS_CHANGED,
@@ -13,6 +14,7 @@ const {
     name_empty,
     minimal_negative,
     missions_empty,
+    missions_to_small,
     type_empty,
   } = AddTemplateErrors;
 
@@ -45,8 +47,7 @@ export const nameChanged = (text) => {
     };
   };
 
-  export const passToMissions= (name,minimalMissions,type) => {
-      console.log(name)
+  export const passToMissions= (name,minimalMissions,type,navigation) => {
     return async (dispatch)=>{
       if(name.trim()===""){
         dispatch({ type: UPDATE_ERROR, payload: name_empty });
@@ -54,11 +55,11 @@ export const nameChanged = (text) => {
       if(type.trim()===""){
         dispatch({ type: UPDATE_ERROR, payload: type_empty });
       }
-      else if(minimalMissions<0){
+      else if(minimalMissions==undefined || minimalMissions<0){
         dispatch({ type: UPDATE_ERROR, payload: minimal_negative });
       }
       else{
-        dispatch({ type: PASS })
+        navigation.navigate(NavPaths.ChooseMissionsForTemplate);
       }
     }
   };
@@ -67,6 +68,9 @@ export const nameChanged = (text) => {
     return async (dispatch)=>{
       if(missionsToAdd.length==0){
         dispatch({ type: UPDATE_ERROR, payload: missions_empty });
+      }
+      else if(missionsToAdd.length<minimalMissions){
+        dispatch({ type: UPDATE_ERROR, payload: missions_to_small });
       }
       else{
         sendTemplate({name,minimalMissions,missionsToAdd,type},dispatch)

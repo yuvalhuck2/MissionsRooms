@@ -1,6 +1,6 @@
 const initialState = {
     name: '',
-    minimalMissions: 0,
+    minimalMissions: undefined,
     missionsToAdd:[],
     loading: false,
     type: 'Personal',
@@ -23,10 +23,6 @@ const initialState = {
   
   export default (state = initialState, action) => {
     switch (action.type) {
-        case PASS:
-            //navigation
-            console.log('move to detemistic')
-            return state;
         case NAME_CHANGED:
             console.log(action.payload)
             return { ...state, name: action.payload };

@@ -43,8 +43,8 @@ class AddTemplateForm extends Component{
     }
 
     onButtonPress() {
-        const {name,minimalMissions,type} = this.props;
-        this.props.passToMissions( name,minimalMissions,type );
+        const {name,minimalMissions,type,navigation} = this.props;
+        this.props.passToMissions( name,minimalMissions,type,navigation );
     }
 
     renderSpinner() {

@@ -1,4 +1,5 @@
 import { AddDeterministicMissionErrors } from '../locale/locale_heb';
+import * as NavPaths from '../navigation/NavPaths'
 
 import {
     QUESTION_CHANGED,
@@ -36,11 +37,14 @@ export const questionChanged = (text) => {
     };
   };
 
-  export const navigateToMission = (type) => {
-    return {
-      type,
-      payload:type,
-    };
+  export const navigateToMission = (type,navigation) => {
+    return async ()=>{
+      switch(type){
+        case DETERMINISTIC:
+          navigation.navigate(NavPaths.AddDeterministicMission)
+      }
+  }
+
   };
   
   export const addMission = (question,realAnswer,missionTypes) => {
