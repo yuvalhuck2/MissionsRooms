@@ -121,7 +121,9 @@ const checkLoginUserResponse = (data, dispatch, navigation) => {
       return dispatch({ type: UPDATE_ERROR, payload: wrong_alias });
     case Not_Exist:
       return dispatch({ type: UPDATE_ERROR, payload: not_exist });
-    case Supervisor:
+    
+    // TODO: add main screens, add main screens names in '../navigation/NavPaths'
+      case Supervisor:
       // TODO: navigate to main screen supervisor
       navigation.navigate(NavPaths.supMainScreen);
       return dispatch({ type: LOGIN_SUPERVISOR, payload: value });
