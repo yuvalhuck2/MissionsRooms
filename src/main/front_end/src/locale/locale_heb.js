@@ -17,10 +17,28 @@ export const authErrors = {
 };
 
 export const loginStrings = {
-  header: 'התחבר כאן',
-  enter_email: 'הכנס מייל',
-  enter_password: 'הכנס סיסמא',
-  login_btn: 'לחץ להתחברות',
-  no_user: 'אין ברשותך משתמש? ',
-  no_user_sign_up: 'הירשם כאן',
-};
+    header: 'התחבר כאן',
+    enter_email: 'הכנס מייל',
+    enter_password: 'הכנס סיסמא',
+    login_btn: 'לחץ להתחברות',
+    no_user: 'אין ברשותך משתמש? ',
+    no_user_sign_up: 'הירשם כאן',
+  };
+
+export const AddDeterministicMissionStrings = {
+    header: ' הוספת משימת מענה דטרמיניסטי',
+    enter_quesion: 'הכנס/י שאלה',
+    enter_answer: 'הכנס/י תשובה',
+    personal: 'אישית',
+    group:'קבוצתית',
+    classroom:'כיתתית',
+  };
+
+  export const AddMissionStrings = {
+    addMissionButton: 'הוספה',
+  };
+
+  export const ChooseMissionToAddStrings = {
+    header: ' יש לבחור משימה להוספה',
+    deterministicButton: 'שאלה עם פתרון יחיד',
+  };
