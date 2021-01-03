@@ -8,6 +8,7 @@ const initialState = {
     presentedMissions:[{missionId:"3",name:"Known answer mission",question:['שאלה']
     ,missionTypes:['Personal']},{missionId:"6",name:"Known answer mission",question:['שאלה אחרת']
     ,missionTypes:['Personal']}],
+    errorMessage: '',
   };
 
   import {
@@ -16,7 +17,7 @@ const initialState = {
     TYPE_CHANGED,
     MISSIONS_CHANGED,
     ADD_TEMPLATE,
-    UPDATE_ERROR,
+    UPDATE_ERROR_TEMPLATE,
     CLEAR_STATE,
     PASS,
   } from '../actions/types';
@@ -35,7 +36,7 @@ const initialState = {
             return { ...state, missionsToAdd: action.payload };
         case ADD_TEMPLATE:
             return { ...state, loading: true };
-        case UPDATE_ERROR:
+        case UPDATE_ERROR_TEMPLATE:
             alert(action.payload)
             return { ...state, errorMessage: action.payload, loading: false };
         case CLEAR_STATE:

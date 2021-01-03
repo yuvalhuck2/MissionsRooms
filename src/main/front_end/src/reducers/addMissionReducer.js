@@ -10,7 +10,7 @@ const initialState = {
     ANSWER_CHANGED,
     TYPES_CHANGED,
     ADD_MISSON,
-    UPDATE_ERROR,
+    UPDATE_ERROR_MISSION,
     CLEAR_STATE,
     DETERMINISTIC,
   } from '../actions/types';
@@ -25,7 +25,7 @@ const initialState = {
         return { ...state, missionTypes: action.payload };
       case ADD_MISSON:
         return { ...state, loading: true };
-      case UPDATE_ERROR:
+      case UPDATE_ERROR_MISSION:
         alert(action.payload)
         return { ...state, errorMessage: action.payload, loading: false };
       case CLEAR_STATE:
