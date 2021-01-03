@@ -104,10 +104,26 @@ export const roomTypes = [
     header:'הוספת חדר',
     enter_name:'שם החדר',
     enter_bonus:'בונוס על סיום החדר',
-    enter_student:'בחר/י קבוצה',
-    enter_group:'בחר/י תלמיד',
+    enter_student:'בחר/י תלמיד',
+    enter_group:'בחר/י קבוצה',
     classroom_add:'הוספת חדר כיתתי',
     group_add:'הוספת חדר קבוצתי',
     student_add:'הוספת חדר אישי',
     
+  }
+
+  export const AddRoomErrors={
+    name_empty:'יש לבחור שם חדר לא ריק ',
+    bonus_empty_negative:'יש לבחור בונוס לא שלילי',
+    classroom_empty:'הכיתה שלך לא מעודכנת במערכת אנא פנה\י למחלקה הטכנית',
+    group_empty:'יש לזין קבוצה על מנת להוסיף חדר קבוצתי',
+    student_empty:'יש להזין תלמיד על מנת להוסיף חדר אישי',
+    empty_template:'יש לבחור תבנית לחדר',
+  }
+
+  export const ChooseTempalteStrings={
+    header:'יש לבחור תבנית לחדר',
+    template_name:'שם התבנית: ',
+    minimal_missions:'מספר משימות לקבלת בונוס: ',
+    missions_presentation:'משימות: ',
   }

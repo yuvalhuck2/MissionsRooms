@@ -3,7 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import { LoginScreen, RegisterScreen,AddDeterministicMissionScreen,
   ChooseMissionToAddScreen,AddRoomTemplateScreen,ChooseMissionsForTemplateScreen,
-    AuthScreen,TeacherScreen,AddRoomScreen  } from './components/screens';
+    AuthScreen,TeacherScreen,AddRoomScreen,ChooseTemplateScreen  } from './components/screens';
 
 const Stack = createStackNavigator();
 
@@ -11,6 +11,7 @@ const App = () =>{
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Teacher">
+        <Stack.Screen name="ChooseTemplateScreen" component={ChooseTemplateScreen}/>
         <Stack.Screen name="AddDeteministicMission" component={AddDeterministicMissionScreen}/> 
         <Stack.Screen name="AddMission" component={ChooseMissionToAddScreen}/> 
         <Stack.Screen name="ChooseMissionsForTemplate" component={ChooseMissionsForTemplateScreen}/> 
