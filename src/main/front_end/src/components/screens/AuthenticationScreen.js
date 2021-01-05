@@ -1,9 +1,10 @@
 import CodeInput from '@andreferi/react-native-confirmation-code-input';
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
+import { codeChanged } from '../../actions/AuthActions';
 import { authStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
 import Header from '../common/Header';
@@ -19,6 +20,47 @@ const data = [
 class AuthForm extends Component {
   constructor(...args) {
     super(...args);
+    this.onCodeChanged = this.onCodeChanged.bind(this);
+    this.state = {
+      groupsData: [],
+    };
+  }
+
+  componentDidMount(){
+    const { teachersData } = this.props;
+    var data = [];
+    console.log(teachersData)
+    if (teachersData && teachersData !== []) {
+      teachersData.forEach((tData) => {
+        if (tData.groupType === 'BOTH') {
+          data = [
+            ...data,
+            {
+              label: `${tData.firstName} ${tData.lastName} א`,
+              value: { alias: tData.alias, groupType: 'A' },
+            },
+            {
+              label: `${tData.firstName} ${tData.lastName} ב`,
+              value: { alias: tData.alias, groupType: 'B' },
+            },
+          ];
+        } else {
+          data = [
+            ...data,
+            {
+              label: `${tData.firstName} ${tData.lastName}`,
+              value: { alias: tData.alias, groupType: tData.alias.groupType },
+            },
+          ];
+        }
+      });
+
+      this.setState({ groupsData: data });
+    }
+  }
+
+  onCodeChanged(code) {
+    this.props.codeChanged(code);
   }
 
   render() {
@@ -29,7 +71,7 @@ class AuthForm extends Component {
         <Header>{header}</Header>
 
         <CodeInput
-          ref='codeInputRef2'
+          value={'12345'}
           keyboardType='numeric'
           codeLength={5}
           activeColor='rgba(148,0,211,1)'
@@ -39,18 +81,18 @@ class AuthForm extends Component {
           codeInputStyle={{ fontWeight: '800' }}
           containerStyle={{ marginTop: 30, marginBottom: 30 }}
           codeInputStyle={{ borderWidth: 1.5 }}
-          onFulfill={(code) => console.log(code)}
           cellBorderWidth={1.5}
+          onFulfill={this.onCodeChanged}
         />
         <DropDownPicker
-          items={data}
+          items={this.state.groupsData}
           containerStyle={{ height: 40 }}
           style={{ backgroundColor: '#fafafa' }}
           itemStyle={{
             justifyContent: 'flex-start',
           }}
           dropDownStyle={{ backgroundColor: '#fafafa', marginTop: 2 }}
-          placeholder='בחר קבוצה'
+          placeholder={choose_group}
         />
 
         <Button mode='contained' style={styles.button}>
@@ -93,8 +135,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  ///const { } = state.auth;
-  return {};
+  const { teachersData } = state.auth;
+  return { teachersData };
 };
 
-export default connect(mapStateToProps)(AuthForm);
+export default connect(mapStateToProps, { codeChanged })(AuthForm);

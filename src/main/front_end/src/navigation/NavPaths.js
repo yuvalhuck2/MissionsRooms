@@ -1,5 +1,6 @@
-export const register = "Register"
-export const login = "Login"
+export const registerScreen = "Register"
+export const loginScreen = "Login"
+export const authCodeScreen = "Auth"
 export const supMainScreen = ""
 export const ITMainScreen = ""
 export const teacherMainScreen = ""

@@ -1,7 +1,7 @@
 import API from '../api/API';
+import * as APIPaths from '../api/APIPaths';
 import { authErrors } from '../locale/locale_heb';
-import * as APIPaths from '../api/APIPaths'
-import * as NavPaths from '../navigation/NavPaths'
+import * as NavPaths from '../navigation/NavPaths';
 import {
   Already_Exist,
   DB_Error,
@@ -16,6 +16,7 @@ import {
   Wrong_Password,
 } from './OpCodeTypes';
 import {
+  CODE_CHANGED,
   EMAIL_CHANGED,
   LOGIN_IT,
   LOGIN_STUDENT,
@@ -58,11 +59,17 @@ export const passwordChanged = (text) => {
   };
 };
 
+export const codeChanged = (code) => {
+  return {
+    type: CODE_CHANGED,
+    payload: code,
+  };
+};
+
 export const registerUser = ({ email, password, navigation }) => {
   return async (dispatch) => {
     dispatch({ type: REGISTER_USER });
     const res = await API.post(APIPaths.register, { alias: email, password });
-    console.log(res.data);
     res
       ? checkRegisterUserResponse(res.data, dispatch, navigation)
       : dispatch({ type: UPDATE_ERROR, payload: server_error });
@@ -71,11 +78,9 @@ export const registerUser = ({ email, password, navigation }) => {
 
 const checkRegisterUserResponse = (data, dispatch, navigation) => {
   const { reason, value } = data;
-  console.log(reason);
 
   switch (reason) {
     case Wrong_Password:
-      console.log(wrong_password);
       return dispatch({ type: UPDATE_ERROR, payload: wrong_password });
     case Wrong_Alias:
       return dispatch({ type: UPDATE_ERROR, payload: wrong_alias });
@@ -91,15 +96,20 @@ const checkRegisterUserResponse = (data, dispatch, navigation) => {
       return dispatch({ type: UPDATE_ERROR, payload: server_error });
     case Teacher:
       // TODO: navigate to add activation code when it is done
-      navigation.navigate(NavPaths.login);
+      navigation.navigate(NavPaths.authCodeScreen);
       return dispatch({ type: REGISTER_TEACHER });
     case Student:
-      navigation.navigate(NavPaths.login);
+      navigation.navigate(NavPaths.authCodeScreen);
       return dispatch({ type: REGISTER_STUDENT, payload: value });
     default:
       return dispatch({ type: UPDATE_ERROR, payload: server_error });
   }
 };
+
+
+export const registerCode = ({alias, code, teacherAlias, groupType, navigation})=>{
+
+}
 
 export const loginUser = ({ email, password, navigation }) => {
   return async (dispatch) => {
@@ -121,9 +131,9 @@ const checkLoginUserResponse = (data, dispatch, navigation) => {
       return dispatch({ type: UPDATE_ERROR, payload: wrong_alias });
     case Not_Exist:
       return dispatch({ type: UPDATE_ERROR, payload: not_exist });
-    
+
     // TODO: add main screens, add main screens names in '../navigation/NavPaths'
-      case Supervisor:
+    case Supervisor:
       // TODO: navigate to main screen supervisor
       navigation.navigate(NavPaths.supMainScreen);
       return dispatch({ type: LOGIN_SUPERVISOR, payload: value });
