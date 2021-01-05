@@ -25,8 +25,8 @@ class ChooseMissiontoAddForm extends Component{
     }
 
     onButtonPress(type) {
-        console.log(buttons)
-        this.props.navigateToMission(type);
+      const{navigation}=this.props;
+        this.props.navigateToMission(type,navigation);
     }
 
     renderButtons(){

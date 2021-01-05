@@ -4,7 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { ActivityIndicator } from 'react-native-paper';
 import { Checkbox } from 'react-native-paper';
 import { ChooseMissionsTemplateStrings,AddStrings } from '../../locale/locale_heb';
-import { addTemplate,missionsChanged } from '../../actions';
+import { addTemplate,missionsChanged } from '../../actions/AddMissionActions';
 import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
 import Button from '../common/Button';
@@ -122,7 +122,6 @@ class ChooseMissionsForTemplateForm extends Component{
       }
 
     render(){
-        
 
         return(
         <KeyboardAwareScrollView style={styles.container}>
