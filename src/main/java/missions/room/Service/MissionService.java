@@ -19,22 +19,22 @@ public class MissionService {
 
     /**
      * req 4.5 - add mission
-     * @param auth - authentication object
+     * @param apiKey - authentication object
      * @param missionData - details of the mission
      * @return if the mission was added successfully
      */
-    public Response<Boolean> createMission(Auth auth, String missionData){
-        return missionManager.addMission(auth.getApiKey(),missionData);
+    public Response<Boolean> createMission(String apiKey, String missionData){
+        return missionManager.addMission(apiKey,missionData);
 
     }
 
     /**
      * req 4.3 - search missions
-     * @param auth - authentication object
+     * @param apiKey - authentication object
      * @return - list of the missions were filtered
      */
-    public Response<List<MissionData>> searchMissions(Auth auth){
-        return missionManager.searchMissions(auth.getApiKey());
+    public Response<List<MissionData>> searchMissions(String apiKey ){
+        return missionManager.searchMissions(apiKey);
     }
 
 }

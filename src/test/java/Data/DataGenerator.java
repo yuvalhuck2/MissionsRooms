@@ -8,10 +8,8 @@ import missions.room.Domain.Rooms.StudentRoom;
 import DataAPI.RegisterDetailsData;
 import DataAPI.RoomTemplateDetailsData;
 import DataAPI.RoomType;
-import DataAPI.UserType;
 import ExternalSystems.HashSystem;
 import javafx.util.Pair;
-import missions.room.Domain.*;
 import missions.room.Domain.missions.KnownAnswerMission;
 import DomainMocks.TeacherMock;
 import missions.room.Domain.missions.StoryMission;
@@ -31,7 +29,7 @@ public class DataGenerator {
     private HashMap<Data, RoomTemplate> roomTemplates;
     private HashMap<Data, RoomTemplateDetailsData> roomTemplatesDatas;
     private HashMap<Data, Room> roomsMap;
-    private HashMap<Data,newRoomDetails> newRoomDetailsMap;
+    private HashMap<Data, NewRoomDetails> newRoomDetailsMap;
     private HashMap<Data,Classroom> classRoomMap;
     private HashMap<Data,ClassGroup> classGroupMap;
 
@@ -90,7 +88,7 @@ public class DataGenerator {
     }
 
     private void initNewRoomDetails() {
-        newRoomDetailsMap =new HashMap<Data, newRoomDetails>();
+        newRoomDetailsMap =new HashMap<Data, NewRoomDetails>();
         String student=students.get(Data.VALID).getAlias();
         String group=classGroupMap.get(Data.Valid_Group).getGroupName();
         String classroom =classRoomMap.get(Data.Valid_Classroom).getClassName();
@@ -98,18 +96,18 @@ public class DataGenerator {
         String roomTemplateStudent=roomTemplates.get(Data.VALID).getRoomTemplateId();
         String roomTemplateGroup=roomTemplates.get(Data.Valid_Group).getRoomTemplateId();
         String roomTemplateClassroom=roomTemplates.get(Data.Valid_Classroom).getRoomTemplateId();
-        newRoomDetailsMap.put(Data.Valid_Student,new newRoomDetails(student,RoomType.Personal,"name",teacher,roomTemplateStudent,3));
-        newRoomDetailsMap.put(Data.Valid_Group,new newRoomDetails(group,RoomType.Group,"name",teacher,roomTemplateGroup,3));
-        newRoomDetailsMap.put(Data.Valid_Classroom,new newRoomDetails(classroom,RoomType.Class,"name",teacher,roomTemplateClassroom,3));
-        newRoomDetailsMap.put(Data.NULL_NAME,new newRoomDetails(student,RoomType.Personal,null,teacher,roomTemplateStudent,3));
-        newRoomDetailsMap.put(Data.EMPTY_NAME,new newRoomDetails(student,RoomType.Personal,"",teacher,roomTemplateStudent,3));
+        newRoomDetailsMap.put(Data.Valid_Student,new NewRoomDetails(student,RoomType.Personal,"name",teacher,roomTemplateStudent,3));
+        newRoomDetailsMap.put(Data.Valid_Group,new NewRoomDetails(group,RoomType.Group,"name",teacher,roomTemplateGroup,3));
+        newRoomDetailsMap.put(Data.Valid_Classroom,new NewRoomDetails(classroom,RoomType.Class,"name",teacher,roomTemplateClassroom,3));
+        newRoomDetailsMap.put(Data.NULL_NAME,new NewRoomDetails(student,RoomType.Personal,null,teacher,roomTemplateStudent,3));
+        newRoomDetailsMap.put(Data.EMPTY_NAME,new NewRoomDetails(student,RoomType.Personal,"",teacher,roomTemplateStudent,3));
         newRoomDetailsMap.put(Data.NULL,null);
-        newRoomDetailsMap.put(Data.NEG_AMOUNT,new newRoomDetails(student,RoomType.Personal,"name",teacher,roomTemplateStudent,-1));
-        newRoomDetailsMap.put(Data.TYPE_NOT_MATCH,new newRoomDetails(group,RoomType.Group,"name",teacher,roomTemplateStudent,3));
-        newRoomDetailsMap.put(Data.NOT_EXIST_CLASSROOM,new newRoomDetails("Wrong",RoomType.Class,"name",teacher,roomTemplateClassroom,3));
-        newRoomDetailsMap.put(Data.NOT_EXIST_CLASSGROUP,new newRoomDetails("Wrong",RoomType.Group,"name",teacher,roomTemplateGroup,3));
-        newRoomDetailsMap.put(Data.NOT_EXIST_STUDENT,new newRoomDetails("Wrong",RoomType.Personal,"name",teacher,roomTemplateStudent,3));
-        newRoomDetailsMap.put(Data.NOT_EXIST_TEMPLATE,new newRoomDetails(student,RoomType.Personal,"name",teacher,roomTemplateStudent+"1",3));
+        newRoomDetailsMap.put(Data.NEG_AMOUNT,new NewRoomDetails(student,RoomType.Personal,"name",teacher,roomTemplateStudent,-1));
+        newRoomDetailsMap.put(Data.TYPE_NOT_MATCH,new NewRoomDetails(group,RoomType.Group,"name",teacher,roomTemplateStudent,3));
+        newRoomDetailsMap.put(Data.NOT_EXIST_CLASSROOM,new NewRoomDetails("Wrong",RoomType.Class,"name",teacher,roomTemplateClassroom,3));
+        newRoomDetailsMap.put(Data.NOT_EXIST_CLASSGROUP,new NewRoomDetails("Wrong",RoomType.Group,"name",teacher,roomTemplateGroup,3));
+        newRoomDetailsMap.put(Data.NOT_EXIST_STUDENT,new NewRoomDetails("Wrong",RoomType.Personal,"name",teacher,roomTemplateStudent,3));
+        newRoomDetailsMap.put(Data.NOT_EXIST_TEMPLATE,new NewRoomDetails(student,RoomType.Personal,"name",teacher,roomTemplateStudent+"1",3));
     }
 
     private void initRooms() {
@@ -284,7 +282,7 @@ public class DataGenerator {
         return roomsMap.get(data);
     }
 
-    public newRoomDetails getNewRoomDetails(Data data) {
+    public NewRoomDetails getNewRoomDetails(Data data) {
         return newRoomDetailsMap.get(data);
     }
 

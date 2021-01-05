@@ -3,6 +3,7 @@ package DataAPI;
 import java.util.List;
 
 public class RoomTemplateDetailsData {
+    String apiKey;
     private String id;
     private List<String> missions;
     private String name;
@@ -34,6 +35,10 @@ public class RoomTemplateDetailsData {
 
     public String getId() {
         return id;
+    }
+
+    public String getApiKey() {
+        return apiKey;
     }
 
     public void setId(String id) {
