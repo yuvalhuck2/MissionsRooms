@@ -1,10 +1,16 @@
 import CodeInput from '@andreferi/react-native-confirmation-code-input';
-import React, { Component, useEffect } from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
+import { theme } from '../../core/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
-import { codeChanged } from '../../actions/AuthActions';
+import {
+  codeChanged,
+  registerCode,
+  registerUser,
+} from '../../actions/AuthActions';
 import { authStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
 import Header from '../common/Header';
@@ -21,15 +27,18 @@ class AuthForm extends Component {
   constructor(...args) {
     super(...args);
     this.onCodeChanged = this.onCodeChanged.bind(this);
+    this.onButtonPressed = this.onButtonPressed(this);
+    this.onSendAgainButtonPress = this.onSendAgainButtonPress(this);
     this.state = {
       groupsData: [],
+      selectedGroupData: null,
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { teachersData } = this.props;
     var data = [];
-    console.log(teachersData)
+    console.log(teachersData);
     if (teachersData && teachersData !== []) {
       teachersData.forEach((tData) => {
         if (tData.groupType === 'BOTH') {
@@ -37,11 +46,21 @@ class AuthForm extends Component {
             ...data,
             {
               label: `${tData.firstName} ${tData.lastName} א`,
-              value: { alias: tData.alias, groupType: 'A' },
+              value: {
+                alias: email,
+                code: authCode,
+                teacherAlias: tData.alias,
+                groupType: 'A',
+              },
             },
             {
               label: `${tData.firstName} ${tData.lastName} ב`,
-              value: { alias: tData.alias, groupType: 'B' },
+              value: {
+                alias: email,
+                code: authCode,
+                teacherAlias: tData.alias,
+                groupType: 'B',
+              },
             },
           ];
         } else {
@@ -49,7 +68,12 @@ class AuthForm extends Component {
             ...data,
             {
               label: `${tData.firstName} ${tData.lastName}`,
-              value: { alias: tData.alias, groupType: tData.alias.groupType },
+              value: {
+                alias: email,
+                code: authCode,
+                teacherAlias: tData.alias,
+                groupType: tData.alias.groupType,
+              },
             },
           ];
         }
@@ -59,19 +83,73 @@ class AuthForm extends Component {
     }
   }
 
+  onButtonPressed() {
+    const { navigation } = this.props;
+    this.props.registerCode({ ...this.state.selectedGroupData, navigation });
+  }
+
+  onSendAgainButtonPress() {
+    const { email, password } = this.props;
+    this.props.registerUser({ email, password });
+  }
+
   onCodeChanged(code) {
     this.props.codeChanged(code);
   }
 
-  render() {
-    const { code, group } = this.props;
+  renderSpinner() {
+    return (
+      <ActivityIndicator
+        animating={true}
+        color={theme.colors.primary}
+        size='large'
+      />
+    );
+  }
 
+  renderButton() {
+    const { loading } = this.props;
+
+    return loading ? (
+      this.renderSpinner()
+    ) : (
+      <Button mode='contained' style={styles.button}>
+        {send_btn}
+      </Button>
+    );
+  }
+
+  renderError() {
+    const { errorMessage } = this.props;
+
+    if (errorMessage && errorMessage !== '') {
+      return (
+        <View>
+          <Text style={styles.errorTextStyle}>{errorMessage}</Text>
+        </View>
+      );
+    }
+  }
+
+  renderSendAgainLabel() {
+    const { loading } = this.props;
+
+    return loading ? null : (
+      <View style={styles.row}>
+        <Text style={styles.label}>{no_code}</Text>
+        <TouchableOpacity
+          onPress={this.onSendAgainButtonPress}
+        ></TouchableOpacity>
+      </View>
+    );
+  }
+
+  render() {
     return (
       <KeyboardAwareScrollView style={styles.container}>
         <Header>{header}</Header>
 
         <CodeInput
-          value={'12345'}
           keyboardType='numeric'
           codeLength={5}
           activeColor='rgba(148,0,211,1)'
@@ -93,18 +171,13 @@ class AuthForm extends Component {
           }}
           dropDownStyle={{ backgroundColor: '#fafafa', marginTop: 2 }}
           placeholder={choose_group}
+          onChangeItem={(item) =>
+            this.setState({ selectedGroupData: item.value })
+          }
         />
-
-        <Button mode='contained' style={styles.button}>
-          {send_btn}
-        </Button>
-
-        <View style={styles.row}>
-          <Text style={styles.label}>{no_code}</Text>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Login')}
-          ></TouchableOpacity>
-        </View>
+        {this.renderButton()}
+        {this.renderError()}
+        {this.renderSendAgainLabel()}
       </KeyboardAwareScrollView>
     );
   }
@@ -117,8 +190,6 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 340,
     alignSelf: 'center',
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   button: {
     marginTop: 140,
@@ -132,11 +203,27 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#9400D3',
   },
+  errorTextStyle: {
+    fontSize: 22,
+    alignSelf: 'center',
+    color: theme.colors.error,
+  },
 });
 
 const mapStateToProps = (state) => {
-  const { teachersData } = state.auth;
-  return { teachersData };
+  const {
+    teachersData,
+    authCode,
+    loading,
+    errorMessage,
+    email,
+    password,
+  } = state.auth;
+  return { teachersData, authCode, loading, errorMessage, email, password };
 };
 
-export default connect(mapStateToProps, { codeChanged })(AuthForm);
+export default connect(mapStateToProps, {
+  codeChanged,
+  registerCode,
+  registerUser,
+})(AuthForm);

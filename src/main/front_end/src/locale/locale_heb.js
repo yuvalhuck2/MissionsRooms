@@ -127,3 +127,14 @@ export const roomTypes = [
     minimal_missions:'מספר משימות לקבלת בונוס: ',
     missions_presentation:'משימות: ',
   }
+
+  export const registerCodeErrors = {
+    wrong_alias_register_code: "שם משתמש לא תקין",
+    wrong_register_code: "קוד לא תקין",
+    not_registered_register_code: "משתמש לא רשום",
+    code_not_match_register_code: "קוד לא תואם",
+    wrong_type_register_code: "סוג קבוצה לא תקינה",
+    already_exist_register_code: "משתמש כבר רשום",
+    not_exist_group_register_code: "קבוצה לא קיימת",
+    already_exist_student_register_code: "תלמיד כבר רשום"
+  }

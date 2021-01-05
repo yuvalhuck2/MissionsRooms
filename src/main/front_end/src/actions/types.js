@@ -38,3 +38,5 @@ export const TEMPLATE_NAME_CHANGED='template_name_changed'
 export const UPDATE_ERROR_TEMPLATE='template_error'
 export const UPDATE_ERROR_ROOM='room_error'
 export const UPDATE_ERROR_MISSION='mission_error'
+export const REGISTER_CODE = "register_code"
+export const REGISTER_CODE_SUCCESS = "register_code_success"

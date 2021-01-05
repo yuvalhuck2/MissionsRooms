@@ -11,18 +11,20 @@ const initialState = {
 import { IT, Student, Supervisor, Teacher } from '../actions/OpCodeTypes';
 import {
   CLEAR_STATE,
+  CODE_CHANGED,
   EMAIL_CHANGED,
+  LOGIN_IT,
+  LOGIN_STUDENT,
+  LOGIN_SUPERVISOR,
+  LOGIN_TEACHER,
+  LOGIN_USER,
   PASSWORD_CHANGED,
   REGISTER_STUDENT,
   REGISTER_TEACHER,
   REGISTER_USER,
-  LOGIN_USER,
-  LOGIN_TEACHER,
-  LOGIN_STUDENT,
-  LOGIN_IT,
-  LOGIN_SUPERVISOR,
   UPDATE_ERROR,
-  CODE_CHANGED,
+  REGISTER_CODE,
+  REGISTER_CODE_SUCCESS,
 } from '../actions/types';
 
 export default (state = initialState, action) => {
@@ -32,8 +34,8 @@ export default (state = initialState, action) => {
     case PASSWORD_CHANGED:
       return { ...state, password: action.payload };
     case CODE_CHANGED:
-      console.log(action.payload)
-      return {...state, authCode: action.payload}
+      console.log(action.payload);
+      return { ...state, authCode: action.payload };
     case REGISTER_USER:
       return { ...state, loading: true, errorMessage: '' };
     case UPDATE_ERROR:
@@ -47,6 +49,16 @@ export default (state = initialState, action) => {
       return {
         ...initialState,
       };
+    case REGISTER_CODE:
+      return {
+        ...state,
+        loading: true,
+        errorMessage: ''
+      }
+    case REGISTER_CODE_SUCCESS:
+      return {
+        ...initialState
+      }
     case LOGIN_USER:
       return { ...state, loading: true, errorMessage: '' };
     case LOGIN_SUPERVISOR:
