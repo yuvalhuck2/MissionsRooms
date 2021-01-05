@@ -56,7 +56,7 @@ public class Classroom{
 
     public ClassGroup getGroup(String participantKey) {
         for(ClassGroup classGroup: classGroups){
-            if(classGroup.getGroupName().equals(participantKey)){
+            if(classGroup.getStudent().containsKey(participantKey)){
                 return classGroup;
             }
         }

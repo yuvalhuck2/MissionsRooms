@@ -34,6 +34,11 @@ public class Ram {
         }
         return null;
     }
+    public void deleteRoom(String roomId){
+        if(roomIdToRoom.containsKey(roomId)){
+            roomIdToRoom.remove(roomId);
+        }
+    }
 
     public boolean isRoomExist(String roomId){
         return roomIdToRoom.containsKey(roomId);

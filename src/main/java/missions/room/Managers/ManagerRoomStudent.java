@@ -15,6 +15,7 @@ import missions.room.Domain.missions.*;
 import missions.room.Repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,21 +30,15 @@ public class ManagerRoomStudent extends StudentManager {
     @Autowired
     private ClassroomRepo classroomRepo;
 
-    @Autowired
-    private ClassroomRoomRepo classroomRoomRepo;
 
-    @Autowired
-    private GroupRoomRepo groupRoomRepo;
-
-    @Autowired
-    private StudentRoomRepo studentRoomRepo;
 
 
     public ManagerRoomStudent() {
         super();
     }
 
-    public ManagerRoomStudent(Ram ram, StudentCrudRepository studentCrudRepository, RoomCrudRepository roomCrudRepository, ClassroomRepository classroomRepository) {
+    public ManagerRoomStudent(Ram ram, StudentCrudRepository studentCrudRepository, RoomCrudRepository roomCrudRepository, ClassroomRepository classroomRepository
+                              ) {
         super(ram, studentCrudRepository);
         this.roomRepo = new RoomRepo(roomCrudRepository);
         this.classroomRepo = new ClassroomRepo(classroomRepository);
@@ -63,7 +58,7 @@ public class ManagerRoomStudent extends StudentManager {
             return new Response(null, checkStudent.getReason());
         }
         Student student = checkStudent.getValue();
-        Response<Classroom> classroomResponse = classroomRepo.findClassroomByStudent(apiKey);
+        Response<Classroom> classroomResponse = classroomRepo.findClassroomByStudent(student.getAlias());
         if (classroomResponse.getReason() != OpCode.Success) {
             return new Response<>(null, classroomResponse.getReason());
         }
@@ -72,40 +67,44 @@ public class ManagerRoomStudent extends StudentManager {
         if (classGroup == null) {
             return new Response<>(null, OpCode.Student_Not_Exist_In_Group);
         }
-        Response<List<ClassroomRoom>> responseClass = classroomRoomRepo.findClassroomRoomByClassroom(classroom.getClassName());
-        Response<List<GroupRoom>> responseGroup = groupRoomRepo.findGroupRoomByGroup(classGroup.getGroupName());
-        Response<List<StudentRoom>> responseStudent = studentRoomRepo.findStudentRoomByStudent(student.getAlias());
+        //Response<List<ClassroomRoom>> responseClass = classroomRoomRepo.findClassroomRoomByClassroom(classroom.getClassName());
+        //Response<List<GroupRoom>> responseGroup = groupRoomRepo.findGroupRoomByGroup(classGroup.getGroupName());
+        //Response<List<StudentRoom>> responseStudent = studentRoomRepo.findStudentRoomByStudent(student.getAlias());
+
+        Response<ClassroomRoom> responseClass = roomRepo.findClassroomRoomByAlias(classroom.getClassName());
+        Response<GroupRoom> responseGroup =roomRepo.findGroupRoomByAlias(classGroup.getGroupName());
+        Response<StudentRoom> responseStudent = roomRepo.findStudentRoomByAlias(student.getAlias());
         if (responseClass.getReason() == OpCode.DB_Error || responseGroup.getReason() == OpCode.DB_Error || responseStudent.getReason() == OpCode.DB_Error) {
             return new Response<>(null, OpCode.DB_Error);
         }
         List<Room> rooms = new ArrayList<>();
 
-        if (responseClass.getReason() == OpCode.Success) {
-            Response<List<Room>> responseRoomClass = getRoomsFromRoomClass(responseClass.getValue());
+        if (responseClass.getReason() == OpCode.Success&&responseClass.getValue()!=null) {
+            Response<Room> responseRoomClass = getRoomsFromRoomClass(responseClass.getValue());
             if (responseRoomClass.getReason() != OpCode.Success) {
                 return new Response<>(null, responseRoomClass.getReason());
             }
-            rooms.addAll(responseRoomClass.getValue());
+            rooms.add(responseRoomClass.getValue());
         }
 
-        if (responseGroup.getReason() == OpCode.Success) {
-            Response<List<Room>> responseRoomGroup = getRoomsFromRoomGroup(responseGroup.getValue());
+        if (responseGroup.getReason() == OpCode.Success&&responseGroup.getValue()!=null) {
+            Response<Room> responseRoomGroup = getRoomsFromRoomGroup(responseGroup.getValue());
             if (responseRoomGroup.getReason() != OpCode.Success) {
                 return new Response<>(null, responseGroup.getReason());
             }
-            rooms.addAll(responseRoomGroup.getValue());
+            rooms.add(responseRoomGroup.getValue());
         }
 
-        if (responseStudent.getReason() == OpCode.Success) {
-            Response<List<Room>> responseRoomStudent = getRoomsFromRoomStudent(responseStudent.getValue());
+        if (responseStudent.getReason() == OpCode.Success&&responseStudent.getValue()!=null) {
+            Response<Room> responseRoomStudent = getRoomsFromRoomStudent(responseStudent.getValue());
             if (responseRoomStudent.getReason() != OpCode.Success) {
                 return new Response<>(null, responseRoomStudent.getReason());
             }
-            rooms.addAll(responseRoomStudent.getValue());
+            rooms.add(responseRoomStudent.getValue());
         }
 
         if (rooms.size()==0){
-            return new Response<>(null,OpCode.Empty);
+            return new Response<>(new ArrayList<>(),OpCode.Success);
         }
 
         return getRoomDetailFromRoom(rooms);
@@ -113,43 +112,37 @@ public class ManagerRoomStudent extends StudentManager {
     }
 
 
-    private Response<List<Room>> getRoomsFromRoomClass(List<ClassroomRoom> rooms) {
-        List<Room> result = new ArrayList<>();
-        for (ClassroomRoom classroomRoom : rooms) {
-            String roomId = classroomRoom.getRoomId();
-            Response<Room> response = GetRoomById(roomId);
-            if (response.getReason() != OpCode.Success) {
-                return new Response<>(null, response.getReason());
-            }
-            result.add(response.getValue());
+
+
+
+
+    private Response<Room> getRoomsFromRoomClass(ClassroomRoom classroomRoom) {
+        String roomId = classroomRoom.getRoomId();
+        Response<Room> response = GetRoomById(roomId);
+        if (response.getReason() != OpCode.Success) {
+            return new Response<>(null, response.getReason());
         }
-        return new Response<>(result, OpCode.Success);
+
+        return new Response<>(response.getValue(), OpCode.Success);
     }
 
-    private Response<List<Room>> getRoomsFromRoomGroup(List<GroupRoom> rooms) {
-        List<Room> result = new ArrayList<>();
-        for (GroupRoom groupRoom : rooms) {
-            String roomId = groupRoom.getRoomId();
-            Response<Room> response = GetRoomById(roomId);
-            if (response.getReason() != OpCode.Success) {
-                return new Response<>(null, response.getReason());
-            }
-            result.add(response.getValue());
+    private Response<Room> getRoomsFromRoomGroup(GroupRoom groupRoom) {
+        String roomId = groupRoom.getRoomId();
+        Response<Room> response = GetRoomById(roomId);
+        if (response.getReason() != OpCode.Success) {
+            return new Response<>(null, response.getReason());
         }
-        return new Response<>(result, OpCode.Success);
+        return new Response<>(response.getValue(), OpCode.Success);
     }
 
-    private Response<List<Room>> getRoomsFromRoomStudent(List<StudentRoom> rooms) {
-        List<Room> result = new ArrayList<>();
-        for (StudentRoom studentRoom : rooms) {
-            String roomId = studentRoom.getRoomId();
-            Response<Room> response = GetRoomById(roomId);
-            if (response.getReason() != OpCode.Success) {
-                return new Response<>(null, response.getReason());
-            }
-            result.add(response.getValue());
+    private Response<Room> getRoomsFromRoomStudent(StudentRoom studentRoom) {
+        String roomId = studentRoom.getRoomId();
+        Response<Room> response = GetRoomById(roomId);
+        if (response.getReason() != OpCode.Success) {
+            return new Response<>(null, response.getReason());
         }
-        return new Response<>(result, OpCode.Success);
+
+        return new Response<>(response.getValue(), OpCode.Success);
     }
 
     private Response<Room> GetRoomById(String roomId) {
@@ -174,7 +167,8 @@ public class ManagerRoomStudent extends StudentManager {
                 return new Response(null, response.getReason());
             }
             MissionData missionData = getMissionData(response.getValue());
-            RoomDetailsData roomDetailsData=new RoomDetailsData(room.getRoomId(),room.getName(),missionData);
+
+            RoomDetailsData roomDetailsData=new RoomDetailsData(room.getRoomId(),room.getName(),missionData,room.getRoomTemplate().getType());
             roomDetailsDataList.add(roomDetailsData);
         }
         return new Response<>(roomDetailsDataList,OpCode.Success);

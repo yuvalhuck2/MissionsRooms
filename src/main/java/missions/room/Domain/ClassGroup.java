@@ -2,6 +2,9 @@ package missions.room.Domain;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -52,5 +55,9 @@ public class ClassGroup {
         Student student=students.get(studentAlias);
         students.remove(studentAlias);
         return student;
+    }
+
+    public Map<String,Student> getStudent(){
+        return students;
     }
 }

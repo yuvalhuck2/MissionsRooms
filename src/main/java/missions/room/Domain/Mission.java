@@ -19,6 +19,8 @@ public abstract class Mission implements Serializable {
     @Enumerated(EnumType.ORDINAL)
     protected Set<RoomType> missionTypes;
 
+
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name="missionTemplates",
             joinColumns ={@JoinColumn(name = "missionId")},

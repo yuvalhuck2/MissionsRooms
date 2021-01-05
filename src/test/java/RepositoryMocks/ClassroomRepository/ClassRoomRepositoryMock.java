@@ -72,6 +72,7 @@ public class ClassRoomRepositoryMock implements ClassroomRepository {
 
     @Override
     public Classroom findClassroomByStudent(String student) {
-        return null;
+
+        return dataGenerator.getClassroom(Data.Valid_Classroom);
     }
 }

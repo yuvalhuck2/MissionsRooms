@@ -176,7 +176,7 @@ public class DataGenerator {
         typesNull.add(null);
         types.add(RoomType.Personal);
         missions.put(Data.Valid_Deterministic,new KnownAnswerMission("ddd",types,"question","answer"));
-        missions.put(Data.Valid_Deterministic_All_Types,new KnownAnswerMission("ddd",allTypes,"question","answer"));
+        missions.put(Data.Valid_Deterministic_All_Types,new KnownAnswerMission("ddd1",allTypes,"question","answer"));
         missions.put(Data.NULL_TYPES_DETERMINSIC,new KnownAnswerMission("ddd",null,"question","answer"));
         missions.put(Data.EMPTY_TYPE_DETERMINISTIC,new KnownAnswerMission("ddd",new HashSet<>(),"question","answer"));
         missions.put(Data.TYPES_WITH_NULL_DETERMINISTIC,new KnownAnswerMission("ddd",typesNull,"question","answer"));
@@ -220,6 +220,8 @@ public class DataGenerator {
         students=new HashMap<Data, Student>();
         students.put(Data.VALID,new Student("NoAlasIsExistWithThatName","Yuval","Sabag"));
     }
+
+
 
 
 
