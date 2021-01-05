@@ -36,7 +36,7 @@ public enum OpCode implements Serializable {
     Already_Exist_Group, Already_Exist_Class,
     Already_Exist_Student, Teacher,
     Student, IT, Supervisor,
-    Wrong_File_Name, Failed_To_Read_Bytes
+    Wrong_File_Name, Failed_To_Read_Bytes, Wrong_File_Headers
 
 
 }
