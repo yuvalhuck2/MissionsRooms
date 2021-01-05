@@ -4,7 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import { LoginScreen, RegisterScreen,AddDeterministicMissionScreen,
   ChooseMissionToAddScreen,AddRoomTemplateScreen,ChooseMissionsForTemplateScreen,
     AuthScreen,TeacherScreen,AddRoomScreen,ChooseTemplateScreen,
-    ChooseStudentRoomScreen,SolveDeterministicScreen,StudentScreen  } from './components/screens';
+    ChooseStudentRoomScreen,SolveDeterministicScreen,StudentScreen, ITScreen } from './components/screens';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +25,7 @@ const App = () =>{
         <Stack.Screen name="Teacher" component={TeacherScreen}/>
         <Stack.Screen name="Student" component={StudentScreen}/>
         <Stack.Screen name="AddRoom" component={AddRoomScreen}/>
+        <Stack.Screen name="IT" component={ITScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   )
