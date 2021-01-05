@@ -28,4 +28,9 @@ export const loginStrings = {
     header: 'העלאת קבצים',
     choose_btn: 'בחר קבצים',
     approve_btn: 'אישור',
+    restart_btn: 'אפס',
   };
+
+  export const uploadStringsErrors = {
+    file_number_error: "מספר הקבצים צריך להיות 4"
+  }
