@@ -127,3 +127,25 @@ export const roomTypes = [
     minimal_missions:'מספר משימות לקבלת בונוס: ',
     missions_presentation:'משימות: ',
   }
+
+  export const ChooseStudentRoomStrings={
+    header:'בחירת חדר',
+    room_name:'שם החדר: ',
+    room_type:'סוג החדר: ',
+    mission_presentation:'משימה נוכחית: ',
+    solve:'כניסה',
+  }
+
+  export const ChooseRoomStudentErrors={
+    room_empty:'יש לבחור חדר',
+    wrong_answer:'תשובה לא נכונה, מספר נסיונות מותרים: ',
+  };
+
+  export const SolveDeterministicMissionStrings={
+    enter_answer:'הכנס\י תשובה',
+    send_answer:'שלח\י תשובה',
+  }
+
+  export const StudentStrings={
+    watchMyRoom:'החדרים שלי',
+  }

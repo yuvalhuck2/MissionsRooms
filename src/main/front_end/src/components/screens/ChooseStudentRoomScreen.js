@@ -1,65 +1,55 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ActivityIndicator,RadioButton } from 'react-native-paper';
-import { ChooseTempalteStrings,AddStrings,ChooseMissionsTemplateStrings } from '../../locale/locale_heb';
-import { templateChanged,addRoom } from '../../actions/AddRoomActions';
+import { RadioButton } from 'react-native-paper';
+import { ChooseStudentRoomStrings,ChooseMissionsTemplateStrings,roomTypes } from '../../locale/locale_heb';
+import { roomChanged,passToSolveMission, } from '../../actions/ChooseStudentRoomActions';
 import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
 import Button from '../common/Button';
 import Header from '../common/Header';
-import TextInput from '../common/TextInput';
 import { DETERMINISTIC_NAME } from '../../actions/types'; 
 
 const {
     header,
-    template_name,
-    minimal_missions,
-    missions_presentation,
-  } = ChooseTempalteStrings;
+    room_name,
+    room_type,
+    mission_presentation,
+    solve,
+  } = ChooseStudentRoomStrings;
 
-const {
-    addButton
-}= AddStrings
 
 const {
     deterministic_name,
     question,
   } = ChooseMissionsTemplateStrings;
 
-class ChooseTemplatesForm extends Component{
+
+class ChooseStudentRoomForm extends Component{
     constructor(... args){
         super(... args)
-        this.onTemplateChanged=this.onTemplateChanged.bind(this)
+        this.onRoomChanged=this.onRoomChanged.bind(this)
         this.onButtonPress=this.onButtonPress.bind(this)
     }
     
-    onTemplateChanged(text){
-        this.props.templateChanged(text);
+    onRoomChanged(value){
+        this.props.roomChanged(value);
     }
 
     onButtonPress() {
-        const {roomName,participantKey,roomTemplate,bonus,type,navigation} = this.props;
+        const {currentRoom,navigation} = this.props;
         
-        this.props.addRoom( {roomName,participantKey,roomTemplateId:roomTemplate.id,bonus,type,navigation} );
-    }
-
-    renderSpinner() {
-        return <ActivityIndicator animating={true} color={theme.colors.primary} size='large'/>;
+        this.props.passToSolveMission( {currentRoom,navigation} );
     }
 
     renderButton(){
-        const {loading} = this.props
-    
-        return loading ? (
-          this.renderSpinner()
-        ) : (
+        return (
           <Button
           mode='contained'
           style={styles.button}
           onPress={this.onButtonPress}
           >
-          {addButton}
+          {solve}
           </Button>
         )
       }
@@ -85,23 +75,26 @@ class ChooseTemplatesForm extends Component{
         }
       }
 
-      renderTemplate(template){
-          return template_name+template.name+'\n'+
-          minimal_missions+template.minimalMissionsToPass+'\n'+
-          missions_presentation+template.missions.reduce(
-             (acc,mis)=> {return acc+'\n\t\t'+this.getMissionPresentation(mis)} 
-          ,'')
-        //'\n'+this.getMissionPresentation(template.missions[0])
+      getType(type){
+        return roomTypes.filter((roomType)=>roomType.type==type)[0].translate
+      }
+
+      renderRoom(room){
+          return room_name+room.name+'\n'+
+          room_type+this.getType(room.type)+'\n'+
+          mission_presentation+'\n\t\t'+
+          this.getMissionPresentation(room.currentMission) 
       }
 
       renderRadioButtons(){
-          const {presentedTemplates}=this.props;
+          const {rooms}=this.props;
+          console.log(rooms)
           let lst=[]
-          presentedTemplates.map((template)=>{
+          rooms.forEach((room,roomId)=>{
             lst.push(
                 <RadioButton.Item 
-                    label={this.renderTemplate(template)}
-                    value={template}
+                    label={this.renderRoom(room)}
+                    value={room}
                     color={theme.colors.primary}
                     labelStyle={{
                         fontWeight: 'bold',
@@ -115,13 +108,13 @@ class ChooseTemplatesForm extends Component{
       }
 
     render(){
-        const {roomTemplate}=this.props;
+        const {currentRoom}=this.props;
         return(
         <KeyboardAwareScrollView style={styles.container}>
             <Header>{header}</Header>
             <RadioButton.Group 
-            onValueChange={(value) => this.onTemplateChanged(value)} 
-            value={roomTemplate}>
+            onValueChange={(value) => this.onRoomChanged(value)} 
+            value={currentRoom}>
                 {this.renderRadioButtons()}
             </RadioButton.Group>
             {this.renderButton()}
@@ -161,11 +154,11 @@ const styles = StyleSheet.create({
   });
 
 const mapStateToProps = (state) => {
-    const { roomName,participantKey,roomTemplate,bonus,type,presentedTemplates, loading, errorMessage } = state.addRoom;
-    return { roomName,participantKey,roomTemplate,bonus,type,presentedTemplates, loading, errorMessage };
+    const { rooms,currentRoom, errorMessage } = state.ChooseStudentRoom;
+    return { rooms,currentRoom, errorMessage };
   };
   
 export default connect(mapStateToProps, {
-    templateChanged,
-    addRoom,
-  })(ChooseTemplatesForm);
+    roomChanged,
+    passToSolveMission,
+  })(ChooseStudentRoomForm);

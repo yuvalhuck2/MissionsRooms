@@ -3,10 +3,13 @@ import addMissionReducer from './AddMissionReducer';
 import AuthReducer from './AuthReducer'
 import addRoomTemplateReducer from './AddRoomTemlateReducer'
 import addRoomReducer from './AddRoomReducer'
+import ChooseStudentRoom from './ChooseStudentRoomReducer'
 
 export default combineReducers({
   auth: AuthReducer,
   addMission: addMissionReducer,
   addRoomTemplate: addRoomTemplateReducer,
   addRoom: addRoomReducer,
+  ChooseStudentRoom:ChooseStudentRoom,
+  
 });
