@@ -1,4 +1,4 @@
-package Service;
+package missions.room.Service;
 
 import missions.room.Managers.UploadCsvManager;
 import org.springframework.beans.factory.annotation.Autowired;

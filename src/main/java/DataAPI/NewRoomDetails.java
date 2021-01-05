@@ -1,8 +1,9 @@
 package DataAPI;
 
-public class newRoomDetails {
+public class NewRoomDetails {
 
 
+    private String apiKey;
     private String roomId;
     private  String roomTemplateId;
     private String participantKey;
@@ -11,7 +12,7 @@ public class newRoomDetails {
     private String teacher;
     private int bonus;
 
-    public newRoomDetails(String participantKey, RoomType roomType, String roomName,String teacher,String roomTemplateId,int bonus) {
+    public NewRoomDetails(String participantKey, RoomType roomType, String roomName, String teacher, String roomTemplateId, int bonus) {
         this.participantKey = participantKey;
         this.roomType = roomType;
         this.roomName = roomName;
@@ -47,6 +48,10 @@ public class newRoomDetails {
 
     public String getRoomTemplateId() {
         return roomTemplateId;
+    }
+
+    public String getApiKey() {
+        return apiKey;
     }
 
     public int getBonus() {
