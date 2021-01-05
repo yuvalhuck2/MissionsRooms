@@ -1,4 +1,5 @@
 import { AddDeterministicMissionErrors } from '../locale/locale_heb';
+import * as NavPaths from '../navigation/NavPaths'
 
 import {
     QUESTION_CHANGED,
@@ -6,7 +7,7 @@ import {
     TYPES_CHANGED,
     ADD_MISSON,
     DETERMINISTIC,
-    UPDATE_ERROR,
+    UPDATE_ERROR_MISSION,
   } from '../actions/types';
   
   const {
@@ -36,23 +37,26 @@ export const questionChanged = (text) => {
     };
   };
 
-  export const navigateToMission = (type) => {
-    return {
-      type,
-      payload:type,
-    };
+  export const navigateToMission = (type,navigation) => {
+    return async ()=>{
+      switch(type){
+        case DETERMINISTIC:
+          navigation.navigate(NavPaths.AddDeterministicMission)
+      }
+  }
+
   };
   
   export const addMission = (question,realAnswer,missionTypes) => {
     return async (dispatch)=>{
       if(question.trim()===""){
-        dispatch({ type: UPDATE_ERROR, payload: question_empty });
+        dispatch({ type: UPDATE_ERROR_MISSION, payload: question_empty });
       }
       else if(realAnswer.trim()===""){
-        dispatch({ type: UPDATE_ERROR, payload: answer_empty });
+        dispatch({ type: UPDATE_ERROR_MISSION, payload: answer_empty });
       }
       else if(missionTypes.length==0){
-        dispatch({ type: UPDATE_ERROR, payload: types_empty });
+        dispatch({ type: UPDATE_ERROR_MISSION, payload: types_empty });
       }
       else{
         sendMission({CLASSNAME:DETERMINISTIC,

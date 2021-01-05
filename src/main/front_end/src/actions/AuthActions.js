@@ -21,6 +21,7 @@ import {
   LOGIN_STUDENT,
   LOGIN_SUPERVISOR,
   LOGIN_TEACHER,
+  LOGIN_USER,
   PASSWORD_CHANGED,
   REGISTER_STUDENT,
   REGISTER_TEACHER,
@@ -62,7 +63,6 @@ export const registerUser = ({ email, password, navigation }) => {
   return async (dispatch) => {
     dispatch({ type: REGISTER_USER });
     const res = await API.post(APIPaths.register, { alias: email, password });
-    console.log(res.data);
     res
       ? checkRegisterUserResponse(res.data, dispatch, navigation)
       : dispatch({ type: UPDATE_ERROR, payload: server_error });
@@ -71,11 +71,9 @@ export const registerUser = ({ email, password, navigation }) => {
 
 const checkRegisterUserResponse = (data, dispatch, navigation) => {
   const { reason, value } = data;
-  console.log(reason);
 
   switch (reason) {
     case Wrong_Password:
-      console.log(wrong_password);
       return dispatch({ type: UPDATE_ERROR, payload: wrong_password });
     case Wrong_Alias:
       return dispatch({ type: UPDATE_ERROR, payload: wrong_alias });

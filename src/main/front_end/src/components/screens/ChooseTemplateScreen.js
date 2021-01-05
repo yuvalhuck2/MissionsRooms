@@ -2,48 +2,46 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ActivityIndicator,RadioButton } from 'react-native-paper';
-import { AddRoomTempalteStrings,roomTypes } from '../../locale/locale_heb';
-import { nameChanged,typeChanged,minimalMissionsChanged,passToMissions } from '../../actions/AddRoomTemplateActions';
+import { ChooseTempalteStrings,AddStrings,ChooseMissionsTemplateStrings } from '../../locale/locale_heb';
+import { templateChanged,addRoom } from '../../actions/AddRoomActions';
 import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
 import Button from '../common/Button';
 import Header from '../common/Header';
 import TextInput from '../common/TextInput';
+import { DETERMINISTIC_NAME } from '../../actions/types'; 
 
 const {
     header,
-    enter_name,
-    enter_type,
-    enter_minimal_amount,
-    move_to_missions,
-  } = AddRoomTempalteStrings;
+    template_name,
+    minimal_missions,
+    missions_presentation,
+  } = ChooseTempalteStrings;
 
-const RoomTypes=roomTypes;
+const {
+    addButton
+}= AddStrings
 
-class AddTemplateForm extends Component{
+const {
+    deterministic_name,
+    question,
+  } = ChooseMissionsTemplateStrings;
+
+class ChooseTemplatesForm extends Component{
     constructor(... args){
         super(... args)
-        this.onNameChanged=this.onNameChanged.bind(this)
-        this.onTypeChanged=this.onTypeChanged.bind(this)
-        this.onMinimalAmountChanged=this.onMinimalAmountChanged.bind(this)
+        this.onTemplateChanged=this.onTemplateChanged.bind(this)
         this.onButtonPress=this.onButtonPress.bind(this)
     }
-
-    onNameChanged(text){
-        this.props.nameChanged(text);
-    }
-
-    onTypeChanged(text) {
-        this.props.typeChanged(text);
-    }
     
-    onMinimalAmountChanged(amount){
-        this.props.minimalMissionsChanged(amount);
+    onTemplateChanged(text){
+        this.props.templateChanged(text);
     }
 
     onButtonPress() {
-        const {name,minimalMissions,type,navigation} = this.props;
-        this.props.passToMissions( name,minimalMissions,type,navigation );
+        const {roomName,participantKey,roomTemplate,bonus,type,navigation} = this.props;
+        
+        this.props.addRoom( {roomName,participantKey,roomTemplateId:roomTemplate.id,bonus,type,navigation} );
     }
 
     renderSpinner() {
@@ -61,7 +59,7 @@ class AddTemplateForm extends Component{
           style={styles.button}
           onPress={this.onButtonPress}
           >
-          {move_to_missions}
+          {addButton}
           </Button>
         )
       }
@@ -78,13 +76,38 @@ class AddTemplateForm extends Component{
         }
       }
 
+      getMissionPresentation(mission){ 
+        switch(mission.name){
+          case DETERMINISTIC_NAME:
+            return deterministic_name+'\n\t\t'+question+mission.question[0]
+          default:
+              return ""
+        }
+      }
+
+      renderTemplate(template){
+          return template_name+template.name+'\n'+
+          minimal_missions+template.minimalMissionsToPass+'\n'+
+          missions_presentation+template.missions.reduce(
+             (acc,mis)=> {return acc+'\n\t\t'+this.getMissionPresentation(mis)} 
+          ,'')
+        //'\n'+this.getMissionPresentation(template.missions[0])
+      }
+
       renderRadioButtons(){
+          const {presentedTemplates}=this.props;
           let lst=[]
-          RoomTypes.map((roomType)=>{
+          presentedTemplates.map((template)=>{
             lst.push(
                 <RadioButton.Item 
-                    label={roomType.translate}
-                    value={roomType.type}
+                    label={this.renderTemplate(template)}
+                    value={template}
+                    color={theme.colors.primary}
+                    labelStyle={{
+                        fontWeight: 'bold',
+                        color: theme.colors.secondary,
+                      }}
+                      
                  />)
           })
           
@@ -92,28 +115,13 @@ class AddTemplateForm extends Component{
       }
 
     render(){
-        const {name,minimalMissions,type}=this.props;
+        const {roomTemplate}=this.props;
         return(
         <KeyboardAwareScrollView style={styles.container}>
             <Header>{header}</Header>
-            <TextInput
-            label={enter_name}
-            value={name}
-            onChangeText={this.onNameChanged}
-            placeholder='שם'
-            />
-
-            <TextInput
-            label={enter_minimal_amount}
-            keyboardType = 'numeric'
-            value={minimalMissions}
-            onChangeText={this.onMinimalAmountChanged}
-            placeholder='0'
-            />
-
             <RadioButton.Group 
-            onValueChange={(value) => this.onTypeChanged(value)} 
-            value={type}>
+            onValueChange={(value) => this.onTemplateChanged(value)} 
+            value={roomTemplate}>
                 {this.renderRadioButtons()}
             </RadioButton.Group>
             {this.renderButton()}
@@ -153,13 +161,11 @@ const styles = StyleSheet.create({
   });
 
 const mapStateToProps = (state) => {
-    const { name,minimalMissions,type, loading, errorMessage } = state.addRoomTemplate;
-    return { name,minimalMissions,type, loading, errorMessage };
+    const { roomName,participantKey,roomTemplate,bonus,type,presentedTemplates, loading, errorMessage } = state.addRoom;
+    return { roomName,participantKey,roomTemplate,bonus,type,type,presentedTemplates, loading, errorMessage };
   };
   
 export default connect(mapStateToProps, {
-    nameChanged,
-    minimalMissionsChanged,
-    typeChanged,
-    passToMissions,
-  })(AddTemplateForm);
+    templateChanged,
+    addRoom,
+  })(ChooseTemplatesForm);

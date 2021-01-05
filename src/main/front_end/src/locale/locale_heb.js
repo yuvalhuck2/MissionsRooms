@@ -41,15 +41,11 @@ export const AddDeterministicMissionStrings = {
   classroom: 'כיתתית',
 };
 
-export const AddMissionStrings = {
-  addMissionButton: 'הוספה',
-};
-
-export const AddDeterministicMissionErrors = {
-  question_empty: 'יש להזין שאלה',
-  answer_empty: 'יש להזין תשובה',
-  types_empty: 'יש לבחור לפחות סוג משימה אחד',
-}
+  export const AddDeterministicMissionErrors={
+    question_empty:'יש להזין שאלה',
+    answer_empty:'יש להזין תשובה',
+    types_empty:'יש לבחור לפחות סוג משימה אחד',
+  }
 
 export const AddStrings = {
   addButton: 'הוספה',
@@ -68,12 +64,13 @@ export const AddRoomTempalteStrings = {
   move_to_missions: 'מעבר לבחירת המשימות',
 }
 
-export const AddTemplateErrors = {
-  name_empty: 'יש לבחור שם תבנית לא ריק ',
-  minimal_negative: 'כמות המשימות המינימלית כדי לקבל בונוס לא יכולה להיות שלילית',
-  missions_empty: 'יש לבחור לפחות משימה אחת לתבנית',
-  type_empty: 'יש לבחור את סוג החדר',
-}
+  export const AddTemplateErrors={
+    name_empty:'יש לבחור שם תבנית לא ריק ',
+    minimal_negative:'כמות המשימות המינימלית כדי לקבל בונוס לא יכולה להיות שלילית',
+    missions_empty:'  יש לבחור לפחות משימה אחת לתבנית',
+    missions_to_small:'יש לבחור מספר משימות הגדול מהמספר המינימלי כדי לקבל בונוס',
+    type_empty:'יש לבחור את סוג החדר',
+  }
 
 export const roomTypes = [
   {
@@ -90,8 +87,43 @@ export const roomTypes = [
   },
 ]
 
-export const ChooseMissionsTemplateStrings = {
-  header: 'יש לבחור משימות לתבנית',
-  deterministic_name: 'סוג : שאלת פתרון יחיד',
-  question: 'שאלה: ',
-}
+  export const ChooseMissionsTemplateStrings={
+    header: 'יש לבחור משימות לתבנית',
+    deterministic_name:'סוג : שאלת פתרון יחיד',
+    question:'שאלה: ',
+  }
+
+  export const TeacherStrings={
+    addMission:'הוספת משימה',
+    addTemplate:'בניית תבנית לחדר',
+    createRoom:'יצירת חדר',
+    closeRoom:'סגירת חדר',
+  }
+
+  export const AddRoomStrings={
+    header:'הוספת חדר',
+    enter_name:'שם החדר',
+    enter_bonus:'בונוס על סיום החדר',
+    enter_student:'בחר/י תלמיד',
+    enter_group:'בחר/י קבוצה',
+    classroom_add:'הוספת חדר כיתתי',
+    group_add:'הוספת חדר קבוצתי',
+    student_add:'הוספת חדר אישי',
+    
+  }
+
+  export const AddRoomErrors={
+    name_empty:'יש לבחור שם חדר לא ריק ',
+    bonus_empty_negative:'יש לבחור בונוס לא שלילי',
+    classroom_empty:'הכיתה שלך לא מעודכנת במערכת אנא פנה\י למחלקה הטכנית',
+    group_empty:'יש לזין קבוצה על מנת להוסיף חדר קבוצתי',
+    student_empty:'יש להזין תלמיד על מנת להוסיף חדר אישי',
+    empty_template:'יש לבחור תבנית לחדר',
+  }
+
+  export const ChooseTempalteStrings={
+    header:'יש לבחור תבנית לחדר',
+    template_name:'שם התבנית: ',
+    minimal_missions:'מספר משימות לקבלת בונוס: ',
+    missions_presentation:'משימות: ',
+  }
