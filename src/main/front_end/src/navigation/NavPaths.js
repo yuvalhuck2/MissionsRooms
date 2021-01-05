@@ -1,3 +1,4 @@
+
 export const register = "Register"
 export const login = "Login"
 export const supMainScreen = ""
@@ -10,3 +11,5 @@ export const AddDeterministicMission="AddDeteministicMission"
 export const ChooseMissionsForTemplate="ChooseMissionsForTemplate"
 export const AddRoom="AddRoom"
 export const ChooseTemplate="ChooseTemplateScreen"
+export const deterministicScreen="SolveDeterministic"
+export const ChooseStudentRoom="ChooseStudentRoom"
