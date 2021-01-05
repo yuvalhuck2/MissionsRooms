@@ -167,7 +167,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  console.log(state);
   const { email, password, loading, errorMessage } = state.auth;
   return { email, password, loading, errorMessage };
 };

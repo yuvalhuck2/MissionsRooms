@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+/derby.log
+/src/test/resources/f.sql
+/src/main/java/META-INF/MANIFEST.MF
