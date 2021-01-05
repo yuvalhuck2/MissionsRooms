@@ -24,7 +24,7 @@ public class ManagerRoomStudentRealRam extends ManagerRoomStudentAllStubs{
         classroomRepo=new ClassRoomRepositoryMock(dataGenerator);
         studentCrudRepository=new StudentRepositoryMock(dataGenerator);
         ram=new Ram();
-        managerRoomStudent=new ManagerRoomStudent(ram,studentCrudRepository,roomRepo,classroomRepo);
+        managerRoomStudent=new ManagerRoomStudent(ram,studentCrudRepository,roomRepo,classroomRepo,groupRepository);
 
         teacherCrudRepository=new TeacherCrudRepositoryMock(dataGenerator);
         roomTemplateCrudRepository=new RoomTemplateCrudRepositoryMock(dataGenerator);

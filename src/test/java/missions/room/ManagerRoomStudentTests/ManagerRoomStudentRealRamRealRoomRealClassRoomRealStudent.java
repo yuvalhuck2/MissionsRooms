@@ -18,7 +18,7 @@ public class ManagerRoomStudentRealRamRealRoomRealClassRoomRealStudent extends M
     @Override
     void setUpMocks(){
         ram=new Ram();
-        managerRoomStudent=new ManagerRoomStudent(ram,studentCrudRepository,roomRepo,classroomRepo);
+        managerRoomStudent=new ManagerRoomStudent(ram,studentCrudRepository,roomRepo,classroomRepo,groupRepository);
     }
 
     @Override

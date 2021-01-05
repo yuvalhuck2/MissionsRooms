@@ -1,10 +1,7 @@
 package missions.room.Managers;
 
 import CrudRepositories.*;
-import DataAPI.MissionData;
-import DataAPI.OpCode;
-import DataAPI.Response;
-import DataAPI.RoomDetailsData;
+import DataAPI.*;
 import javafx.util.Pair;
 import javassist.bytecode.Opcode;
 import missions.room.Domain.*;
@@ -16,6 +13,7 @@ import missions.room.Repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +28,10 @@ public class ManagerRoomStudent extends StudentManager {
     @Autowired
     private ClassroomRepo classroomRepo;
 
+    @Autowired
+    private ClassGroupRepo classGroupRepo;
+
+
 
 
 
@@ -38,11 +40,87 @@ public class ManagerRoomStudent extends StudentManager {
     }
 
     public ManagerRoomStudent(Ram ram, StudentCrudRepository studentCrudRepository, RoomCrudRepository roomCrudRepository, ClassroomRepository classroomRepository
-                              ) {
+                              ,GroupRepository groupRepository) {
         super(ram, studentCrudRepository);
         this.roomRepo = new RoomRepo(roomCrudRepository);
         this.classroomRepo = new ClassroomRepo(classroomRepository);
+        this.classGroupRepo=new ClassGroupRepo(groupRepository);
         //this.roomTemplateRepo=new RoomTemplateRepo(roomTemplateCrudRepository);
+    }
+
+    /**
+     * req 3.6.2.3 - answer deterministic question mission
+     * @param apiKey - authentication object
+     * @param roomId - room id
+     * @param answer - answer for the question
+     * @return if the answer was correct
+     */
+    //TODO now we return always true if every thing alright ,otherwise return null and error opcode
+    //TODO need to change the response to the next mission if exists
+    public Response<Boolean> answerDeterministicQuestion(String apiKey, String roomId, boolean answer){
+        Response<Student> checkStudent = checkStudent(apiKey);
+        if (checkStudent.getReason() != OpCode.Success) {
+            return new Response(null, checkStudent.getReason());
+        }
+        Student student = checkStudent.getValue();
+        Response<Room> roomResponse=roomRepo.findRoomForWrite(roomId);
+        if(roomResponse.getReason()!=OpCode.Success){
+            return new Response<>(null,roomResponse.getReason());
+        }
+        Room room=roomResponse.getValue();
+        boolean isLastMission=room.getCurrentMission()!=room.getRoomTemplate().getMissions().size()-1;
+        if(answer) {
+            room.addCorrectAnswer();
+            int points = room.getRoomTemplate().getMission(room.getCurrentMission()).getPoints();
+            if (room instanceof ClassroomRoom) {
+                Classroom classroom = ((ClassroomRoom) room).getParticipant();
+                classroom.addPoints(points);
+                if(isLastMission&&room.getRoomTemplate().getMinimalMissionsToPass()<=room.getCountCorrectAnswer()){
+                    classroom.addPoints(room.getBonus());
+                }
+                Response<Classroom> response=classroomRepo.save(classroom);
+                if(response.getReason()!=OpCode.Success){
+                    return new Response<>(null,response.getReason());
+                }
+            }
+            if (room instanceof GroupRoom) {
+                ClassGroup classGroup = ((GroupRoom) room).getParticipant();
+                classGroup.addPoints(points);
+                if(isLastMission&&room.getRoomTemplate().getMinimalMissionsToPass()<=room.getCountCorrectAnswer()){
+                    classGroup.addPoints(room.getBonus());
+                }
+
+                Response<ClassGroup> response=classGroupRepo.save(classGroup);
+                if(response.getReason()!=OpCode.Success){
+                    return new Response<>(null,response.getReason());
+                }
+            }
+            if (room instanceof StudentRoom) {
+                student.addPoints(points);
+                if(isLastMission&&room.getRoomTemplate().getMinimalMissionsToPass()<=room.getCountCorrectAnswer()){
+                    student.addPoints(room.getBonus());
+                }
+
+                Response<SchoolUser> response=studentRepo.save(student);
+                if(response.getReason()!=OpCode.Success){
+                    return new Response<>(null,response.getReason());
+                }
+            }
+        }
+        if(room.getCurrentMission()!=room.getRoomTemplate().getMissions().size()-1){
+            room.increaseCurrentMission();
+            Response<Room> response=roomRepo.save(room);
+            if(response.getReason()!=OpCode.Success){
+                return new Response<>(null,response.getReason());
+            }
+        }
+        else{
+            Response<Boolean> response=roomRepo.deleteRoom(room);
+            if(response.getReason()!=OpCode.Success){
+                return new Response<>(null,response.getReason());
+            }
+        }
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -67,9 +145,6 @@ public class ManagerRoomStudent extends StudentManager {
         if (classGroup == null) {
             return new Response<>(null, OpCode.Student_Not_Exist_In_Group);
         }
-        //Response<List<ClassroomRoom>> responseClass = classroomRoomRepo.findClassroomRoomByClassroom(classroom.getClassName());
-        //Response<List<GroupRoom>> responseGroup = groupRoomRepo.findGroupRoomByGroup(classGroup.getGroupName());
-        //Response<List<StudentRoom>> responseStudent = studentRoomRepo.findStudentRoomByStudent(student.getAlias());
 
         Response<ClassroomRoom> responseClass = roomRepo.findClassroomRoomByAlias(classroom.getClassName());
         Response<GroupRoom> responseGroup =roomRepo.findGroupRoomByAlias(classGroup.getGroupName());
@@ -106,15 +181,8 @@ public class ManagerRoomStudent extends StudentManager {
         if (rooms.size()==0){
             return new Response<>(new ArrayList<>(),OpCode.Success);
         }
-
         return getRoomDetailFromRoom(rooms);
-
     }
-
-
-
-
-
 
     private Response<Room> getRoomsFromRoomClass(ClassroomRoom classroomRoom) {
         String roomId = classroomRoom.getRoomId();
@@ -122,7 +190,6 @@ public class ManagerRoomStudent extends StudentManager {
         if (response.getReason() != OpCode.Success) {
             return new Response<>(null, response.getReason());
         }
-
         return new Response<>(response.getValue(), OpCode.Success);
     }
 
@@ -141,7 +208,6 @@ public class ManagerRoomStudent extends StudentManager {
         if (response.getReason() != OpCode.Success) {
             return new Response<>(null, response.getReason());
         }
-
         return new Response<>(response.getValue(), OpCode.Success);
     }
 
@@ -154,10 +220,8 @@ public class ManagerRoomStudent extends StudentManager {
                 ram.addRoom(roomId, response.getValue());
             }
             return response;
-
         }
     }
-
 
     private Response<List<RoomDetailsData>> getRoomDetailFromRoom(List<Room> rooms) {
         List<RoomDetailsData> roomDetailsDataList = new ArrayList<>();

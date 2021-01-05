@@ -27,6 +27,8 @@ public class Classroom{
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<ClassGroup> classGroups;
 
+    private int points;
+
     public Classroom() {
 
     }
@@ -36,6 +38,7 @@ public class Classroom{
         this.classGroups=new HashSet<>();
         this.classGroups.add(classGroupA);
         this.classGroups.add(classGroupB);
+        this.points=0;
     }
 
     public Classroom(String className, List<ClassGroup> classGroups) {
@@ -98,6 +101,10 @@ public class Classroom{
         }
         toMoveto.addStudent(student);
         return new Response<>(true,OpCode.Success);
+    }
+
+    public void addPoints(int points){
+        this.points+=points;
     }
 
 }

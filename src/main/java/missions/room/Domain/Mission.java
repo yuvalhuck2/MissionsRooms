@@ -28,12 +28,15 @@ public abstract class Mission implements Serializable {
     )
     private List<RoomTemplate> roomTemplateList;
 
+    private int points;
+
     public Mission() {
     }
 
     public Mission(String missionId, Set<RoomType> missionTypes) {
         this.missionId = missionId;
         this.missionTypes = missionTypes;
+        this.points=3;
     }
 
     public OpCode validate(){
@@ -57,5 +60,9 @@ public abstract class Mission implements Serializable {
 
     public boolean containType(RoomType roomType){
         return missionTypes.contains(roomType);
+    }
+
+    public int getPoints(){
+        return this.points;
     }
 }

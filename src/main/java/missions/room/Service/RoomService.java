@@ -45,4 +45,16 @@ public class RoomService {
     public Response<List<RoomDetailsData>> watchRoomDetails (Auth auth){
         return managerRoomStudent.watchRoomDetails(auth.getApiKey());
     }
+
+    /**
+     * req 3.6.2.3 - answer deterministic question mission
+     * @param auth - authentication object
+     * @param roomId - room id
+     * @param answer - answer for the question
+     * @return if the answer was correct
+     */
+    public Response<Boolean> answerDeterministicQuestion(Auth auth,String roomId,Boolean answer){
+        return managerRoomStudent.answerDeterministicQuestion(auth.getApiKey(),roomId,answer);
+    }
+
 }

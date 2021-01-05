@@ -22,6 +22,8 @@ public class ClassGroup {
     @JoinColumn(name="classGroup",referencedColumnName = "groupName")
     private Map<String, Student> students;
 
+    private int points;
+
     public ClassGroup() {
     }
 
@@ -29,6 +31,7 @@ public class ClassGroup {
         this.groupName=id;
         this.students = students;
         this.groupType = groupType;
+        this.points=0;
     }
 
     public Student getStudent(String alias,GroupType groupType) {
@@ -59,5 +62,9 @@ public class ClassGroup {
 
     public Map<String,Student> getStudent(){
         return students;
+    }
+
+    public void addPoints(int points){
+        this.points+=points;
     }
 }

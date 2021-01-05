@@ -10,6 +10,7 @@ import DataAPI.RoomDetailsData;
 import DataAPI.RoomType;
 import DomainMocks.MissionMock;
 import DomainMocks.MockRam;
+import RepositoryMocks.ClassGroupRepository.ClassGroupRepositoryMock;
 import RepositoryMocks.ClassroomRepository.ClassRoomRepositoryMock;
 import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
 import RepositoryMocks.RoomRepository.RoomCrudRepositoryMock;
@@ -62,6 +63,9 @@ public class ManagerRoomStudentAllStubs {
     @Autowired
     protected MissionCrudRepository missionCrudRepository;
 
+    @Autowired
+    protected GroupRepository groupRepository;
+
 
 
     protected DataGenerator dataGenerator;
@@ -79,8 +83,9 @@ public class ManagerRoomStudentAllStubs {
         roomRepo=new RoomCrudRepositoryMock(dataGenerator);
         classroomRepo=new ClassRoomRepositoryMock(dataGenerator);
         studentCrudRepository=new StudentRepositoryMock(dataGenerator);
+        groupRepository=new ClassGroupRepositoryMock(dataGenerator);
         ram=new MockRam(dataGenerator);
-        managerRoomStudent=new ManagerRoomStudent(ram,studentCrudRepository,roomRepo,classroomRepo);
+        managerRoomStudent=new ManagerRoomStudent(ram,studentCrudRepository,roomRepo,classroomRepo,groupRepository);
 
         teacherCrudRepository=new TeacherCrudRepositoryMock(dataGenerator);
         roomTemplateCrudRepository=new RoomTemplateCrudRepositoryMock(dataGenerator);
