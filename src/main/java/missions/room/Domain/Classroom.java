@@ -107,4 +107,11 @@ public class Classroom{
         this.points+=points;
     }
 
+    public Set<ClassGroup> getClassGroups() {
+        return classGroups;
+    }
+
+    public int getPoints() {
+        return points;
+    }
 }

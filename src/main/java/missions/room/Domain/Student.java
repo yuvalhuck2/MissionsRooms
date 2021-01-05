@@ -30,4 +30,6 @@ public class Student extends SchoolUser {
         this.points+=points;
     }
 
+
+
 }

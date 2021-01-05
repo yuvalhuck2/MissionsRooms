@@ -1,9 +1,6 @@
 package missions.room.Service;
 
-import DataAPI.Auth;
-import DataAPI.Response;
-import DataAPI.RoomDetailsData;
-import DataAPI.newRoomDetails;
+import DataAPI.*;
 import missions.room.Managers.ManagerRoomStudent;
 import missions.room.Managers.RoomManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +18,7 @@ public class RoomService {
     @Autowired
     private ManagerRoomStudent managerRoomStudent;
 
-    public Response<Boolean> createRoom(Auth auth, newRoomDetails roomDetails){
-        return roomManager.createRoom(auth.getApiKey(),roomDetails);
+
     /**
      * req 4.1 -create room
      * @param apiKey -  authentication object
@@ -63,6 +59,15 @@ public class RoomService {
      */
     public Response<Boolean> answerDeterministicQuestion(Auth auth,String roomId,Boolean answer){
         return managerRoomStudent.answerDeterministicQuestion(auth.getApiKey(),roomId,answer);
+    }
+
+    /**
+     *
+     * @param auth - authentication object
+     * @return Classroom details
+     */
+    public Response<ClassRoomData> getClassRoomData(Auth auth){
+        return roomManager.getClassRoomData(auth.getApiKey());
     }
 
 }

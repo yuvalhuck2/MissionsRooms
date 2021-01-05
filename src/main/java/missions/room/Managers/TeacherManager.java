@@ -1,15 +1,17 @@
 package missions.room.Managers;
 
 import CrudRepositories.TeacherCrudRepository;
-import DataAPI.OpCode;
-import DataAPI.Response;
-import missions.room.Domain.Ram;
-import missions.room.Domain.Teacher;
+import DataAPI.*;
+import missions.room.Domain.*;
 import missions.room.Repo.TeacherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * class for all the managers that need to find a teacher for their methods
@@ -69,4 +71,6 @@ public abstract class TeacherManager {
         }
         return new Response<>(teacher,OpCode.Success);
     }
+
+
 }
