@@ -128,6 +128,28 @@ export const roomTypes = [
     missions_presentation:'משימות: ',
   }
 
+  export const ChooseStudentRoomStrings={
+    header:'בחירת חדר',
+    room_name:'שם החדר: ',
+    room_type:'סוג החדר: ',
+    mission_presentation:'משימה נוכחית: ',
+    solve:'כניסה',
+  }
+
+  export const ChooseRoomStudentErrors={
+    room_empty:'יש לבחור חדר',
+    wrong_answer:'תשובה לא נכונה, מספר נסיונות מותרים: ',
+  };
+
+  export const SolveDeterministicMissionStrings={
+    enter_answer:'הכנס\י תשובה',
+    send_answer:'שלח\י תשובה',
+  }
+
+  export const StudentStrings={
+    watchMyRoom:'החדרים שלי',
+  }
+
   export const registerCodeErrors = {
     wrong_alias_register_code: "שם משתמש לא תקין",
     wrong_register_code: "קוד לא תקין",
@@ -137,4 +159,3 @@ export const roomTypes = [
     already_exist_register_code: "משתמש כבר רשום",
     not_exist_group_register_code: "קבוצה לא קיימת",
     already_exist_student_register_code: "תלמיד כבר רשום"
-  }

@@ -19,7 +19,6 @@ const initialState = {
     ADD_TEMPLATE,
     UPDATE_ERROR_TEMPLATE,
     CLEAR_STATE,
-    PASS,
   } from '../actions/types';
   
   export default (state = initialState, action) => {
