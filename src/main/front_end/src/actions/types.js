@@ -1,5 +1,6 @@
 export const EMAIL_CHANGED = 'email_changed';
 export const PASSWORD_CHANGED = 'password_changed';
+export const CODE_CHANGED = 'authCode_changed';
 export const LOGIN_USER_SUCCESS = 'login_user_success';
 export const LOGIN_USER_FAIL = 'login_user_fail';
 export const LOGIN_USER = 'login_user';
@@ -37,6 +38,8 @@ export const TEMPLATE_NAME_CHANGED='template_name_changed'
 export const UPDATE_ERROR_TEMPLATE='template_error'
 export const UPDATE_ERROR_ROOM='room_error'
 export const UPDATE_ERROR_MISSION='mission_error'
+export const REGISTER_CODE = "register_code"
+export const REGISTER_CODE_SUCCESS = "register_code_success"
 export const PASS_TO_SOLVE_MISSIONS='pass_to_solve_missions'
 export const UPDATE_ERROR_SOLVE_ROOM='solve_room_error'
 export const CURRENT_ROOM_CHANGED='current_room_change'
