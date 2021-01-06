@@ -229,7 +229,6 @@ public class ManagerRoomStudentAllStubs {
         assertEquals(roomRepo.findRoomForRead(dataGenerator.getRoom(Data.VALID_2Mission).getRoomId()).getCurrentMission(),1);
         assertEquals(roomRepo.findRoomForRead(dataGenerator.getRoom(Data.VALID_2Mission).getRoomId()).getCountCorrectAnswer(),1);
 
-        //TODO without mock i need to check if the points not!!! update,if the room is delete
         studentCrudRepository.delete(dataGenerator.getStudent(Data.VALID));
         roomRepo.delete(dataGenerator.getRoom(Data.VALID_2Mission));
     }
@@ -245,7 +244,6 @@ public class ManagerRoomStudentAllStubs {
 
     protected void testAnswerDeterministic_2MissionsRoomWrongAnsTest(){
         studentCrudRepository.save(dataGenerator.getStudent(Data.VALID));
-        Room r=roomRepo.save(dataGenerator.getRoom(Data.VALID_2Mission));
 
         Response<Boolean> response=managerRoomStudent.answerDeterministicQuestion("apiKey",dataGenerator.getRoom(Data.VALID_2Mission).getRoomId(),false);
         assertEquals(response.getReason(),OpCode.Success);
