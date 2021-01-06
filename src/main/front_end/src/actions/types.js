@@ -46,3 +46,5 @@ export const CURRENT_ROOM_CHANGED='current_room_change'
 export const TRIES=3
 export const SOLVE_MISSION='solve_mission'
 export const CURRENT_ANSWER_CHANGED='current_answer_changed'
+export const RESET_FILES = 'reset_files'
+export const PICKED_FILE = "picked_file"

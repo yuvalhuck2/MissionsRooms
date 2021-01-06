@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.UnknownServiceException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -23,16 +24,19 @@ import java.util.stream.Stream;
 public class UploadCsvManager {
     private static final String TEACHER_FILE = "teachers.csv";
     private static final String STUDENT_FILE = "students.csv";
+    private static final String[] USERS_FILE_HEADERS = {"First Name", "Last Name", "Email Address"};
     private static final int FIRST_NAME = 0;
     private static final int LAST_NAME = 1;
     private static final int EMAIL = 2;
 
     private static final String CLASSES_FILE = "classes.csv";
+    private static final String[] CLASSES_FILE_HEADERS = {"Email", "MembersCount", "Members"};
     private static final int CLASS_EMAIL = 0;
     private static final int MEMBERS_COUNT = 1;
     private static final int MEMBERS = 2;
 
     private static final String GROUPS_FILE = "groups.csv";
+    private static final String[] GROUPS_FILE_HEADERS = {"class", "A", "B"};
     private static final int CLASS_NAME = 0;
     private static final int GROUP_A_TEACHER = 1;
     private static final int GROUP_B_TEACHER = 2;
@@ -60,20 +64,24 @@ public class UploadCsvManager {
             teacherFile = getFileStringByName(CSVs, TEACHER_FILE);
             groupsFile = getFileStringByName(CSVs, GROUPS_FILE);
         } catch(NoSuchElementException ex){
-            return new Response<Boolean>(false, OpCode.Wrong_File_Name, "expected file names: -- given file names: --");
+            return new Response<>(false, OpCode.Wrong_File_Name, "expected file names: " +TEACHER_FILE+ " "+STUDENT_FILE+" "+CLASSES_FILE+" "+GROUPS_FILE);
         } catch(IOException ex){
-            return new Response<Boolean>(false, OpCode.Failed_To_Read_Bytes);
+            return new Response<>(false, OpCode.Failed_To_Read_Bytes);
         }
 
         String studentsRows[] = splitNewLine(studentsFile);
         String[] classesRows = classesFile.split("lb[0-9]");
         String teachersRows[] = splitNewLine(teacherFile);
         String groupsRows[] = splitNewLine(groupsFile);
+        if (checkCsvHeadersValidity(studentsRows, classesRows, teachersRows, groupsRows)) {
+            return new Response<>(false, OpCode.Wrong_File_Headers);
+        }
         List<Classroom> classes = createClassesFromCsv(studentsRows, classesRows);
         Response<Boolean> classRoomResp = classRoomRepo.saveAll(classes);
         if (classRoomResp.getValue()){
             List<Teacher> teachers = createTeachersFromCsv(teachersRows, groupsRows, classes);
             Response<Boolean> teacherResp = teacherRepo.saveAll(teachers);
+            return teacherResp;
         }
 
         return classRoomResp;
@@ -131,9 +139,28 @@ public class UploadCsvManager {
         Classroom classRoom = new Classroom(className.toString(), new ArrayList<ClassGroup>(Arrays.asList(tempGroup)));
         return classRoom;
     }
-    private Boolean checkCsvValidity(){
-        //TODO
+    private Boolean checkCsvHeadersValidity(String[] studentsRows, String[] classesRows, String[] teachersRows, String[] groupsRows){
+        if (!Utils.stringsArrayEquals(getHeaders(studentsRows), USERS_FILE_HEADERS) ||
+            !Utils.stringsArrayEquals(getHeaders(classesRows), CLASSES_FILE_HEADERS) ||
+            !Utils.stringsArrayEquals(getHeaders(teachersRows), USERS_FILE_HEADERS) ||
+            !Utils.stringsArrayEquals(getHeaders(groupsRows), GROUPS_FILE_HEADERS)){
+            return false;
+        }
         return true;
+    }
+    private String[] getHeaders(String[] file){
+        if(file.length > 0) {
+            String[] headers = file[0].split((COMMA_DEL));
+            stripHeaders(headers);
+            return headers;
+        }
+        return new String[0];
+    }
+//First Name [Required]	Last Name [Required]	Email Address [Required]
+    private void stripHeaders(String[] headers){
+        for(int i =0 ; i <headers.length; i++) {
+            headers[i] = headers[i].replace(" [Required]", "");
+        }
     }
 
     private List<Teacher> createTeachersFromCsv(String[] teacherRows, String[] groupRows, List<Classroom> classes){

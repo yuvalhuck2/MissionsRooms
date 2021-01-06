@@ -2,6 +2,7 @@ import API from '../api/API';
 import * as APIPaths from '../api/APIPaths';
 import { authErrors, registerCodeErrors } from '../locale/locale_heb';
 import * as NavPaths from '../navigation/NavPaths';
+//import Constants from 'expo-constants'
 import {
   Already_Exist,
   Code_Not_Match,
@@ -62,7 +63,7 @@ const {
 
 // const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080`;
 
-// console.log(uri);
+// alert(uri);
 
 export const emailChanged = (text) => {
   return {
