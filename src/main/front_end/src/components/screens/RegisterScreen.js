@@ -3,7 +3,12 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ActivityIndicator } from 'react-native-paper';
 import { connect } from 'react-redux';
-import { emailChanged, passwordChanged, registerUser } from '../../actions';
+import {
+  emailChanged,
+  navigateToLogin,
+  passwordChanged,
+  registerUser,
+} from '../../actions';
 import { theme } from '../../core/theme';
 import { registerStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
@@ -25,6 +30,7 @@ class RegisterForm extends Component {
     this.onEmailChange = this.onEmailChange.bind(this);
     this.onPasswordChange = this.onPasswordChange.bind(this);
     this.onButtonPress = this.onButtonPress.bind(this);
+    this.navigateToLogin = this.navigateToLogin.bind(this);
   }
 
   onEmailChange(text) {
@@ -38,6 +44,11 @@ class RegisterForm extends Component {
   onButtonPress() {
     const { email, password, navigation } = this.props;
     this.props.registerUser({ email, password, navigation });
+  }
+
+  navigateToLogin() {
+    const { navigation } = this.props;
+    this.props.navigateToLogin({ navigation });
   }
 
   renderSpinner() {
@@ -89,9 +100,7 @@ class RegisterForm extends Component {
     return loading ? null : (
       <View style={styles.row}>
         <Text style={styles.label}>{already_user}</Text>
-        <TouchableOpacity
-          onPress={() => this.props.navigation.navigate('Login')}
-        >
+        <TouchableOpacity onPress={this.navigateToLogin}>
           <Text style={styles.link}>{already_user_sign_in}</Text>
         </TouchableOpacity>
       </View>
@@ -175,4 +184,5 @@ export default connect(mapStateToProps, {
   emailChanged,
   passwordChanged,
   registerUser,
+  navigateToLogin,
 })(RegisterForm);

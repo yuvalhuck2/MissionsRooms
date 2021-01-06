@@ -34,7 +34,6 @@ export default (state = initialState, action) => {
     case PASSWORD_CHANGED:
       return { ...state, password: action.payload };
     case CODE_CHANGED:
-      console.log(action.payload);
       return { ...state, authCode: action.payload };
     case REGISTER_USER:
       return { ...state, loading: true, errorMessage: '' };

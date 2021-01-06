@@ -159,3 +159,4 @@ export const roomTypes = [
     already_exist_register_code: "משתמש כבר רשום",
     not_exist_group_register_code: "קבוצה לא קיימת",
     already_exist_student_register_code: "תלמיד כבר רשום"
+  }
