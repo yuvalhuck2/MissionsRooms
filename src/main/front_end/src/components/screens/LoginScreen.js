@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { ActivityIndicator } from 'react-native-paper';
 import { connect } from 'react-redux';
-import { emailChanged, passwordChanged } from '../../actions';
+import { emailChanged, loginUser, passwordChanged, navigateToRegister } from '../../actions';
 import { theme } from '../../core/theme';
 import { loginStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
@@ -23,6 +24,8 @@ class LoginForm extends Component {
     super(...args);
     this.onEmailChange = this.onEmailChange.bind(this);
     this.onPasswordChange = this.onPasswordChange.bind(this);
+    this.onButtonPress = this.onButtonPress.bind(this);
+    this.navigateToRegister = this.navigateToRegister.bind(this);
   }
 
   onEmailChange(text) {
@@ -31,6 +34,67 @@ class LoginForm extends Component {
 
   onPasswordChange(text) {
     this.props.passwordChanged(text);
+  }
+
+  onButtonPress() {
+    const { email, password, navigation } = this.props;
+    this.props.loginUser({ email, password, navigation });
+  }
+
+  navigateToRegister(){
+    const {navigation} = this.props
+    this.props.navigateToRegister({navigation})
+  }
+
+  renderSpinner() {
+    return (
+      <ActivityIndicator
+        animating={true}
+        color={theme.colors.primary}
+        size='large'
+      />
+    );
+  }
+
+  renderError() {
+    const { errorMessage } = this.props;
+
+    if (errorMessage && errorMessage !== '') {
+      return (
+        <View>
+          <Text style={styles.errorTextStyle}>{errorMessage}</Text>
+        </View>
+      );
+    }
+  }
+
+  renderButton() {
+    const { loading } = this.props;
+
+    return loading ? (
+      this.renderSpinner()
+    ) : (
+      <Button
+        mode='contained'
+        style={styles.button}
+        onPress={this.onButtonPress}
+      >
+        {login_btn}
+      </Button>
+    );
+  }
+
+  renderRegisterLabel() {
+    const { loading } = this.props;
+
+    return loading ? null : (
+      <View style={styles.row}>
+        <Text style={styles.label}>{no_user}</Text>
+        <TouchableOpacity onPress={this.navigateToRegister}>
+          <Text style={styles.link}>{no_user_sign_up}</Text>
+        </TouchableOpacity>
+      </View>
+    );
   }
 
   render() {
@@ -54,20 +118,9 @@ class LoginForm extends Component {
           secureTextEntry
         />
 
-        <Button
-          mode='contained'
-          style={styles.button}
-          onPress={() => console.log('there')}
-        >
-          {login_btn}
-        </Button>
-
-        <View style={styles.row}>
-          <Text style={styles.label}>{no_user}</Text>
-          <TouchableOpacity onPress={() => console.log('hey')}>
-            <Text style={styles.link}>{no_user_sign_up}</Text>
-          </TouchableOpacity>
-        </View>
+        {this.renderButton()}
+        {this.renderError()}
+        {this.renderRegisterLabel()}
       </KeyboardAwareScrollView>
     );
   }
@@ -94,14 +147,21 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: theme.colors.primary,
   },
+  errorTextStyle: {
+    fontSize: 22,
+    alignSelf: 'center',
+    color: theme.colors.error,
+  },
 });
 
 const mapStateToProps = (state) => {
-  const { email, password } = state.auth;
-  return { email, password };
+  const { email, password, loading, errorMessage } = state.auth;
+  return { email, password, loading, errorMessage };
 };
 
 export default connect(mapStateToProps, {
   emailChanged,
   passwordChanged,
+  loginUser,
+  navigateToRegister,
 })(LoginForm);

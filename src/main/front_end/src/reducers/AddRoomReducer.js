@@ -81,7 +81,6 @@ const initialState = {
         case STUDENT_CHANGED:
             return { ...state, student: action.payload };
         case PASS:
-            console.log(action.payload.participant)
             return { ...state, participantKey: action.payload.participant,
                 type: action.payload.roomType, errorMessage: '', presentedTemplates:action.payload.templates };
         case ADD_ROOM:

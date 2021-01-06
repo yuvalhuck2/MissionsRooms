@@ -1,0 +1,13 @@
+{
+    "extends": ["airbnb", "prettier"],
+    "plugins": ["prettier","react"],
+    "rules": {
+        "prettier/prettier": "error",
+        "no-unused-vars": "warn",
+        "no-console": 1,
+        "react/prop-types": 0,
+        "react/state-in-constructor":"off",
+        "react/destructuring-assignment":"off",
+        "no-use-before-define":"off"
+    }
+}
