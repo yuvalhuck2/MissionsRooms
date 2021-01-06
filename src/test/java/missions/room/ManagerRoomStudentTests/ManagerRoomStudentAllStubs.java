@@ -90,12 +90,9 @@ public class ManagerRoomStudentAllStubs {
         teacherCrudRepository=new TeacherCrudRepositoryMock(dataGenerator);
         roomTemplateCrudRepository=new RoomTemplateCrudRepositoryMock(dataGenerator);
         missionCrudRepository=new MissionCrudRepositoryMock(dataGenerator);
-
-
     }
 
     void setUpWatchRoomDetails(){
-        //ram.addApi("apikey","NoAlasIsExistWithThatName");
         setUpMocks();
         classroomRepo.save(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getClassroom());
         teacherCrudRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM));
@@ -104,8 +101,6 @@ public class ManagerRoomStudentAllStubs {
         roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.VALID));
         roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.Valid_Group));
         roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.Valid_Classroom));
-
-
     }
 
 
@@ -119,6 +114,150 @@ public class ManagerRoomStudentAllStubs {
         //roomTemplateCrudRepository.delete(dataGenerator.getRoomTemplate(Data.Valid_Group));
         //roomTemplateCrudRepository.delete(dataGenerator.getRoomTemplate(Data.Valid_Classroom));
     }
+
+
+    void setUpAnswerDeterministic(){
+        setUpMocks();
+        classroomRepo.save(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getClassroom());
+        teacherCrudRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM));
+        missionCrudRepository.save(dataGenerator.getMission(Data.Valid_Deterministic));
+        missionCrudRepository.save(dataGenerator.getMission(Data.Valid_Deterministic_All_Types));
+        roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.VALID));
+        roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.Valid_Group));
+        roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.Valid_Classroom));
+        roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.VALID_2Mission));
+    }
+
+
+    void tearDownAnswerDeterministic(){
+        //classroomRepo.delete(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getClassroom());
+        teacherCrudRepository.delete(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM));
+        missionCrudRepository.delete(dataGenerator.getMission(Data.Valid_Deterministic));
+        missionCrudRepository.delete(dataGenerator.getMission(Data.Valid_Deterministic_All_Types));
+        //roomTemplateCrudRepository.delete(dataGenerator.getRoomTemplate(Data.VALID));
+        //roomTemplateCrudRepository.delete(dataGenerator.getRoomTemplate(Data.Valid_Group));
+        //roomTemplateCrudRepository.delete(dataGenerator.getRoomTemplate(Data.Valid_Classroom));
+    }
+
+
+    @Test
+    @Transactional
+    void testAnswerDeterministic_valid(){
+        setUpAnswerDeterministic();
+        testAnswerDeterministic_validTest();
+        tearDownAnswerDeterministic();
+    }
+
+    protected void testAnswerDeterministic_validTest(){
+        studentCrudRepository.save(dataGenerator.getStudent(Data.VALID));
+        roomRepo.save(dataGenerator.getRoom(Data.Valid_Student));
+
+        Response<Boolean> response=managerRoomStudent.answerDeterministicQuestion("apiKey",dataGenerator.getRoom(Data.Valid_Student).getRoomId(),true);
+        assertEquals(response.getReason(),OpCode.Success);
+        assertEquals(true,response.getValue());
+        assertEquals(studentCrudRepository.findUserForRead(dataGenerator.getStudent(Data.VALID).getAlias()).getPoints(),6);
+        studentCrudRepository.delete(dataGenerator.getStudent(Data.VALID));
+    }
+
+    @Test
+    @Transactional
+    void testAnswerDeterministic_invalidStudent(){
+        setUpAnswerDeterministic();
+        testAnswerDeterministic_invalidStudentTest();
+        tearDownAnswerDeterministic();
+    }
+
+    protected void testAnswerDeterministic_invalidStudentTest(){
+        Response<Boolean> response=managerRoomStudent.answerDeterministicQuestion("invalidApiKey",dataGenerator.getRoom(Data.Valid_Student).getRoomId(),true);
+        assertEquals(response.getReason(),OpCode.Wrong_Key);
+        assertEquals(null,response.getValue());
+    }
+
+    @Test
+    @Transactional
+    void testAnswerDeterministic_wrongAns(){
+        setUpAnswerDeterministic();
+        testAnswerDeterministic_wrongAnsTest();
+        tearDownAnswerDeterministic();
+    }
+
+    protected void testAnswerDeterministic_wrongAnsTest(){
+        studentCrudRepository.save(dataGenerator.getStudent(Data.VALID));
+        roomRepo.save(dataGenerator.getRoom(Data.Valid_Student));
+
+        Response<Boolean> response=managerRoomStudent.answerDeterministicQuestion("apiKey",dataGenerator.getRoom(Data.Valid_Student).getRoomId(),false);
+        assertEquals(response.getReason(),OpCode.Success);
+        assertEquals(true,response.getValue());
+        assertEquals(studentCrudRepository.findUserForRead(dataGenerator.getStudent(Data.VALID).getAlias()).getPoints(),0);
+
+        studentCrudRepository.delete(dataGenerator.getStudent(Data.VALID));
+    }
+
+    @Test
+    void testAnswerDeterministic_wrongRoomId(){
+        setUpAnswerDeterministic();
+        testAnswerDeterministic_wrongRoomIdTest();
+        tearDownAnswerDeterministic();
+    }
+
+    protected void testAnswerDeterministic_wrongRoomIdTest(){
+        studentCrudRepository.save(dataGenerator.getStudent(Data.VALID));
+
+        Response<Boolean> response=managerRoomStudent.answerDeterministicQuestion("apiKey","notExistId",false);
+        assertEquals(response.getReason(),OpCode.DB_Error);
+        assertEquals(null,response.getValue());
+
+        studentCrudRepository.delete(dataGenerator.getStudent(Data.VALID));
+    }
+
+    @Test
+    @Transactional
+    void testAnswerDeterministic_2MissionsRoom(){
+        setUpAnswerDeterministic();
+        testAnswerDeterministic_2MissionsRoomTest();
+        tearDownAnswerDeterministic();
+    }
+
+    protected void testAnswerDeterministic_2MissionsRoomTest(){
+        studentCrudRepository.save(dataGenerator.getStudent(Data.VALID));
+        Room r=roomRepo.save(dataGenerator.getRoom(Data.VALID_2Mission));
+
+        Response<Boolean> response=managerRoomStudent.answerDeterministicQuestion("apiKey",dataGenerator.getRoom(Data.VALID_2Mission).getRoomId(),true);
+        assertEquals(response.getReason(),OpCode.Success);
+        assertEquals(true,response.getValue());
+        assertEquals(studentCrudRepository.findUserForRead(dataGenerator.getStudent(Data.VALID).getAlias()).getPoints(),3);
+        assertEquals(roomRepo.findRoomForRead(dataGenerator.getRoom(Data.VALID_2Mission).getRoomId()).getCurrentMission(),1);
+        assertEquals(roomRepo.findRoomForRead(dataGenerator.getRoom(Data.VALID_2Mission).getRoomId()).getCountCorrectAnswer(),1);
+
+        //TODO without mock i need to check if the points not!!! update,if the room is delete
+        studentCrudRepository.delete(dataGenerator.getStudent(Data.VALID));
+        roomRepo.delete(dataGenerator.getRoom(Data.VALID_2Mission));
+    }
+
+
+    @Test
+    @Transactional
+    void testAnswerDeterministic_2MissionsRoomWrongAns(){
+        setUpAnswerDeterministic();
+        testAnswerDeterministic_2MissionsRoomWrongAnsTest();
+        tearDownAnswerDeterministic();
+    }
+
+    protected void testAnswerDeterministic_2MissionsRoomWrongAnsTest(){
+        studentCrudRepository.save(dataGenerator.getStudent(Data.VALID));
+        Room r=roomRepo.save(dataGenerator.getRoom(Data.VALID_2Mission));
+
+        Response<Boolean> response=managerRoomStudent.answerDeterministicQuestion("apiKey",dataGenerator.getRoom(Data.VALID_2Mission).getRoomId(),false);
+        assertEquals(response.getReason(),OpCode.Success);
+        assertEquals(true,response.getValue());
+        assertEquals(studentCrudRepository.findUserForRead(dataGenerator.getStudent(Data.VALID).getAlias()).getPoints(),0);
+        assertEquals(roomRepo.findRoomForRead(dataGenerator.getRoom(Data.VALID_2Mission).getRoomId()).getCurrentMission(),1);
+        assertEquals(roomRepo.findRoomForRead(dataGenerator.getRoom(Data.VALID_2Mission).getRoomId()).getCountCorrectAnswer(),0);
+
+        studentCrudRepository.delete(dataGenerator.getStudent(Data.VALID));
+        roomRepo.delete(dataGenerator.getRoom(Data.VALID_2Mission));
+    }
+
 
     @Test
     @Transactional

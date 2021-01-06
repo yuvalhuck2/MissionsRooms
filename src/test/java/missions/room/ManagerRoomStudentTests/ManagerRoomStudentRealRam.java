@@ -35,9 +35,12 @@ public class ManagerRoomStudentRealRam extends ManagerRoomStudentAllStubs{
     void setUpWatchRoomDetails(){
         super.setUpWatchRoomDetails();
         ram.addApi("apiKey",dataGenerator.getStudent(Data.VALID).getAlias());
+    }
 
-
-
+    @Override
+    void setUpAnswerDeterministic(){
+        super.setUpAnswerDeterministic();
+        ram.addApi("apiKey",dataGenerator.getStudent(Data.VALID).getAlias());
     }
 
 

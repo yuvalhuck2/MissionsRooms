@@ -30,6 +30,7 @@ public class Student extends SchoolUser {
         this.points+=points;
     }
 
-
-
+    public int getPoints() {
+        return points;
+    }
 }

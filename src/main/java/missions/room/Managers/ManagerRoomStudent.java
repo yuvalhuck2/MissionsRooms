@@ -68,7 +68,7 @@ public class ManagerRoomStudent extends StudentManager {
             return new Response<>(null,roomResponse.getReason());
         }
         Room room=roomResponse.getValue();
-        boolean isLastMission=room.getCurrentMission()!=room.getRoomTemplate().getMissions().size()-1;
+        boolean isLastMission=room.getCurrentMission()==room.getRoomTemplate().getMissions().size()-1;
         if(answer) {
             room.addCorrectAnswer();
             int points = room.getRoomTemplate().getMission(room.getCurrentMission()).getPoints();
