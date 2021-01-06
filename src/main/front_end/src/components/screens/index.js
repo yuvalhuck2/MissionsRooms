@@ -11,3 +11,4 @@ export { default as ChooseTemplateScreen } from './ChooseTemplateScreen';
 export { default as ChooseStudentRoomScreen } from './ChooseStudentRoomScreen';
 export { default as SolveDeterministicScreen } from './SolveDeterministicScreen';
 export { default as StudentScreen } from './StudentScreen';
+export { default as ITScreen } from './ITScreen'
