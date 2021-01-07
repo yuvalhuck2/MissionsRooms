@@ -24,4 +24,16 @@ public class GroupData {
     public void setStudents(List<StudentData> students) {
         this.students = students;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public GroupType getGroupType() {
+        return groupType;
+    }
+
+    public List<StudentData> getStudents() {
+        return students;
+    }
 }

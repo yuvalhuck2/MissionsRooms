@@ -55,6 +55,7 @@ const initialState = {
         
     // }],
     errorMessage: '',
+    apiKey:'',
   };
 
   import {
@@ -66,8 +67,10 @@ const initialState = {
     GROUP_CHANGED,
     STUDENT_CHANGED,
     UPDATE_ERROR_ROOM,
+    GET_CLASSROOM,
     CLEAR_STATE,
     PASS,
+    LOGIN_TEACHER,
   } from '../actions/types';
   
   export default (state = initialState, action) => {
@@ -84,11 +87,15 @@ const initialState = {
             return { ...state, student: action.payload };
         case GET_TEMPLATES:
             return { ...state, allTemplates: action.payload};
+        case GET_CLASSROOM:
+            return {...state, classroom:action.payload};
         case PASS:
             return { ...state, participantKey: action.payload.participant,
                 type: action.payload.roomType, errorMessage: '', presentedTemplates:action.payload.templates };
         case ADD_ROOM:
             return { ...state, loading: true };
+        case LOGIN_TEACHER:
+            return { ...initialState, apiKey: action.payload, errorMessage:'' };
         case UPDATE_ERROR_ROOM:
             alert(action.payload)
             return { ...state, errorMessage: action.payload, loading: false };

@@ -11,4 +11,16 @@ public class StudentData {
         this.firstName = firstName;
         this.lastName = lastName;
     }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
 }

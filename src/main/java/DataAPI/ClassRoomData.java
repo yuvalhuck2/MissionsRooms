@@ -12,4 +12,11 @@ public class ClassRoomData {
         this.groups = groupData;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public List<GroupData> getGroups() {
+        return groups;
+    }
 }

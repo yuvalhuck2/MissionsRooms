@@ -63,11 +63,11 @@ public class RoomService {
 
     /**
      *
-     * @param auth - authentication object
+     * @param apiKey - authentication object
      * @return Classroom details
      */
-    public Response<ClassRoomData> getClassRoomData(Auth auth){
-        return roomManager.getClassRoomData(auth.getApiKey());
+    public Response<ClassRoomData> getClassRoomData(String apiKey){
+        return roomManager.getClassRoomData(apiKey);
     }
 
 }

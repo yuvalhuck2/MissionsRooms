@@ -9,6 +9,7 @@ import {
     GET_MISSIONS,
     GET_TEMPLATES,
     LOGIN_TEACHER,
+    GET_CLASSROOM,
   } from '../actions/types';
 
   import {
@@ -50,19 +51,43 @@ export const passToAddRoom=({navigation,apiKey})=>{
     
   return async (dispatch)=> {
     dispatch({ type: LOGIN_TEACHER,payload:apiKey});
-    navigation.navigate(NavPaths.AddRoom);
-      try {
-          const res = await API.post(APIPaths.searchTemplate, {apiKey});
-          console.log(res.data)
-          console.log(apiKey)
-          res ? checkSearchTemplatesResponse(res.data, dispatch)
-          : dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
-        } catch (err) {
-          console.log(err);
-          return dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
-        }
+    try {
+      const res = await API.post(APIPaths.getClassroom, {apiKey});
+      console.log(res.data)
+      console.log(apiKey)
+      if(res) {
+        checkGetClassroomResponse(res.data, dispatch,navigation)
+      }
+      else{
+        dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
+      }
+    } catch (err) {
+      console.log(err);
+      return dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
+    }
+    // try {
+    //   const res = await API.post(APIPaths.searchTemplate, {apiKey});
+    //     console.log(res.data)
+    //     console.log(apiKey)
+    //     res ? checkSearchTemplatesResponse(res.data, dispatch)
+    //     : dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
+    //   } catch (err) {
+    //     console.log(err);
+    //     return dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
+    //   }
       
   }
+}
+
+const checkGetClassroomResponse = (data,dispatch,navigation) =>{
+  const {reason,value} =data
+  switch (reason) {
+        case Success:
+          dispatch({ type: GET_CLASSROOM, payload: value });
+          return navigation.navigate(NavPaths.AddRoom);
+        default:
+          return dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
+    }
 }
 
 const checkSearchTemplatesResponse = (data,dispatch) =>{
