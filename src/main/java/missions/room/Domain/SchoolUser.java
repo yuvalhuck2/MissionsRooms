@@ -29,4 +29,15 @@ public abstract class SchoolUser extends User {
         messages=new ConcurrentHashMap<>();
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public Map<String, Message> getMessages() {
+        return messages;
+    }
 }

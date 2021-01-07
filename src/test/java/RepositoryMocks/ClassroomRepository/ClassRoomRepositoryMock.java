@@ -69,4 +69,10 @@ public class ClassRoomRepositoryMock implements ClassroomRepository {
     public void deleteAll() {
 
     }
+
+    @Override
+    public Classroom findClassroomByStudent(String student) {
+
+        return dataGenerator.getClassroom(Data.Valid_Classroom);
+    }
 }

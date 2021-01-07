@@ -6,4 +6,9 @@ public class StudentData {
     private String lastName;
 
 
+    public StudentData(String alias, String firstName, String lastName) {
+        this.alias = alias;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }

@@ -3,9 +3,7 @@ package missions.room.Managers;
 import CrudRepositories.RoomCrudRepository;
 import CrudRepositories.RoomTemplateCrudRepository;
 import CrudRepositories.TeacherCrudRepository;
-import DataAPI.OpCode;
-import DataAPI.Response;
-import DataAPI.NewRoomDetails;
+import DataAPI.*;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;
 import missions.room.Domain.*;
@@ -16,6 +14,11 @@ import missions.room.Repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class RoomManager extends TeacherManager {
@@ -169,6 +172,46 @@ public class RoomManager extends TeacherManager {
     }
 
 
+    public Response<ClassRoomData> getClassRoomData(String apiKey){
+        Response<Teacher> checkTeacher=checkTeacher(apiKey);
+        if(checkTeacher.getReason()!=OpCode.Success){
+            return new Response<>(null,checkTeacher.getReason());
+        }
+        Response<Teacher> response=teacherRepo.findTeacherById(checkTeacher.getValue().getAlias());
+        if(response.getReason()!=OpCode.Success){
+            return new Response<>(null,response.getReason());
+        }
+        Teacher teacher=response.getValue();
+        Classroom classroom=teacher.getClassroom();
+        GroupType groupType=teacher.getGroupType();
 
+
+        Map<GroupType,GroupData> groupDataMap=new HashMap<>();
+        for(ClassGroup cg:classroom.getClassGroups()){
+
+            GroupData groupData=new GroupData(cg.getGroupName(),cg.getGroupType());
+            List<StudentData> students=new ArrayList<>();
+            for(Student student:cg.getStudent().values()){
+                StudentData studentData=new StudentData(student.getAlias(),student.getFirstName(),student.getLastName());
+                students.add(studentData);
+            }
+            groupData.setStudents(students);
+            groupDataMap.put(cg.getGroupType(),groupData);
+        }
+        List<GroupData> groups=new ArrayList<>();
+        switch (groupType){
+            case A:
+                groups.add(groupDataMap.get(GroupType.A));break;
+            case B:
+                groups.add(groupDataMap.get(GroupType.B));break;
+            case BOTH:
+                groups.add(groupDataMap.get(GroupType.A));
+                groups.add(groupDataMap.get(GroupType.B));break;
+        }
+
+        ClassRoomData classRoomData=new ClassRoomData(classroom.getClassName(),groups);
+        return new Response<>(classRoomData,OpCode.Success);
+
+    }
 
 }

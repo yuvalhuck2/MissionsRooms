@@ -33,4 +33,15 @@ public interface RoomCrudRepository extends CrudRepository<Room,String> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select a from ClassroomRoom a where a.participant.className = :classroomName")
     ClassroomRoom findClassroomRoomForWriteByAlias(@Param("classroomName") String classroomName);
+
+
+    @Query("select a from StudentRoom a where a.participant.alias = :alias")
+    StudentRoom findStudentRoomByAlias(@Param("alias") String alias);
+
+    @Query("select a from GroupRoom a where a.participant.groupName = :groupName")
+    GroupRoom findGroupRoomByAlias(@Param("groupName") String groupName);
+
+    @Query("select a from ClassroomRoom a where a.participant.className = :classroomName")
+    ClassroomRoom findClassroomRoomByAlias(@Param("classroomName") String classroomName);
+
 }

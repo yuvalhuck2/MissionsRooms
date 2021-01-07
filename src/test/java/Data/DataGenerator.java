@@ -118,6 +118,7 @@ public class DataGenerator {
         roomsMap.put(Data.Valid_Classroom,new ClassroomRoom("roomId2","name",classRoomMap.get(Data.Valid_Classroom),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.Valid_Classroom),3));
         roomsMap.put(Data.NULL_NAME,new StudentRoom("roomId",null,students.get(Data.VALID),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.VALID),3));
         roomsMap.put(Data.EMPTY_NAME,new StudentRoom("roomId","",students.get(Data.VALID),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.VALID),3));
+        roomsMap.put(Data.VALID_2Mission,new StudentRoom("roomId5","name",students.get(Data.VALID),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.VALID_2Mission),3));
     }
 
     private void initRoomTemplateDatas() {
@@ -125,7 +126,11 @@ public class DataGenerator {
         String missionId=getMission(Data.Valid_Deterministic).getMissionId();
         List<String> missions=new ArrayList<>();
         missions.add(missionId);
+        List<String> missions2=new ArrayList<>();
+        missions2.add(missionId);
+        missions2.add(getMission(Data.Valid_Deterministic_All_Types).getMissionId());
         roomTemplatesDatas.put(Data.VALID,new RoomTemplateDetailsData(missions,"name",1,RoomType.Personal));
+        roomTemplatesDatas.put(Data.VALID_2Mission,new RoomTemplateDetailsData(missions2,"name",1,RoomType.Personal));
         roomTemplatesDatas.put(Data.Valid_Group,new RoomTemplateDetailsData(missions,"name",1,RoomType.Group));
         roomTemplatesDatas.put(Data.Valid_Classroom,new RoomTemplateDetailsData(missions,"name",1,RoomType.Class));
         roomTemplatesDatas.put(Data.NULL_NAME,new RoomTemplateDetailsData(missions,null,1,RoomType.Personal));
@@ -161,6 +166,15 @@ public class DataGenerator {
         roomTemplates.put(Data.VALID,new RoomTemplate(templateDetailsData,missionsMap));
         roomTemplates.put(Data.Valid_Group,new RoomTemplate(templateDetailsDataGroup,missionsMapAllTypes));
         roomTemplates.put(Data.Valid_Classroom,new RoomTemplate(templateDetailsDataClass,missionsMapAllTypes));
+
+
+        List<Mission> missionsMap2Missions=new ArrayList<>();
+        missionsMap2Missions.add(getMission(Data.Valid_Deterministic));
+        missionsMap2Missions.add(getMission(Data.Valid_Deterministic_All_Types));
+
+        RoomTemplateDetailsData roomTemplateDetailsData=getRoomTemplateData(Data.VALID_2Mission);
+        roomTemplateDetailsData.setId("twoMissions");
+        roomTemplates.put(Data.VALID_2Mission,new RoomTemplate(roomTemplateDetailsData,missionsMap2Missions));
     }
 
     private void initMissions() {
@@ -174,7 +188,7 @@ public class DataGenerator {
         typesNull.add(null);
         types.add(RoomType.Personal);
         missions.put(Data.Valid_Deterministic,new KnownAnswerMission("ddd",types,"question","answer"));
-        missions.put(Data.Valid_Deterministic_All_Types,new KnownAnswerMission("ddd",allTypes,"question","answer"));
+        missions.put(Data.Valid_Deterministic_All_Types,new KnownAnswerMission("ddd1",allTypes,"question","answer"));
         missions.put(Data.NULL_TYPES_DETERMINSIC,new KnownAnswerMission("ddd",null,"question","answer"));
         missions.put(Data.EMPTY_TYPE_DETERMINISTIC,new KnownAnswerMission("ddd",new HashSet<>(),"question","answer"));
         missions.put(Data.TYPES_WITH_NULL_DETERMINISTIC,new KnownAnswerMission("ddd",typesNull,"question","answer"));
@@ -218,6 +232,8 @@ public class DataGenerator {
         students=new HashMap<Data, Student>();
         students.put(Data.VALID,new Student("NoAlasIsExistWithThatName","Yuval","Sabag"));
     }
+
+
 
 
 

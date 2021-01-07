@@ -2,6 +2,9 @@ package missions.room.Domain;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -19,6 +22,8 @@ public class ClassGroup {
     @JoinColumn(name="classGroup",referencedColumnName = "groupName")
     private Map<String, Student> students;
 
+    private int points;
+
     public ClassGroup() {
     }
 
@@ -26,6 +31,7 @@ public class ClassGroup {
         this.groupName=id;
         this.students = students;
         this.groupType = groupType;
+        this.points=0;
     }
 
     public Student getStudent(String alias,GroupType groupType) {
@@ -53,4 +59,14 @@ public class ClassGroup {
         students.remove(studentAlias);
         return student;
     }
+
+    public Map<String,Student> getStudent(){
+        return students;
+    }
+
+    public void addPoints(int points){
+        this.points+=points;
+    }
+
+
 }

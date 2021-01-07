@@ -47,6 +47,21 @@ public class RoomCrudRepositoryExceptionSave implements RoomCrudRepository {
     }
 
     @Override
+    public StudentRoom findStudentRoomByAlias(String alias) {
+        return null;
+    }
+
+    @Override
+    public GroupRoom findGroupRoomByAlias(String groupName) {
+        return null;
+    }
+
+    @Override
+    public ClassroomRoom findClassroomRoomByAlias(String classroomName) {
+        return null;
+    }
+
+    @Override
     public <S extends Room> S save(S s) {
         throw new DataAccessResourceFailureException("d");
     }
