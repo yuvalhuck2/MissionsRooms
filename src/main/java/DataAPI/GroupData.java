@@ -9,12 +9,12 @@ public class GroupData {
     private List<StudentData> students;
 
     public GroupData(String groupName, GroupType groupType) {
-        this.groupName = groupName;
+        this.name = groupName;
         this.groupType = groupType;
     }
 
     public void setGroupName(String groupName) {
-        this.groupName = groupName;
+        this.name = groupName;
     }
 
     public void setGroupType(GroupType groupType) {
