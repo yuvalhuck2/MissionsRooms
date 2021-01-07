@@ -56,6 +56,11 @@ export const AddDeterministicMissionStrings = {
     question_empty:'יש להזין שאלה',
     answer_empty:'יש להזין תשובה',
     types_empty:'יש לבחור לפחות סוג משימה אחד',
+    server_error: 'שגיאת שרת',
+  }
+
+  export const AddDeterministicMissionSuccess={
+    mission_added:'המשימה נוספה בהצלחה'
   }
 
 export const AddStrings = {
@@ -73,6 +78,7 @@ export const AddRoomTempalteStrings = {
   enter_type: 'סוג התבנית',
   enter_minimal_amount: 'כמות משימות מינימלית לקבלת בונוס',
   move_to_missions: 'מעבר לבחירת המשימות',
+  template_added:'התבנית נוספה בהצלחה',
 }
 
   export const AddTemplateErrors={
@@ -170,4 +176,8 @@ export const roomTypes = [
     already_exist_register_code: "משתמש כבר רשום",
     not_exist_group_register_code: "קבוצה לא קיימת",
     already_exist_student_register_code: "תלמיד כבר רשום"
+  }
+
+  export const GeneralErrors={
+    server_error: 'שגיאת שרת',
   }

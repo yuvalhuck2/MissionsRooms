@@ -9,6 +9,8 @@ import Header from '../common/Header';
 import TextInput from '../common/TextInput';
 import { Icon } from 'react-native-elements'
 import * as NavPaths from '../../navigation/NavPaths'
+import {passToAddTemplate,passToAddRoom} from '../../actions/TeacherActions'
+
 const {
   addMission,
   addTemplate,
@@ -33,7 +35,7 @@ class TeacherForm extends Component {
 
 
   render() {
-    
+    const { navigation,apiKey } = this.props;
     return (
       <View style={styles.container}>
         <View>
@@ -41,13 +43,13 @@ class TeacherForm extends Component {
           <Text style={{color:"white"}}> {addMission}</Text> 
             <Icon name='create' />
           </Button>
-          <Button onPress={()=>this.navigate(NavPaths.addTemplate)} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
+          <Button onPress={()=>this.props.passToAddTemplate({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
           <Text style={{color:"white"}}>{addTemplate}</Text> 
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]} />
         </View>
         <View>
-          <Button  onPress={()=>this.navigate(NavPaths.AddRoom)} mode="contained" style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >
+          <Button  onPress={()=>this.props.passToAddRoom({navigation,apiKey})} mode="contained" style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >
             <Text style={{color:"white"}}>{createRoom}</Text> 
             <Icon name='create' />
           </Button>
@@ -109,7 +111,11 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  return { };
+  const { apiKey } = state.auth;
+  return { apiKey };
 };
 
-export default connect(mapStateToProps)(TeacherForm);
+export default connect(mapStateToProps,{
+passToAddTemplate,
+passToAddRoom,
+})(TeacherForm);

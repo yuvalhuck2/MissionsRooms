@@ -42,8 +42,8 @@ class AddTemplateForm extends Component{
     }
 
     onButtonPress() {
-        const {name,minimalMissions,type,navigation} = this.props;
-        this.props.passToMissions( name,minimalMissions,type,navigation );
+        const {name,minimalMissionsToPass,type,allMissions,navigation} = this.props;
+        this.props.passToMissions( {name,minimalMissionsToPass,type,allMissions,navigation} );
     }
 
     renderSpinner() {
@@ -92,7 +92,7 @@ class AddTemplateForm extends Component{
       }
 
     render(){
-        const {name,minimalMissions,type}=this.props;
+        const {name,minimalMissionsToPass,type}=this.props;
         return(
         <KeyboardAwareScrollView style={styles.container}>
             <Header>{header}</Header>
@@ -106,7 +106,7 @@ class AddTemplateForm extends Component{
             <TextInput
             label={enter_minimal_amount}
             keyboardType = 'numeric'
-            value={minimalMissions}
+            value={minimalMissionsToPass}
             onChangeText={this.onMinimalAmountChanged}
             placeholder='0'
             />
@@ -153,8 +153,8 @@ const styles = StyleSheet.create({
   });
 
 const mapStateToProps = (state) => {
-    const { name,minimalMissions,type, loading, errorMessage } = state.addRoomTemplate;
-    return { name,minimalMissions,type, loading, errorMessage };
+    const { name,minimalMissionsToPass,type,allMissions, loading, errorMessage } = state.addRoomTemplate;
+    return { name,minimalMissionsToPass,type,allMissions, loading, errorMessage };
   };
   
 export default connect(mapStateToProps, {

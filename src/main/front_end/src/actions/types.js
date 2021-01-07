@@ -48,3 +48,7 @@ export const SOLVE_MISSION='solve_mission'
 export const CURRENT_ANSWER_CHANGED='current_answer_changed'
 export const RESET_FILES = 'reset_files'
 export const PICKED_FILE = "picked_file"
+export const GET_MISSIONS='get_missions'
+export const PASS_TO_CHOOSE_MISSIONS='pass_to_choose_missions'
+export const CLEAR_ERROR='clear_error' 
+export const GET_TEMPLATES='get_templates' 

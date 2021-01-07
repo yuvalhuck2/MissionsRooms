@@ -4,7 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { ActivityIndicator } from 'react-native-paper';
 import { Checkbox } from 'react-native-paper';
 import { AddDeterministicMissionStrings,AddStrings } from '../../locale/locale_heb';
-import { questionChanged, answerChanged, typesChanged ,addMission } from '../../actions';
+import { questionChanged, answerChanged, typesChanged ,addMission } from '../../actions/AddMissionActions';
 import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
 import Button from '../common/Button';
@@ -53,8 +53,8 @@ class AddDeterministicMissionForm extends Component{
     }
 
     onButtonPress() {
-        const {question,realAnswer,missionTypes} = this.props;
-        this.props.addMission( question,realAnswer,missionTypes );
+        const {apiKey,question,realAnswer,missionTypes,navigation} = this.props;
+        this.props.addMission( {apiKey,question,realAnswer,missionTypes,navigation} );
     }
 
     renderSpinner() {
@@ -88,8 +88,7 @@ class AddDeterministicMissionForm extends Component{
           );
         }
       }
-//{"CLASSNAME":"missions.room.Domain.missions.KnownAnswerMission",
-//"DATA":{"question":"question","realAnswer":"answer","missionTypes":["Personal"]}}
+
     render(){
         const{question,realAnswer,missionTypes}=this.props;
 
@@ -165,8 +164,8 @@ const styles = StyleSheet.create({
   });
 
 const mapStateToProps = (state) => {
-    const { question,realAnswer,missionTypes, loading, errorMessage } = state.addMission;
-    return { question,realAnswer,missionTypes, loading, errorMessage };
+    const { apiKey,question,realAnswer,missionTypes, loading, errorMessage } = state.addMission;
+    return { apiKey,question,realAnswer,missionTypes, loading, errorMessage };
   };
   
 export default connect(mapStateToProps, {

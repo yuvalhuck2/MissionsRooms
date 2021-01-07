@@ -4,7 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { ActivityIndicator } from 'react-native-paper';
 import { Checkbox } from 'react-native-paper';
 import { ChooseMissionsTemplateStrings,AddStrings } from '../../locale/locale_heb';
-import { addTemplate,missionsChanged } from '../../actions/AddMissionActions';
+import { addTemplate,missionsChanged } from '../../actions/AddRoomTemplateActions';
 import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
 import Button from '../common/Button';
@@ -33,6 +33,7 @@ class ChooseMissionsForTemplateForm extends Component{
 
     onMissionsChanged(mission,toDelete){
       const{missionsToAdd}=this.props;
+      list=[];
       if(toDelete){
         list=missionsToAdd.filter((x)=>x.missionId!=mission.missionId);
       }
@@ -43,8 +44,8 @@ class ChooseMissionsForTemplateForm extends Component{
     }
 
     onButtonPress() {
-        const {name,minimalMissions,missionsToAdd,type} = this.props;
-        this.props.addTemplate( {name,minimalMissions,missionsToAdd,type} );
+        const {name,minimalMissionsToPass,missionsToAdd,type,apiKey,navigation} = this.props;
+        this.props.addTemplate( {name,minimalMissionsToPass,missionsToAdd,type,apiKey,navigation} );
     }
 
     getMissionPresentation(mission){
@@ -183,8 +184,8 @@ const styles = StyleSheet.create({
   });
 
 const mapStateToProps = (state) => {
-    const { name,minimalMissions,missionsToAdd,type,presentedMissions, loading, errorMessage } = state.addRoomTemplate;
-    return { name,minimalMissions,missionsToAdd,type,presentedMissions, loading, errorMessage };
+    const { name,minimalMissionsToPass,missionsToAdd,type,presentedMissions,apiKey, loading, errorMessage } = state.addRoomTemplate;
+    return { name,minimalMissionsToPass,missionsToAdd,type,presentedMissions,apiKey, loading, errorMessage };
   };
   
 export default connect(mapStateToProps, {

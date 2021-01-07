@@ -1,2 +1,6 @@
 export const register = "/UserAuth"
 export const login = "/UserAuth/login"
+export const addMission="/mission/create"
+export const searchMission="/mission/search"
+export const addTemplate="/template/create"
+export const searchTemplate="/template/search"
