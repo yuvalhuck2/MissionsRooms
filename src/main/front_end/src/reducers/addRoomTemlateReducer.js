@@ -24,12 +24,10 @@ const initialState = {
   export default (state = initialState, action) => {
     switch (action.type) {
         case NAME_CHANGED:
-            console.log(action.payload)
             return { ...state, name: action.payload };
         case MINIMAL_MISSIONS_CHANGED:
             return { ...state, minimalMissions: action.payload };
         case TYPE_CHANGED:
-            console.log(action.payload)
             return { ...state, type: action.payload };
         case MISSIONS_CHANGED:
             return { ...state, missionsToAdd: action.payload };

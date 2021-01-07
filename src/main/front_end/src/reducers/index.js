@@ -4,6 +4,7 @@ import AuthReducer from './AuthReducer'
 import addRoomTemplateReducer from './AddRoomTemlateReducer'
 import addRoomReducer from './AddRoomReducer'
 import ChooseStudentRoom from './ChooseStudentRoomReducer'
+import ITReducer from './ITReducer'
 
 export default combineReducers({
   auth: AuthReducer,
@@ -11,5 +12,5 @@ export default combineReducers({
   addRoomTemplate: addRoomTemplateReducer,
   addRoom: addRoomReducer,
   ChooseStudentRoom:ChooseStudentRoom,
-  
+  IT: ITReducer,
 });

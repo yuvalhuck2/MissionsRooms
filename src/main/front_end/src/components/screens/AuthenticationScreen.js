@@ -1,9 +1,16 @@
 import CodeInput from '@andreferi/react-native-confirmation-code-input';
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
+import { theme } from '../../core/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
+import {
+  codeChanged,
+  registerCode,
+  registerUser,
+} from '../../actions/AuthActions';
 import { authStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
 import Header from '../common/Header';
@@ -19,17 +26,130 @@ const data = [
 class AuthForm extends Component {
   constructor(...args) {
     super(...args);
+    this.onCodeChanged = this.onCodeChanged.bind(this);
+    this.onButtonPressed = this.onButtonPressed(this);
+    this.onSendAgainButtonPress = this.onSendAgainButtonPress(this);
+    this.state = {
+      groupsData: [],
+      selectedGroupData: null,
+    };
+  }
+
+  componentDidMount() {
+    const { teachersData } = this.props;
+    var data = [];
+    console.log(teachersData);
+    if (teachersData && teachersData !== []) {
+      teachersData.forEach((tData) => {
+        if (tData.groupType === 'BOTH') {
+          data = [
+            ...data,
+            {
+              label: `${tData.firstName} ${tData.lastName} א`,
+              value: {
+                alias: email,
+                code: authCode,
+                teacherAlias: tData.alias,
+                groupType: 'A',
+              },
+            },
+            {
+              label: `${tData.firstName} ${tData.lastName} ב`,
+              value: {
+                alias: email,
+                code: authCode,
+                teacherAlias: tData.alias,
+                groupType: 'B',
+              },
+            },
+          ];
+        } else {
+          data = [
+            ...data,
+            {
+              label: `${tData.firstName} ${tData.lastName}`,
+              value: {
+                alias: email,
+                code: authCode,
+                teacherAlias: tData.alias,
+                groupType: tData.alias.groupType,
+              },
+            },
+          ];
+        }
+      });
+
+      this.setState({ groupsData: data });
+    }
+  }
+
+  onButtonPressed() {
+    const { navigation } = this.props;
+    this.props.registerCode({ ...this.state.selectedGroupData, navigation });
+  }
+
+  onSendAgainButtonPress() {
+    const { email, password } = this.props;
+    this.props.registerUser({ email, password });
+  }
+
+  onCodeChanged(code) {
+    this.props.codeChanged(code);
+  }
+
+  renderSpinner() {
+    return (
+      <ActivityIndicator
+        animating={true}
+        color={theme.colors.primary}
+        size='large'
+      />
+    );
+  }
+
+  renderButton() {
+    const { loading } = this.props;
+
+    return loading ? (
+      this.renderSpinner()
+    ) : (
+      <Button mode='contained' style={styles.button}>
+        {send_btn}
+      </Button>
+    );
+  }
+
+  renderError() {
+    const { errorMessage } = this.props;
+
+    if (errorMessage && errorMessage !== '') {
+      return (
+        <View>
+          <Text style={styles.errorTextStyle}>{errorMessage}</Text>
+        </View>
+      );
+    }
+  }
+
+  renderSendAgainLabel() {
+    const { loading } = this.props;
+
+    return loading ? null : (
+      <View style={styles.row}>
+        <Text style={styles.label}>{no_code}</Text>
+        <TouchableOpacity
+          onPress={this.onSendAgainButtonPress}
+        ></TouchableOpacity>
+      </View>
+    );
   }
 
   render() {
-    const { code, group } = this.props;
-
     return (
       <KeyboardAwareScrollView style={styles.container}>
         <Header>{header}</Header>
 
         <CodeInput
-          ref='codeInputRef2'
           keyboardType='numeric'
           codeLength={5}
           activeColor='rgba(148,0,211,1)'
@@ -39,30 +159,25 @@ class AuthForm extends Component {
           codeInputStyle={{ fontWeight: '800' }}
           containerStyle={{ marginTop: 30, marginBottom: 30 }}
           codeInputStyle={{ borderWidth: 1.5 }}
-          onFulfill={(code) => console.log(code)}
           cellBorderWidth={1.5}
+          onFulfill={this.onCodeChanged}
         />
         <DropDownPicker
-          items={data}
+          items={this.state.groupsData}
           containerStyle={{ height: 40 }}
           style={{ backgroundColor: '#fafafa' }}
           itemStyle={{
             justifyContent: 'flex-start',
           }}
           dropDownStyle={{ backgroundColor: '#fafafa', marginTop: 2 }}
-          placeholder='בחר קבוצה'
+          placeholder={choose_group}
+          onChangeItem={(item) =>
+            this.setState({ selectedGroupData: item.value })
+          }
         />
-
-        <Button mode='contained' style={styles.button}>
-          {send_btn}
-        </Button>
-
-        <View style={styles.row}>
-          <Text style={styles.label}>{no_code}</Text>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Login')}
-          ></TouchableOpacity>
-        </View>
+        {this.renderButton()}
+        {this.renderError()}
+        {this.renderSendAgainLabel()}
       </KeyboardAwareScrollView>
     );
   }
@@ -75,8 +190,6 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 340,
     alignSelf: 'center',
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   button: {
     marginTop: 140,
@@ -90,11 +203,27 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#9400D3',
   },
+  errorTextStyle: {
+    fontSize: 22,
+    alignSelf: 'center',
+    color: theme.colors.error,
+  },
 });
 
 const mapStateToProps = (state) => {
-  ///const { } = state.auth;
-  return {};
+  const {
+    teachersData,
+    authCode,
+    loading,
+    errorMessage,
+    email,
+    password,
+  } = state.auth;
+  return { teachersData, authCode, loading, errorMessage, email, password };
 };
 
-export default connect(mapStateToProps)(AuthForm);
+export default connect(mapStateToProps, {
+  codeChanged,
+  registerCode,
+  registerUser,
+})(AuthForm);

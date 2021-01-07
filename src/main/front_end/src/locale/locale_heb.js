@@ -17,12 +17,23 @@ export const authErrors = {
 };
 
 export const loginStrings = {
-  header: 'התחבר כאן',
-  enter_email: 'הכנס מייל',
-  enter_password: 'הכנס סיסמא',
-  login_btn: 'לחץ להתחברות',
-  no_user: 'אין ברשותך משתמש? ',
-  no_user_sign_up: 'הירשם כאן',
+    header: 'התחבר כאן',
+    enter_email: 'הכנס מייל',
+    enter_password: 'הכנס סיסמא',
+    login_btn: 'לחץ להתחברות',
+    no_user: 'אין ברשותך משתמש? ',
+    no_user_sign_up: 'הירשם כאן',
+  };
+
+  export const uploadStrings = {
+    header: 'העלאת קבצים',
+    choose_btn: 'בחר קבצים',
+    approve_btn: 'אישור',
+    restart_btn: 'אפס',
+  };
+
+  export const uploadStringsErrors = {
+    file_number_error: "מספר הקבצים צריך להיות 4"
 };
 
 export const authStrings = {
@@ -148,4 +159,15 @@ export const roomTypes = [
 
   export const StudentStrings={
     watchMyRoom:'החדרים שלי',
+  }
+
+  export const registerCodeErrors = {
+    wrong_alias_register_code: "שם משתמש לא תקין",
+    wrong_register_code: "קוד לא תקין",
+    not_registered_register_code: "משתמש לא רשום",
+    code_not_match_register_code: "קוד לא תואם",
+    wrong_type_register_code: "סוג קבוצה לא תקינה",
+    already_exist_register_code: "משתמש כבר רשום",
+    not_exist_group_register_code: "קבוצה לא קיימת",
+    already_exist_student_register_code: "תלמיד כבר רשום"
   }
