@@ -1,16 +1,16 @@
 import CodeInput from '@andreferi/react-native-confirmation-code-input';
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
-import { theme } from '../../core/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { ActivityIndicator } from 'react-native-paper';
 import { connect } from 'react-redux';
 import {
   codeChanged,
   registerCode,
   registerUser,
 } from '../../actions/AuthActions';
+import { theme } from '../../core/theme';
 import { authStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
 import Header from '../common/Header';
@@ -27,65 +27,82 @@ class AuthForm extends Component {
   constructor(...args) {
     super(...args);
     this.onCodeChanged = this.onCodeChanged.bind(this);
-    this.onButtonPressed = this.onButtonPressed(this);
-    this.onSendAgainButtonPress = this.onSendAgainButtonPress(this);
+    this.onButtonPressed = this.onButtonPressed.bind(this);
+    this.onSendAgainButtonPress = this.onSendAgainButtonPress.bind(this);
     this.state = {
       groupsData: [],
       selectedGroupData: null,
     };
   }
 
-  componentDidMount() {
-    const { teachersData } = this.props;
-    var data = [];
-    console.log(teachersData);
-    if (teachersData && teachersData !== []) {
-      teachersData.forEach((tData) => {
-        if (tData.groupType === 'BOTH') {
-          data = [
-            ...data,
-            {
-              label: `${tData.firstName} ${tData.lastName} א`,
-              value: {
-                alias: email,
-                code: authCode,
-                teacherAlias: tData.alias,
-                groupType: 'A',
+  componentDidUpdate(prevProps) {
+    if (prevProps.teachersData !== this.props.teachersData) {
+      const { teachersData } = this.props;
+      var data = [];
+      if (teachersData && teachersData.length != 0) {
+        teachersData.forEach((tData) => {
+          if (tData.groupType === 'BOTH') {
+            data = [
+              ...data,
+              {
+                label: `${tData.firstName} ${tData.lastName} א`,
+                value: {
+                  teacherAlias: tData.alias,
+                  groupType: 'A',
+                },
               },
-            },
-            {
-              label: `${tData.firstName} ${tData.lastName} ב`,
-              value: {
-                alias: email,
-                code: authCode,
-                teacherAlias: tData.alias,
-                groupType: 'B',
+              {
+                label: `${tData.firstName} ${tData.lastName} ב`,
+                value: {
+                  teacherAlias: tData.alias,
+                  groupType: 'B',
+                },
               },
-            },
-          ];
-        } else {
-          data = [
-            ...data,
-            {
-              label: `${tData.firstName} ${tData.lastName}`,
-              value: {
-                alias: email,
-                code: authCode,
-                teacherAlias: tData.alias,
-                groupType: tData.alias.groupType,
+            ];
+          } else {
+            data = [
+              ...data,
+              {
+                label: `${tData.firstName} ${tData.lastName}`,
+                value: {
+                  teacherAlias: tData.alias,
+                  groupType: tData.groupType,
+                },
               },
-            },
-          ];
-        }
-      });
+            ];
+          }
+        });
 
-      this.setState({ groupsData: data });
+        this.setState({ groupsData: data });
+      }
     }
   }
 
   onButtonPressed() {
-    const { navigation } = this.props;
-    this.props.registerCode({ ...this.state.selectedGroupData, navigation });
+    const { navigation, userType } = this.props;
+
+    if (userType === 'Teacher') {
+      const { email, authCode } = this.props;
+      this.props.registerCode({
+        alias: email,
+        code: authCode,
+        teacherAlias: email,
+        groupType: 'C',
+        navigation,
+      });
+    } else {
+      if (this.state.selectedGroupData) {
+        const { email, authCode } = this.props;
+        const { teacherAlias, groupType } = this.state.selectedGroupData;
+        this.props.registerCode({
+          alias: email,
+          code: authCode,
+          teacherAlias,
+          groupType,
+          navigation,
+        });
+      }
+    }
   }
 
   onSendAgainButtonPress() {
@@ -113,7 +130,11 @@ class AuthForm extends Component {
     return loading ? (
       this.renderSpinner()
     ) : (
-      <Button mode='contained' style={styles.button}>
+      <Button
+        mode='contained'
+        style={styles.button}
+        onPress={this.onButtonPressed}
+      >
         {send_btn}
       </Button>
     );
@@ -144,6 +165,30 @@ class AuthForm extends Component {
     );
   }
 
+  renderDropDownPicker() {
+    const { userType } = this.props;
+
+    if (userType === 'Teacher') {
+      return null;
+    } else {
+      return (
+        <DropDownPicker
+          items={this.state.groupsData}
+          containerStyle={{ height: 40 }}
+          style={{ backgroundColor: '#fafafa' }}
+          itemStyle={{
+            justifyContent: 'flex-start',
+          }}
+          dropDownStyle={{ backgroundColor: '#fafafa', marginTop: 2 }}
+          placeholder={choose_group}
+          onChangeItem={(item) =>
+            this.setState({ selectedGroupData: item.value })
+          }
+        />
+      );
+    }
+  }
+
   render() {
     return (
       <KeyboardAwareScrollView style={styles.container}>
@@ -162,19 +207,7 @@ class AuthForm extends Component {
           cellBorderWidth={1.5}
           onFulfill={this.onCodeChanged}
         />
-        <DropDownPicker
-          items={this.state.groupsData}
-          containerStyle={{ height: 40 }}
-          style={{ backgroundColor: '#fafafa' }}
-          itemStyle={{
-            justifyContent: 'flex-start',
-          }}
-          dropDownStyle={{ backgroundColor: '#fafafa', marginTop: 2 }}
-          placeholder={choose_group}
-          onChangeItem={(item) =>
-            this.setState({ selectedGroupData: item.value })
-          }
-        />
+        {this.renderDropDownPicker()}
         {this.renderButton()}
         {this.renderError()}
         {this.renderSendAgainLabel()}
@@ -218,8 +251,17 @@ const mapStateToProps = (state) => {
     errorMessage,
     email,
     password,
+    userType,
   } = state.auth;
-  return { teachersData, authCode, loading, errorMessage, email, password };
+  return {
+    teachersData,
+    authCode,
+    loading,
+    errorMessage,
+    email,
+    password,
+    userType,
+  };
 };
 
 export default connect(mapStateToProps, {

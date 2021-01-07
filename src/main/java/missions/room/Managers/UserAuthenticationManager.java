@@ -206,7 +206,7 @@ public class UserAuthenticationManager extends TeacherManager {
             schoolUser=teacher;
         }
         else{
-            schoolUser=teacher.getStudent(studentAlias);
+            schoolUser=teacher.getUnregisteredStudent(studentAlias);
             if(schoolUser ==null){
                 aliasToCode.remove(studentAlias);
                 return new Response<>(false, OpCode.Not_Exist);
