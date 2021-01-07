@@ -14,7 +14,6 @@ const initialState = {
     UPDATE_ERROR_MISSION,
     LOGIN_TEACHER,
     CLEAR_STATE,
-    DETERMINISTIC,
   } from '../actions/types';
   
   export default (state = initialState, action) => {
