@@ -7,6 +7,7 @@ const initialState = {
   apiKey: '',
   userType: '',
   authCode: '',
+  userType: ''
 };
 import { IT, Student, Supervisor, Teacher } from '../actions/OpCodeTypes';
 import {
@@ -19,12 +20,12 @@ import {
   LOGIN_TEACHER,
   LOGIN_USER,
   PASSWORD_CHANGED,
+  REGISTER_CODE,
+  REGISTER_CODE_SUCCESS,
   REGISTER_STUDENT,
   REGISTER_TEACHER,
   REGISTER_USER,
   UPDATE_ERROR,
-  REGISTER_CODE,
-  REGISTER_CODE_SUCCESS,
 } from '../actions/types';
 
 export default (state = initialState, action) => {
@@ -41,23 +42,29 @@ export default (state = initialState, action) => {
       return { ...state, errorMessage: action.payload, loading: false };
     case REGISTER_STUDENT:
       return {
-        ...initialState,
+        ...state,
+        loading: false,
+        errorMessage: '',
         teachersData: action.payload,
+        userType: Student,
       };
     case REGISTER_TEACHER:
       return {
-        ...initialState,
+        ...state,
+        loading: false,
+        errorMessage: '',
+        userType: Teacher,
       };
     case REGISTER_CODE:
       return {
         ...state,
         loading: true,
-        errorMessage: ''
-      }
+        errorMessage: '',
+      };
     case REGISTER_CODE_SUCCESS:
       return {
-        ...initialState
-      }
+        ...initialState,
+      };
     case LOGIN_USER:
       return { ...state, loading: true, errorMessage: '' };
     case LOGIN_SUPERVISOR:

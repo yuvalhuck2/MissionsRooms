@@ -19,6 +19,9 @@ import {
   Wrong_Alias,
   Wrong_Password,
   Wrong_Type,
+  Wrong_Code,
+  Not_Exist_Group,
+  Already_Exist_Student,
 } from './OpCodeTypes';
 import {
   CLEAR_STATE,
