@@ -11,6 +11,7 @@ public class MissionData {
     private String name;
     private List<String> question;
     private int timeForAns;
+    private List<String> answers;
 
 
     public MissionData(String missionId,Set<RoomType> missionTypes){
@@ -58,5 +59,13 @@ public class MissionData {
 
     public int getTimeForAns() {
         return timeForAns;
+    }
+
+    public List<String> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<String> answers) {
+        this.answers = answers;
     }
 }

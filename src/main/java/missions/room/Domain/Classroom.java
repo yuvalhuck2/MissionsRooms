@@ -114,4 +114,13 @@ public class Classroom{
     public int getPoints() {
         return points;
     }
+
+    public ClassGroup getGroupByName(String participantKey) {
+        for(ClassGroup classGroup: classGroups){
+            if(classGroup.getGroupName().equals(participantKey)){
+                return classGroup;
+            }
+        }
+        return null;
+    }
 }

@@ -16,6 +16,7 @@ const {
   addTemplate,
   createRoom,
   closeRoom,
+  main_screen,
 } = TeacherStrings;
 
 const DeviceWidth  = Dimensions.get('window').width;
@@ -46,16 +47,19 @@ class TeacherForm extends Component {
           <Button onPress={()=>this.props.passToAddTemplate({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
           <Text style={{color:"white"}}>{addTemplate}</Text> 
           </Button>
-          <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]} />
+          <Button onPress={()=>this.props.navigation.goBack()} style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]}>
+          <Text style={{color:"white"}}>{main_screen}</Text> 
+            <Icon name='exit-to-app' />
+          </Button>
         </View>
         <View>
           <Button  onPress={()=>this.props.passToAddRoom({navigation,apiKey})} mode="contained" style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >
             <Text style={{color:"white"}}>{createRoom}</Text> 
             <Icon name='create' />
           </Button>
-          <Button onPress={()=>this.navigate(NavPaths.addTemplate)} style={[styles.button, styles.bottom_button_marg, styles.right_button_border]} >
-            <Text style={{color:"white"}}>{closeRoom}</Text> 
-            <Icon name='delete' />
+          <Button /*onPress={()=>this.navigate(NavPaths.addTemplate)}*/ style={[styles.button, styles.bottom_button_marg, styles.right_button_border]} >
+            {/* <Text style={{color:"white"}}>{closeRoom}</Text>  */}
+            {/* <Icon name='delete' /> */}
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]} />
         </View>

@@ -116,10 +116,13 @@ public class MissionManager extends TeacherManager {
         for(Mission mission: missions){
             MissionData md=new MissionData(mission.getMissionId(),mission.getMissionTypes());
             List<String> questList=new ArrayList<>();
-            if(mission instanceof KnownAnswerMission){
+            List<String> answerList = new ArrayList<>();
+            if (mission instanceof KnownAnswerMission) {
                 md.setName("Known answer mission");
                 questList.add(((KnownAnswerMission) mission).getQuestion());
                 md.setQuestion(questList);
+                answerList.add(((KnownAnswerMission) mission).getRealAnswer());
+                md.setAnswers(answerList);
             }
             if(mission instanceof OpenAnswerMission){
                 md.setName("Open Answer Mission");

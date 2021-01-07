@@ -9,6 +9,7 @@ import Header from '../common/Header';
 import TextInput from '../common/TextInput';
 import { Icon } from 'react-native-elements'
 import * as NavPaths from '../../navigation/NavPaths'
+import {passToMyRooms} from '../../actions/StudentActions'
 
 const {
   watchMyRoom,
@@ -31,11 +32,11 @@ class StudentForm extends Component {
 
 
   render() {
-    
+    const { navigation,apiKey } = this.props;
     return (
       <View style={styles.container}>
         <View>
-          <Button onPress={()=>this.navigate(NavPaths.ChooseStudentRoom)} style={[styles.button, styles.top_button_marg, styles.left_button_border, styles.top_button_border]} >
+          <Button onPress={()=>this.props.passToMyRooms({navigation,apiKey})} style={[styles.button, styles.top_button_marg, styles.left_button_border, styles.top_button_border]} >
           <Text style={{color:"white"}}> {watchMyRoom}</Text> 
             <Icon name='meeting-room' />
           </Button>
@@ -105,7 +106,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  return { };
+  const { apiKey } = state.auth;
+  return { apiKey };
 };
 
-export default connect(mapStateToProps)(StudentForm);
+export default connect(mapStateToProps,{
+  passToMyRooms,
+})(StudentForm);

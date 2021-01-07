@@ -91,7 +91,6 @@ export const nameChanged = (text) => {
         try {
           dispatch({ type: ADD_TEMPLATE });
           const roomTemplate={name,minimalMissionsToPass,missions: missionsToAdd.map((mis)=>mis.missionId),type,apiKey};
-          console.log(roomTemplate)
           const res = await API.post(APIPaths.addTemplate,roomTemplate);
           res
             ? checkAddTemplateResponse(res.data, dispatch, navigation,apiKey)

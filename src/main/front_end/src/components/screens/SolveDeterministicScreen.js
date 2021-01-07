@@ -28,8 +28,8 @@ class SolveDeterministicForm extends Component {
   }
 
   onButtonPress() {
-    const {currentRoom,currentMission, navigation } = this.props;
-    this.props.sendDeterministicAnswer({currentRoom,currentMission, navigation });
+    const {currentRoom,currentMission,apiKey, navigation } = this.props;
+    this.props.sendDeterministicAnswer({currentRoom,currentMission,apiKey, navigation });
   }
 
   renderSpinner() {
@@ -118,8 +118,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  const { currentRoom,currentMission, errorMessage } = state.ChooseStudentRoom;
-  return { currentRoom,currentMission, errorMessage };
+  const { currentRoom,currentMission,apiKey, errorMessage } = state.ChooseStudentRoom;
+  return { currentRoom,currentMission,apiKey, errorMessage };
 };
 
 export default connect(mapStateToProps, {

@@ -24,7 +24,7 @@ export const passToAddTemplate=({navigation,apiKey})=>{
     
     return async (dispatch)=> {
       dispatch({ type: LOGIN_TEACHER,payload:apiKey});
-      navigation.navigate(NavPaths.AddRoom);
+      navigation.navigate(NavPaths.addTemplate);
         try {
             const res = await API.post(APIPaths.searchMission, {apiKey});
             res ? checkSearchMissionResponse(res.data, dispatch)
@@ -53,8 +53,6 @@ export const passToAddRoom=({navigation,apiKey})=>{
     dispatch({ type: LOGIN_TEACHER,payload:apiKey});
     try {
       const res = await API.post(APIPaths.getClassroom, {apiKey});
-      console.log(res.data)
-      console.log(apiKey)
       if(res) {
         checkGetClassroomResponse(res.data, dispatch,navigation)
       }
@@ -65,16 +63,14 @@ export const passToAddRoom=({navigation,apiKey})=>{
       console.log(err);
       return dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
     }
-    // try {
-    //   const res = await API.post(APIPaths.searchTemplate, {apiKey});
-    //     console.log(res.data)
-    //     console.log(apiKey)
-    //     res ? checkSearchTemplatesResponse(res.data, dispatch)
-    //     : dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
-    //   } catch (err) {
-    //     console.log(err);
-    //     return dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
-    //   }
+    try {
+      const res = await API.post(APIPaths.searchTemplate, {apiKey});
+        res ? checkSearchTemplatesResponse(res.data, dispatch)
+        : dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
+      } catch (err) {
+        console.log(err);
+        return dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
+      }
       
   }
 }

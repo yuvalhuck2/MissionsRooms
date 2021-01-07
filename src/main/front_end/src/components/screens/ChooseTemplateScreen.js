@@ -16,6 +16,7 @@ const {
     template_name,
     minimal_missions,
     missions_presentation,
+    no_tempaltes,
   } = ChooseTempalteStrings;
 
 const {
@@ -39,9 +40,9 @@ class ChooseTemplatesForm extends Component{
     }
 
     onButtonPress() {
-        const {roomName,participantKey,roomTemplate,bonus,type,navigation} = this.props;
+        const {roomName,participantKey,roomTemplate,bonus,type,apiKey,navigation} = this.props;
         
-        this.props.addRoom( {roomName,participantKey,roomTemplateId:roomTemplate.id,bonus,type,navigation} );
+        this.props.addRoom( {roomName,participantKey,roomTemplateId:roomTemplate.id,apiKey,bonus,type,navigation} );
     }
 
     renderSpinner() {
@@ -49,11 +50,15 @@ class ChooseTemplatesForm extends Component{
     }
 
     renderButton(){
-        const {loading} = this.props
+        const {loading,presentedTemplates,type} = this.props
     
         return loading ? (
           this.renderSpinner()
-        ) : (
+        ) : presentedTemplates.length==0 && type!==""?
+        <View>
+          <Text style={styles.errorTextStyle}>{no_tempaltes}</Text>
+        </View>
+        :(
           <Button
           mode='contained'
           style={styles.button}
@@ -161,8 +166,8 @@ const styles = StyleSheet.create({
   });
 
 const mapStateToProps = (state) => {
-    const { roomName,participantKey,roomTemplate,bonus,type,presentedTemplates, loading, errorMessage } = state.addRoom;
-    return { roomName,participantKey,roomTemplate,bonus,type,presentedTemplates, loading, errorMessage };
+    const { roomName,participantKey,roomTemplate,bonus,type,presentedTemplates,apiKey, loading, errorMessage } = state.addRoom;
+    return { roomName,participantKey,roomTemplate,bonus,type,presentedTemplates,apiKey, loading, errorMessage };
   };
   
 export default connect(mapStateToProps, {

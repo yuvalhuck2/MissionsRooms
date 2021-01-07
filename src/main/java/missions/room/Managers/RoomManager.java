@@ -120,7 +120,7 @@ public class RoomManager extends TeacherManager {
 
     @Transactional
     protected Response<Room> getGroupRoomResponse(NewRoomDetails roomDetails, RoomTemplate roomTemplate, Teacher teacher) {
-        ClassGroup group=teacher.getGroup(roomDetails.getParticipantKey());
+        ClassGroup group=teacher.getGroupByName(roomDetails.getParticipantKey());
         if(group==null){
             return new Response<>(null, OpCode.Not_Exist_Group);
         }

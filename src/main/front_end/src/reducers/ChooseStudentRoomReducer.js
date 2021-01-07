@@ -1,79 +1,9 @@
 const initialState = {
     currentMission:{loading:false},
     currentRoom:undefined,
-    // rooms:[
-    //     {
-    //         type:'Personal',
-    //         roomId:'p1',
-    //         name:'החדר האישי',
-    //         currentMission:{
-    //             missionId:"pmis1",
-    //             name:"Known answer mission",
-    //             question:['מה השם שלי '],
-    //             answer:'יובל'
-    //         },
-    //     },
-    //     {
-    //         "key":5,
-    //         type:'Group',
-    //         roomId:'g2',
-    //         name:'החדר הקבוצתי',
-    //         currentMission:{
-    //             missionId:"gmis2",
-    //             name:"Known answer mission",
-    //             question:['שאלה קבוצתית'],
-    //             answer:'תשובה'
-    //         },
-    //     },
-    //         {
-    //         "key":3,
-    //         type:'Class',
-    //         roomId:'c3',
-    //         name:'החדר הכיתתי',
-    //         currentMission:{
-    //             missionId:"cmis3",
-    //             name:"Known answer mission",
-    //             question:['שאלה כיתתית'],
-    //             answer:'תשובה',
-    //         },
-    //     },
-    // ],
-    rooms:new Map([
-        {
-            type:'Personal',
-            roomId:'p1',
-            name:'החדר האישי',
-            currentMission:{
-                missionId:"pmis1",
-                name:"Known answer mission",
-                question:['מה השם שלי '],
-                answer:'יובל'
-            },
-        },
-        {
-            type:'Group',
-            roomId:'g2',
-            name:'החדר הקבוצתי',
-            currentMission:{
-                missionId:"gmis2",
-                name:"Known answer mission",
-                question:['שאלה קבוצתית'],
-                answer:'תשובה'
-            },
-        },
-            {
-            type:'Class',
-            roomId:'c3',
-            name:'החדר הכיתתי',
-            currentMission:{
-                missionId:"cmis3",
-                name:"Known answer mission",
-                question:['שאלה כיתתית'],
-                answer:'תשובה',
-            },
-        },
-    ].map((x)=>[x.roomId,x])),
+    rooms:new Map(),
     errorMessage: '',
+    apiKey:'',
   };
 
   import {
@@ -83,6 +13,9 @@ const initialState = {
     CLEAR_STATE,
     PASS_TO_SOLVE_MISSIONS,
     CURRENT_ANSWER_CHANGED,
+    GET_STUDENT_ROOMS,
+    LOGIN_STUDENT,
+    SOLVE_MISSION_SEND,
   } from '../actions/types';
   
   export default (state = initialState, action) => {
@@ -92,12 +25,19 @@ const initialState = {
         case PASS_TO_SOLVE_MISSIONS:
             return { ...state, currentMission:action.payload, errorMessage: ''};
         case CURRENT_ANSWER_CHANGED:
+            console.log(action.payload)
             return { ...state, currentMission:action.payload};
         case SOLVE_MISSION:
-            return { ...state, currentMission:{...currentMission, loading: true,realAnswer:''} };
+            return { ...state, currentMission:{...state.currentMission, loading: true,answers:[]} };
+        case GET_STUDENT_ROOMS:
+            return {...state, rooms:new Map(action.payload.map((room)=>[room.roomId,room]))};
+        case LOGIN_STUDENT:
+            return { ...initialState, apiKey: action.payload, errorMessage:'' };
+        case SOLVE_MISSION_SEND:
+            return { ...state, loading: true };
         case UPDATE_ERROR_SOLVE_ROOM:
             alert(action.payload)
-            return { ...state, errorMessage: action.payload, currentMission:{...currentMission, loading: false}};
+            return { ...state, errorMessage: action.payload, currentMission:{...state.currentMission, loading: false}};
         case CLEAR_STATE:
             return initialState;
         default:

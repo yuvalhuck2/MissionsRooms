@@ -9,14 +9,13 @@ public class NewRoomDetails {
     private String participantKey;
     private RoomType roomType;
     private String roomName;
-    private String teacher;
     private int bonus;
 
+    //TODO remove teacher from constructor
     public NewRoomDetails(String participantKey, RoomType roomType, String roomName, String teacher, String roomTemplateId, int bonus) {
         this.participantKey = participantKey;
         this.roomType = roomType;
         this.roomName = roomName;
-        this.teacher=teacher;
         this.roomTemplateId=roomTemplateId;
         this.bonus=bonus;
     }
@@ -40,10 +39,6 @@ public class NewRoomDetails {
 
     public String getRoomName() {
         return roomName;
-    }
-
-    public String getTeacher() {
-        return teacher;
     }
 
     public String getRoomTemplateId() {

@@ -15,10 +15,6 @@ public class RoomService {
     @Autowired
     private RoomManager roomManager;
 
-    @Autowired
-    private ManagerRoomStudent managerRoomStudent;
-
-
     /**
      * req 4.1 -create room
      * @param apiKey -  authentication object
@@ -38,27 +34,6 @@ public class RoomService {
     public Response<Boolean> closeRoom(String apiKey, String roomId){
 
         return roomManager.closeRoom(apiKey,roomId);
-    }
-
-    /**
-     * req 3.6.1 - watch details of the room
-     * @param auth - authentication object
-     * @return the mission details of the given room
-     * TODO check on database if can generate unique string
-     */
-    public Response<List<RoomDetailsData>> watchRoomDetails (Auth auth){
-        return managerRoomStudent.watchRoomDetails(auth.getApiKey());
-    }
-
-    /**
-     * req 3.6.2.3 - answer deterministic question mission
-     * @param auth - authentication object
-     * @param roomId - room id
-     * @param answer - answer for the question
-     * @return if the answer was correct
-     */
-    public Response<Boolean> answerDeterministicQuestion(Auth auth,String roomId,Boolean answer){
-        return managerRoomStudent.answerDeterministicQuestion(auth.getApiKey(),roomId,answer);
     }
 
     /**

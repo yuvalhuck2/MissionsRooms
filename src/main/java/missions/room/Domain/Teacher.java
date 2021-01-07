@@ -77,6 +77,13 @@ public class Teacher extends SchoolUser {
         return null;
     }
 
+    public ClassGroup getGroupByName(String participantKey) {
+        if(classroom!=null) {
+            return classroom.getGroupByName(participantKey);
+        }
+        return null;
+    }
+
     public Classroom getClassroom() {
         return classroom;
     }

@@ -57,6 +57,7 @@ public class ManagerRoomStudent extends StudentManager {
      */
     //TODO now we return always true if every thing alright ,otherwise return null and error opcode
     //TODO need to change the response to the next mission if exists
+    @Transactional
     public Response<Boolean> answerDeterministicQuestion(String apiKey, String roomId, boolean answer){
         Response<Student> checkStudent = checkStudent(apiKey);
         if (checkStudent.getReason() != OpCode.Success) {
@@ -113,14 +114,16 @@ public class ManagerRoomStudent extends StudentManager {
             if(response.getReason()!=OpCode.Success){
                 return new Response<>(null,response.getReason());
             }
+            return new Response<>(true,OpCode.Success);
         }
         else{
             Response<Boolean> response=roomRepo.deleteRoom(room);
             if(response.getReason()!=OpCode.Success){
                 return new Response<>(null,response.getReason());
             }
+            return new Response<>(true,OpCode.Final);
         }
-        return new Response<>(true,OpCode.Success);
+
     }
 
     /**
@@ -250,10 +253,13 @@ public class ManagerRoomStudent extends StudentManager {
     private MissionData getMissionData(Mission mission) {
         MissionData md = new MissionData(mission.getMissionId(), mission.getMissionTypes());
         List<String> questList = new ArrayList<>();
+        List<String> answerList = new ArrayList<>();
         if (mission instanceof KnownAnswerMission) {
             md.setName("Known answer mission");
             questList.add(((KnownAnswerMission) mission).getQuestion());
             md.setQuestion(questList);
+            answerList.add(((KnownAnswerMission) mission).getRealAnswer());
+            md.setAnswers(answerList);
         }
         if (mission instanceof OpenAnswerMission) {
             md.setName("Open Answer Mission");
