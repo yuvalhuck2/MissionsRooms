@@ -59,6 +59,13 @@ public class Teacher extends SchoolUser {
         return null;
     }
 
+    public Student getUnregisteredStudent(String alias){
+        if(classroom!=null){
+            return classroom.getStudent(alias, GroupType.C);
+        }
+        return null;
+    }
+
     public ClassGroup getGroup(String participantKey) {
         if(classroom!=null) {
             return classroom.getGroup(participantKey);
