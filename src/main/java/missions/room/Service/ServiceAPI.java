@@ -126,6 +126,7 @@ public class ServiceAPI {
      * @return if the answer was accepted successfully
      */
 
+
     /**
      * req 3.6.2.3 - answer deterministic question mission
      * @param auth - authentication object
@@ -133,9 +134,11 @@ public class ServiceAPI {
      * @param answer - answer for the question
      * @return if the answer was correct
      */
+
     public Response<Boolean> answerDeterministicQuestion(Auth auth,String roomId,String answer){
         throw new NotImplementedException();
     }
+
 
 
     /**

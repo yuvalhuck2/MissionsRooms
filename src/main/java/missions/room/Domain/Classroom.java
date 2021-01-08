@@ -27,6 +27,8 @@ public class Classroom{
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<ClassGroup> classGroups;
 
+    private int points;
+
     public Classroom() {
 
     }
@@ -36,6 +38,7 @@ public class Classroom{
         this.classGroups=new HashSet<>();
         this.classGroups.add(classGroupA);
         this.classGroups.add(classGroupB);
+        this.points=0;
     }
 
     public Classroom(String className, List<ClassGroup> classGroups) {
@@ -56,7 +59,7 @@ public class Classroom{
 
     public ClassGroup getGroup(String participantKey) {
         for(ClassGroup classGroup: classGroups){
-            if(classGroup.getGroupName().equals(participantKey)){
+            if(classGroup.getStudent().containsKey(participantKey)){
                 return classGroup;
             }
         }
@@ -100,4 +103,24 @@ public class Classroom{
         return new Response<>(true,OpCode.Success);
     }
 
+    public void addPoints(int points){
+        this.points+=points;
+    }
+
+    public Set<ClassGroup> getClassGroups() {
+        return classGroups;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public ClassGroup getGroupByName(String participantKey) {
+        for(ClassGroup classGroup: classGroups){
+            if(classGroup.getGroupName().equals(participantKey)){
+                return classGroup;
+            }
+        }
+        return null;
+    }
 }

@@ -37,4 +37,5 @@ public class RoomTemplateController extends AbsController{
         Response<List<RoomTemplateForSearch>> response = roomTemplateService.searchRoomTemplates(data.getApiKey());
         return response;
     }
+
 }

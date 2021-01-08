@@ -1,11 +1,13 @@
 package missions.room.Service;
 
-import DataAPI.Auth;
-import DataAPI.Response;
-import DataAPI.NewRoomDetails;
+import DataAPI.*;
+import missions.room.Managers.ManagerRoomStudent;
 import missions.room.Managers.RoomManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.util.List;
 
 @Service
 public class RoomService {
@@ -33,4 +35,14 @@ public class RoomService {
 
         return roomManager.closeRoom(apiKey,roomId);
     }
+
+    /**
+     *
+     * @param apiKey - authentication object
+     * @return Classroom details
+     */
+    public Response<ClassRoomData> getClassRoomData(String apiKey){
+        return roomManager.getClassRoomData(apiKey);
+    }
+
 }

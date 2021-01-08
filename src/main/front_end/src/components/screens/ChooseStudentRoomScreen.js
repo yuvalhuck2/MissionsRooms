@@ -16,6 +16,7 @@ const {
     room_type,
     mission_presentation,
     solve,
+    no_rooms,
   } = ChooseStudentRoomStrings;
 
 
@@ -43,6 +44,8 @@ class ChooseStudentRoomForm extends Component{
     }
 
     renderButton(){
+      const{rooms}=this.props;
+      if (rooms.size>0){
         return (
           <Button
           mode='contained'
@@ -53,6 +56,14 @@ class ChooseStudentRoomForm extends Component{
           </Button>
         )
       }
+      else{
+        return (
+          <View>
+              <Text style={styles.errorTextStyle}>{no_rooms}</Text>
+            </View>
+        )
+      }
+    }
 
       renderError() {
         const { errorMessage } = this.props;
@@ -76,19 +87,18 @@ class ChooseStudentRoomForm extends Component{
       }
 
       getType(type){
-        return roomTypes.filter((roomType)=>roomType.type==type)[0].translate
+        return roomTypes.filter((roomType)=>roomType.type==type)[0].translate.slice(0,-1)
       }
 
       renderRoom(room){
           return room_name+room.name+'\n'+
-          room_type+this.getType(room.type)+'\n'+
+          room_type+this.getType(room.roomType)+'\n'+
           mission_presentation+'\n\t\t'+
           this.getMissionPresentation(room.currentMission) 
       }
 
       renderRadioButtons(){
           const {rooms}=this.props;
-          console.log(rooms)
           let lst=[]
           rooms.forEach((room,roomId)=>{
             lst.push(

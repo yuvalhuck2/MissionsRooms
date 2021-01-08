@@ -1,15 +1,22 @@
-import { AddTemplateErrors } from '../locale/locale_heb';
-import * as NavPaths from '../navigation/NavPaths'
+import { AddTemplateErrors,AddRoomTempalteStrings,GeneralErrors } from '../locale/locale_heb';
+import * as NavPaths from '../navigation/NavPaths';
+import * as APIPaths from '../api/APIPaths';
+import API from '../api/API';
 import {
     TEMPLATE_NAME_CHANGED,
     MINIMAL_MISSIONS_CHANGED,
     TYPE_CHANGED,
     MISSIONS_CHANGED,
-    PASS,
+    PASS_TO_CHOOSE_MISSIONS,
     ADD_TEMPLATE,
     UPDATE_ERROR_TEMPLATE,
+    LOGIN_TEACHER,
   } from './types';
  
+  import {
+    Success,
+  } from './OpCodeTypes';
+
 const {
     name_empty,
     minimal_negative,
@@ -17,6 +24,14 @@ const {
     missions_to_small,
     type_empty,
   } = AddTemplateErrors;
+
+  const {
+    template_added,
+  }=AddRoomTempalteStrings;
+
+  const {
+    server_error,
+  }=GeneralErrors
 
 export const nameChanged = (text) => {
     return {
@@ -46,40 +61,67 @@ export const nameChanged = (text) => {
     };
   };
 
-  export const passToMissions= (name,minimalMissions,type,navigation) => {
+  export const passToMissions= ({name,minimalMissionsToPass,type,allMissions,navigation}) => {
     return async (dispatch)=>{
       if(name.trim()===""){
-        dispatch({ type: UPDATE_ERROR, payload: name_empty });
+        return dispatch({ type: UPDATE_ERROR_TEMPLATE, payload: name_empty });
       }
-      if(type.trim()===""){
-        dispatch({ type: UPDATE_ERROR, payload: type_empty });
+      else if(type.trim()===""){
+        return dispatch({ type: UPDATE_ERROR_TEMPLATE, payload: type_empty });
       }
-      else if(minimalMissions==undefined || minimalMissions<0){
-        dispatch({ type: UPDATE_ERROR, payload: minimal_negative });
+      else if(minimalMissionsToPass==undefined || minimalMissionsToPass<0){
+        return dispatch({ type: UPDATE_ERROR_TEMPLATE, payload: minimal_negative });
       }
       else{
-        navigation.navigate(NavPaths.ChooseMissionsForTemplate);
+        dispatch({type:PASS_TO_CHOOSE_MISSIONS, payload:allMissions.filter((mis)=>mis.missionTypes.includes(type))});
+        return navigation.navigate(NavPaths.ChooseMissionsForTemplate);
       }
     }
   };
 
-  export const addTemplate = ({name,minimalMissions,missionsToAdd,type}) => {
+  export const addTemplate = ({name,minimalMissionsToPass,missionsToAdd,type,apiKey,navigation}) => {
     return async (dispatch)=>{
       if(missionsToAdd.length==0){
-        dispatch({ type: UPDATE_ERROR_TEMPLATE, payload: missions_empty });
+        return dispatch({ type: UPDATE_ERROR_TEMPLATE, payload: missions_empty });
       }
-      else if(missionsToAdd.length<minimalMissions){
-        dispatch({ type: UPDATE_ERROR_TEMPLATE, payload: missions_to_small });
+      else if(missionsToAdd.length<minimalMissionsToPass){
+        return dispatch({ type: UPDATE_ERROR_TEMPLATE, payload: missions_to_small });
       }
       else{
-        sendTemplate({name,minimalMissions,missionsToAdd,type},dispatch)
+        try {
+          dispatch({ type: ADD_TEMPLATE });
+          const roomTemplate={name,minimalMissionsToPass,missions: missionsToAdd.map((mis)=>mis.missionId),type,apiKey};
+          const res = await API.post(APIPaths.addTemplate,roomTemplate);
+          res
+            ? checkAddTemplateResponse(res.data, dispatch, navigation,apiKey)
+            : dispatch({ type: UPDATE_ERROR_TEMPLATE, payload: server_error });
+        } catch (err) {
+          console.log(err);
+          return dispatch({ type: UPDATE_ERROR_TEMPLATE, payload: server_error });
+        }
       }
     }
   };
 
-  const sendTemplate= (template,dispatch) =>{
-    dispatch({ type: ADD_TEMPLATE });
-    alert(template)
+  const checkAddTemplateResponse= (data,dispatch,navigation,apiKey) =>{
+    const {reason,value} =data
+    switch (reason) {
+      // case Wrong_Password:
+      //   return dispatch({ type: UPDATE_ERROR, payload: wrong_password_login });
+      // case Wrong_Alias:
+      //   return dispatch({ type: UPDATE_ERROR, payload: wrong_alias });
+      // case Not_Exist:
+      //   return dispatch({ type: UPDATE_ERROR, payload: not_exist });
+      // case Supervisor:
+      //   navigation.navigate(NavPaths.supMainScreen);
+      //   return dispatch({ type: LOGIN_SUPERVISOR, payload: value });
+        case Success:
+          navigation.navigate(NavPaths.teacherMainScreen);
+          alert(template_added)
+          return dispatch({ type: LOGIN_TEACHER, payload: apiKey });
+        default:
+          return dispatch({ type: UPDATE_ERROR_TEMPLATE, payload: server_error });
+    }
       //const res = await API.post('/UserAuth', { alias: email, password });
       // console.log(res.data);
       // if (res) {

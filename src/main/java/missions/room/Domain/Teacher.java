@@ -52,6 +52,10 @@ public class Teacher extends SchoolUser {
     }
 
 
+    public GroupType getGroupType() {
+        return groupType;
+    }
+
     public Student getStudent(String alias) {
         if(classroom!=null){
             return classroom.getStudent(alias,groupType);
@@ -69,6 +73,13 @@ public class Teacher extends SchoolUser {
     public ClassGroup getGroup(String participantKey) {
         if(classroom!=null) {
             return classroom.getGroup(participantKey);
+        }
+        return null;
+    }
+
+    public ClassGroup getGroupByName(String participantKey) {
+        if(classroom!=null) {
+            return classroom.getGroupByName(participantKey);
         }
         return null;
     }

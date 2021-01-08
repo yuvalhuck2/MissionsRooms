@@ -4,6 +4,7 @@ const initialState = {
     missionTypes: [],
     loading: false,
     errorMessage: '',
+    apiKey:'',
   };
   import {
     QUESTION_CHANGED,
@@ -11,8 +12,8 @@ const initialState = {
     TYPES_CHANGED,
     ADD_MISSON,
     UPDATE_ERROR_MISSION,
+    LOGIN_TEACHER,
     CLEAR_STATE,
-    DETERMINISTIC,
   } from '../actions/types';
   
   export default (state = initialState, action) => {
@@ -25,6 +26,8 @@ const initialState = {
         return { ...state, missionTypes: action.payload };
       case ADD_MISSON:
         return { ...state, loading: true };
+      case LOGIN_TEACHER:
+        return { ...initialState, apiKey: action.payload };
       case UPDATE_ERROR_MISSION:
         alert(action.payload)
         return { ...state, errorMessage: action.payload, loading: false };

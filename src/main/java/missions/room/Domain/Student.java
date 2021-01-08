@@ -10,6 +10,8 @@ import javax.persistence.InheritanceType;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Student extends SchoolUser {
 
+    private int points;
+
     public Student() {
     }
 
@@ -19,6 +21,16 @@ public class Student extends SchoolUser {
     }
 
     public Student(String alias, String firstName, String lastName) {
+
         super(alias, firstName, lastName);
+        this.points=0;
+    }
+
+    public void addPoints(int points){
+        this.points+=points;
+    }
+
+    public int getPoints() {
+        return points;
     }
 }

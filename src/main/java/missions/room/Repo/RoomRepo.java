@@ -131,4 +131,38 @@ public class RoomRepo {
             return new Response<>(false,OpCode.DB_Error);
         }
     }
+
+
+
+    public Response<StudentRoom> findStudentRoomByAlias(String alias) {
+        try{
+            return new Response<>(roomCrudRepository.findStudentRoomByAlias(alias), OpCode.Success);
+        }
+        catch(Exception e){
+            return new Response<>(null,OpCode.DB_Error);
+        }
+    }
+
+
+    public Response<GroupRoom> findGroupRoomByAlias(String groupName) {
+        try{
+            return new Response<>(roomCrudRepository.findGroupRoomByAlias(groupName), OpCode.Success);
+        }
+        catch(Exception e){
+            return new Response<>(null,OpCode.DB_Error);
+        }
+    }
+
+
+    public Response<ClassroomRoom> findClassroomRoomByAlias(String classroomName) {
+        try{
+            return new Response<>(roomCrudRepository.findClassroomRoomByAlias(classroomName), OpCode.Success);
+        }
+        catch(Exception e){
+            return new Response<>(null,OpCode.DB_Error);
+        }
+    }
+
+
+
 }

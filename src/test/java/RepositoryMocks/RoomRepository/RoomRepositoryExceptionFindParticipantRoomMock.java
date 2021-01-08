@@ -12,6 +12,20 @@ import java.util.List;
 import java.util.Optional;
 
 public class RoomRepositoryExceptionFindParticipantRoomMock implements RoomCrudRepository {
+    @Override
+    public StudentRoom findStudentRoomByAlias(String alias) {
+        return null;
+    }
+
+    @Override
+    public GroupRoom findGroupRoomByAlias(String groupName) {
+        return null;
+    }
+
+    @Override
+    public ClassroomRoom findClassroomRoomByAlias(String classroomName) {
+        return null;
+    }
 
     private DataGenerator dataGenerator;
 

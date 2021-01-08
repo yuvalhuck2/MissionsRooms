@@ -27,8 +27,10 @@ public class RoomTemplate {
     @Enumerated(EnumType.ORDINAL)
     private RoomType type;
 
+
     @ManyToMany(cascade =CascadeType.ALL,fetch = FetchType.EAGER)
     @OrderColumn(name="INDEX")
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name="missionTemplates",
             joinColumns ={@JoinColumn(name = "roomTemplateId")},
             inverseJoinColumns={@JoinColumn(name="missionId")}
@@ -73,5 +75,12 @@ public class RoomTemplate {
 
     public List<Mission> getMissions() {
         return missions;
+    }
+
+    public Mission getMission(int missionIndex){
+        if(this.missions.size()<=missionIndex){
+            return null;
+        }
+        else return this.missions.get(missionIndex);
     }
 }

@@ -56,6 +56,11 @@ export const AddDeterministicMissionStrings = {
     question_empty:'יש להזין שאלה',
     answer_empty:'יש להזין תשובה',
     types_empty:'יש לבחור לפחות סוג משימה אחד',
+    server_error: 'שגיאת שרת',
+  }
+
+  export const AddDeterministicMissionSuccess={
+    mission_added:'המשימה נוספה בהצלחה'
   }
 
 export const AddStrings = {
@@ -73,6 +78,7 @@ export const AddRoomTempalteStrings = {
   enter_type: 'סוג התבנית',
   enter_minimal_amount: 'כמות משימות מינימלית לקבלת בונוס',
   move_to_missions: 'מעבר לבחירת המשימות',
+  template_added:'התבנית נוספה בהצלחה',
 }
 
   export const AddTemplateErrors={
@@ -109,6 +115,7 @@ export const roomTypes = [
     addTemplate:'בניית תבנית לחדר',
     createRoom:'יצירת חדר',
     closeRoom:'סגירת חדר',
+    main_screen:'צא למסך הראשי',
   }
 
   export const AddRoomStrings={
@@ -130,6 +137,7 @@ export const roomTypes = [
     group_empty:'יש לזין קבוצה על מנת להוסיף חדר קבוצתי',
     student_empty:'יש להזין תלמיד על מנת להוסיף חדר אישי',
     empty_template:'יש לבחור תבנית לחדר',
+    room_added:'החדר נוסף בהצלחה',
   }
 
   export const ChooseTempalteStrings={
@@ -137,6 +145,7 @@ export const roomTypes = [
     template_name:'שם התבנית: ',
     minimal_missions:'מספר משימות לקבלת בונוס: ',
     missions_presentation:'משימות: ',
+    no_tempaltes:'אין תבניות מסוג החדר המבוקש',
   }
 
   export const ChooseStudentRoomStrings={
@@ -145,11 +154,15 @@ export const roomTypes = [
     room_type:'סוג החדר: ',
     mission_presentation:'משימה נוכחית: ',
     solve:'כניסה',
+    no_rooms:'אין לך חדרים פעילים',
   }
 
   export const ChooseRoomStudentErrors={
     room_empty:'יש לבחור חדר',
     wrong_answer:'תשובה לא נכונה, מספר נסיונות מותרים: ',
+    fail:'לא נורא, בפעם הבאה יהיה יותר טוב:(',
+    pass:'תשובה נכונה!',
+    final:'\nהחדר הסתיים'
   };
 
   export const SolveDeterministicMissionStrings={
@@ -170,4 +183,8 @@ export const roomTypes = [
     already_exist_register_code: "משתמש כבר רשום",
     not_exist_group_register_code: "קבוצה לא קיימת",
     already_exist_student_register_code: "תלמיד כבר רשום"
+  }
+
+  export const GeneralErrors={
+    server_error: 'שגיאת שרת',
   }

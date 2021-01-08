@@ -18,6 +18,8 @@ public abstract class Room {
 
     protected int currentMission;
 
+    protected int countCorrectAnswer;
+
     @Transient
     protected Set<String>  studentWereChosen;
 
@@ -43,6 +45,7 @@ public abstract class Room {
         studentWereChosen=new HashSet<>();
         this.bonus=bonus;
         this.currentMission=0;
+        this.countCorrectAnswer=0;
     }
      protected abstract String drawMissionInCharge();
 
@@ -68,5 +71,21 @@ public abstract class Room {
 
     public RoomTemplate getRoomTemplate() {
         return roomTemplate;
+    }
+
+    public void addCorrectAnswer(){
+        this.countCorrectAnswer++;
+    }
+
+    public void increaseCurrentMission(){
+        this.currentMission++;
+    }
+
+    public int getCountCorrectAnswer() {
+        return countCorrectAnswer;
+    }
+
+    public void setCountCorrectAnswer(int countCorrectAnswer) {
+        this.countCorrectAnswer = countCorrectAnswer;
     }
 }

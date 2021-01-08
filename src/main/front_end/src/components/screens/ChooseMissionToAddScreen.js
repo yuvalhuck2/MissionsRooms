@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ChooseMissionToAddStrings } from '../../locale/locale_heb';
-import { navigateToMission } from '../../actions';
+import { navigateToMission } from '../../actions/AddMissionActions';
 import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
 import Button from '../common/Button';
@@ -26,7 +26,7 @@ class ChooseMissiontoAddForm extends Component{
 
     onButtonPress(type) {
       const{navigation}=this.props;
-        this.props.navigateToMission(type,navigation);
+      this.props.navigateToMission(type,navigation);
     }
 
     renderButtons(){
@@ -88,10 +88,10 @@ const styles = StyleSheet.create({
   });
 
 const mapStateToProps = (state) => {
-    //const {  } = state.addMission;
+    const {} = state.addMission;
     return {};
   };
   
-export default connect(null, {
-    navigateToMission,
+export default connect(mapStateToProps, {
+  navigateToMission,
   })(ChooseMissiontoAddForm);

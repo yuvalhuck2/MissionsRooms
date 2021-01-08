@@ -52,7 +52,7 @@ class AddRoomForm extends Component{
 
     onButtonPress(type) {
         const {roomName,bonus,classroom,group,student,allTemplates,navigation} = this.props;
-        this.props.passToTemplates (roomName,bonus,classroom.name,group,student,allTemplates,type,navigation );
+        this.props.passToTemplates ({roomName,bonus,classroom:classroom.name,group,student,allTemplates,type,navigation} );
     }
 
 

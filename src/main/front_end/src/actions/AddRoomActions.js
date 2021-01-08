@@ -1,5 +1,7 @@
-import { AddRoomErrors } from '../locale/locale_heb';
+import { AddRoomErrors,GeneralErrors } from '../locale/locale_heb';
 import * as NavPaths from '../navigation/NavPaths'
+import * as APIPaths from '../api/APIPaths'
+import API from '../api/API';
 import {
     ROOM_NAME_CHANGED,
     BONUS_CHANGED,
@@ -12,8 +14,14 @@ import {
     UPDATE_ERROR_ROOM,
     GROUP_CHANGED,
     STUDENT_CHANGED,
+    LOGIN_TEACHER,
     CLEAR_STATE,
   } from './types';
+
+  
+  import {
+    Success,
+  } from './OpCodeTypes';
  
 const {
     name_empty,
@@ -21,8 +29,14 @@ const {
     classroom_empty,
     group_empty,
     student_empty,
-    empty_template
+    empty_template,
+    room_added,
   } = AddRoomErrors;
+
+  const {
+    server_error,
+  }=GeneralErrors
+
 
   export const nameChanged= (text)=>{
     return {
@@ -60,7 +74,7 @@ const {
     };
   };
 
-  export const passToTemplates= (roomName,bonus,classroom,group,student,allTemplates,type,navigation) => {
+  export const passToTemplates= ({roomName,bonus,classroom,group,student,allTemplates,type,navigation}) => {
     return async (dispatch)=>{
       if(roomName.trim()===""){
         dispatch({ type: UPDATE_ERROR_ROOM, payload: name_empty });
@@ -93,27 +107,53 @@ const {
             return dispatch({ type: UPDATE_ERROR_ROOM, payload: classroom_empty });
         }
         templates=allTemplates.filter((template)=>(template.type==type));
-        dispatch({ type: PASS, payload:{...payload, templates:templates} });
+        dispatch({ type: PASS, payload:{...payload, presentedTemplates:templates} });
         navigation.navigate(NavPaths.ChooseTemplate);
         
       }
     }
   };
 
-  export const addRoom = ({roomName,participantKey,roomTemplateId,bonus,type,navigation}) => {
+  export const addRoom = ({roomName,participantKey,roomTemplateId,bonus,apiKey,type,navigation}) => {
     return async (dispatch)=>{
       if(roomTemplateId==undefined||roomTemplateId.trim()===""){
-        dispatch({ type: UPDATE_ERROR_ROOM, payload: empty_template });
+         return dispatch({ type: UPDATE_ERROR_ROOM, payload: empty_template });
       }
       else{
-        sendRoom({roomName,participantKey,roomTemplateId,bonus,type},dispatch,navigation)
+        try {
+          dispatch({ type: ADD_ROOM ,payload:''});
+          const room={roomName,participantKey,roomTemplateId,bonus,roomType:type,apiKey};
+          const res = await API.post(APIPaths.addRoom,room);
+          res
+            ? checkAddRoomResponse(res.data, dispatch, navigation,apiKey)
+            : dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
+        } catch (err) {
+          console.log(err);
+          return dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
+        }
       }
     }
   };
 
-  const sendRoom= (room,dispatch,navigation) =>{
-    dispatch({ type: ADD_ROOM });
-    console.log(room)
+  const checkAddRoomResponse= (data,dispatch,navigation,apiKey) =>{
+    const {reason,value} =data
+    switch (reason) {
+      // case Wrong_Password:
+      //   return dispatch({ type: UPDATE_ERROR, payload: wrong_password_login });
+      // case Wrong_Alias:
+      //   return dispatch({ type: UPDATE_ERROR, payload: wrong_alias });
+      // case Not_Exist:
+      //   return dispatch({ type: UPDATE_ERROR, payload: not_exist });
+      // case Supervisor:
+      //   navigation.navigate(NavPaths.supMainScreen);
+      //   return dispatch({ type: LOGIN_SUPERVISOR, payload: value });
+        case Success:
+          navigation.navigate(NavPaths.teacherMainScreen);
+          alert(room_added)
+          return dispatch({ type: LOGIN_TEACHER, payload: apiKey });
+        default:
+          return dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
+    }
       //const res = await API.post('/UserAuth', { alias: email, password });
       // console.log(res.data);
       // if (res) {

@@ -13,6 +13,20 @@ import javax.persistence.LockTimeoutException;
 import java.util.Optional;
 
 public class RoomRepositoryTimeOutExceptionFindParticipantRoomMock implements RoomCrudRepository {
+    @Override
+    public StudentRoom findStudentRoomByAlias(String alias) {
+        return null;
+    }
+
+    @Override
+    public GroupRoom findGroupRoomByAlias(String groupName) {
+        return null;
+    }
+
+    @Override
+    public ClassroomRoom findClassroomRoomByAlias(String classroomName) {
+        return null;
+    }
 
     private DataGenerator dataGenerator;
 
