@@ -240,7 +240,6 @@ const checkLoginUserResponse = (data, dispatch, navigation) => {
       navigation.navigate(NavPaths.supMainScreen);
       return dispatch({ type: LOGIN_SUPERVISOR, payload: value });
     case IT:
-      // TODO: navigate to IT main screen
       navigation.navigate(NavPaths.ITMainScreen);
       return dispatch({ type: LOGIN_IT, payload: value });
     case Teacher:

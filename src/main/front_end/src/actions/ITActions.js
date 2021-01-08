@@ -2,6 +2,8 @@ import * as DocumentPicker from 'expo-document-picker';
 import { Platform } from 'react-native';
 import { uploadStringsErrors } from '../locale/locale_heb';
 import {PICKED_FILE, RESET_FILES} from './types'
+import * as NavPaths from '../navigation/NavPaths';
+import API from '../api/API';
 
 const {
     file_number_error
@@ -25,7 +27,7 @@ export const onRestart = () => {
     return {type: RESET_FILES}
 }
 
-export const onSendFiles = ({files}) => {
+export const onSendFiles = ({files, apiKey}) => {
     return async (dispatch) => {
         const formData = new FormData();
         if (files.length != 4){
@@ -41,8 +43,9 @@ export const onSendFiles = ({files}) => {
         });  
         const xhr = new XMLHttpRequest();
         // 2. open request
-        //TODO: get url from API
-        xhr.open('POST', 'http://192.168.2.50:8080/uploadCsv?token=abc');
+        let baseUri = API.getUri();
+        let uri = baseUri+"/uploadCsv?token="+apiKey
+        xhr.open('POST', uri);
         //Send the proper header information along with the request
         xhr.setRequestHeader('Content-type', 'multipart/form-data');
         // 3. set up callback for request
@@ -70,3 +73,9 @@ export const onSendFiles = ({files}) => {
         dispatch({type: RESET_FILES});
     }
 }
+
+
+export const navigateToUploadCSV = ({ navigation }) => {
+    navigation.navigate(NavPaths.uploadCsv);
+    return { type: CLEAR_STATE };
+  };

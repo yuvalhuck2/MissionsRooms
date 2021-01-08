@@ -40,7 +40,7 @@ class UploadCsvForm extends Component {
     }
 
     async onSendFiles() {
-        this.props.onSendFiles({files: this.props.files})
+        this.props.onSendFiles({files: this.props.files, apiKey: this.props.apiKey})
     }
 
     render() {
