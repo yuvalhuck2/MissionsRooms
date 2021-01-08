@@ -56,3 +56,6 @@ export const GET_CLASSROOM='get_classroom'
 export const GET_STUDENT_ROOMS='grt_student_rooms'
 export const SOLVE_MISSION_SEND='solve_mission_send'
 export const UPLOAD_CSV_SUCCESS = "UPLOAD_CSV_SUCCESS"
+export const STUDENT_NOT_EXIST_IN_CLASS = 'student_not_exist_in_class';
+export const STUDENT_NOT_EXIST_IN_GROUP = 'student_not_exist_in_group';
+export const WRONG_MISSION = 'wrong_mission';

@@ -144,6 +144,11 @@ public class ManagerRoomStudent extends StudentManager {
             return new Response<>(null, classroomResponse.getReason());
         }
         Classroom classroom = classroomResponse.getValue();
+
+        if (classroom == null){
+            return new Response<>(null, OpCode.Student_Not_Exist_In_Class);
+        }
+
         ClassGroup classGroup = classroom.getGroup(student.getAlias());
         if (classGroup == null) {
             return new Response<>(null, OpCode.Student_Not_Exist_In_Group);
@@ -231,7 +236,7 @@ public class ManagerRoomStudent extends StudentManager {
         for (Room room : rooms) {
             Response<Mission> response = getMission(room.getCurrentMission(), room.getRoomTemplate());
             if (response.getReason() != OpCode.Success) {
-                return new Response(null, response.getReason());
+                return new Response<>(null, response.getReason());
             }
             MissionData missionData = getMissionData(response.getValue());
 
