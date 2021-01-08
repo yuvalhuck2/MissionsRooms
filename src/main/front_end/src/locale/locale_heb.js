@@ -221,3 +221,9 @@ export const AddRoomResponseErrors = {
   not_exist_classroom_add_room_error: 'הכיתה המשויכת לחדר אינה קיימת',
   already_exist_class_add_room_error: 'הכיתה שהוזנה כבר משויכת לחדר מסוג כיתתי',
 };
+
+export const passToMyRoomsErrors = {
+  student_not_exist_in_class_error: "תלמיד לא קיים בכיתה",
+  student_not_exist_in_group_error: "תלמיד לא קיים בקבוצה",
+  wrong_mission_error: "משימה לא תקינה",
+}
