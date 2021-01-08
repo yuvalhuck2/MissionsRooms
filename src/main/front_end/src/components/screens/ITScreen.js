@@ -4,7 +4,13 @@ import { connect } from 'react-redux';
 import Button from '../common/Button';
 import { Icon } from 'react-native-elements'
 import  { navigateToUploadCSV } from '../../actions'
+import { ITStrings } from '../../locale/locale_heb';
+import {logout} from '../../actions'
 
+const {
+  uploadCSV,
+  main_screen
+} = ITStrings
 
 const DeviceWidth  = Dimensions.get('window').width;
 const backgroundColor = 'purple';
@@ -14,12 +20,19 @@ class ITForm extends Component {
   constructor(...args) {
     super(...args);
     this.navigateToUploadCSV = this.navigateToUploadCSV.bind(this);
+    this.onLogout=this.onLogout.bind(this);
   }
 
   navigateToUploadCSV() {
     const { navigation } = this.props;
     this.props.navigateToUploadCSV({ navigation });
   }
+
+  onLogout(){
+    const {navigation}=this.props;
+    return this.props.logout(navigation);
+  }
+
 
   render() {
     
@@ -28,12 +41,14 @@ class ITForm extends Component {
         <View>
           <Button style={[styles.button, styles.top_button_marg, styles.left_button_border, styles.top_button_border]} />
           <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} />
-          <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]} />
+          <Button onPress={this.onLogout} style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]} >
+            <Text style={{color:"white"}}>{main_screen}</Text> 
+            <Icon name='exit-to-app' />
+          </Button>
         </View>
         <View>
           <Button  mode="contained" onPress={this.navigateToUploadCSV} style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >
-            <Text style={{color:"white"}}>CSV</Text> 
-            <Icon name='rowing' />
+            <Text style={{color:"white"}}>{uploadCSV}</Text> 
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]} />
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]} />
@@ -93,4 +108,4 @@ const mapStateToProps = (state) => {
   return { };
 };
 
-export default connect(mapStateToProps, {navigateToUploadCSV})(ITForm);
+export default connect(mapStateToProps, {navigateToUploadCSV, logout})(ITForm);

@@ -55,3 +55,4 @@ export const GET_TEMPLATES='get_templates'
 export const GET_CLASSROOM='get_classroom'
 export const GET_STUDENT_ROOMS='grt_student_rooms'
 export const SOLVE_MISSION_SEND='solve_mission_send'
+export const UPLOAD_CSV_SUCCESS = "UPLOAD_CSV_SUCCESS"

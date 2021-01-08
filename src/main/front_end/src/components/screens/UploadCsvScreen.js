@@ -15,12 +15,8 @@ const {
     header,
     choose_btn,
     approve_btn,
-    restart_btn
+    restart_btn,
 } = uploadStrings;
-
-const {
-    file_number_error
-} = uploadStringsErrors
 
 const DeviceWidth = Dimensions.get('window').width;
 class UploadCsvForm extends Component {
@@ -47,10 +43,11 @@ class UploadCsvForm extends Component {
         const { text } = this.props;
 
         return (
-            <KeyboardAwareScrollView contentContainerStyle={styles.wrapper} style={styles.container}>
+            <View contentContainerStyle={styles.wrapper} style={styles.container}>
                 <Header>{header}</Header>
+                {this.renderError()}
                 <View style={styles.row}>
-                    <TextInput style={styles.email_label}
+                    <TextInput style={styles.files_label}
                         editable={false}
                         value={text}
                     />
@@ -60,39 +57,53 @@ class UploadCsvForm extends Component {
                     >
                         {choose_btn}
                     </Button>
-                </View>
-                <Button style={styles.button}
+                    <Button style={styles.button}
                     mode='contained'
                     onPress={this.onRestart.bind(this)}
-                >
+                    >
                     {restart_btn}
-                </Button>
-                <Button style={styles.button}
-                    mode='contained'
-                    onPress={this.onSendFiles.bind(this)}
-                >
+                    </Button>
+                    <Button style={styles.button}
+                        mode='contained'
+                        onPress={this.onSendFiles.bind(this)}
+                    >
                     {approve_btn}
-                </Button>
-            </KeyboardAwareScrollView>
+                    </Button>
+                </View>
+            </View>
         );
     }
+
+    
+  renderError() {
+    const { errorMessage } = this.props;
+    if (errorMessage && errorMessage !== '') {
+      return (
+        <View>
+          <Text style={styles.errorTextStyle}>{errorMessage}</Text>
+        </View>
+      );
+    }
+  }
 }
+
+
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
+        padding: 10,
         width: '100%',
         maxWidth: 340,
         alignSelf: 'center',
     },
     row: {
         flex: 1,
-        marginTop: 50,
+        marginTop: 0,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    email_label: {
+    files_label: {
         width: DeviceWidth * 0.8
     },
     button: {
@@ -103,11 +114,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    errorTextStyle: {
+        fontSize: 22,
+        alignSelf: 'center',
+        color: 'red',
+      },   
 });
 
 const mapStateToProps = (state) => {
-    const {text, files} = state.IT
-    return {text, files};
+    const {text, files, errorMessage} = state.IT
+    return {text, files, errorMessage};
 };
 
 export default connect(mapStateToProps, 

@@ -30,10 +30,20 @@ export const loginStrings = {
     choose_btn: 'בחר קבצים',
     approve_btn: 'אישור',
     restart_btn: 'אפס',
+    return_btn: 'חזור',
+    success: 'מערכת אותחלה בהצלחה',
   };
 
   export const uploadStringsErrors = {
-    file_number_error: "מספר הקבצים צריך להיות 4"
+    file_number_error: "מספר הקבצים צריך להיות 4",
+    server_not_responding: "השרת לא מגיב",
+    server_error: 'שגיאת שרת',
+    wrong_key: 'מפתח אימות לא תקין',
+    wrong_headers: 'אחד הקבצים אינו בפורמט שהוגדר',
+    wrong_file_name: 'אחד הקבצים בעל שם שגוי',
+    not_exist: 'שם משתמש לא קיים',
+    already_exist: 'משתמש בשם הנ"ל כבר קיים',
+
 };
 
 export const authStrings = {
@@ -188,4 +198,9 @@ export const roomTypes = [
 
   export const GeneralErrors={
     server_error: 'שגיאת שרת',
+  }
+
+  export const ITStrings = {
+    uploadCSV:'העלאת קבצים',
+    main_screen:'התנתק/י',
   }
