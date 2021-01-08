@@ -30,10 +30,19 @@ export const uploadStrings = {
   choose_btn: 'בחר קבצים',
   approve_btn: 'אישור',
   restart_btn: 'אפס',
+  return_btn: 'חזור',
+  success: 'מערכת אותחלה בהצלחה',
 };
 
 export const uploadStringsErrors = {
   file_number_error: 'מספר הקבצים צריך להיות 4',
+  server_not_responding: 'השרת לא מגיב',
+  server_error: 'שגיאת שרת',
+  wrong_key: 'מפתח אימות לא תקין',
+  wrong_headers: 'אחד הקבצים אינו בפורמט שהוגדר',
+  wrong_file_name: 'אחד הקבצים בעל שם שגוי',
+  not_exist: 'שם משתמש לא קיים',
+  already_exist: 'משתמש בשם הנ"ל כבר קיים',
 };
 
 export const authStrings = {
@@ -191,6 +200,12 @@ export const GeneralErrors = {
   server_error: 'שגיאת שרת',
   wrong_key_error: 'שגיאת מפתח הזדהות',
   teacher_not_exists_error: 'מורה לא קיים',
+  student_not_exist: 'סטודנט לא קיים',
+};
+
+export const ITStrings = {
+  uploadCSV: 'העלאת קבצים',
+  main_screen: 'התנתק/י',
 };
 
 export const addMissionErrors = {
@@ -223,7 +238,7 @@ export const AddRoomResponseErrors = {
 };
 
 export const passToMyRoomsErrors = {
-  student_not_exist_in_class_error: "תלמיד לא קיים בכיתה",
-  student_not_exist_in_group_error: "תלמיד לא קיים בקבוצה",
-  wrong_mission_error: "משימה לא תקינה",
-}
+  student_not_exist_in_class_error: 'תלמיד לא קיים בכיתה',
+  student_not_exist_in_group_error: 'תלמיד לא קיים בקבוצה',
+  wrong_mission_error: 'משימה לא תקינה',
+};
