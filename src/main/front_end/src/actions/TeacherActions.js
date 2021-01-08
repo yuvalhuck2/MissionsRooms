@@ -10,6 +10,7 @@ import {
     GET_TEMPLATES,
     LOGIN_TEACHER,
     GET_CLASSROOM,
+    CLEAR_STATE,
   } from '../actions/types';
 
   import {
@@ -94,4 +95,11 @@ const checkSearchTemplatesResponse = (data,dispatch) =>{
         default:
           return dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
     }
+}
+
+export const logout=(navigation)=>{
+  return async (dispatch)=> {
+    dispatch({type: CLEAR_STATE})
+    return navigation.navigate(NavPaths.loginScreen);
+  }
 }
