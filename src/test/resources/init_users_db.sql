@@ -30,7 +30,7 @@ INSERT INTO KNOWN_ANSWER_MISSION(question,real_answer,mission_id) VALUES
 ('שאלה','תשובה','mid1'),('שאלה2','תשובה2','mid2');
 
 INSERT INTO ROOM_TEMPLATE(room_template_id,minimal_missions_to_pass,name,type) VALUES
-('tid1',0,'תבנית אישית',0),('tid2',0,'תבנית קבוצתית',1),('tid3',0,'תבנית כיתתית',1);
+('tid1',0,'תבנית אישית',0),('tid2',0,'תבנית קבוצתית',1),('tid3',0,'תבנית כיתתית',2);
 
 INSERT INTO MISSION_TEMPLATES(room_template_id,mission_id,index) VALUES
 ('tid1','mid2',0),('tid2','mid1',0),('tid3','mid1',0);

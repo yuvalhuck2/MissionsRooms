@@ -198,6 +198,9 @@ export const roomTypes = [
 
   export const GeneralErrors={
     server_error: 'שגיאת שרת',
+    wrong_key_error: 'שגיאת מפתח הזדהות',
+    teacher_not_exists_error: 'מורה לא קיים',
+    student_not_exist:'סטודנט לא קיים',
   }
 
   export const ITStrings = {

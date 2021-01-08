@@ -23,13 +23,13 @@ class SolveDeterministicForm extends Component {
   }
 
   onAnswerChanged(text) {
-    const {currentMission } = this.props;
-    this.props.answerChanged(currentMission,text);
+    const {currentRoom } = this.props;
+    this.props.answerChanged(currentRoom.currentMission,text);
   }
 
   onButtonPress() {
-    const {currentRoom,currentMission,apiKey, navigation } = this.props;
-    this.props.sendDeterministicAnswer({currentRoom,currentMission,apiKey, navigation });
+    const {currentRoom,apiKey, navigation } = this.props;
+    this.props.sendDeterministicAnswer({currentRoom,apiKey, navigation });
   }
 
   renderSpinner() {
@@ -43,9 +43,9 @@ class SolveDeterministicForm extends Component {
   }
 
   renderButton(){
-    const {currentMission} = this.props
+    const {currentRoom} = this.props
 
-    return currentMission.loading ? (
+    return currentRoom.currentMission.loading ? (
       this.renderSpinner()
     ) : (
       <Button
@@ -71,21 +71,24 @@ class SolveDeterministicForm extends Component {
   }
 
   render() {
-    const { currentMission } = this.props;
+    const { currentRoom } = this.props;
 
-    return (
-      <KeyboardAwareScrollView style={styles.container}>
-        <Header>{currentMission.question}</Header>
-        <TextInput
-          label={enter_answer}
-          value={currentMission.currentAnswer}
-          onChangeText={this.onAnswerChanged}
-          placeholder='תשובה'
-        />
-        {this.renderButton()}
-        {this.renderError()}
-      </KeyboardAwareScrollView>
-    );
+    if(currentRoom){
+      return (
+        <KeyboardAwareScrollView style={styles.container}>
+          <Header>{currentRoom.currentMission.question}</Header>
+          <TextInput
+            label={enter_answer}
+            value={currentRoom.currentMission.currentAnswer}
+            onChangeText={this.onAnswerChanged}
+            placeholder='תשובה'
+          />
+          {this.renderButton()}
+          {this.renderError()}
+        </KeyboardAwareScrollView>
+      );
+    }
+    return this.renderSpinner();
   }
 }
 
@@ -118,8 +121,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  const { currentRoom,currentMission,apiKey, errorMessage } = state.ChooseStudentRoom;
-  return { currentRoom,currentMission,apiKey, errorMessage };
+  const { currentRoom,apiKey, errorMessage } = state.ChooseStudentRoom;
+  return { currentRoom,apiKey, errorMessage };
 };
 
 export default connect(mapStateToProps, {
