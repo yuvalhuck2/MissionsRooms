@@ -18,14 +18,14 @@ import {
   }=GeneralErrors
 
 
-export const passToMyRooms=({navigation,apiKey})=>{
+export const passToMyRooms=({navigation,apiKey,rooms})=>{
     
   return async (dispatch)=> {
     dispatch({ type: LOGIN_STUDENT,payload:apiKey});
     try {
       const res = await API.post(APIPaths.watchStudetRooms, {apiKey});
       if(res) {
-        checkGetStudentRoomsResponse(res.data, dispatch,navigation)
+        checkGetStudentRoomsResponse({data:res.data, dispatch,navigation,rooms})
       }
       else{
         dispatch({ type: UPDATE_ERROR_SOLVE_ROOM, payload: server_error });
@@ -38,11 +38,12 @@ export const passToMyRooms=({navigation,apiKey})=>{
   }
 }
 
-const checkGetStudentRoomsResponse = (data,dispatch,navigation) =>{
+const checkGetStudentRoomsResponse = ({data,dispatch,navigation,rooms}) =>{
   const {reason,value} =data
   switch (reason) {
         case Success:
-          dispatch({ type: GET_STUDENT_ROOMS, payload: value });
+          rooms=new Map(value.map((newRoom)=> rooms.has(newRoom.roomId) ? [newRoom.roomId,rooms.get(newRoom.roomId)]:[newRoom.roomId,newRoom]));
+          dispatch({ type: GET_STUDENT_ROOMS, payload: rooms });
           return navigation.navigate(NavPaths.chooseStudentRoom);
         default:
           return dispatch({ type: UPDATE_ERROR_SOLVE_ROOM, payload: server_error });

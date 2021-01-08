@@ -117,7 +117,7 @@ export const TeacherStrings = {
   addTemplate: 'בניית תבנית לחדר',
   createRoom: 'יצירת חדר',
   closeRoom: 'סגירת חדר',
-  main_screen: 'צא למסך הראשי',
+  main_screen: 'התנתק/י',
 };
 
 export const AddRoomStrings = {
@@ -134,7 +134,7 @@ export const AddRoomStrings = {
 export const AddRoomErrors = {
   name_empty: 'יש לבחור שם חדר לא ריק ',
   bonus_empty_negative: 'יש לבחור בונוס לא שלילי',
-  classroom_empty: 'הכיתה שלך לא מעודכנת במערכת אנא פנהי למחלקה הטכנית',
+  classroom_empty: 'הכיתה שלך לא מעודכנת במערכת אנא פנה/י למחלקה הטכנית',
   group_empty: 'יש לזין קבוצה על מנת להוסיף חדר קבוצתי',
   student_empty: 'יש להזין תלמיד על מנת להוסיף חדר אישי',
   empty_template: 'יש לבחור תבנית לחדר',
@@ -167,12 +167,13 @@ export const ChooseRoomStudentErrors = {
 };
 
 export const SolveDeterministicMissionStrings = {
-  enter_answer: 'הכנסי תשובה',
-  send_answer: 'שלחי תשובה',
+  enter_answer: 'הכנס/י תשובה',
+  send_answer: 'שלח/י תשובה',
 };
 
 export const StudentStrings = {
   watchMyRoom: 'החדרים שלי',
+  main_screen: 'התנתק/י',
 };
 
 export const registerCodeErrors = {
@@ -206,17 +207,17 @@ export const addRoomTemplateErrors = {
 };
 
 export const AddRoomResponseErrors = {
-  null_room_add_room_error: "חדר לא קיים",
-  wrong_name_add_room_error: "שם חדר ריק",
-  wrong_bonus_add_room_error: "יש להזין בונוס אי-שלילי",
-  not_exist_template_add_room_error: "תבנית של החדר שהוזן לא קיימת",
-  type_not_match_add_room_error: "סוג החדר שהוזן לא תואם לסוג התבנית",
-  wrong_type_add_room_error: "סוג החדר לא תקין",
-  not_exist_student_add_room_error: "התלמיד המשויך לחדר אינו קיים",
-  already_exist_student_add_room_error: "התלמיד שהוזן כבר משויך לחדר מסוג אישי",
-  not_exist_group_add_room_error: "הקבוצה המשויכת לחדר אינה קיימת",
-  already_exist_group_add_room_error: "הקבוצה שהוזנה כבר משויכת לחדר מסוג קבוצתי",
-  not_exist_classroom_add_room_error: "הכיתה המשויכת לחדר אינה קיימת",
-  already_exist_class_add_room_error: "הכיתה שהוזנה כבר משויכת לחדר מסוג כיתתי",
-}
-
+  null_room_add_room_error: 'חדר לא קיים',
+  wrong_name_add_room_error: 'שם חדר ריק',
+  wrong_bonus_add_room_error: 'יש להזין בונוס אי-שלילי',
+  not_exist_template_add_room_error: 'תבנית של החדר שהוזן לא קיימת',
+  type_not_match_add_room_error: 'סוג החדר שהוזן לא תואם לסוג התבנית',
+  wrong_type_add_room_error: 'סוג החדר לא תקין',
+  not_exist_student_add_room_error: 'התלמיד המשויך לחדר אינו קיים',
+  already_exist_student_add_room_error: 'התלמיד שהוזן כבר משויך לחדר מסוג אישי',
+  not_exist_group_add_room_error: 'הקבוצה המשויכת לחדר אינה קיימת',
+  already_exist_group_add_room_error:
+    'הקבוצה שהוזנה כבר משויכת לחדר מסוג קבוצתי',
+  not_exist_classroom_add_room_error: 'הכיתה המשויכת לחדר אינה קיימת',
+  already_exist_class_add_room_error: 'הכיתה שהוזנה כבר משויכת לחדר מסוג כיתתי',
+};
