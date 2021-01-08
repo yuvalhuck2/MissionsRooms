@@ -23,14 +23,14 @@ const initialState = {
         case CURRENT_ROOM_CHANGED:
             return { ...state, currentRoom:action.payload};
         case PASS_TO_SOLVE_MISSIONS:
+            //console.log(state.rooms)
             return { ...state, currentMission:action.payload, errorMessage: ''};
         case CURRENT_ANSWER_CHANGED:
-            console.log(action.payload)
             return { ...state, currentMission:action.payload};
         case SOLVE_MISSION:
             return { ...state, currentMission:{...state.currentMission, loading: true,answers:[]} };
         case GET_STUDENT_ROOMS:
-            return {...state, rooms:new Map(action.payload.map((room)=>[room.roomId,room]))};
+            return {...state, rooms:action.payload,currentRoom:undefined,};
         case LOGIN_STUDENT:
             return { ...initialState, apiKey: action.payload, errorMessage:'' };
         case SOLVE_MISSION_SEND:

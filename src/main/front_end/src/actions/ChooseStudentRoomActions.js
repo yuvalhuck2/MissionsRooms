@@ -59,9 +59,11 @@ const {
   };
 
   const moveToSpecificMission=(currentMission,dispatch,navigation)=>{
+    console.log(currentMission)
       switch(currentMission.name){
         case DETERMINISTIC_NAME:
-          dispatch({ type: PASS_TO_SOLVE_MISSIONS, payload: {...currentMission, tries:TRIES, currentAnswer:''} });
+          tries=getTriesFromMission(currentMission)
+          dispatch({ type: PASS_TO_SOLVE_MISSIONS, payload: {...currentMission, tries, currentAnswer:''} });
           navigation.navigate(NavPaths.deterministicScreen);
           break;
         default:
@@ -70,9 +72,14 @@ const {
 
   }
 
+  const getTriesFromMission=(currentMission)=>{
+    return currentMission.tries==undefined?
+    TRIES
+    :currentMission.tries
+  }
+
   export const sendDeterministicAnswer = ({currentRoom,currentMission, navigation,apiKey}) => {
     return async (dispatch)=>{
-      console.log(currentMission)
       if(currentMission.answers[0].trim()==currentMission.currentAnswer.trim()){
         try {
           dispatch({ type: SOLVE_MISSION_SEND ,payload:''});
