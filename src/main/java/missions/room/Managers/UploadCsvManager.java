@@ -7,13 +7,13 @@ import Utils.Utils;
 import javafx.util.Pair;
 import missions.room.Domain.*;
 import missions.room.Repo.ClassroomRepo;
+import missions.room.Repo.ITRepo;
 import missions.room.Repo.TeacherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.UnknownServiceException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -55,8 +55,20 @@ public class UploadCsvManager {
     @Autowired
     private TeacherRepo teacherRepo;
 
+    @Autowired
+    private ITRepo itRepo;
+
+    private Ram ram;
+
+    public UploadCsvManager() {
+        ram = new Ram();
+    }
+
     public Response<Boolean> uploadCsv(String token, MultipartFile[] CSVs) {
-        // TODO: check token belongs to IT
+        Response<IT> checkToken = checkIT(token);
+        if (checkToken.getValue() == null) {
+            return new Response<>(false, checkToken.getReason());
+        }
         String studentsFile, classesFile, teacherFile, groupsFile;
         try{
             studentsFile = getFileStringByName(CSVs, STUDENT_FILE);
@@ -115,6 +127,26 @@ public class UploadCsvManager {
             classes.add(creatClass(studentsInClass, classPair));
         }
         return classes;
+    }
+
+    private  Response<IT> checkIT(String apiKey){
+        String alias = ram.getApi(apiKey);
+        if(alias==null){
+            return new Response<>(null, OpCode.Wrong_Key);
+        }
+        Response<IT> ITResponse = itRepo.findITById(alias);
+        return checkITResponse(ITResponse);
+    }
+
+    private Response<IT> checkITResponse(Response<IT> ITResponse){
+        if(ITResponse.getReason()!= OpCode.Success){
+            return new Response<>(null,ITResponse.getReason());
+        }
+        IT it = ITResponse.getValue();
+        if(it == null){
+            return new Response<>(null,OpCode.Not_Exist);
+        }
+        return new Response<>(it,OpCode.Success);
     }
 
     private HashMap<String, Student> getStudentInClass(String membersString, HashMap<String, Student> students) {
