@@ -125,7 +125,7 @@ public class RoomManager extends TeacherManager {
             return new Response<>(null, OpCode.Not_Exist_Group);
         }
         Response<GroupRoom> groupRoomResponse=roomRepo.findGroupRoomForWriteByAlias(group.getGroupName());//all real
-        if(groupRoomResponse.getValue()!=null){//if the group is already in a room personal type
+        if(groupRoomResponse.getValue()!=null){//if the group is already in a room group type
             return new Response<>(null,OpCode.Already_Exist_Group);
         }
         if(groupRoomResponse.getReason()!=OpCode.Success){//check if there is db error or lock error

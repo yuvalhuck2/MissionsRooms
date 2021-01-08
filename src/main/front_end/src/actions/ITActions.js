@@ -1,7 +1,7 @@
 import * as DocumentPicker from 'expo-document-picker';
 import { Platform } from 'react-native';
 import { uploadStringsErrors } from '../locale/locale_heb';
-import {PICKED_FILE, RESET_FILES} from './types'
+import { PICKED_FILE, RESET_FILES } from './types';
 
 const {
     file_number_error
