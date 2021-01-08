@@ -18,6 +18,8 @@ import {
   import {
     Success,
     Final,
+    Wrong_Key,
+    Not_Exist,
   } from './OpCodeTypes';
 const {
     room_empty,
@@ -29,12 +31,14 @@ const {
 
 const {
     server_error,
+    wrong_key_error,
+    student_not_exist,
   }=GeneralErrors
 
-  export const roomChanged = (text) => {
+  export const roomChanged = (room) => {
     return {
       type: CURRENT_ROOM_CHANGED,
-      payload: text,
+      payload: room.roomId,
     };
   };
 
@@ -46,13 +50,14 @@ const {
   }
 
   export const passToSolveMission= ({currentRoom,navigation}) => {
+    
     return async (dispatch)=>{
       if(currentRoom==undefined){
         dispatch({ type: UPDATE_ERROR_SOLVE_ROOM, payload: room_empty });
       }
       else{
         currentMission=currentRoom.currentMission
-        moveToSpecificMission(currentMission,dispatch,navigation)
+        moveToSpecificMission(currentRoom.currentMission,dispatch,navigation)
       
       }
     }
@@ -61,7 +66,8 @@ const {
   const moveToSpecificMission=(currentMission,dispatch,navigation)=>{
       switch(currentMission.name){
         case DETERMINISTIC_NAME:
-          dispatch({ type: PASS_TO_SOLVE_MISSIONS, payload: {...currentMission, tries:TRIES, currentAnswer:''} });
+          tries=getTriesFromMission(currentMission)
+          dispatch({ type: PASS_TO_SOLVE_MISSIONS, payload: {...currentMission, tries, currentAnswer:''} });
           navigation.navigate(NavPaths.deterministicScreen);
           break;
         default:
@@ -70,9 +76,15 @@ const {
 
   }
 
-  export const sendDeterministicAnswer = ({currentRoom,currentMission, navigation,apiKey}) => {
+  const getTriesFromMission=(currentMission)=>{
+    return currentMission.tries==undefined?
+    TRIES
+    :currentMission.tries
+  }
+
+  export const sendDeterministicAnswer = ({currentRoom, navigation,apiKey}) => {
+    currentMission=currentRoom.currentMission
     return async (dispatch)=>{
-      console.log(currentMission)
       if(currentMission.answers[0].trim()==currentMission.currentAnswer.trim()){
         try {
           dispatch({ type: SOLVE_MISSION_SEND ,payload:''});
@@ -100,7 +112,8 @@ const {
         }
       }
       else{//wrong so tries removed
-        dispatch({type: CURRENT_ANSWER_CHANGED,payload:{... currentMission, tries:currentMission.tries-1}})
+        dispatch({type: CURRENT_ANSWER_CHANGED,payload:{... currentRoom.currentMission, tries:currentRoom.currentMission.tries-1}})
+        dispatch({ type: TRIES});
         return dispatch({ type: UPDATE_ERROR_SOLVE_ROOM, payload: wrong_answer+(currentMission.tries-1) });
         
       }
@@ -110,28 +123,18 @@ const {
   const checkSolveRespnose= (data,dispatch,navigation,apiKey,solution) =>{
     const {reason,value} =data
     switch (reason) {
-      // case Wrong_Password:
-      //   return dispatch({ type: UPDATE_ERROR, payload: wrong_password_login });
-      // case Wrong_Alias:
-      //   return dispatch({ type: UPDATE_ERROR, payload: wrong_alias });
-      // case Not_Exist:
-      //   return dispatch({ type: UPDATE_ERROR, payload: not_exist });
-      // case Supervisor:
-      //   navigation.navigate(NavPaths.supMainScreen);
-      //   return dispatch({ type: LOGIN_SUPERVISOR, payload: value });
-        case Success:
-          alert(solution)
-          return dispatch({ type: LOGIN_STUDENT, payload: apiKey });
-        case Final:
-            navigation.navigate(NavPaths.studentMainScreen);
-            alert(solution+final)
-            return dispatch({ type: LOGIN_STUDENT, payload: apiKey });
-        default:
-          return dispatch({ type: UPDATE_ERROR_SOLVE_ROOM, payload: server_error });
+      case Wrong_Key:
+        return dispatch({ type: UPDATE_ERROR_SOLVE_ROOM, payload: wrong_key_error }); 
+      case Not_Exist:
+        return dispatch({ type: UPDATE_ERROR_SOLVE_ROOM, payload: student_not_exist });
+      case Success:
+        alert(solution)
+        return dispatch({ type: LOGIN_STUDENT, payload: apiKey });
+      case Final:
+        navigation.navigate(NavPaths.studentMainScreen);
+        alert(solution+final)
+        return dispatch({ type: LOGIN_STUDENT, payload: apiKey });
+      default:
+        return dispatch({ type: UPDATE_ERROR_SOLVE_ROOM, payload: server_error });
     }
-      //const res = await API.post('/UserAuth', { alias: email, password });
-      // console.log(res.data);
-      // if (res) {
-      //   alert("wow")
-      // }
   }

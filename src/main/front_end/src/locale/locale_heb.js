@@ -115,7 +115,7 @@ export const roomTypes = [
     addTemplate:'בניית תבנית לחדר',
     createRoom:'יצירת חדר',
     closeRoom:'סגירת חדר',
-    main_screen:'צא למסך הראשי',
+    main_screen:'התנתק/י',
   }
 
   export const AddRoomStrings={
@@ -133,7 +133,7 @@ export const roomTypes = [
   export const AddRoomErrors={
     name_empty:'יש לבחור שם חדר לא ריק ',
     bonus_empty_negative:'יש לבחור בונוס לא שלילי',
-    classroom_empty:'הכיתה שלך לא מעודכנת במערכת אנא פנה\י למחלקה הטכנית',
+    classroom_empty:'הכיתה שלך לא מעודכנת במערכת אנא פנה/י למחלקה הטכנית',
     group_empty:'יש לזין קבוצה על מנת להוסיף חדר קבוצתי',
     student_empty:'יש להזין תלמיד על מנת להוסיף חדר אישי',
     empty_template:'יש לבחור תבנית לחדר',
@@ -166,12 +166,13 @@ export const roomTypes = [
   };
 
   export const SolveDeterministicMissionStrings={
-    enter_answer:'הכנס\י תשובה',
-    send_answer:'שלח\י תשובה',
+    enter_answer:'הכנס/י תשובה',
+    send_answer:'שלח/י תשובה',
   }
 
   export const StudentStrings={
     watchMyRoom:'החדרים שלי',
+    main_screen:'התנתק/י',
   }
 
   export const registerCodeErrors = {
@@ -187,4 +188,8 @@ export const roomTypes = [
 
   export const GeneralErrors={
     server_error: 'שגיאת שרת',
+    wrong_key_error: 'שגיאת מפתח הזדהות',
+    teacher_not_exists_error: 'מורה לא קיים',
+    student_not_exist:'סטודנט לא קיים',
+
   }
