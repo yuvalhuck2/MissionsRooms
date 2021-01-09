@@ -167,8 +167,11 @@ public class UploadCsvManager {
     }
 
     private Classroom creatClass(HashMap<String, Student> studentsInClass, Pair<String, String> className){
-        ClassGroup tempGroup = new ClassGroup(UniqueStringGenerator.getTimeNameCode("GR-"+className), GroupType.C, studentsInClass);
-        Classroom classRoom = new Classroom(className.toString(), new ArrayList<ClassGroup>(Arrays.asList(tempGroup)));
+        ClassGroup tempGroup = new ClassGroup(UniqueStringGenerator.getTimeNameCode("GR-"+className+"C"), GroupType.C, studentsInClass);
+        ClassGroup groupA = new ClassGroup(UniqueStringGenerator.getTimeNameCode("GR-"+className+"A"), GroupType.A, new HashMap<>());
+        ClassGroup groupB = new ClassGroup(UniqueStringGenerator.getTimeNameCode("GR-"+className+"B"), GroupType.B, new HashMap<>());
+        // ClassGroup[] classGroups = new ClassGroup[]{tempGroup,groupA,groupB};
+        Classroom classRoom = new Classroom(className.toString(), new ArrayList<ClassGroup>(Arrays.asList(tempGroup,groupA,groupB)));
         return classRoom;
     }
     private Boolean checkCsvHeadersValidity(String[] studentsRows, String[] classesRows, String[] teachersRows, String[] groupsRows){

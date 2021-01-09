@@ -201,17 +201,23 @@ public class RoomManager extends TeacherManager {
         List<GroupData> groups=new ArrayList<>();
         switch (groupType){
             case A:
-                groups.add(groupDataMap.get(GroupType.A));break;
+                addGroupsData(groups, groupDataMap, GroupType.A);break;
             case B:
-                groups.add(groupDataMap.get(GroupType.B));break;
+                addGroupsData(groups, groupDataMap, GroupType.B);break;
             case BOTH:
-                groups.add(groupDataMap.get(GroupType.A));
-                groups.add(groupDataMap.get(GroupType.B));break;
+                addGroupsData(groups, groupDataMap, GroupType.A);
+                addGroupsData(groups, groupDataMap, GroupType.B);break;
         }
 
         ClassRoomData classRoomData=new ClassRoomData(classroom.getClassName(),groups);
         return new Response<>(classRoomData,OpCode.Success);
 
+    }
+
+    private void addGroupsData(List<GroupData> groups, Map<GroupType,GroupData> groupDataMap, GroupType groupType){
+        if (groupDataMap.containsKey(groupType)){
+            groups.add(groupDataMap.get(groupType));
+        }
     }
 
 }
