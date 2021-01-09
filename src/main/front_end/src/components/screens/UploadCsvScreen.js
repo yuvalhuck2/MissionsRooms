@@ -104,11 +104,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     files_label: {
-        width: DeviceWidth * 0.8
+        width: DeviceWidth * 0.8,
+        
     },
     button: {
-        width: DeviceWidth * 0.3,
-        height: DeviceWidth * 0.1,
+        width: DeviceWidth * 0.5,
+        height: DeviceWidth * 0.12,
     },
     wrapper: {
         justifyContent: 'center',
@@ -122,8 +123,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    const {text, files, errorMessage} = state.IT
-    return {text, files, errorMessage};
+    const {text, files, errorMessage, apiKey} = state.IT
+    return {text, files, errorMessage, apiKey};
 };
 
 export default connect(mapStateToProps, 

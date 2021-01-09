@@ -1,5 +1,5 @@
 const initialState = {text: '', files: [], errorMessage: '', successMessage: '',  apiKey:''};
-import {PICKED_FILE, RESET_FILES, CLEAR_STATE, UPDATE_ERROR, UPLOAD_CSV_SUCCESS} from '../actions/types'
+import {PICKED_FILE, RESET_FILES, CLEAR_STATE, UPDATE_ERROR, UPLOAD_CSV_SUCCESS, LOGIN_IT} from '../actions/types'
 
 export default (state = initialState, action) => {
     switch(action.type) {
@@ -11,6 +11,8 @@ export default (state = initialState, action) => {
             return initialState;
         case UPDATE_ERROR:
             return { ...state, errorMessage: action.payload, successMessage: '' }
+        case LOGIN_IT:
+            return {...initialState, apiKey: action.payload}
         case UPLOAD_CSV_SUCCESS:
             return {...state, errorMessage: '', successMessage: action.payload }
         default:
