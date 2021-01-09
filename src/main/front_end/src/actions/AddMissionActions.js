@@ -22,6 +22,7 @@ import {
   Null_Error,
   Success,
   Wrong_Type,
+  Wrong_Key,
 } from './OpCodeTypes';
 
 const {
