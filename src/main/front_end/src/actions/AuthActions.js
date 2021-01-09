@@ -123,7 +123,6 @@ const checkRegisterUserResponse = (data, dispatch, navigation) => {
     case Mail_Error:
       return dispatch({ type: UPDATE_ERROR, payload: server_error });
     case Teacher:
-      // TODO: navigate to add activation code when it is done
       if (navigation) navigation.navigate(NavPaths.authCodeScreen);
       return dispatch({ type: REGISTER_TEACHER });
     case Student:

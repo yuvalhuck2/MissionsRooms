@@ -93,7 +93,7 @@ public class Teacher extends SchoolUser {
     }
 
     public TeacherData getData() {
-        return new TeacherData(alias,lastName,firstName,groupType);
+        return new TeacherData(firstName,lastName,alias,groupType);
     }
 
     @Transactional

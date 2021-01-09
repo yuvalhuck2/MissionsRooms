@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import {
   codeChanged,
   registerCode,
-  registerUser,
+  registerUser
 } from '../../actions/AuthActions';
 import { theme } from '../../core/theme';
 import { authStrings } from '../../locale/locale_heb';
