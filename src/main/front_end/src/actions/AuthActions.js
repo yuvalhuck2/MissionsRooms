@@ -2,7 +2,7 @@ import API from '../api/API';
 import * as APIPaths from '../api/APIPaths';
 import { authErrors, registerCodeErrors } from '../locale/locale_heb';
 import * as NavPaths from '../navigation/NavPaths';
-//import Constants from 'expo-constants'
+// import Constants from 'expo-constants'
 import {
   Already_Exist,
   Code_Not_Match,
@@ -123,7 +123,6 @@ const checkRegisterUserResponse = (data, dispatch, navigation) => {
     case Mail_Error:
       return dispatch({ type: UPDATE_ERROR, payload: server_error });
     case Teacher:
-      // TODO: navigate to add activation code when it is done
       if (navigation) navigation.navigate(NavPaths.authCodeScreen);
       return dispatch({ type: REGISTER_TEACHER });
     case Student:
@@ -240,7 +239,6 @@ const checkLoginUserResponse = (data, dispatch, navigation) => {
       navigation.navigate(NavPaths.supMainScreen);
       return dispatch({ type: LOGIN_SUPERVISOR, payload: value });
     case IT:
-      // TODO: navigate to IT main screen
       navigation.navigate(NavPaths.ITMainScreen);
       return dispatch({ type: LOGIN_IT, payload: value });
     case Teacher:

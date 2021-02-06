@@ -1,46 +1,54 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, Dimensions, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
-import { emailChanged, passwordChanged, registerUser } from '../../actions';
-import { theme } from '../../core/theme';
-import { registerStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
-import Header from '../common/Header';
-import TextInput from '../common/TextInput';
 import { Icon } from 'react-native-elements'
+import  { navigateToUploadCSV } from '../../actions'
+import { ITStrings } from '../../locale/locale_heb';
+import {logout} from '../../actions'
+
 const {
-  header,
-  enter_email,
-  enter_password,
-  register_btn,
-  already_user,
-  already_user_sign_in,
-} = registerStrings;
+  uploadCSV,
+  main_screen
+} = ITStrings
 
 const DeviceWidth  = Dimensions.get('window').width;
 const backgroundColor = 'purple';
 const buttonColor = '#9932cc';
+
 class ITForm extends Component {
   constructor(...args) {
     super(...args);
+    this.navigateToUploadCSV = this.navigateToUploadCSV.bind(this);
+    this.onLogout=this.onLogout.bind(this);
+  }
+
+  navigateToUploadCSV() {
+    const { navigation } = this.props;
+    this.props.navigateToUploadCSV({ navigation });
+  }
+
+  onLogout(){
+    const {navigation}=this.props;
+    return this.props.logout(navigation);
   }
 
 
   render() {
-    const { email, password } = this.props;
     
     return (
       <View style={styles.container}>
         <View>
           <Button style={[styles.button, styles.top_button_marg, styles.left_button_border, styles.top_button_border]} />
           <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} />
-          <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]} />
+          <Button onPress={this.onLogout} style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]} >
+            <Text style={{color:"white"}}>{main_screen}</Text> 
+            <Icon name='exit-to-app' />
+          </Button>
         </View>
         <View>
-          <Button  mode="contained" style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >
-            <Text style={{color:"white"}}>CSV</Text> 
-            <Icon name='rowing' />
+          <Button  mode="contained" onPress={this.navigateToUploadCSV} style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >
+            <Text style={{color:"white"}}>{uploadCSV}</Text> 
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]} />
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]} />
@@ -100,4 +108,4 @@ const mapStateToProps = (state) => {
   return { };
 };
 
-export default connect(mapStateToProps)(ITForm);
+export default connect(mapStateToProps, {navigateToUploadCSV, logout})(ITForm);

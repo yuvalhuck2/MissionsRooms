@@ -33,7 +33,7 @@ public class Utils {
     }
 
     public static String getAlias(String email){
-        String pattern = "([^\\/]+)@leobaeck.net";
+        String pattern = "([^\\/]+)" + TEST_SUFFIX;
 
         // Create a Pattern object
         Pattern r = Pattern.compile(pattern);

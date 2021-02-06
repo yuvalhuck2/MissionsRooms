@@ -262,7 +262,7 @@ public class UserAuthenticationManager extends TeacherManager {
             return new Response<>(null, OpCode.Not_Exist);
         }
         String api= UniqueStringGenerator.getUniqueCode(alias);
-        if(user.getPassword().equals(hashSystem.encrypt(password))){
+        if(hashSystem.encrypt(password).equals(user.getPassword())){
             this.ram.addApi(api,alias);
             return new Response<>(api,user.getOpcode());
         }
