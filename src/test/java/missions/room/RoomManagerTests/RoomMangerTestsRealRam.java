@@ -16,12 +16,11 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 
+import static Data.DataConstants.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
 public class RoomMangerTestsRealRam extends RoomManagerTestsAllStubs{
-
-    protected static final String SUPERVISOR_KEY= DataGenerator.SUPERVISOR_KEY;
 
     @Override
     @BeforeEach

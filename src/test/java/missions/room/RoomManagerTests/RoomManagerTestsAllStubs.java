@@ -36,6 +36,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 
+import static Data.DataConstants.*;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -45,10 +46,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class RoomManagerTestsAllStubs {
-
-    protected static final String NULL_TEACHER_KEY=DataGenerator.NULL_TEACHER_KEY;
-    protected static final String WRONG_TEACHER_NAME=DataGenerator.WRONG_TEACHER_NAME;
-    protected static final String INVALID_KEY=DataGenerator.INVALID_KEY;
 
     @Autowired
     protected TeacherCrudRepository teacherCrudRepository;
