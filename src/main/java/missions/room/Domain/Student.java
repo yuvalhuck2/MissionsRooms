@@ -1,6 +1,7 @@
 package missions.room.Domain;
 
 import DataAPI.OpCode;
+import DataAPI.StudentData;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -32,5 +33,9 @@ public class Student extends SchoolUser {
 
     public int getPoints() {
         return points;
+    }
+
+    public StudentData getStudentData() {
+        return new StudentData(alias,firstName,lastName);
     }
 }

@@ -2,7 +2,6 @@ package missions.room.RoomManagerTests;
 
 import Data.Data;
 import DataAPI.OpCode;
-import DataAPI.Response;
 import missions.room.Domain.Room;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
@@ -26,7 +25,7 @@ public class RoomManagerRealRamTeacherTemplateRoom extends RoomManagerRealRamTea
         setUpAddRoom();
         roomCrudRepository.save(dataGenerator.getRoom(Data.Valid_Student));
         testAddRoomInValid(Data.Valid_Student,OpCode.Already_Exist_Student);
-        tearDownAddRoom();
+        tearDown();
     }
 
     @Test
@@ -34,7 +33,7 @@ public class RoomManagerRealRamTeacherTemplateRoom extends RoomManagerRealRamTea
         setUpAddRoom();
         roomCrudRepository.save(dataGenerator.getRoom(Data.Valid_Group));
         testAddRoomInValid(Data.Valid_Group,OpCode.Already_Exist_Group);
-        tearDownAddRoom();
+        tearDown();
     }
 
     @Test
@@ -42,7 +41,7 @@ public class RoomManagerRealRamTeacherTemplateRoom extends RoomManagerRealRamTea
         setUpAddRoom();
         roomCrudRepository.save(dataGenerator.getRoom(Data.Valid_Classroom));
         testAddRoomInValid(Data.Valid_Classroom,OpCode.Already_Exist_Class);
-        tearDownAddRoom();
+        tearDown();
     }
 
     @Override

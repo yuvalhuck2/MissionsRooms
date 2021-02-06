@@ -1,5 +1,7 @@
 package missions.room.Domain;
 
+import DataAPI.ClassRoomData;
+import DataAPI.GroupData;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import org.hibernate.annotations.LazyCollection;
@@ -9,10 +11,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -122,5 +122,15 @@ public class Classroom{
             }
         }
         return null;
+    }
+
+    public ClassRoomData getClassroomData(GroupType groupType) {
+        List<GroupData> groupDataList =classGroups.
+                                        parallelStream().
+                                        map((group)->group.getGroupData(groupType)).
+                                        filter(Objects::nonNull).
+                                        collect(Collectors.toList());
+
+        return new ClassRoomData(className,groupDataList);
     }
 }
