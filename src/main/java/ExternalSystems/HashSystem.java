@@ -11,11 +11,15 @@ public class HashSystem {
      * use case 2.3 - Login
      * @param passwordToHash
      * @return encrypted password
-     * @throws NoSuchAlgorithmException
      */
-    public String encrypt(String passwordToHash) throws NoSuchAlgorithmException {
+    public String encrypt(String passwordToHash)  {
         // getInstance() method is called with algorithm SHA-512
-        MessageDigest md = MessageDigest.getInstance("SHA-512");
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-512");
+        } catch (NoSuchAlgorithmException ignored) {
+            return  null;
+        }
 
         // digest() method is called
         // to calculate message digest of the input string

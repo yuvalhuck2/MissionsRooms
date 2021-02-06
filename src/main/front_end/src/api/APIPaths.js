@@ -1,0 +1,11 @@
+export const register = "/UserAuth"
+export const login = "/UserAuth/login"
+export const registerCode = '/UserAuth/code';
+export const addMission="/mission/create"
+export const searchMission="/mission/search"
+export const addTemplate="/template/create"
+export const searchTemplate="/template/search"
+export const getClassroom="/room/classroom"
+export const addRoom="/room/create"
+export const watchStudetRooms="student/room/view"
+export const solveDeterministic="student/room/deterministic"
