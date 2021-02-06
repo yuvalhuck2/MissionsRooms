@@ -1,10 +1,9 @@
 package missions.room.Domain;
 
+import DataAPI.GroupData;
+
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -69,4 +68,21 @@ public class ClassGroup {
     }
 
 
+    public GroupData getGroupData(GroupType groupType) {
+        if (checkGroup(groupType)){
+            return new GroupData(this.groupName,
+                    this.groupType,
+                    students.values().parallelStream().map(Student::getStudentData));
+        }
+        else{
+            return null;
+        }
+    }
+
+    /**
+     * return if the group is owned by the teacher that ask for the group data
+     */
+    private boolean checkGroup(GroupType groupType) {
+        return this.groupType!=GroupType.C&&(groupType==this.groupType||groupType==GroupType.BOTH)&&!students.isEmpty();
+    }
 }

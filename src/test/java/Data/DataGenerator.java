@@ -18,7 +18,14 @@ import java.util.*;
 
 public class DataGenerator {
 
+    public static final String NULL_TEACHER_KEY="null_teacher";
+    public static final String WRONG_TEACHER_NAME="wrong_name";
+    public static final String INVALID_KEY="invalid";
+    public static final String SUPERVISOR_KEY="superKey";
+
+
     private HashMap<Data, Student> students;
+    private HashMap<Data, StudentData> studentDatas;
     private HashMap<Data,RegisterDetailsData> registerDetailsDatas;
     private HashMap<Data,String> verificationCodes;
     private HashMap<Data, Teacher> teachers;
@@ -31,12 +38,17 @@ public class DataGenerator {
     private HashMap<Data, Room> roomsMap;
     private HashMap<Data, NewRoomDetails> newRoomDetailsMap;
     private HashMap<Data,Classroom> classRoomMap;
+    private HashMap<Data,ClassRoomData> classRoomDataMap;
     private HashMap<Data,ClassGroup> classGroupMap;
+    private HashMap<Data,GroupData> classGroupData;
 
     public DataGenerator() {
         initStudents();
+        initStudentDataDatas();
         initGroups();
+        initGroupsDatas();
         initClassrooms();
+        initClassroomData();
         initRegisterDetailsDatas();
         initVerificationCodes();
         initTeacher();
@@ -48,6 +60,8 @@ public class DataGenerator {
         initLoginDatas();
         initUsers();
     }
+
+
 
     private void initUsers(){
         users=new HashMap<Data, User>();
@@ -78,6 +92,15 @@ public class DataGenerator {
         classRoomMap.put(Data.VALID_WITH_GROUP_C,new Classroom("class",groups));
     }
 
+    private void initClassroomData() {
+        classRoomDataMap=new HashMap<Data, ClassRoomData>();
+        initClassRoomDatasFromGroupsMap(Data.Valid_Classroom);
+    }
+
+    private void initClassRoomDatasFromGroupsMap(Data data){
+        classRoomDataMap.put(data,classRoomMap.get(data).getClassroomData(GroupType.BOTH));
+    }
+
     private void initGroups() {
         classGroupMap=new HashMap<Data, ClassGroup>();
         HashMap<String,Student> studentHashMap=new HashMap<>();
@@ -85,6 +108,17 @@ public class DataGenerator {
         classGroupMap.put(Data.Valid_Group,new ClassGroup("g2",GroupType.B,studentHashMap));
         classGroupMap.put(Data.Empty_Students,new ClassGroup("g1",GroupType.A,new HashMap<>()));
         classGroupMap.put(Data.VALID_WITH_GROUP_C,new ClassGroup("g3",GroupType.C,studentHashMap));
+    }
+
+    private void initGroupsDatas(){
+        classGroupData=new HashMap<Data, GroupData>();
+        initGroupDatasFromGroupsMap(Data.Valid_Group);
+        initGroupDatasFromGroupsMap(Data.Empty_Students);
+
+    }
+
+    private void initGroupDatasFromGroupsMap(Data data){
+        classGroupData.put(data,classGroupMap.get(data).getGroupData(GroupType.BOTH));
     }
 
     private void initNewRoomDetails() {
@@ -202,6 +236,7 @@ public class DataGenerator {
     private void initTeacher() {
         teachers=new HashMap<Data, Teacher>();
         teachers.put(Data.VALID_WITH_PASSWORD,new Teacher("NoAlasTeacher","Avi","Ron","1234"));
+        teachers.put(Data.Supervisor,new Supervisor("supervisorAlias","Avi","Ron",null,GroupType.BOTH));
         teachers.put(Data.VALID_WITH_CLASSROOM,new Teacher("NoAlasTeacher","Avi","Ron",
                 classRoomMap.get(Data.Valid_Classroom),GroupType.BOTH,"1234"));
         teachers.put(Data.VALID_WITH_GROUP_C,new Teacher("NoAlasTeacher","Avi","Ron",
@@ -233,6 +268,14 @@ public class DataGenerator {
         students.put(Data.VALID,new Student("NoAlasIsExistWithThatName","Yuval","Sabag"));
     }
 
+    private void initStudentDataDatas(){
+        studentDatas=new HashMap<Data, StudentData>();
+        initSingleStudentData(Data.VALID);
+    }
+
+    private void initSingleStudentData(Data data){
+        studentDatas.put(data,students.get(data).getStudentData());
+    }
 
 
 
@@ -304,4 +347,19 @@ public class DataGenerator {
         return classRoomMap.get(data);
     }
 
+    public StudentData getStudentData(Data data) {
+        return studentDatas.get(data);
+    }
+
+    public GroupData getGroupData(Data data) {
+        return classGroupData.get(data);
+    }
+
+    public ClassGroup getClassGroup(Data data) {
+        return classGroupMap.get(data);
+    }
+
+    public ClassRoomData getClassroomData(Data data) {
+        return classRoomDataMap.get(data);
+    }
 }
