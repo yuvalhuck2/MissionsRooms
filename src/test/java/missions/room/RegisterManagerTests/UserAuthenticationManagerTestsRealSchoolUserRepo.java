@@ -136,7 +136,8 @@ public class UserAuthenticationManagerTestsRealSchoolUserRepo extends UserAuthen
             fail();
         }
         //super because he has to me removed from aliasToCode
-        super.checkWrongRegisterCode(Data.VALID,Data.VALID,OpCode.Already_Exist);
+        //not exist because we won't find the student in the unregistered users
+        super.checkWrongRegisterCode(Data.VALID,Data.VALID,OpCode.Not_Exist);
         registerCodeTearDown();
     }
 

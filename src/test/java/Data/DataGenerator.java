@@ -18,12 +18,6 @@ import java.util.*;
 
 public class DataGenerator {
 
-    public static final String NULL_TEACHER_KEY="null_teacher";
-    public static final String WRONG_TEACHER_NAME="wrong_name";
-    public static final String INVALID_KEY="invalid";
-    public static final String SUPERVISOR_KEY="superKey";
-
-
     private HashMap<Data, Student> students;
     private HashMap<Data, StudentData> studentDatas;
     private HashMap<Data,RegisterDetailsData> registerDetailsDatas;
@@ -41,10 +35,12 @@ public class DataGenerator {
     private HashMap<Data,ClassRoomData> classRoomDataMap;
     private HashMap<Data,ClassGroup> classGroupMap;
     private HashMap<Data,GroupData> classGroupData;
+    private HashMap<Data,Suggestion> suggestionHashMap;
 
     public DataGenerator() {
         initStudents();
         initStudentDataDatas();
+        initSuggestions();
         initGroups();
         initGroupsDatas();
         initClassrooms();
@@ -61,6 +57,10 @@ public class DataGenerator {
         initUsers();
     }
 
+    private void initSuggestions() {
+        suggestionHashMap=new HashMap<Data, Suggestion>();
+        suggestionHashMap.put(Data.VALID,new Suggestion("id","suggest something"));
+    }
 
 
     private void initUsers(){
@@ -361,5 +361,9 @@ public class DataGenerator {
 
     public ClassRoomData getClassroomData(Data data) {
         return classRoomDataMap.get(data);
+    }
+
+    public Suggestion getSuggestion(Data data) {
+        return suggestionHashMap.get(data);
     }
 }

@@ -197,16 +197,6 @@ public class ServiceAPI {
 
 
     /**
-     * req 3.7 - add suggestion
-     * @param auth - authentication object
-     * @param suggestion - suggestion to a mission the student want to send
-     * @return if the suggestion was added successfully
-     */
-    public Response<Boolean> addSuggestion(Auth auth, String suggestion){
-        throw new NotImplementedException();
-    }
-
-    /**
      * req 3.8 - reset password
      * @param auth - authentication object
      * @return if an email was sent with verification code

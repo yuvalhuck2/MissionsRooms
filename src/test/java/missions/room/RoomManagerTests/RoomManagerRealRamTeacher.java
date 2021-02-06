@@ -15,6 +15,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.lang.reflect.Field;
 
+import static Data.DataConstants.*;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 

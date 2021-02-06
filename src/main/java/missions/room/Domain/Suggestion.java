@@ -1,7 +1,10 @@
 package missions.room.Domain;
 
+import DataAPI.StudentData;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 public class Suggestion {
@@ -17,5 +20,21 @@ public class Suggestion {
     }
 
     public Suggestion() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getSuggestion() {
+        return suggestion;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Suggestion suggestion = (Suggestion) o;
+        return  Objects.equals(suggestion.suggestion, this.suggestion);
     }
 }
