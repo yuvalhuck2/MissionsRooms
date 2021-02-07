@@ -13,11 +13,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DataRetrievalFailureException;
 
 import java.lang.reflect.Field;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -40,6 +40,10 @@ public class SuggestionMangerTestsAllReal extends SuggestionManagerTestsRealRamS
         } catch (IllegalAccessException | NoSuchFieldException e) {
             fail();
         }
+    }
+
+    private void setUpAddSuggestion() {
+        suggestionCrudRepository.save(dataGenerator.getSuggestion(Data.VALID));
     }
 
     @Override
@@ -67,6 +71,30 @@ public class SuggestionMangerTestsAllReal extends SuggestionManagerTestsRealRamS
             fail();
         }
         testAddSuggestionInvalid(OpCode.DB_Error);
+    }
+
+    @Override
+    @Test
+    void testWatchSuggestionsHappyTest() {
+        setUpAddSuggestion();
+        super.testWatchSuggestionsHappyTest();
+    }
+
+    @Override
+    @Test
+    void testWatchSuggestionsFindAllSuggestionsThrowsExceptionTest() {
+        when(mockSuggestionCrudRepository.findAll())
+                .thenThrow(new DataRetrievalFailureException(""));
+        realSuggestionRepo=new SuggestionRepo(mockSuggestionCrudRepository);
+        try {
+            Field suggestionRepo = SuggestionManager.class.getDeclaredField("suggestionRepo");
+            suggestionRepo.setAccessible(true);
+            suggestionRepo.set(suggestionManager,realSuggestionRepo);
+
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            fail();
+        }
+        testWatchSuggestionsInvalid(OpCode.DB_Error);
     }
 
     @Override
