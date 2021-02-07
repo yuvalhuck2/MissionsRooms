@@ -10,6 +10,7 @@ import DataAPI.Response;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Student;
 import missions.room.Domain.Suggestion;
+import missions.room.Domain.Teacher;
 import missions.room.Managers.SuggestionManager;
 import missions.room.Repo.StudentRepo;
 import missions.room.Repo.SuggestionRepo;
@@ -24,14 +25,18 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
 
 import static Data.DataConstants.*;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+
 
 @Service
 @ExtendWith(MockitoExtension.class)
@@ -40,7 +45,9 @@ public class SuggestionManagerTestsAllStubs {
 
     protected DataGenerator dataGenerator;
 
-    protected String apiKey;
+    protected String studentApiKey;
+
+    protected String teacherApiKey;
 
     protected String validSuggestion;
 
@@ -75,7 +82,8 @@ public class SuggestionManagerTestsAllStubs {
     @BeforeEach
     void setUp() {
         dataGenerator=new DataGenerator();
-        apiKey=VALID_APIKEY;
+        studentApiKey = VALID_STUDENT_APIKEY;
+        teacherApiKey =VALID_TEACHER_APIKEY;
         validSuggestion=dataGenerator.getSuggestion(Data.VALID)
                 .getSuggestion();
         initMocks();
@@ -85,37 +93,46 @@ public class SuggestionManagerTestsAllStubs {
         closeable= MockitoAnnotations.openMocks(this);
         Student student=dataGenerator.getStudent(Data.VALID);
         Suggestion suggestion=dataGenerator.getSuggestion(Data.VALID);
-        when(mockRam.getApi(apiKey))
+        Teacher teacher=dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM);
+        when(mockRam.getApi(studentApiKey))
                 .thenReturn(student.getAlias());
+        when(mockRam.getApi(teacherApiKey))
+                .thenReturn(teacher.getAlias());
         when(mockRam.getApi(INVALID_KEY))
                 .thenReturn(null);
+        when(mockRam.getApi(NULL_TEACHER_KEY))
+                .thenReturn(WRONG_TEACHER_NAME);
         when(mockStudentRepo.findStudentById(student.getAlias()))
                 .thenReturn(new Response<>(student, OpCode.Success));
+        when(mockTeacherRepo.findTeacherById(teacher.getAlias()))
+                .thenReturn(new Response<>(teacher,OpCode.Success));
         when(mockSuggestionRepo.save(any()))
                 .thenReturn(new Response<>(suggestion,OpCode.Success));
+        when(mockSuggestionRepo.findAllSuggestions())
+                .thenReturn(new Response<>(Collections.singletonList(dataGenerator.getSuggestion(Data.VALID))
+                ,OpCode.Success));
     }
 
     @Test
     void testAddSuggestionHappyTest(){
-
-        Response<Boolean> addSuggestionResponse=suggestionManager.addSuggestion(apiKey,validSuggestion);
+        Response<Boolean> addSuggestionResponse=suggestionManager.addSuggestion(studentApiKey,validSuggestion);
         assertTrue(addSuggestionResponse.getValue());
         assertEquals(OpCode.Success,addSuggestionResponse.getReason());
     }
 
     @Test
     void addSuggestionInvalidApiKeyTest(){
-        apiKey= INVALID_KEY;
+        studentApiKey = INVALID_KEY;
         testAddSuggestionInvalid(OpCode.Wrong_Key);
     }
 
 
     @Test
     void addSuggestionNullStudentTest(){
-        apiKey=NULL_STUDENT_KEY;
+        studentApiKey =NULL_STUDENT_KEY;
         when(mockStudentRepo.findStudentById(WRONG_STUDENT_NAME))
                 .thenReturn(new Response<>(null,OpCode.Success));
-        when(mockRam.getApi(apiKey))
+        when(mockRam.getApi(studentApiKey))
                 .thenReturn(WRONG_STUDENT_NAME);
         testAddSuggestionInvalid(OpCode.Not_Exist);
     }
@@ -152,9 +169,55 @@ public class SuggestionManagerTestsAllStubs {
 
 
     protected void testAddSuggestionInvalid(OpCode opcode){
-        Response<Boolean> addSuggestionResponse=suggestionManager.addSuggestion(apiKey,validSuggestion);
+        Response<Boolean> addSuggestionResponse=suggestionManager.addSuggestion(studentApiKey,validSuggestion);
         assertFalse(addSuggestionResponse.getValue());
         assertEquals(opcode,addSuggestionResponse.getReason());
+    }
+
+    @Test
+    void testWatchSuggestionsHappyTest(){
+        Response<List<Suggestion>> actual=suggestionManager.watchSuggestions(teacherApiKey);
+        List<Suggestion> expected = Collections.singletonList(dataGenerator.getSuggestion(Data.VALID));
+        assertEquals(actual.getValue(),expected);
+        assertEquals(actual.getReason(),OpCode.Success);
+    }
+
+    @Test
+    void testWatchSuggestionsInvalidApiKeyTest(){
+        teacherApiKey=INVALID_KEY;
+        testWatchSuggestionsInvalid(OpCode.Wrong_Key);
+    }
+
+    @Test
+    void testWatchSuggestionsNullTeacherTest(){
+        teacherApiKey=NULL_TEACHER_KEY;
+        when(mockTeacherRepo.findTeacherById(WRONG_TEACHER_NAME))
+                .thenReturn(new Response<>(null,OpCode.Success));
+        testWatchSuggestionsInvalid(OpCode.Not_Exist);
+    }
+
+    @Test
+    void testWatchSuggestionsFindTeacherByIdThrowsExceptionTest(){
+        when(mockTeacherRepo.findTeacherById(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM)
+                .getAlias()))
+                .thenReturn(new Response<>(null
+                        ,OpCode.DB_Error));
+        testWatchSuggestionsInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    void testWatchSuggestionsFindAllSuggestionsThrowsExceptionTest(){
+        when(mockSuggestionRepo.findAllSuggestions())
+                .thenReturn(new Response<>(null
+                        ,OpCode.DB_Error));
+        testWatchSuggestionsInvalid(OpCode.DB_Error);
+    }
+
+
+    protected void testWatchSuggestionsInvalid(OpCode opCode) {
+        Response<List<Suggestion>> actual=suggestionManager.watchSuggestions(teacherApiKey);
+        assertNull(actual.getValue());
+        assertEquals(opCode,actual.getReason());
     }
 
 

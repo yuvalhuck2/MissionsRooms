@@ -316,16 +316,6 @@ public class ServiceAPI {
 
 
     /**
-     * req 4.11 - watch student's suggestions
-     * @param auth - authentication object
-     * @return the student's suggestions
-     */
-    public Response<List<String>> watchSuggestions(Auth auth){
-        throw new NotImplementedException();
-    }
-
-
-    /**
      * req 4.12 - delete student's suggestion
      * @param auth - authentication object
      * @param suggestionId - identifier of the suggestion need to be deleted
