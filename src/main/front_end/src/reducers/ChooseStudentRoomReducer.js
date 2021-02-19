@@ -3,19 +3,19 @@ const initialState = {
     rooms:new Map(),
     errorMessage: '',
     apiKey:'',
+    loading: false,
+    dialog:"",
   };
 
   import {
-    SOLVE_MISSION,
     CURRENT_ROOM_CHANGED,
-    UPDATE_ERROR_SOLVE_ROOM,
+    UPDATE_ERROR_CHOOSE_ROOM,
     CLEAR_STATE,
     PASS_TO_SOLVE_MISSIONS,
-    CURRENT_ANSWER_CHANGED,
     GET_STUDENT_ROOMS,
     LOGIN_STUDENT,
-    SOLVE_MISSION_SEND,
-    TRIES,
+    WAIT_FOR_ROOM_DATA,
+    STUDENT_DIALOG,
   } from '../actions/types';
   
   export default (state = initialState, action) => {
@@ -23,23 +23,18 @@ const initialState = {
         case CURRENT_ROOM_CHANGED:
             return { ...state, currentRoom:state.rooms.get(action.payload)};
         case PASS_TO_SOLVE_MISSIONS:
-            return { ...state, currentRoom:{... state.currentRoom,currentMission:action.payload}, errorMessage: ''};
-        case TRIES:
-            state.rooms.set(state.currentRoom.roomId,state.currentRoom)
-            return state;
-        case CURRENT_ANSWER_CHANGED:
-            return { ...state,currentRoom:{...state.currentRoom, currentMission:action.payload}};
-        case SOLVE_MISSION:
-            return { ...state,currentRoom:{...state.currentRoom, currentMission:{...state.currentRoom.currentMission, loading: true,answers:[]} }};
+            return { ...state, currentRoom:undefined, errorMessage: '',loading:false};
         case GET_STUDENT_ROOMS:
             return {...state, rooms:action.payload,currentRoom:undefined,};
         case LOGIN_STUDENT:
             return { ...initialState, apiKey: action.payload, errorMessage:'' };
-        case SOLVE_MISSION_SEND:
+        case WAIT_FOR_ROOM_DATA:
             return { ...state, loading: true };
-        case UPDATE_ERROR_SOLVE_ROOM:
+        case STUDENT_DIALOG:
+            return { ...state, dialog: action.payload };
+        case UPDATE_ERROR_CHOOSE_ROOM:
             alert(action.payload)
-            return { ...state, errorMessage: action.payload, currentRoom:{...state.currentRoom,currentMission:{...state.currentRoom.currentMission, loading: false}}};
+            return { ...state, errorMessage: action.payload, loading: false};
         case CLEAR_STATE:
             return initialState;
         default:

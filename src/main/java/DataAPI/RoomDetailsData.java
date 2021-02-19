@@ -3,6 +3,8 @@ package DataAPI;
 
 import missions.room.Domain.Room;
 
+import java.util.Objects;
+
 //TODO implement needs to only the current mission and not all the missions
 public class RoomDetailsData {
     private String roomId;
@@ -48,5 +50,15 @@ public class RoomDetailsData {
 
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RoomDetailsData roomDetailsData = (RoomDetailsData) o;
+        return  Objects.equals(name, roomDetailsData.name) &&
+                Objects.equals(currentMission,roomDetailsData.currentMission) &&
+                Objects.equals(roomType,roomDetailsData.roomType);
     }
 }

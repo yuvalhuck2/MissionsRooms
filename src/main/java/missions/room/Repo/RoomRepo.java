@@ -79,9 +79,6 @@ public class RoomRepo {
         try{
             return new Response<>(roomCrudRepository.findStudentRoomForWriteByAlias(alias), OpCode.Success);
         }
-//        catch(InvalidDataAccessApiUsageException e){
-//            return new Response<>(null, OpCode.Success);
-//        }
         catch(LockTimeoutException e){
             return new Response<>(null,OpCode.TimeOut);
         }

@@ -6,6 +6,7 @@ import { Icon } from 'react-native-elements'
 import  { navigateToUploadCSV } from '../../actions'
 import { ITStrings } from '../../locale/locale_heb';
 import {logout} from '../../actions'
+import { connectToWebSocket} from '../../handler/WebSocketHandler';
 
 const {
   uploadCSV,

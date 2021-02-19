@@ -5,11 +5,13 @@ import CrudRepositories.TeacherCrudRepository;
 import CrudRepositories.UserCrudRepository;
 import DataAPI.*;
 import ExternalSystems.UniqueStringGenerator;
+import missions.room.Communications.Publisher.SinglePublisher;
 import missions.room.Domain.*;
 import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
 import ExternalSystems.VerificationCodeGenerator;
 import CrudRepositories.SchoolUserCrudRepository;
+import missions.room.Domain.Notifications.NonPersistenceNotification;
 import missions.room.Repo.ClassroomRepo;
 import missions.room.Repo.SchoolUserRepo;
 import Utils.Utils;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -285,5 +288,13 @@ public class UserAuthenticationManager extends TeacherManager {
 
     public void setRam(Ram ram) {
         this.ram = ram;
+    }
+
+    public void openWebSocket(String apiKey) {
+        ram.addAlias(apiKey);
+    }
+
+    public void closeWebSocket(String apiKey) {
+        ram.removeApiKey(apiKey);
     }
 }

@@ -58,4 +58,11 @@ public class UserAuthenticationService {
     }
 
 
+    public void openWebSocket(String apiKey) {
+        userAuthenticationManager.openWebSocket(apiKey);
+    }
+
+    public void closeWebsocket(String userId) {
+        userAuthenticationManager.closeWebSocket(userId);
+    }
 }

@@ -81,6 +81,7 @@ public class RoomTemplate {
         if(this.missions.size()<=missionIndex){
             return null;
         }
-        else return this.missions.get(missionIndex);
+        else
+            return this.missions.get(missionIndex);
     }
 }

@@ -20,9 +20,28 @@ public class StudentRoomService {
      * @param apiKey - authentication object
      * @return the mission details of the given room
      * TODO check on database if can generate unique string
+     * TODO refactor the name to watchMyRooms from the controller to the manager
      */
     public Response<List<RoomDetailsData>> watchRoomDetails (String apiKey){
         return managerRoomStudent.watchRoomDetails(apiKey);
+    }
+
+    /**
+     * req 3.6.1 - watch data of a specific room
+     * @param apiKey - authentication object
+     * @return the mission details of the given room
+     */
+    public Response<RoomDetailsData> watchRoomData (String apiKey,String roomId){
+        return managerRoomStudent.watchRoomData(apiKey,roomId);
+    }
+
+    /**
+     * disconnect from room
+     * @param apiKey - authentication object
+     * @return the mission details of the given room
+     */
+    public void disconnectFromRoom (String apiKey,String roomId){
+        managerRoomStudent.disconnectFromRoom(apiKey,roomId);
     }
 
     /**
@@ -36,4 +55,11 @@ public class StudentRoomService {
         return managerRoomStudent.answerDeterministicQuestion(apiKey,roomId,answer);
     }
 
+    /**
+     * disconnect from all of my rooms
+     * @param apiKey - authentication object
+     */
+    public void disconnectFromRooms(String apiKey) {
+        managerRoomStudent.disconnectFromAllRooms(apiKey);
+    }
 }

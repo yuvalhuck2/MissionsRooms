@@ -3,7 +3,6 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ActivityIndicator } from 'react-native-paper';
 import { connect } from 'react-redux';
-import { connectToWebSocket } from '../../handler/WebSocketHandler';
 import {
   emailChanged,
   navigateToLogin,
@@ -35,7 +34,6 @@ class RegisterForm extends Component {
   }
 
   onEmailChange(text) {
-    connectToWebSocket("1",(x)=>alert("web sockettttt"+x))
     this.props.emailChanged(text);
   }
 

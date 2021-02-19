@@ -1,9 +1,10 @@
 package missions.room.Communications.RealTime;
 
+import DataAPI.OpCode;
 import missions.room.Communications.Publisher.Publisher;
 import missions.room.Communications.Publisher.SinglePublisher;
 import missions.room.Communications.Publisher.SpringSender;
-import missions.room.Domain.Notification;
+import missions.room.Domain.Notifications.NonPersistenceNotification;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -22,7 +23,7 @@ public class WebSocketController {
     private final SimpMessageSendingOperations messagingTemplate;
     private final Publisher pub;
 
-    public WebSocketController(SimpMessageSendingOperations messagingTemplate) {
+    public WebSocketController(SimpMessageSendingOperations messagingTemplate) throws InterruptedException {
         this.messagingTemplate = messagingTemplate;
         pub = new Publisher(new SpringSender(messagingTemplate));
         SinglePublisher.initPublisher(pub);
@@ -31,12 +32,9 @@ public class WebSocketController {
     @MessageMapping("/hello")
     @SendToUser("/queue/greetings")
     public String processMessageFromClient(@Payload String message, Principal principal) throws Exception {
-        pub.update("1",new ArrayList<>(Collections.singleton(new Notification<String>() {
-            @Override
-            public String getValue() {
-                return "this is web socket message";
-            }
-        })));
+        pub.updateAll("apiKey",new ArrayList<>(Collections.singleton(
+                new NonPersistenceNotification<>(OpCode.Success,"this is web socket message")
+        )));
         return "";
     }
 
