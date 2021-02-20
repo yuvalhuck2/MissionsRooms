@@ -20,12 +20,13 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class MissionManager extends TeacherManager {
 
     private final Gson gson;
-    private final String missionName="mis";
+    private static final String missionName="mis";
 
     @Autowired
     private MissionRepo missionRepo;
@@ -108,47 +109,9 @@ public class MissionManager extends TeacherManager {
         if(missionResponse.getReason()!=OpCode.Success){
             return new Response<>(null,missionResponse.getReason());
         }
-        return new Response<>(parseMissions(missionResponse.getValue()),OpCode.Success);
+        List<MissionData> missionDataList=missionResponse.getValue()
+                .parallelStream().map(Mission::getData)
+                .collect(Collectors.toList());
+        return new Response<>(missionDataList,OpCode.Success);
     }
-
-    public List<MissionData> parseMissions(List<Mission> missions){
-        List<MissionData> missionsData=new ArrayList<>();
-        for(Mission mission: missions){
-            MissionData md=new MissionData(mission.getMissionId(),mission.getMissionTypes());
-            List<String> questList=new ArrayList<>();
-            List<String> answerList = new ArrayList<>();
-            if (mission instanceof KnownAnswerMission) {
-                md.setName("Known answer mission");
-                questList.add(((KnownAnswerMission) mission).getQuestion());
-                md.setQuestion(questList);
-                answerList.add(((KnownAnswerMission) mission).getRealAnswer());
-                md.setAnswers(answerList);
-            }
-            if(mission instanceof OpenAnswerMission){
-                md.setName("Open Answer Mission");
-                questList.add(((OpenAnswerMission)mission).getQuestion());
-            }
-            if(mission instanceof StoryMission){
-                md.setName("Story Mission");
-                md.setTimeForAns(((StoryMission) mission).getSecondsForEachStudent());
-            }
-            if(mission instanceof TriviaMission){
-                md.setName("Trivia Mission");
-                md.setTimeForAns(((TriviaMission) mission).getSecondsForAnswer());
-                for (Map.Entry<String, TriviaQuestion> entry : ((TriviaMission) mission).getQuestions().entrySet()){
-                    questList.add(entry.getValue().getQuestion());
-                }
-                md.setQuestion(questList);
-            }
-            if(mission instanceof TrueLieMission){
-                md.setName("True False Mission");
-                md.setTimeForAns(((TrueLieMission) mission).getAnswerTimeForStudent());
-            }
-            missionsData.add(md);
-
-
-        }
-        return missionsData;
-    }
-
 }
