@@ -56,9 +56,9 @@ public class ManagerRoomStudentRealRamRealClassRoomRealRamStudentClassroomClassG
     @Override
     void setUpMocks(){
         roomRepo=new RoomCrudRepositoryMock(dataGenerator);
-        //studentCrudRepository=new StudentRepositoryMock(dataGenerator);
         ram=new Ram();
         managerRoomStudent=new ManagerRoomStudent(ram,studentCrudRepository,roomRepo,classroomRepo,groupRepository);
+        ram.addApi("apiKey",dataGenerator.getStudent(Data.VALID).getAlias());
     }
 
     private void setUpStudentFindByIdThrowsException() {

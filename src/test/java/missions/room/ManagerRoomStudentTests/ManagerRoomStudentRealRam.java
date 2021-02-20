@@ -63,25 +63,20 @@ public class ManagerRoomStudentRealRam extends ManagerRoomStudentAllStubs{
         realRam.addRoom(roomValid2StudentsFromDifferentGroups);
     }
 
-//
-//    @Override
-//    void setUpMocks(){
-//        roomRepo=new RoomCrudRepositoryMock(dataGenerator);
-//        classroomRepo=new ClassRoomRepositoryMock(dataGenerator);
-//        studentCrudRepository=new StudentRepositoryMock(dataGenerator);
-//        ram=new Ram();
-//        managerRoomStudent=new ManagerRoomStudent(ram,studentCrudRepository,roomRepo,classroomRepo,groupRepository);
-//
-//        teacherCrudRepository=new TeacherCrudRepositoryMock(dataGenerator);
-//        roomTemplateCrudRepository=new RoomTemplateCrudRepositoryMock(dataGenerator);
-//        missionCrudRepository=new MissionCrudRepositoryMock(dataGenerator);
-//    }
-//
-//    @Override
-//    void setUpWatchRoomDetails(){
-//        super.setUpWatchRoomDetails();
-//        ram.addApi("apiKey",dataGenerator.getStudent(Data.VALID).getAlias());
-//    }
+
+    @Override
+    void setUpMocks(){
+        roomRepo=new RoomCrudRepositoryMock(dataGenerator);
+        classroomRepo=new ClassRoomRepositoryMock(dataGenerator);
+        studentCrudRepository=new StudentRepositoryMock(dataGenerator);
+        ram=new Ram();
+        managerRoomStudent=new ManagerRoomStudent(ram,studentCrudRepository,roomRepo,classroomRepo,groupRepository);
+
+        teacherCrudRepository=new TeacherCrudRepositoryMock(dataGenerator);
+        roomTemplateCrudRepository=new RoomTemplateCrudRepositoryMock(dataGenerator);
+        missionCrudRepository=new MissionCrudRepositoryMock(dataGenerator);
+        ram.addApi("apiKey",dataGenerator.getStudent(Data.VALID).getAlias());
+    }
 
     @Override
     @AfterEach

@@ -52,10 +52,10 @@ public class ManagerRoomStudentRealRamRealClassroomClassGroupRepo extends Manage
     @Override
     void setUpMocks(){
         roomRepo=new RoomCrudRepositoryMock(dataGenerator);
-        //classroomRepo=new ClassRoomRepositoryMock(dataGenerator);
         studentCrudRepository=new StudentRepositoryMock(dataGenerator);
         ram=new Ram();
         managerRoomStudent=new ManagerRoomStudent(ram,studentCrudRepository,roomRepo,classroomRepo,groupRepository);
+        ram.addApi("apiKey",dataGenerator.getStudent(Data.VALID).getAlias());
     }
 
     @Override

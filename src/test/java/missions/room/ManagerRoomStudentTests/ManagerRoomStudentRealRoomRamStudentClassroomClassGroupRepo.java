@@ -3,8 +3,7 @@ package missions.room.ManagerRoomStudentTests;
 
 import CrudRepositories.RoomCrudRepository;
 import Data.Data;
-import DataAPI.Response;
-import DataAPI.RoomDetailsData;
+import missions.room.Domain.Ram;
 import missions.room.Domain.Room;
 import missions.room.Managers.ManagerRoomStudent;
 import missions.room.Repo.RoomRepo;
@@ -16,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 
@@ -83,20 +83,21 @@ public class ManagerRoomStudentRealRoomRamStudentClassroomClassGroupRepo extends
         realRam.addRoom(valid2MissionsClassRoom);
     }
 
-//    @Override
-//    void setUpMocks(){
-//        ram=new Ram();
-//        managerRoomStudent=new ManagerRoomStudent(ram,studentCrudRepository,roomRepo,classroomRepo,groupRepository);
-//    }
+    @Override
+    void setUpMocks(){
+        ram=new Ram();
+        managerRoomStudent=new ManagerRoomStudent(ram,studentCrudRepository,roomRepo,classroomRepo,groupRepository);
+        ram.addApi("apiKey",dataGenerator.getStudent(Data.VALID).getAlias());
+    }
 
-//    @Override
-//    @Test
-//    @Transactional
-//    void testWatchRoomValid_2room(){
-//        super.testWatchRoomValid_2room();
-//    }
+    @Override
+    @Test
+    @Transactional
+    void testWatchRoomValid_2room(){
+        super.testWatchRoomValid_2room();
+    }
 
-    private void setUpFindRoomThrowsEcxeption() {
+    private void setUpFindRoomThrowsException() {
         realRam.clearRooms();
         when(mockRoomCrudRepository.findById(any()))
                 .thenThrow(new DataRetrievalFailureException(""));
@@ -145,7 +146,7 @@ public class ManagerRoomStudentRealRoomRamStudentClassroomClassGroupRepo extends
     @Test
     @Override
     void testAnswerDeterministicFindRoomThrowsException(){
-        setUpFindRoomThrowsEcxeption();
+        setUpFindRoomThrowsException();
         testFailAnswerDeterministic(studentApiKey,
                 dataGenerator.getRoom(Data.VALID_2MissionStudent).getRoomId(),
                 DB_Error);
@@ -168,7 +169,7 @@ public class ManagerRoomStudentRealRoomRamStudentClassroomClassGroupRepo extends
     @Test
     @Override
     void testWatchRoomDataFindRoomByIdThrowsException(){
-        setUpFindRoomThrowsEcxeption();
+        setUpFindRoomThrowsException();
         testWatchRoomDataFailCase(studentApiKey,
                 dataGenerator.getRoom(Data.VALID_2MissionStudent).getRoomId(),
                 DB_Error);
