@@ -1,18 +1,15 @@
 package missions.room.Repo;
 
 import CrudRepositories.StudentCrudRepository;
-import CrudRepositories.TeacherCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
-import missions.room.Domain.SchoolUser;
-import missions.room.Domain.Student;
-import missions.room.Domain.Teacher;
+import missions.room.Domain.Users.SchoolUser;
+import missions.room.Domain.Users.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.LockTimeoutException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

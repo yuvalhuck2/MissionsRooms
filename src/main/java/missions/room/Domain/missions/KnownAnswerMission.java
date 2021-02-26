@@ -1,11 +1,13 @@
 package missions.room.Domain.missions;
 
+import DataAPI.MissionData;
 import DataAPI.OpCode;
 import DataAPI.RoomType;
-import missions.room.Domain.Mission;
 import Utils.*;
 
 import javax.persistence.Entity;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,6 +16,8 @@ public class KnownAnswerMission extends Mission {
     private String question;
 
     private String realAnswer;
+
+    private final static String missionName="Known answer mission";
 
     public KnownAnswerMission() {
     }
@@ -42,5 +46,21 @@ public class KnownAnswerMission extends Mission {
 
     public String getRealAnswer() {
         return realAnswer;
+    }
+
+    @Override
+    protected MissionData completeTheRestOfMissionData(MissionData missionData) {
+        List<String> questList = new ArrayList<>();
+        List<String> answerList = new ArrayList<>();
+        questList.add(question);
+        missionData.setQuestion(questList);
+        answerList.add(realAnswer);
+        missionData.setAnswers(answerList);
+        return missionData;
+    }
+
+    @Override
+    protected String getMissionName() {
+        return missionName;
     }
 }

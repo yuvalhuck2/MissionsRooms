@@ -1,7 +1,6 @@
 package missions.room.Domain.missions;
 
 import DataAPI.RoomType;
-import missions.room.Domain.Mission;
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;

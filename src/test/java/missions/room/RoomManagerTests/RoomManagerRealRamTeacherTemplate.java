@@ -22,7 +22,7 @@ public class RoomManagerRealRamTeacherTemplate extends RoomManagerRealRamTeacher
     void testAddRoomNotExistTemplate(){
         setUpAddRoom();
         testAddRoomInValid(Data.NOT_EXIST_TEMPLATE, OpCode.Not_Exist_Template);
-        tearDownAddRoom();
+        tearDown();
     }
 
 

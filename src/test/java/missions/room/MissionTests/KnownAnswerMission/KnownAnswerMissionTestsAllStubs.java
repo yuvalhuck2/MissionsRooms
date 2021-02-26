@@ -3,7 +3,7 @@ package missions.room.MissionTests.KnownAnswerMission;
 import Data.Data;
 import Data.DataGenerator;
 import DataAPI.OpCode;
-import missions.room.Domain.Mission;
+import missions.room.Domain.missions.Mission;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

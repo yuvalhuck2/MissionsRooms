@@ -34,3 +34,4 @@ build/
 /derby.log
 /src/test/resources/f.sql
 /src/main/java/META-INF/MANIFEST.MF
+/logs/spring.log

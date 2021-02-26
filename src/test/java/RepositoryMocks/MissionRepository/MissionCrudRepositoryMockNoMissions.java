@@ -2,7 +2,7 @@ package RepositoryMocks.MissionRepository;
 
 import CrudRepositories.MissionCrudRepository;
 import Data.DataGenerator;
-import missions.room.Domain.Mission;
+import missions.room.Domain.missions.Mission;
 
 import java.util.ArrayList;
 import java.util.Optional;

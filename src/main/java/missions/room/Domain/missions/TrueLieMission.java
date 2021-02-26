@@ -2,7 +2,6 @@ package missions.room.Domain.missions;
 
 import java.util.Map;
 
-import missions.room.Domain.Mission;
 import java.util.Set;
 
 import javax.persistence.Entity;

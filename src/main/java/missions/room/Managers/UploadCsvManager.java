@@ -1,11 +1,15 @@
 package missions.room.Managers;
 
+import DataAPI.GroupType;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;
 import javafx.util.Pair;
 import missions.room.Domain.*;
+import missions.room.Domain.Users.IT;
+import missions.room.Domain.Users.Student;
+import missions.room.Domain.Users.Teacher;
 import missions.room.Repo.ClassroomRepo;
 import missions.room.Repo.ITRepo;
 import missions.room.Repo.TeacherRepo;
@@ -130,7 +134,7 @@ public class UploadCsvManager {
     }
 
     private  Response<IT> checkIT(String apiKey){
-        String alias = ram.getApi(apiKey);
+        String alias = ram.getAlias(apiKey);
         if(alias==null){
             return new Response<>(null, OpCode.Wrong_Key);
         }

@@ -1,4 +1,4 @@
-package missions.room.Domain;
+package missions.room.Domain.Users;
 
 import DataAPI.OpCode;
 

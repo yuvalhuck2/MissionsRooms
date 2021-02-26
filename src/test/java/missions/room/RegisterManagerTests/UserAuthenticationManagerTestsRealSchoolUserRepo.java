@@ -2,13 +2,11 @@ package missions.room.RegisterManagerTests;
 
 import Data.Data;
 import DataAPI.*;
-import javafx.scene.chart.XYChart;
-import missions.room.Domain.GroupType;
-import missions.room.Domain.Student;
+import DataAPI.GroupType;
+import missions.room.Domain.Users.Student;
 import ExternalSystemMocks.MailSenderTrueMock;
 import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
-import missions.room.Domain.Teacher;
 import missions.room.Managers.UserAuthenticationManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -136,7 +134,8 @@ public class UserAuthenticationManagerTestsRealSchoolUserRepo extends UserAuthen
             fail();
         }
         //super because he has to me removed from aliasToCode
-        super.checkWrongRegisterCode(Data.VALID,Data.VALID,OpCode.Already_Exist);
+        //not exist because we won't find the student in the unregistered users
+        super.checkWrongRegisterCode(Data.VALID,Data.VALID,OpCode.Not_Exist);
         registerCodeTearDown();
     }
 

@@ -4,7 +4,7 @@ import CrudRepositories.RoomCrudRepository;
 import Data.Data;
 import Data.DataGenerator;
 import DataAPI.RoomType;
-import missions.room.Domain.Room;
+import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
 import missions.room.Domain.Rooms.StudentRoom;

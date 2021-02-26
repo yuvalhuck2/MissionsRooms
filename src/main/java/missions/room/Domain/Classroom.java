@@ -1,18 +1,15 @@
 package missions.room.Domain;
 
-import DataAPI.OpCode;
-import DataAPI.Response;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import DataAPI.*;
+import missions.room.Domain.Users.SchoolUser;
+import missions.room.Domain.Users.Student;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -122,5 +119,24 @@ public class Classroom{
             }
         }
         return null;
+    }
+
+    public ClassRoomData getClassroomData(GroupType groupType) {
+        List<GroupData> groupDataList =classGroups.
+                                        parallelStream().
+                                        map((group)->group.getGroupData(groupType)).
+                                        filter(Objects::nonNull).
+                                        collect(Collectors.toList());
+
+        return new ClassRoomData(className,groupDataList);
+    }
+
+    public List<String> getStudentsAlias() {
+        ArrayList<String> aliases=new ArrayList<>();
+        for (ClassGroup group: classGroups) {
+            if(group.getGroupType()!=GroupType.C)
+            aliases.addAll(group.getStudentsAlias());
+        }
+        return aliases;
     }
 }
