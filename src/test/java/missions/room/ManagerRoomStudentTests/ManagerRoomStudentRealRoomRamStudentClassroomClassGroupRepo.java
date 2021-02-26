@@ -4,7 +4,7 @@ package missions.room.ManagerRoomStudentTests;
 import CrudRepositories.RoomCrudRepository;
 import Data.Data;
 import missions.room.Domain.Ram;
-import missions.room.Domain.Room;
+import missions.room.Domain.Rooms.Room;
 import missions.room.Managers.ManagerRoomStudent;
 import missions.room.Repo.RoomRepo;
 import org.junit.jupiter.api.AfterEach;

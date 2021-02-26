@@ -1,7 +1,12 @@
-package missions.room.Domain;
+package missions.room.Domain.Rooms;
 
 import DataAPI.*;
 import Utils.Utils;
+import missions.room.Domain.missions.Mission;
+import missions.room.Domain.RoomMessage;
+import missions.room.Domain.RoomTemplate;
+import missions.room.Domain.TriviaQuestion;
+import missions.room.Domain.Users.Teacher;
 import missions.room.Domain.missions.*;
 
 import javax.persistence.*;

@@ -7,16 +7,15 @@ import DataAPI.*;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;
 import missions.room.Domain.*;
-import missions.room.Domain.missions.*;
+import missions.room.Domain.Users.Teacher;
+import missions.room.Domain.missions.Mission;
 import missions.room.Repo.MissionRepo;
 import missions.room.Repo.RoomTemplateRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service

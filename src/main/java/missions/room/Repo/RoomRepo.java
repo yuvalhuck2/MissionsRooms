@@ -3,12 +3,11 @@ package missions.room.Repo;
 import CrudRepositories.RoomCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
-import missions.room.Domain.Room;
+import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
 import missions.room.Domain.Rooms.StudentRoom;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,4 +1,6 @@
-package missions.room.Domain;
+package missions.room.Domain.Users;
+
+import missions.room.Domain.Message;
 
 import javax.persistence.*;
 import java.util.Map;
@@ -17,7 +19,7 @@ public abstract class SchoolUser extends User {
     @OneToMany(cascade = CascadeType.ALL)
     @MapKeyColumn(name = "id")
     @JoinColumn(name="dest",referencedColumnName = "alias")
-    protected Map<String,Message> messages;
+    protected Map<String, Message> messages;
 
     public SchoolUser() {
     }

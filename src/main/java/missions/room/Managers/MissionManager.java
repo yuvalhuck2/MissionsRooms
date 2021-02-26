@@ -7,19 +7,14 @@ import ExternalSystems.UniqueStringGenerator;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import missions.room.Domain.Mission;
+import missions.room.Domain.missions.Mission;
 import missions.room.Domain.Ram;
-import missions.room.Domain.Teacher;
-import missions.room.Domain.TriviaQuestion;
-import missions.room.Domain.missions.*;
+import missions.room.Domain.Users.Teacher;
 import missions.room.Repo.MissionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service

@@ -2,8 +2,8 @@ package missions.room.RegisterManagerTests;
 
 import Data.Data;
 import DataAPI.*;
-import missions.room.Domain.GroupType;
-import missions.room.Domain.Student;
+import DataAPI.GroupType;
+import missions.room.Domain.Users.Student;
 import ExternalSystemMocks.MailSenderTrueMock;
 import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;

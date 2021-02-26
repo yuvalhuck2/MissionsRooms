@@ -3,7 +3,6 @@ package missions.room.Domain.missions;
 import DataAPI.MissionData;
 import DataAPI.OpCode;
 import DataAPI.RoomType;
-import missions.room.Domain.Mission;
 import Utils.*;
 
 import javax.persistence.Entity;

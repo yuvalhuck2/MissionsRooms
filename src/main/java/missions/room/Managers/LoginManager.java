@@ -4,7 +4,7 @@
 //import DataAPI.OpCode;
 //import DataAPI.Response;
 //import missions.room.Domain.Ram;
-//import missions.room.Domain.User;
+//import missions.room.Domain.Users.User;
 //import ExternalSystems.HashSystem;
 //import ExternalSystems.UniqueStringGenerator;
 //import Utils.Utils;

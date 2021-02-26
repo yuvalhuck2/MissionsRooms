@@ -3,7 +3,7 @@ package missions.room.Repo;
 import CrudRepositories.ITCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
-import missions.room.Domain.IT;
+import missions.room.Domain.Users.IT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

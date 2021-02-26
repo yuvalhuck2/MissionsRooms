@@ -18,7 +18,7 @@ import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMockExceptionFindById;
 import RepositoryMocks.ClassroomRepository.ClassRoomRepositoryMock;
 import missions.room.Domain.Ram;
-import missions.room.Domain.Teacher;
+import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.RoomManager;
 import missions.room.Repo.TeacherRepo;
 import org.junit.jupiter.api.BeforeEach;

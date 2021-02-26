@@ -1,10 +1,11 @@
 package missions.room.Domain;
 
 import DataAPI.GroupData;
+import DataAPI.GroupType;
+import missions.room.Domain.Users.Student;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 

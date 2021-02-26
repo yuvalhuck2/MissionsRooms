@@ -10,16 +10,14 @@ import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Domain.*;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
+import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Rooms.StudentRoom;
+import missions.room.Domain.Users.Student;
+import missions.room.Domain.Users.Teacher;
 import missions.room.Repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @CommonsLog

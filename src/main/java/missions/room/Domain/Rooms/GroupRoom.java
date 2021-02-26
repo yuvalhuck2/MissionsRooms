@@ -2,14 +2,11 @@ package missions.room.Domain.Rooms;
 
 import DataAPI.RoomType;
 import missions.room.Domain.ClassGroup;
-import missions.room.Domain.Room;
 import missions.room.Domain.RoomTemplate;
-import missions.room.Domain.Teacher;
+import missions.room.Domain.Users.Teacher;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class GroupRoom extends Room {

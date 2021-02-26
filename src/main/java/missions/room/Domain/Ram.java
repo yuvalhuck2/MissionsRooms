@@ -3,7 +3,7 @@ package missions.room.Domain;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import Utils.StringAndTime;
-import org.assertj.core.util.VisibleForTesting;
+import missions.room.Domain.Rooms.Room;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -12,7 +12,7 @@ public class Ram {
     //save apikey and alias for trace and clean not connected users
     private static final ConcurrentHashMap<String, StringAndTime> apiToAlias = new ConcurrentHashMap<>();
 
-    private static final ConcurrentHashMap<String,Room> roomIdToRoom = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, Room> roomIdToRoom = new ConcurrentHashMap<>();
 
     private static final ConcurrentHashMap<String,String> aliasToApi = new ConcurrentHashMap<>();
 

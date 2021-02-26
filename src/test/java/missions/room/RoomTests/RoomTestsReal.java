@@ -4,7 +4,7 @@ import Data.Data;
 import Data.DataGenerator;
 import DataAPI.OpCode;
 import DataAPI.Response;
-import missions.room.Domain.Room;
+import missions.room.Domain.Rooms.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

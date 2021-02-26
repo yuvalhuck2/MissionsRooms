@@ -1,13 +1,12 @@
 package missions.room.Domain.Rooms;
 
+import DataAPI.GroupType;
 import DataAPI.RoomType;
 import missions.room.Domain.*;
+import missions.room.Domain.Users.Teacher;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
-import java.util.HashSet;
-import java.util.Set;
-import Utils.Utils;
 
 @Entity
 public class ClassroomRoom extends Room {
@@ -33,7 +32,7 @@ public class ClassroomRoom extends Room {
                 participant.getStudent(alias,GroupType.B)!=null;
     }
 
-    public ClassroomRoom(String roomId, String roomName, Classroom participant, Teacher teacher, RoomTemplate roomTemplate,int bonus) {
+    public ClassroomRoom(String roomId, String roomName, Classroom participant, Teacher teacher, RoomTemplate roomTemplate, int bonus) {
         super(roomId,roomName,teacher,roomTemplate,bonus);
         this.participant = participant;
     }

@@ -1,8 +1,9 @@
-package missions.room.Domain;
+package missions.room.Domain.missions;
 
 import DataAPI.MissionData;
 import DataAPI.OpCode;
 import DataAPI.RoomType;
+import missions.room.Domain.RoomTemplate;
 
 import javax.persistence.*;
 import java.io.Serializable;

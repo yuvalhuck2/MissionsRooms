@@ -1,34 +1,24 @@
 package missions.room.ManagerRoomStudentTests;
 
 import Data.Data;
-import DataAPI.Response;
-import DomainMocks.MissionMock;
-import DomainMocks.MockRam;
 import RepositoryMocks.ClassroomRepository.ClassRoomRepositoryMock;
 import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
 import RepositoryMocks.RoomRepository.RoomCrudRepositoryMock;
 import RepositoryMocks.RoomTemplateRepository.RoomTemplateCrudRepositoryMock;
 import RepositoryMocks.StudentRepositoryMock.StudentRepositoryMock;
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
-import missions.room.Domain.Mission;
 import missions.room.Domain.Ram;
-import missions.room.Domain.Room;
+import missions.room.Domain.Rooms.Room;
 import missions.room.Managers.ManagerRoomStudent;
-import missions.room.Managers.MissionManager;
 import missions.room.Managers.StudentManager;
-import missions.room.Managers.TeacherManager;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 
 import static Data.DataConstants.*;
-import static Data.DataConstants.WRONG_TEACHER_NAME;
-import static DataAPI.OpCode.DB_Error;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @Service
 public class ManagerRoomStudentRealRam extends ManagerRoomStudentAllStubs{

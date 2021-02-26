@@ -7,7 +7,7 @@ import Data.Data;
 import RepositoryMocks.RoomRepository.RoomCrudRepositoryMock;
 import RepositoryMocks.StudentRepositoryMock.StudentRepositoryMock;
 import missions.room.Domain.Ram;
-import missions.room.Domain.Room;
+import missions.room.Domain.Rooms.Room;
 import missions.room.Managers.ManagerRoomStudent;
 import missions.room.Repo.ClassGroupRepo;
 import missions.room.Repo.ClassroomRepo;

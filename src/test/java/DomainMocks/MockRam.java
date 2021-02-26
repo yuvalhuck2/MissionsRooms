@@ -3,7 +3,7 @@ package DomainMocks;
 import Data.Data;
 import Data.DataGenerator;
 import missions.room.Domain.Ram;
-import missions.room.Domain.Room;
+import missions.room.Domain.Rooms.Room;
 
 import java.util.concurrent.ConcurrentHashMap;
 

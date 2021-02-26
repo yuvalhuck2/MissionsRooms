@@ -3,6 +3,7 @@ package missions.room.Managers;
 import CrudRepositories.TeacherCrudRepository;
 import DataAPI.*;
 import missions.room.Domain.*;
+import missions.room.Domain.Users.Teacher;
 import missions.room.Repo.TeacherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

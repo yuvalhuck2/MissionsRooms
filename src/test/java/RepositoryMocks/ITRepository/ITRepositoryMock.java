@@ -3,8 +3,7 @@ package RepositoryMocks.ITRepository;
 import CrudRepositories.ITCrudRepository;
 import Data.Data;
 import Data.DataGenerator;
-import missions.room.Domain.IT;
-import org.springframework.stereotype.Repository;
+import missions.room.Domain.Users.IT;
 
 import java.util.Optional;
 
