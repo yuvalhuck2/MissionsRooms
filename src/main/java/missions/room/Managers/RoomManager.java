@@ -6,6 +6,7 @@ import CrudRepositories.TeacherCrudRepository;
 import DataAPI.*;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;
+import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Domain.*;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@CommonsLog
 public class RoomManager extends TeacherManager {
 
     @Autowired
@@ -37,6 +39,7 @@ public class RoomManager extends TeacherManager {
         super(ram, teacherCrudRepository);
         this.roomRepo = new RoomRepo(roomCrudRepository);
         this.roomTemplateRepo=new RoomTemplateRepo(roomTemplateCrudRepository);
+
     }
 
     /**
