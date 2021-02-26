@@ -1,6 +1,8 @@
 package missions.room.Domain;
 
+import DataAPI.MissionData;
 import DataAPI.RoomTemplateDetailsData;
+import DataAPI.RoomTemplateForSearch;
 import DataAPI.RoomType;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -13,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Entity
 public class RoomTemplate {
@@ -81,6 +84,14 @@ public class RoomTemplate {
         if(this.missions.size()<=missionIndex){
             return null;
         }
-        else return this.missions.get(missionIndex);
+        else
+            return this.missions.get(missionIndex);
+    }
+
+    public RoomTemplateForSearch getRoomTemplateForSearch() {
+        List<MissionData> missionList=missions.parallelStream()
+                .map((Mission::getData))
+                .collect(Collectors.toList());
+        return new RoomTemplateForSearch(roomTemplateId,missionList,name,minimalMissionsToPass,type);
     }
 }

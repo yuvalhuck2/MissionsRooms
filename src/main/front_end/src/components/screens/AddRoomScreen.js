@@ -87,7 +87,6 @@ class AddRoomForm extends Component{
 
     render(){
         const {roomName,bonus,classroom}=this.props;
-        console.log(classroom)
         return(
         <KeyboardAwareScrollView style={styles.container}>
             

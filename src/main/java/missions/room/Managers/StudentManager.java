@@ -2,14 +2,11 @@ package missions.room.Managers;
 
 
 import CrudRepositories.StudentCrudRepository;
-import CrudRepositories.TeacherCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Student;
-import missions.room.Domain.Teacher;
 import missions.room.Repo.StudentRepo;
-import missions.room.Repo.TeacherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +35,7 @@ public class StudentManager {
     }
 
     protected Response<Student> checkStudent(String apiKey){
-        String alias=ram.getApi(apiKey);
+        String alias=ram.getAlias(apiKey);
         if(alias==null){
             return new Response<>(null, OpCode.Wrong_Key);
         }

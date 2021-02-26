@@ -5,6 +5,7 @@ import addRoomTemplateReducer from './addRoomTemlateReducer';
 import AuthReducer from './AuthReducer';
 import ChooseStudentRoom from './ChooseStudentRoomReducer';
 import ITReducer from './ITReducer';
+import SolveDeterministic from './SolveDeterministicReducer'
 
 export default combineReducers({
   auth: AuthReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
   addRoom: addRoomReducer,
   ChooseStudentRoom: ChooseStudentRoom,
   IT: ITReducer,
+  SolveDeterministic: SolveDeterministic,
 });

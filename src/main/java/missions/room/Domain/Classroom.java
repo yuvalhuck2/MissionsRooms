@@ -133,4 +133,13 @@ public class Classroom{
 
         return new ClassRoomData(className,groupDataList);
     }
+
+    public List<String> getStudentsAlias() {
+        ArrayList<String> aliases=new ArrayList<>();
+        for (ClassGroup group: classGroups) {
+            if(group.getGroupType()!=GroupType.C)
+            aliases.addAll(group.getStudentsAlias());
+        }
+        return aliases;
+    }
 }

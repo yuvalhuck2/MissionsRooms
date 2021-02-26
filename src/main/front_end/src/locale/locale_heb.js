@@ -170,9 +170,8 @@ export const ChooseStudentRoomStrings = {
 export const ChooseRoomStudentErrors = {
   room_empty: 'יש לבחור חדר',
   wrong_answer: 'תשובה לא נכונה, מספר נסיונות מותרים: ',
-  fail: 'לא נורא, בפעם הבאה יהיה יותר טוב:(',
+  fail: 'נכשלת במשימה,לא נורא בפעם הבאה יהיה יותר טוב:(',
   pass: 'תשובה נכונה!',
-  final: '\nהחדר הסתיים',
 };
 
 export const SolveDeterministicMissionStrings = {
@@ -201,6 +200,7 @@ export const GeneralErrors = {
   wrong_key_error: 'שגיאת מפתח הזדהות',
   teacher_not_exists_error: 'מורה לא קיים',
   student_not_exist: 'סטודנט לא קיים',
+  room_error:'יש תקלה עם החדר, מומלץ לנסות להתחבר אליו שנית',
 };
 
 export const ITStrings = {
@@ -242,3 +242,7 @@ export const passToMyRoomsErrors = {
   student_not_exist_in_group_error: 'תלמיד לא קיים בקבוצה',
   wrong_mission_error: 'משימה לא תקינה',
 };
+
+export const webSocketMessages = {
+  final: '\nהחדר הסתיים',
+}

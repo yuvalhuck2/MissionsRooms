@@ -4,7 +4,9 @@ import DataAPI.GroupData;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 @Entity
 public class ClassGroup {
@@ -84,5 +86,17 @@ public class ClassGroup {
      */
     private boolean checkGroup(GroupType groupType) {
         return this.groupType!=GroupType.C&&(groupType==this.groupType||groupType==GroupType.BOTH)&&!students.isEmpty();
+    }
+
+    public Set<String> getStudentsAlias() {
+        return students.keySet();
+    }
+
+    public boolean containsStudent(String alias) {
+        return students.containsKey(alias);
+    }
+
+    public int getPoints() {
+        return points;
     }
 }

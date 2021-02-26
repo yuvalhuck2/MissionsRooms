@@ -14,7 +14,7 @@ public class StudentTeacherManager extends TeacherManager {
     protected StudentRepo studentRepo;
 
     protected Response<Student> checkStudent(String apiKey){
-        String alias=ram.getApi(apiKey);
+        String alias=ram.getAlias(apiKey);
         if(alias==null){
             return new Response<>(null, OpCode.Wrong_Key);
         }

@@ -2,22 +2,21 @@ package missions.room.Managers;
 
 import CrudRepositories.*;
 import DataAPI.*;
-import javafx.util.Pair;
-import javassist.bytecode.Opcode;
+import missions.room.Communications.Publisher.Publisher;
+import missions.room.Communications.Publisher.SinglePublisher;
 import missions.room.Domain.*;
+import missions.room.Domain.Notifications.NonPersistenceNotification;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
 import missions.room.Domain.Rooms.StudentRoom;
-import missions.room.Domain.missions.*;
 import missions.room.Repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 @Service
 public class ManagerRoomStudent extends StudentManager {
@@ -31,12 +30,15 @@ public class ManagerRoomStudent extends StudentManager {
     @Autowired
     private ClassGroupRepo classGroupRepo;
 
-
-
+    private static Publisher publisher;
 
 
     public ManagerRoomStudent() {
         super();
+    }
+
+    public static void initPublisher(){
+        publisher= SinglePublisher.getInstance();
     }
 
     public ManagerRoomStudent(Ram ram, StudentCrudRepository studentCrudRepository, RoomCrudRepository roomCrudRepository, ClassroomRepository classroomRepository
@@ -45,7 +47,7 @@ public class ManagerRoomStudent extends StudentManager {
         this.roomRepo = new RoomRepo(roomCrudRepository);
         this.classroomRepo = new ClassroomRepo(classroomRepository);
         this.classGroupRepo=new ClassGroupRepo(groupRepository);
-        //this.roomTemplateRepo=new RoomTemplateRepo(roomTemplateCrudRepository);
+        publisher=SinglePublisher.getInstance();
     }
 
     /**
@@ -55,75 +57,151 @@ public class ManagerRoomStudent extends StudentManager {
      * @param answer - answer for the question
      * @return if the answer was correct
      */
-    //TODO now we return always true if every thing alright ,otherwise return null and error opcode
-    //TODO need to change the response to the next mission if exists
+
     @Transactional
     public Response<Boolean> answerDeterministicQuestion(String apiKey, String roomId, boolean answer){
         Response<Student> checkStudent = checkStudent(apiKey);
         if (checkStudent.getReason() != OpCode.Success) {
-            return new Response(null, checkStudent.getReason());
+            return new Response<>(null, checkStudent.getReason());
         }
-        Student student = checkStudent.getValue();
-        Response<Room> roomResponse=roomRepo.findRoomForWrite(roomId);
+
+        Response<Room> roomResponse=getRoomById(roomId);
+        if (roomResponse.getReason() != OpCode.Success) {
+            return new Response<>(null, roomResponse.getReason());
+        }
+        Room room = roomResponse.getValue();
+        NonPersistenceNotification<RoomDetailsData> notification;
+        //lock the room that is updated
+        synchronized (room) {
+
+            if (answer) {
+                Response<Boolean> response = updateCorrectAnswer(room);
+                if (response.getReason() != OpCode.Success) {
+                    return response;
+                }
+            }
+
+            OpCode reason;
+            String nextInCharge=null;
+
+            if (room.isLastMission()) {
+                reason = roomRepo.deleteRoom(room).getReason();
+                if (reason != OpCode.Success) {
+                    return new Response<>(null, reason);
+                }
+                ram.deleteRoom(roomId);
+                notification = new NonPersistenceNotification<>(OpCode.Finish_Missions_In_Room, null);
+            } else {
+                room.increaseCurrentMission();
+                reason = roomRepo.save(room).getReason();
+                if (reason != OpCode.Success) {
+                    return new Response<>(null, reason);
+                }
+                //roll mission in charge
+                notification = new NonPersistenceNotification<>(OpCode.Update_Room, room.getData());
+                nextInCharge=room.drawMissionInCharge();
+            }
+
+            Set<String> userKeys=room.getConnectedUsersAliases();
+            for (String alias :
+                    userKeys) {
+                publisher.update(ram.getApiKey(alias),notification);
+            }
+            //send to the next mission inCharge notification
+            if(nextInCharge!=null){
+                NonPersistenceNotification<String> inChargeNotification=new NonPersistenceNotification<>(OpCode.IN_CHARGE,roomId);
+                publisher.update(ram.getApiKey(nextInCharge),inChargeNotification);
+            }
+        }
+
+            return new Response<>(true, OpCode.Success);
+
+    }
+
+    private Response<Boolean> updateCorrectAnswer(Room room) {
+        RoomType roomType=room.updatePoints();
+        OpCode reason = null;
+        switch (roomType){
+            case Class:
+                Classroom classroom=((ClassroomRoom) room).getParticipant();
+                reason=classroomRepo.save(classroom)
+                        .getReason();
+                break;
+            case Group:
+                ClassGroup classGroup = ((GroupRoom) room).getParticipant();
+                reason = classGroupRepo.save(classGroup)
+                        .getReason();
+                break;
+            case Personal:
+                Student student=((StudentRoom) room).getParticipant();
+                reason=studentRepo.save(student)
+                        .getReason();
+                break;
+            default:
+                //TODO logger error that can't happened
+                break;
+
+        }
+        if(reason!=OpCode.Success){
+            return new Response<>(null,reason);
+        }
+        return new Response<>(true,OpCode.Success);
+    }
+
+    /**
+     * req 3.6.1 - watch data of a specific room
+     * @param apiKey - authentication object
+     * @return the mission details of the given room
+     */
+    public Response<RoomDetailsData> watchRoomData(String apiKey, String roomId) {
+        Response<Student> checkStudent = checkStudent(apiKey);
+        if (checkStudent.getReason() != OpCode.Success) {
+            return new Response<>(null, checkStudent.getReason());
+        }
+
+        Response<Room> roomResponse = getRoomById(roomId);
         if(roomResponse.getReason()!=OpCode.Success){
             return new Response<>(null,roomResponse.getReason());
         }
+
+        Student student=checkStudent.getValue();
         Room room=roomResponse.getValue();
-        boolean isLastMission=room.getCurrentMission()==room.getRoomTemplate().getMissions().size()-1;
-        if(answer) {
-            room.addCorrectAnswer();
-            int points = room.getRoomTemplate().getMission(room.getCurrentMission()).getPoints();
-            if (room instanceof ClassroomRoom) {
-                Classroom classroom = ((ClassroomRoom) room).getParticipant();
-                classroom.addPoints(points);
-                if(isLastMission&&room.getRoomTemplate().getMinimalMissionsToPass()<=room.getCountCorrectAnswer()){
-                    classroom.addPoints(room.getBonus());
-                }
-                Response<Classroom> response=classroomRepo.save(classroom);
-                if(response.getReason()!=OpCode.Success){
-                    return new Response<>(null,response.getReason());
-                }
-            }
-            if (room instanceof GroupRoom) {
-                ClassGroup classGroup = ((GroupRoom) room).getParticipant();
-                classGroup.addPoints(points);
-                if(isLastMission&&room.getRoomTemplate().getMinimalMissionsToPass()<=room.getCountCorrectAnswer()){
-                    classGroup.addPoints(room.getBonus());
-                }
-
-                Response<ClassGroup> response=classGroupRepo.save(classGroup);
-                if(response.getReason()!=OpCode.Success){
-                    return new Response<>(null,response.getReason());
-                }
-            }
-            if (room instanceof StudentRoom) {
-                student.addPoints(points);
-                if(isLastMission&&room.getRoomTemplate().getMinimalMissionsToPass()<=room.getCountCorrectAnswer()){
-                    student.addPoints(room.getBonus());
-                }
-
-                Response<SchoolUser> response=studentRepo.save(student);
-                if(response.getReason()!=OpCode.Success){
-                    return new Response<>(null,response.getReason());
-                }
-            }
-        }
-        if(room.getCurrentMission()!=room.getRoomTemplate().getMissions().size()-1){
-            room.increaseCurrentMission();
-            Response<Room> response=roomRepo.save(room);
-            if(response.getReason()!=OpCode.Success){
-                return new Response<>(null,response.getReason());
-            }
-            return new Response<>(true,OpCode.Success);
-        }
-        else{
-            Response<Boolean> response=roomRepo.deleteRoom(room);
-            if(response.getReason()!=OpCode.Success){
-                return new Response<>(null,response.getReason());
-            }
-            return new Response<>(true,OpCode.Final);
+        if(!room.isBelongToRoom(student.getAlias())){
+            return new Response<>(null,OpCode.NOT_BELONGS_TO_ROOM);
         }
 
+        OpCode opCode=ram.connectToRoom(roomId,student.getAlias());
+        return new Response<>(room.getData(),opCode);
+    }
+
+    /**
+     * disconnect from room
+     * @param apiKey - authentication object
+     * if the student was mission in charge, then send notification to the next mission in charge.
+     * delete the room if there are no users connected.
+     */
+    public void disconnectFromRoom(String apiKey, String roomId) {
+        Response<Student> checkStudent = checkStudent(apiKey);
+        if (checkStudent.getReason() == OpCode.Success) {
+            Student student = checkStudent.getValue();
+            String inCharge=ram.disconnectFromRoom(roomId,student.getAlias());
+            if(inCharge!=null){
+                publisher.update(ram.getApiKey(inCharge),new NonPersistenceNotification<>(OpCode.IN_CHARGE,roomId));
+            }
+        }
+    }
+
+    /**
+     * disconnect from all of my rooms
+     * @param apiKey - authentication object
+     */
+    public void disconnectFromAllRooms(String apiKey) {
+        Response<List<RoomDetailsData>> roomDetailsListResponse = watchRoomDetails(apiKey);
+        if(roomDetailsListResponse.getReason()==OpCode.Success){
+            for(RoomDetailsData roomDetailsData:roomDetailsListResponse.getValue()){
+                disconnectFromRoom(apiKey,roomDetailsData.getRoomId());
+            }
+        }
     }
 
     /**
@@ -131,7 +209,7 @@ public class ManagerRoomStudent extends StudentManager {
      *
      * @param apiKey - authentication object
      * @return the mission details of the given room
-     * TODO check on database if can generate unique string
+     * TODO refactor the name to watchMyRooms from the controller to the manager
      */
     public Response<List<RoomDetailsData>> watchRoomDetails(String apiKey) {
         Response<Student> checkStudent = checkStudent(apiKey);
@@ -194,7 +272,7 @@ public class ManagerRoomStudent extends StudentManager {
 
     private Response<Room> getRoomsFromRoomClass(ClassroomRoom classroomRoom) {
         String roomId = classroomRoom.getRoomId();
-        Response<Room> response = GetRoomById(roomId);
+        Response<Room> response = getRoomById(roomId);
         if (response.getReason() != OpCode.Success) {
             return new Response<>(null, response.getReason());
         }
@@ -203,7 +281,7 @@ public class ManagerRoomStudent extends StudentManager {
 
     private Response<Room> getRoomsFromRoomGroup(GroupRoom groupRoom) {
         String roomId = groupRoom.getRoomId();
-        Response<Room> response = GetRoomById(roomId);
+        Response<Room> response = getRoomById(roomId);
         if (response.getReason() != OpCode.Success) {
             return new Response<>(null, response.getReason());
         }
@@ -212,85 +290,39 @@ public class ManagerRoomStudent extends StudentManager {
 
     private Response<Room> getRoomsFromRoomStudent(StudentRoom studentRoom) {
         String roomId = studentRoom.getRoomId();
-        Response<Room> response = GetRoomById(roomId);
+        Response<Room> response = getRoomById(roomId);
         if (response.getReason() != OpCode.Success) {
             return new Response<>(null, response.getReason());
         }
         return new Response<>(response.getValue(), OpCode.Success);
     }
 
-    private Response<Room> GetRoomById(String roomId) {
-        if (ram.isRoomExist(roomId)) {
-            return new Response(ram.getRoom(roomId), OpCode.Success);
-        } else {
+    private Response<Room> getRoomById(String roomId) {
+        Room room = ram.getRoom(roomId);
+        if (room==null) {
             Response<Room> response = roomRepo.findRoomById(roomId);
             if (response.getReason() == OpCode.Success) {
-                ram.addRoom(roomId, response.getValue());
+                if (response.getValue() == null) {
+                    return new Response<>(null, OpCode.Not_Exist_Room);
+                }
+                ram.addRoom(response.getValue());
+                room = ram.getRoom(roomId);
+            } else {
+                return response;
             }
-            return response;
         }
+        return new Response<>(room, OpCode.Success);
     }
 
     private Response<List<RoomDetailsData>> getRoomDetailFromRoom(List<Room> rooms) {
         List<RoomDetailsData> roomDetailsDataList = new ArrayList<>();
         for (Room room : rooms) {
-            Response<Mission> response = getMission(room.getCurrentMission(), room.getRoomTemplate());
-            if (response.getReason() != OpCode.Success) {
-                return new Response<>(null, response.getReason());
+            RoomDetailsData roomDetailsData= room.getData();
+            if(roomDetailsData!=null) {
+                roomDetailsDataList.add(roomDetailsData);
             }
-            MissionData missionData = getMissionData(response.getValue());
-
-            RoomDetailsData roomDetailsData=new RoomDetailsData(room.getRoomId(),room.getName(),missionData,room.getRoomTemplate().getType());
-            roomDetailsDataList.add(roomDetailsData);
         }
         return new Response<>(roomDetailsDataList,OpCode.Success);
     }
-
-    private Response<Mission> getMission(int missionIndex, RoomTemplate roomTemplate) {
-        Mission m = roomTemplate.getMission(missionIndex);
-        if (m == null) {
-            return new Response<>(null, OpCode.Wrong_Mission_Index);
-        }
-        return new Response<>(m, OpCode.Success);
-
-    }
-
-    private MissionData getMissionData(Mission mission) {
-        MissionData md = new MissionData(mission.getMissionId(), mission.getMissionTypes());
-        List<String> questList = new ArrayList<>();
-        List<String> answerList = new ArrayList<>();
-        if (mission instanceof KnownAnswerMission) {
-            md.setName("Known answer mission");
-            questList.add(((KnownAnswerMission) mission).getQuestion());
-            md.setQuestion(questList);
-            answerList.add(((KnownAnswerMission) mission).getRealAnswer());
-            md.setAnswers(answerList);
-        }
-        if (mission instanceof OpenAnswerMission) {
-            md.setName("Open Answer Mission");
-            questList.add(((OpenAnswerMission) mission).getQuestion());
-        }
-        if (mission instanceof StoryMission) {
-            md.setName("Story Mission");
-            md.setTimeForAns(((StoryMission) mission).getSecondsForEachStudent());
-        }
-        if (mission instanceof TriviaMission) {
-            md.setName("Trivia Mission");
-            md.setTimeForAns(((TriviaMission) mission).getSecondsForAnswer());
-            for (Map.Entry<String, TriviaQuestion> entry : ((TriviaMission) mission).getQuestions().entrySet()) {
-                questList.add(entry.getValue().getQuestion());
-            }
-            md.setQuestion(questList);
-        }
-        if (mission instanceof TrueLieMission) {
-            md.setName("True False Mission");
-            md.setTimeForAns(((TrueLieMission) mission).getAnswerTimeForStudent());
-        }
-        return md;
-    }
-
-
-
-
 
 }

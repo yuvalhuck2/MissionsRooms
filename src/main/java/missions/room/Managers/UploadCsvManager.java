@@ -130,7 +130,7 @@ public class UploadCsvManager {
     }
 
     private  Response<IT> checkIT(String apiKey){
-        String alias = ram.getApi(apiKey);
+        String alias = ram.getAlias(apiKey);
         if(alias==null){
             return new Response<>(null, OpCode.Wrong_Key);
         }

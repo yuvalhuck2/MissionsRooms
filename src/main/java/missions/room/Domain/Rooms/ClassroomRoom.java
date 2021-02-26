@@ -1,13 +1,13 @@
 package missions.room.Domain.Rooms;
 
-import missions.room.Domain.Classroom;
-import missions.room.Domain.Room;
-import missions.room.Domain.RoomTemplate;
-import missions.room.Domain.Teacher;
+import DataAPI.RoomType;
+import missions.room.Domain.*;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
-import javax.persistence.UniqueConstraint;
+import java.util.HashSet;
+import java.util.Set;
+import Utils.Utils;
 
 @Entity
 public class ClassroomRoom extends Room {
@@ -18,10 +18,19 @@ public class ClassroomRoom extends Room {
     public ClassroomRoom() {
     }
 
-    //TODO implement
     @Override
-    protected String drawMissionInCharge() {
-        return null;
+    protected RoomType addPoints(int points) {
+        participant.addPoints(points);
+        if(toCloseRoom()&&roomTemplate.getMinimalMissionsToPass()<=countCorrectAnswer){
+            participant.addPoints(bonus);
+        }
+        return RoomType.Class;
+    }
+
+    @Override
+    public boolean isBelongToRoom(String alias) {
+        return participant.getStudent(alias, GroupType.A)!=null||
+                participant.getStudent(alias,GroupType.B)!=null;
     }
 
     public ClassroomRoom(String roomId, String roomName, Classroom participant, Teacher teacher, RoomTemplate roomTemplate,int bonus) {
