@@ -126,11 +126,11 @@ public class SuggestionManagerTestsAllStubs {
 
     @Test
     void addSuggestionNullStudentTest(){
-        studentApiKey =NULL_STUDENT_KEY;
-        when(mockStudentRepo.findStudentById(WRONG_STUDENT_NAME))
+        studentApiKey = NULL_USER_KEY;
+        when(mockStudentRepo.findStudentById(WRONG_USER_NAME))
                 .thenReturn(new Response<>(null,OpCode.Success));
         when(mockRam.getAlias(studentApiKey))
-                .thenReturn(WRONG_STUDENT_NAME);
+                .thenReturn(WRONG_USER_NAME);
         testAddSuggestionInvalid(OpCode.Not_Exist);
     }
 

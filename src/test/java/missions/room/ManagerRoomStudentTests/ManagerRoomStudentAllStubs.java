@@ -160,8 +160,8 @@ public class ManagerRoomStudentAllStubs {
                 .thenReturn(studentApiKey);
         when(mockRam.getAlias(INVALID_KEY))
                 .thenReturn(null);
-        when(mockRam.getAlias(NULL_STUDENT_KEY))
-                .thenReturn(WRONG_STUDENT_NAME);
+        when(mockRam.getAlias(NULL_USER_KEY))
+                .thenReturn(WRONG_USER_NAME);
         when(mockRam.getAlias(VALID2_STUDENT_APIKEY))
                 .thenReturn(student2.getAlias());
         when(mockRam.getApiKey(student2.getAlias()))
@@ -342,7 +342,7 @@ public class ManagerRoomStudentAllStubs {
     void testAnswerDeterministicStudentNotFound(){
         when(mockStudentRepo.findStudentById(any()))
                 .thenReturn(new Response<>(null,OpCode.Success));
-        testFailAnswerDeterministic(NULL_STUDENT_KEY,
+        testFailAnswerDeterministic(NULL_USER_KEY,
                 dataGenerator.getRoom(Data.VALID_2MissionStudent).getRoomId(),
                 OpCode.Not_Exist);
     }
@@ -463,7 +463,7 @@ public class ManagerRoomStudentAllStubs {
     void testWatchRoomDataStudentNotFound(){
         when(mockStudentRepo.findStudentById(any()))
                 .thenReturn(new Response<>(null,OpCode.Success));
-        testWatchRoomDataFailCase(NULL_STUDENT_KEY,
+        testWatchRoomDataFailCase(NULL_USER_KEY,
                 dataGenerator.getRoom(Data.VALID_2MissionStudent).getRoomId(),
                 OpCode.Not_Exist);
     }
