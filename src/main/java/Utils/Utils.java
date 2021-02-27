@@ -3,6 +3,7 @@ package Utils;
 import DataAPI.UserType;
 import javafx.util.Pair;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -83,6 +84,10 @@ public class Utils {
         }
 
         return true;
+    }
+
+    public static boolean checkStringArray(List<String> answers) {
+        return answers.size() > 0 && answers.stream().allMatch(ans -> checkString(ans));
     }
 
     /*public static int getNextRandom(int number){

@@ -38,7 +38,8 @@ public enum OpCode implements Serializable {
     Student, IT, Supervisor,
     Wrong_File_Name, Failed_To_Read_Bytes, Wrong_File_Headers
     ,Student_Not_Exist_In_Group, Wrong_Mission_Index, Empty,
-    Student_Not_Exist_In_Class, Wrong_Suggestion;
+    Student_Not_Exist_In_Class, Wrong_Suggestion,
+    Trivia_Subject_Already_Exists, Invalid_Trivia_Subject, Invalid_Trivia_Question, SUBJECT_DOESNT_EXIST;
 
 
 
