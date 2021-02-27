@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 @Service
-public class UploadCsvManager {
+public class UploadCsvManager extends ITManager{
     private static final String TEACHER_FILE = "teachers.csv";
     private static final String STUDENT_FILE = "students.csv";
     private static final String[] USERS_FILE_HEADERS = {"First Name", "Last Name", "Email Address"};
@@ -93,14 +93,16 @@ public class UploadCsvManager {
             return new Response<>(false, OpCode.Wrong_File_Headers);
         }
         List<Classroom> classes = createClassesFromCsv(studentsRows, classesRows);
-        Response<Boolean> classRoomResp = classRoomRepo.saveAll(classes);
-        if (classRoomResp.getValue()){
-            List<Teacher> teachers = createTeachersFromCsv(teachersRows, groupsRows, classes);
-            Response<Boolean> teacherResp = teacherRepo.saveAll(teachers);
-            return teacherResp;
+        synchronized (ADD_USER_LOCK) {
+            Response<Boolean> classRoomResp = classRoomRepo.saveAll(classes);
+            if (classRoomResp.getValue()) {
+                List<Teacher> teachers = createTeachersFromCsv(teachersRows, groupsRows, classes);
+                Response<Boolean> teacherResp = teacherRepo.saveAll(teachers);
+                return teacherResp;
+            }
+            return classRoomResp;
         }
 
-        return classRoomResp;
     }
 
     public String getFileStringByName(MultipartFile[] CSVs, String name) throws IOException {
@@ -133,7 +135,8 @@ public class UploadCsvManager {
         return classes;
     }
 
-    private  Response<IT> checkIT(String apiKey){
+    @Override
+    protected   Response<IT> checkIT(String apiKey){
         String alias = ram.getAlias(apiKey);
         if(alias==null){
             return new Response<>(null, OpCode.Wrong_Key);

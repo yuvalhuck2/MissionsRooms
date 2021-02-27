@@ -101,6 +101,12 @@ export const navigateToUploadCSV = ({ navigation }) => {
   navigation.navigate(NavPaths.uploadCsv);
   return { type: '' };
 };
+
+export const navigateToAddNewIT = ({ navigation }) => {
+  navigation.navigate(NavPaths.addIT);
+  return { type: '' };
+};
+
 const parseUploadCsvResponse = (data, dispatch) => {
   const { reason, value } = data;
 

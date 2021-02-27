@@ -32,8 +32,8 @@ public class SuggestionManagerTestsRealRam extends SuggestionManagerTestsAllStub
         realRam.addApi(teacherApiKey
                 ,dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM)
                 .getAlias());
-        realRam.addApi(NULL_STUDENT_KEY
-                ,WRONG_STUDENT_NAME);
+        realRam.addApi(NULL_USER_KEY
+                , WRONG_USER_NAME);
         realRam.addApi(NULL_TEACHER_KEY
                 ,WRONG_TEACHER_NAME);
     }

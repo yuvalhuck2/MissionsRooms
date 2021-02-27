@@ -7,8 +7,9 @@ public class DataConstants {
     public static final String SUPERVISOR_KEY="superKey";
     public static final String VALID_STUDENT_APIKEY = "valid_student_key";
     public static final String VALID2_STUDENT_APIKEY = "valid2_student_key";
-    public static final String WRONG_STUDENT_NAME="wrong_name";
-    public static final String NULL_STUDENT_KEY="null_student";
+    public static final String WRONG_USER_NAME ="wrong_name";
+    public static final String NULL_USER_KEY ="null_user";
     public static final String VALID_TEACHER_APIKEY = "valid_teacher_key";
     public static final String WRONG_ROOM_ID = "wrong_room_id";
+    public static final String IT_API_KEY="it_api_key";
 }

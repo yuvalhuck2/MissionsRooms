@@ -40,11 +40,11 @@ public class ManagerRoomStudentRealRam extends ManagerRoomStudentAllStubs{
         realRam.addApi(studentApiKey
                 ,dataGenerator.getStudent(Data.VALID)
                         .getAlias());
-        realRam.addApi(NULL_STUDENT_KEY
-                ,WRONG_STUDENT_NAME);
+        realRam.addApi(NULL_USER_KEY
+                , WRONG_USER_NAME);
         realRam.addAlias(studentApiKey);
-        realRam.addApi(NULL_STUDENT_KEY
-                ,WRONG_STUDENT_NAME);
+        realRam.addApi(NULL_USER_KEY
+                , WRONG_USER_NAME);
         realRam.addApi(valid2StudentApiKey,
                 dataGenerator.getStudent(Data.VALID2)
                         .getAlias());

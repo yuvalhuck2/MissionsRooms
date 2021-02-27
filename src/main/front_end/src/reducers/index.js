@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import addITReducer from './addITReducer';
 import addMissionReducer from './addMissionReducer';
 import addRoomReducer from './AddRoomReducer';
 import addRoomTemplateReducer from './addRoomTemlateReducer';
@@ -15,4 +16,5 @@ export default combineReducers({
   ChooseStudentRoom: ChooseStudentRoom,
   IT: ITReducer,
   SolveDeterministic: SolveDeterministic,
+  addIT: addITReducer
 });

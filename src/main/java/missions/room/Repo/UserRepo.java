@@ -46,6 +46,15 @@ public class UserRepo {
         }
     }
 
+    public Response<Boolean> isExistsById(String alias){
+        try {
+            return new Response<>(userCrudRepository.existsById(alias), OpCode.Success);
+        }
+        catch(Exception e){
+            return new Response<>(null,OpCode.DB_Error);
+        }
+    }
+
     public Response<User> save(User user){
         try {
             return new Response<>(userCrudRepository.save(user), OpCode.Success);

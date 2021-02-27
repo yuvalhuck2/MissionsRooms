@@ -32,4 +32,13 @@ public class ITRepo {
             return new Response<>(null,OpCode.DB_Error);
         }
     }
+
+    public Response<IT> save(IT it) {
+        try {
+            return new Response<>(itCrudRepository.save(it), OpCode.Success);
+        }
+        catch (Exception e){
+            return new Response<>(null,OpCode.DB_Error);
+        }
+    }
 }

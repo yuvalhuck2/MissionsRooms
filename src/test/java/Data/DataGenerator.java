@@ -78,6 +78,9 @@ public class DataGenerator {
         User validIT=new IT("ExistAliasIT",hashSystem.encrypt("1234"));
         users.put(Data.VALID_IT,validIT);
 
+        User validIT2=new IT("ExistAliasIT2",hashSystem.encrypt("1234"));
+        users.put(Data.VALID_IT2,validIT2);
+
 
         initRoomTemplateDatas();
         initRoomTemplates();
@@ -304,6 +307,8 @@ public class DataGenerator {
         registerDetailsDatas=new HashMap<Data, RegisterDetailsData>();
         registerDetailsDatas.put(Data.VALID,new RegisterDetailsData("NoAlasIsExistWithThatName","1234"));
         registerDetailsDatas.put(Data.VALID2,new RegisterDetailsData("NoAlasIsExistWithThatName","1234"));
+        registerDetailsDatas.put(Data.VALID_IT,new RegisterDetailsData("ExistAliasIT","1234"));
+        registerDetailsDatas.put(Data.VALID_IT2,new RegisterDetailsData("ExistAliasIT2","1234"));
         registerDetailsDatas.put(Data.NULL_PASSWORD,new RegisterDetailsData("NoAlasIsExistWithThatName",null));
         registerDetailsDatas.put(Data.EMPTY_PASSWORD,new RegisterDetailsData("NoAlasIsExistWithThatName",""));
         registerDetailsDatas.put(Data.NULL_ALIAS,new RegisterDetailsData(null,"1234"));
