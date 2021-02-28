@@ -75,6 +75,6 @@ public class StudentRoomService {
      */
     //TODO real time notifications to move the other clients a room
     public Response<Boolean> answerOpenQuestionMission(String apiKey, SolutionData openAnswer, MultipartFile file){
-        return managerRoomStudent
+        return managerRoomStudent.answerOpenQuestionMission(apiKey, openAnswer, file);
     }
 }

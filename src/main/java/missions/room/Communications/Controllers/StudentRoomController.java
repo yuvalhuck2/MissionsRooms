@@ -53,8 +53,8 @@ public class StudentRoomController extends AbsController{
         return response;
     }
 
-    @PostMapping("/open")
+    @PostMapping("/openAns")
     public Response<?> answerOpenQuestion(@RequestBody SolutionData openAnswer, @RequestParam("file") MultipartFile file, @RequestParam String token) {
-
+        return studentRoomService.answerOpenQuestionMission(token, openAnswer, file);
     }
 }

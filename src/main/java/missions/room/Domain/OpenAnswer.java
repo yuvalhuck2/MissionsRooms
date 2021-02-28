@@ -4,6 +4,7 @@ import ExternalSystems.UniqueStringGenerator;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 @Entity
 public class OpenAnswer {
@@ -12,6 +13,7 @@ public class OpenAnswer {
     private String id;
     private String roomId;
     private String missionId;
+    @Lob
     private byte[] file;
     private String openAnswerText;
 
