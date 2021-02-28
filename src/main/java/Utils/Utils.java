@@ -5,6 +5,7 @@ import javafx.util.Pair;
 
 import java.util.Random;
 import java.util.Set;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -89,6 +90,13 @@ public class Utils {
         return true;
     }
 
+    public static boolean checkStringArray(List<String> answers) {
+        return answers.size() > 0 && answers.stream().allMatch(ans -> checkString(ans));
+    }
+
+    /*public static int getNextRandom(int number){
+        return random.nextInt(number);
+    }*/
     public static<T> T getRandomFromSet(Set<T> set) {
         T[] asArray = (T[]) set.toArray();
         return asArray[randomizer.nextInt(asArray.length)];

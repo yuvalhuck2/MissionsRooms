@@ -39,6 +39,8 @@ public class DataGenerator {
     private HashMap<Data,ClassGroup> classGroupMap;
     private HashMap<Data,GroupData> classGroupData;
     private HashMap<Data,Suggestion> suggestionHashMap;
+    private HashMap<Data, String> triviaSubjectHashMap;
+    private HashMap<Data, TriviaQuestionData> triviaQuestionHashMap;
 
     public DataGenerator() {
         initStudents();
@@ -58,8 +60,30 @@ public class DataGenerator {
         initNewRoomDetails();
         initLoginDatas();
         initUsers();
+        initTriviaData();
     }
 
+    private void initTriviaData() {
+        triviaSubjectHashMap = new HashMap<Data, String>();
+        triviaSubjectHashMap.put(Data.VALID,"valid subject");
+        triviaSubjectHashMap.put(Data.VALID2,"valid subject2");
+        triviaSubjectHashMap.put(Data.VALID3,"valid subject3");
+        triviaSubjectHashMap.put(Data.INVALID, "");
+        triviaQuestionHashMap = new HashMap<Data, TriviaQuestionData>();
+        List<String> validAnswers = Arrays.asList("ans1", "ans2");
+        List<String> invalidAnswers = new ArrayList<>();
+        triviaQuestionHashMap.put(Data.VALID, new TriviaQuestionData( "question?", validAnswers,
+                "correctANS", triviaSubjectHashMap.get(Data.VALID)));
+        triviaQuestionHashMap.put(Data.VALID2, new TriviaQuestionData( "question?", validAnswers,
+                "correctANS", triviaSubjectHashMap.get(Data.VALID2)));
+        triviaQuestionHashMap.put(Data.TRIVIA_INVALID_QUESTION, new TriviaQuestionData( "", validAnswers,
+                "correctANS", triviaSubjectHashMap.get(Data.VALID)));
+        triviaQuestionHashMap.put(Data.TRIVIA_INVALID_ANSWERS, new TriviaQuestionData( "question?", invalidAnswers,
+                "correctANS", triviaSubjectHashMap.get(Data.VALID)));
+        triviaQuestionHashMap.put(Data.TRIVIA_INVALID_CORRECT_ANSWER, new TriviaQuestionData( "question?", validAnswers,
+                "", triviaSubjectHashMap.get(Data.VALID)));
+
+    }
     private void initSuggestions() {
         suggestionHashMap=new HashMap<Data, Suggestion>();
         suggestionHashMap.put(Data.VALID,new Suggestion("id","suggest something"));
@@ -420,5 +444,13 @@ public class DataGenerator {
 
     public Suggestion getSuggestion(Data data) {
         return suggestionHashMap.get(data);
+    }
+
+    public  String getTriviaSubject(Data data) {
+        return triviaSubjectHashMap.get(data);
+    }
+
+    public TriviaQuestionData getTriviaQuestion(Data data) {
+        return triviaQuestionHashMap.get(data);
     }
 }

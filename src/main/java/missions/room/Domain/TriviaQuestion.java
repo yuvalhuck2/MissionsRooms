@@ -1,6 +1,8 @@
 package missions.room.Domain;
 
 import missions.room.Domain.missions.TriviaMission;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.List;
@@ -25,16 +27,34 @@ public class TriviaQuestion {
     )
     private List<TriviaMission> triviaMissions;
 
-    private int correctAnswer;
+    private String correctAnswer;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @OnDelete(action =  OnDeleteAction.CASCADE)
+    @JoinColumn(name="subject", referencedColumnName = "name", nullable=false)
+    private TriviaSubject subject;
 
     public TriviaQuestion() {
     }
 
-    public TriviaQuestion(String id, String question, List<String> answers, int correctAnswer) {
+    public TriviaQuestion(String id, String question, List<String> answers, String correctAnswer, String subject) {
         this.id = id;
         this.question = question;
         this.answers = answers;
         this.correctAnswer = correctAnswer;
+        this.subject = new TriviaSubject(subject);
+    }
+
+    public TriviaQuestion(String id, String question, List<String> answers, String correctAnswer, TriviaSubject subject) {
+        this.id = id;
+        this.question = question;
+        this.answers = answers;
+        this.correctAnswer = correctAnswer;
+        this.subject = subject;
+    }
+
+    public String getSubject() {
+        return subject.getName();
     }
 
     public String getId() {
@@ -69,11 +89,11 @@ public class TriviaQuestion {
         this.triviaMissions = triviaMissions;
     }
 
-    public int getCorrectAnswer() {
+    public String getCorrectAnswer() {
         return correctAnswer;
     }
 
-    public void setCorrectAnswer(int correctAnswer) {
+    public void setCorrectAnswer(String correctAnswer) {
         this.correctAnswer = correctAnswer;
     }
 }

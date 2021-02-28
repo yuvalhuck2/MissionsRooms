@@ -106,18 +106,7 @@ public class ServiceAPI {
         throw new NotImplementedException();
     }
 
-    /**
-     * req 3.6.2.1 - answer open question mission
-     * @param auth - authentication object
-     * @param roomId - room id
-     * @param answer - verbal answer of the open question
-     * @param file - file attached to the solution
-     * @return if the answer was accepted successfully
-     */
-    //TODO real time notifications to move the other clients a room
-    public Response<Boolean> answerOpenQuestionMission(Auth auth, String roomId,String answer,String file){
-        throw new NotImplementedException();
-    }
+
 
 
     //TODO talk about discussion mission
@@ -250,26 +239,26 @@ public class ServiceAPI {
 //    }
 
 
-    /**
-     * req 4.6 - create trivia subject
-     * @param auth - authentication object
-     * @param subject - the subject of the trivia the teacher want to add
-     * @return if the subject was added successfully
-     */
-    public Response<Boolean> createTriviaSubject(Auth auth, String subject){
-        throw new NotImplementedException();
-    }
-
-
-    /**
-     * req 4.7 - add trivia question
-     * @param auth - authentication object
-     * @param question - question details
-     * @return if the question was added successfully
-     */
-    public Response<Boolean> addTriviaQuestion(Auth auth, TriviaQuestionData question){
-        throw new NotImplementedException();
-    }
+//    /**
+//     * req 4.6 - create trivia subject
+//     * @param auth - authentication object
+//     * @param subject - the subject of the trivia the teacher want to add
+//     * @return if the subject was added successfully
+//     */
+//    public Response<Boolean> createTriviaSubject(Auth auth, String subject){
+//        throw new NotImplementedException();
+//    }
+//
+//
+//    /**
+//     * req 4.7 - add trivia question
+//     * @param auth - authentication object
+//     * @param question - question details
+//     * @return if the question was added successfully
+//     */
+//    public Response<Boolean> addTriviaQuestion(Auth auth, TriviaQuestionData question){
+//        throw new NotImplementedException();
+//    }
 
 
     /**
