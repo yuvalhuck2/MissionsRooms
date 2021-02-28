@@ -106,18 +106,7 @@ public class ServiceAPI {
         throw new NotImplementedException();
     }
 
-    /**
-     * req 3.6.2.1 - answer open question mission
-     * @param auth - authentication object
-     * @param roomId - room id
-     * @param answer - verbal answer of the open question
-     * @param file - file attached to the solution
-     * @return if the answer was accepted successfully
-     */
-    //TODO real time notifications to move the other clients a room
-    public Response<Boolean> answerOpenQuestionMission(Auth auth, String roomId,String answer,String file){
-        throw new NotImplementedException();
-    }
+
 
 
     //TODO talk about discussion mission

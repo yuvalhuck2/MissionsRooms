@@ -5,10 +5,8 @@ import missions.room.Communications.Publisher.SinglePublisher;
 import missions.room.Domain.Notifications.NonPersistenceNotification;
 import missions.room.Service.StudentRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,5 +51,10 @@ public class StudentRoomController extends AbsController{
         Response<Boolean> response = studentRoomService.answerDeterministicQuestion(data.getApiKey(),
                 data.getRoomId(),data.isAnswer());
         return response;
+    }
+
+    @PostMapping("/open")
+    public Response<?> answerOpenQuestion(@RequestBody SolutionData openAnswer, @RequestParam("file") MultipartFile file, @RequestParam String token) {
+
     }
 }

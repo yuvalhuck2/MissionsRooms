@@ -2,6 +2,7 @@ package missions.room.Managers;
 
 import CrudRepositories.*;
 import DataAPI.*;
+import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Communications.Publisher.Publisher;
 import missions.room.Communications.Publisher.SinglePublisher;
 import missions.room.Domain.*;
@@ -15,12 +16,14 @@ import missions.room.Repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @Service
+@CommonsLog
 public class ManagerRoomStudent extends StudentManager {
 
     @Autowired
@@ -31,6 +34,9 @@ public class ManagerRoomStudent extends StudentManager {
 
     @Autowired
     private ClassGroupRepo classGroupRepo;
+
+    @Autowired
+    private OpenAnswerRepo openAnswerRepo;
 
     private static Publisher publisher;
 
@@ -51,6 +57,39 @@ public class ManagerRoomStudent extends StudentManager {
         this.classGroupRepo=new ClassGroupRepo(groupRepository);
         publisher=SinglePublisher.getInstance();
     }
+
+
+    /**
+     * req 3.6.2.1 - answer open question mission
+     * @param apiKey
+     * @param openAnswerData
+     * @param file
+     * @return if the answer was accepted successfully
+     */
+    //TODO real time notifications to move the other clients a room
+    public Response<Boolean> answerOpenQuestionMission(String apiKey, SolutionData openAnswerData, MultipartFile file){
+        OpCode validity = checkStudentIsMissionManager(apiKey, openAnswerData.getRoomId());
+        if (validity == OpCode.Success) {
+            try {
+                byte[] fileBytes = file.getBytes();
+                OpenAnswer openAnswer = new OpenAnswer(openAnswerData.getRoomId(), openAnswerData.getMissionId()
+                                            , fileBytes, openAnswerData.getOpenAnswer());
+                Room room = ram.getRoom(openAnswerData.getRoomId());
+                if (room != null) {
+                    synchronized (room) {
+                        updateRoomAndMissionInCharge(room);
+                    }
+                }
+                return openAnswerRepo.saveOpenAnswer(openAnswer);
+            } catch (Exception ex) {
+                return new Response<>(false, OpCode.FAILED_READ_FILE_BYTES);
+            }
+        } else {
+            return new Response<>(false, validity);
+        }
+
+    }
+
 
     /**
      * req 3.6.2.3 - answer deterministic question mission
@@ -118,6 +157,41 @@ public class ManagerRoomStudent extends StudentManager {
 
             return new Response<>(true, OpCode.Success);
 
+    }
+
+
+    private void updateRoomAndMissionInCharge(Room room) {
+        OpCode reason;
+        String nextInCharge=null;
+        NonPersistenceNotification<RoomDetailsData> notification;
+        if (room.isLastMission()) {
+            reason = roomRepo.deleteRoom(room).getReason();
+            if (reason != OpCode.Success) {
+                log.error(String.format("Failed to delete room: {0}. function: updateRoomAndMissionInCharge", room.getRoomId()));
+            }
+            ram.deleteRoom(room.getRoomId());
+            notification = new NonPersistenceNotification<>(OpCode.Finish_Missions_In_Room, null);
+        } else {
+            room.increaseCurrentMission();
+            reason = roomRepo.save(room).getReason();
+            if (reason != OpCode.Success) {
+                log.error(String.format("Failed to save room: {0}. function: updateRoomAndMissionInCharge", room.getRoomId()));
+            }
+            //roll mission in charge
+            notification = new NonPersistenceNotification<>(OpCode.Update_Room, room.getData());
+            nextInCharge=room.drawMissionInCharge();
+        }
+
+        Set<String> userKeys=room.getConnectedUsersAliases();
+        for (String alias :
+                userKeys) {
+            publisher.update(ram.getApiKey(alias),notification);
+        }
+        //send to the next mission inCharge notification
+        if(nextInCharge!=null){
+            NonPersistenceNotification<String> inChargeNotification=new NonPersistenceNotification<>(OpCode.IN_CHARGE,room.getRoomId());
+            publisher.update(ram.getApiKey(nextInCharge),inChargeNotification);
+        }
     }
 
     private Response<Boolean> updateCorrectAnswer(Room room) {
@@ -325,6 +399,18 @@ public class ManagerRoomStudent extends StudentManager {
             }
         }
         return new Response<>(roomDetailsDataList,OpCode.Success);
+    }
+
+    private OpCode checkStudentIsMissionManager(String apiKey, String roomId){
+        String missionManager = ram.getMissionManager(roomId);
+        String userAlias = ram.getAlias(apiKey);
+        if (missionManager != null && userAlias != null ) {
+            if (missionManager.equals(userAlias)) {
+                return OpCode.Success;
+            }
+            return OpCode.STUDENT_NOT_IN_CHARGE;
+        }
+        return OpCode.INVALID_ROOM_ID;
     }
 
 }

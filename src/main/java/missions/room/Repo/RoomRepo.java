@@ -1,5 +1,6 @@
 package missions.room.Repo;
 
+import CrudRepositories.OpenAnswerRepository;
 import CrudRepositories.RoomCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;

@@ -105,4 +105,12 @@ public class Ram {
     public void clearRooms() {
         roomIdToRoom.clear();
     }
+
+    public String getMissionManager(String roomId) {
+        Room room = getRoom(roomId);
+        if(room != null) {
+            return room.getMissionInCharge();
+        }
+        return null;
+    }
 }
