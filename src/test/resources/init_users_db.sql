@@ -10,7 +10,7 @@ INSERT INTO Classroom (class_name,points) VALUES
 INSERT INTO Class_group (group_name, group_type,classroom,points) VALUES
 ('A',0,'class',0);
 
-INSERT INTO IT (alias, password) VALUES
+INSERT INTO IT (alias) VALUES
 ('admin');
 
 INSERT INTO SCHOOL_USER (first_name, last_name, alias) VALUES

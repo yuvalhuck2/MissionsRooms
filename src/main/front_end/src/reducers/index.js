@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import addITReducer from './addITReducer';
-import addMissionReducer from './addMissionReducer';
+import addITReducer from './AddITReducer';
+import addMissionReducer from './AddMissionReducer';
 import addRoomReducer from './AddRoomReducer';
-import addRoomTemplateReducer from './addRoomTemlateReducer';
+import addRoomTemplateReducer from './AddRoomTemlateReducer';
 import AuthReducer from './AuthReducer';
 import ChooseStudentRoom from './ChooseStudentRoomReducer';
 import ITReducer from './ITReducer';
