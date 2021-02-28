@@ -1,9 +1,8 @@
 package RepositoryMocks.TeacherRepository;
 
 import CrudRepositories.TeacherCrudRepository;
-import missions.room.Domain.Teacher;
+import missions.room.Domain.Users.Teacher;
 
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.LockTimeoutException;
 import java.util.List;
 import java.util.Optional;

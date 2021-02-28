@@ -170,9 +170,8 @@ export const ChooseStudentRoomStrings = {
 export const ChooseRoomStudentErrors = {
   room_empty: 'יש לבחור חדר',
   wrong_answer: 'תשובה לא נכונה, מספר נסיונות מותרים: ',
-  fail: 'לא נורא, בפעם הבאה יהיה יותר טוב:(',
+  fail: 'נכשלת במשימה,לא נורא בפעם הבאה יהיה יותר טוב:(',
   pass: 'תשובה נכונה!',
-  final: '\nהחדר הסתיים',
 };
 
 export const SolveDeterministicMissionStrings = {
@@ -198,14 +197,16 @@ export const registerCodeErrors = {
 
 export const GeneralErrors = {
   server_error: 'שגיאת שרת',
-  wrong_key_error: 'שגיאת מפתח הזדהות',
+  wrong_key_error: 'שגיאת מפתח הזדהות, יש לשלוח בקשה מחדש',
   teacher_not_exists_error: 'מורה לא קיים',
   student_not_exist: 'סטודנט לא קיים',
+  room_error:'יש תקלה עם החדר, מומלץ לנסות להתחבר אליו שנית',
 };
 
 export const ITStrings = {
   uploadCSV: 'העלאת קבצים',
   main_screen: 'התנתק/י',
+  addNewIT: 'הוספת מנהל טכני',
 };
 
 export const addMissionErrors = {
@@ -242,3 +243,22 @@ export const passToMyRoomsErrors = {
   student_not_exist_in_group_error: 'תלמיד לא קיים בקבוצה',
   wrong_mission_error: 'משימה לא תקינה',
 };
+
+export const webSocketMessages = {
+  final: '\nהחדר הסתיים',
+}
+
+export const addITStrings = {
+  header: 'הוספת מנהל טכני',
+  enter_alias: 'שם משתמש',
+  enter_password: 'סיסמא',
+  add_IT_btn: 'הוספה',
+}
+
+export const addITErrors = {
+  wrong_password: 'יש להכניס סיסמא תקנית',
+  wrong_alias: 'שם משתמש לא תקין',
+  not_exist:'המערכת לא זיהתה אותך, יש להתחבר מחדש ולנסות שוב',
+  already_exist:'כבר קיים משתמש עם שם משתמש זהה',
+  added_successfully:' !הוספת המנהל הטכני הצליחה',
+}

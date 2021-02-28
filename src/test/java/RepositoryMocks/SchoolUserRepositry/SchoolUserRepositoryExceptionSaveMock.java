@@ -2,7 +2,7 @@ package RepositoryMocks.SchoolUserRepositry;
 
 import Data.Data;
 import Data.DataGenerator;
-import missions.room.Domain.SchoolUser;
+import missions.room.Domain.Users.SchoolUser;
 import CrudRepositories.SchoolUserCrudRepository;
 
 import javax.persistence.EntityNotFoundException;

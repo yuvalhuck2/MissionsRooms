@@ -1,6 +1,8 @@
 package missions.room.Communications.Controllers;
 
 import DataAPI.*;
+import missions.room.Communications.Publisher.SinglePublisher;
+import missions.room.Domain.Notifications.NonPersistenceNotification;
 import missions.room.Service.StudentRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController // This means that this class is a Controller
@@ -22,10 +26,25 @@ public class StudentRoomController extends AbsController{
     }
 
     @PostMapping("/view")
-    public Response<?> getClassRoomData(@RequestBody String apiKey) {
-        ApiKey data = json.fromJson(apiKey, ApiKey.class);
+    public Response<?> watchRoomDetails(@RequestBody String apiKeyObject) {
+        ApiKey data = json.fromJson(apiKeyObject, ApiKey.class);
         Response<List<RoomDetailsData>> response = studentRoomService.watchRoomDetails(data.getApiKey());
         return response;
+    }
+
+    @PostMapping("/data")
+    public Response<?> watchRoomData(@RequestBody String apiKeyAndRoomIdData) {
+        RoomIdAndApiKeyData data= json.fromJson(apiKeyAndRoomIdData, RoomIdAndApiKeyData.class);
+        Response<RoomDetailsData> response = studentRoomService.watchRoomData(data.getApiKey(),
+                data.getRoomId());
+        return response;
+    }
+
+    @PostMapping("/disconnect")
+    public void disconnectFromRoom(@RequestBody String apiKeyAndRoomIdData) {
+        RoomIdAndApiKeyData data= json.fromJson(apiKeyAndRoomIdData, RoomIdAndApiKeyData.class);
+        studentRoomService.disconnectFromRoom(data.getApiKey(),
+                data.getRoomId());
     }
 
     @PostMapping("/deterministic")

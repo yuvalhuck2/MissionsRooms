@@ -1,6 +1,6 @@
 package CrudRepositories;
 
-import missions.room.Domain.Mission;
+import missions.room.Domain.missions.Mission;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

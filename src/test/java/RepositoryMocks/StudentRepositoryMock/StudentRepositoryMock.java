@@ -1,9 +1,8 @@
 package RepositoryMocks.StudentRepositoryMock;
 
 import CrudRepositories.StudentCrudRepository;
-import Data.Data;
 import Data.DataGenerator;
-import missions.room.Domain.Student;
+import missions.room.Domain.Users.Student;
 
 import java.util.HashMap;
 import java.util.Map;

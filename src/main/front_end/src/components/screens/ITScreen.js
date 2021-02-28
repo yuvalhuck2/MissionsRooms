@@ -3,13 +3,14 @@ import { StyleSheet, Text, Dimensions, View } from 'react-native';
 import { connect } from 'react-redux';
 import Button from '../common/Button';
 import { Icon } from 'react-native-elements'
-import  { navigateToUploadCSV } from '../../actions'
+import  { navigateToUploadCSV, navigateToAddNewIT } from '../../actions'
 import { ITStrings } from '../../locale/locale_heb';
 import {logout} from '../../actions'
 
 const {
   uploadCSV,
-  main_screen
+  main_screen,
+  addNewIT,
 } = ITStrings
 
 const DeviceWidth  = Dimensions.get('window').width;
@@ -21,6 +22,7 @@ class ITForm extends Component {
     super(...args);
     this.navigateToUploadCSV = this.navigateToUploadCSV.bind(this);
     this.onLogout=this.onLogout.bind(this);
+    this.navigateToAddNewIT=this.navigateToAddNewIT.bind(this);
   }
 
   navigateToUploadCSV() {
@@ -33,13 +35,20 @@ class ITForm extends Component {
     return this.props.logout(navigation);
   }
 
+  navigateToAddNewIT(){
+    const {navigation}=this.props;
+    return this.props.navigateToAddNewIT({navigation});
+  }
+
 
   render() {
     
     return (
       <View style={styles.container}>
         <View>
-          <Button style={[styles.button, styles.top_button_marg, styles.left_button_border, styles.top_button_border]} />
+          <Button onPress={this.navigateToAddNewIT} style={[styles.button, styles.top_button_marg, styles.left_button_border, styles.top_button_border]} >
+            <Text style={{color:"white"}}>{addNewIT}</Text> 
+          </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} />
           <Button onPress={this.onLogout} style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]} >
             <Text style={{color:"white"}}>{main_screen}</Text> 
@@ -108,4 +117,8 @@ const mapStateToProps = (state) => {
   return { };
 };
 
-export default connect(mapStateToProps, {navigateToUploadCSV, logout})(ITForm);
+export default connect(mapStateToProps, {
+  navigateToUploadCSV,
+  logout,
+  navigateToAddNewIT,
+})(ITForm);

@@ -1,7 +1,5 @@
 package DataAPI;
 
-import missions.room.Domain.GroupType;
-
 public class TeacherData {
     private String firstName;
     private String lastName;

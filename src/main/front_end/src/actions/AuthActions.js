@@ -1,7 +1,9 @@
 import API from '../api/API';
 import * as APIPaths from '../api/APIPaths';
-import { authErrors, registerCodeErrors } from '../locale/locale_heb';
+import { authErrors, registerCodeErrors, webSocketMessages } from '../locale/locale_heb';
 import * as NavPaths from '../navigation/NavPaths';
+import { connectToWebSocket} from '../handler/WebSocketHandler';
+import {moveToMission} from './ChooseStudentRoomActions';
 // import Constants from 'expo-constants'
 import {
   Already_Exist,
@@ -22,6 +24,9 @@ import {
   Wrong_Code,
   Not_Exist_Group,
   Already_Exist_Student,
+  Update_Room, 
+  Finish_Missions_In_Room,
+  IN_CHARGE,
 } from './OpCodeTypes';
 import {
   CLEAR_STATE,
@@ -39,6 +44,9 @@ import {
   REGISTER_TEACHER,
   REGISTER_USER,
   UPDATE_ERROR,
+  FINISH_MISSION,
+  STUDENT_DIALOG,
+  CHANGE_IN_CHARGE,
 } from './types';
 
 const {
@@ -60,6 +68,10 @@ const {
   not_exist_group_register_code,
   already_exist_student_register_code,
 } = registerCodeErrors;
+
+const {
+  final,
+} = webSocketMessages;
 
 // THIS IS FOR CHECKING DNS ADDRESS WHEN RUNNING EXPO ON PHYSICAL DEVICE
 // const { manifest } = Constants;
@@ -237,20 +249,48 @@ const checkLoginUserResponse = (data, dispatch, navigation) => {
       return dispatch({ type: UPDATE_ERROR, payload: not_exist });
     case Supervisor:
       navigation.navigate(NavPaths.supMainScreen);
+      connectToWebSocketFromLogin(value,dispatch, navigation)
       return dispatch({ type: LOGIN_SUPERVISOR, payload: value });
     case IT:
       navigation.navigate(NavPaths.ITMainScreen);
+      connectToWebSocketFromLogin(value,dispatch, navigation)
       return dispatch({ type: LOGIN_IT, payload: value });
     case Teacher:
       navigation.navigate(NavPaths.teacherMainScreen);
+      connectToWebSocketFromLogin(value,dispatch, navigation)
       return dispatch({ type: LOGIN_TEACHER, payload: value });
     case Student:
       navigation.navigate(NavPaths.studentMainScreen);
+      connectToWebSocketFromLogin(value,dispatch, navigation)
       return dispatch({ type: LOGIN_STUDENT, payload: value });
     default:
       return dispatch({ type: UPDATE_ERROR, payload: server_error });
   }
 };
+
+const connectToWebSocketFromLogin = (apiKey,dispatch, navigation) => {
+  connectToWebSocket(apiKey,(notification)=>{
+    const {value,reason} =notification;
+    switch(reason){
+      case Finish_Missions_In_Room:
+        dispatch({ type: FINISH_MISSION, payload: apiKey });
+        navigation.navigate(NavPaths.studentMainScreen);
+        dispatch({type:STUDENT_DIALOG, payload:final})
+        break;
+      case Update_Room:
+        dispatch({ type: FINISH_MISSION, payload: apiKey });
+        moveToMission(value,dispatch,navigation,false);
+        break;
+      case IN_CHARGE:
+          dispatch({ type: CHANGE_IN_CHARGE, payload: true });
+          break;
+      default:
+        console.log("No match case in web socket for"+reason)
+    }
+    
+    
+  })
+}
 
 export const navigateToRegister = ({ navigation }) => {
   navigation.navigate(NavPaths.registerScreen);

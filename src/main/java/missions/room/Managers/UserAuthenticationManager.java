@@ -10,6 +10,9 @@ import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
 import ExternalSystems.VerificationCodeGenerator;
 import CrudRepositories.SchoolUserCrudRepository;
+import missions.room.Domain.Users.SchoolUser;
+import missions.room.Domain.Users.Teacher;
+import missions.room.Domain.Users.User;
 import missions.room.Repo.ClassroomRepo;
 import missions.room.Repo.SchoolUserRepo;
 import Utils.Utils;
@@ -285,5 +288,13 @@ public class UserAuthenticationManager extends TeacherManager {
 
     public void setRam(Ram ram) {
         this.ram = ram;
+    }
+
+    public void openWebSocket(String apiKey) {
+        ram.addAlias(apiKey);
+    }
+
+    public void closeWebSocket(String apiKey) {
+        ram.removeApiKey(apiKey);
     }
 }

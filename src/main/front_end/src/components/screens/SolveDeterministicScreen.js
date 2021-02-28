@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ActivityIndicator } from 'react-native-paper';
+import { ActivityIndicator,Appbar  } from 'react-native-paper';
 import { connect } from 'react-redux';
-import { answerChanged, sendDeterministicAnswer } from '../../actions/ChooseStudentRoomActions';
+import { answerChanged, sendDeterministicAnswer } from '../../actions/SolveDeterministicActions';
+import {handleBack} from '../../actions/ChooseStudentRoomActions';
 import { theme } from '../../core/theme';
 import { SolveDeterministicMissionStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
@@ -20,16 +21,21 @@ class SolveDeterministicForm extends Component {
     super(...args);
     this.onAnswerChanged = this.onAnswerChanged.bind(this);
     this.onButtonPress = this.onButtonPress.bind(this);
+    this.onBackPress = this.onBackPress.bind(this);
   }
 
   onAnswerChanged(text) {
-    const {currentRoom } = this.props;
-    this.props.answerChanged(currentRoom.currentMission,text);
+    this.props.answerChanged(text);
   }
 
   onButtonPress() {
-    const {currentRoom,apiKey, navigation } = this.props;
-    this.props.sendDeterministicAnswer({currentRoom,apiKey, navigation });
+    const {roomId,mission,tries,apiKey, navigation,currentAnswer } = this.props;
+    this.props.sendDeterministicAnswer({roomId,mission,tries,apiKey, navigation,currentAnswer });
+  }
+
+  onBackPress(){
+    const {navigation,apiKey,roomId,mission} =this.props;
+    this.props.handleBack({navigation,apiKey,roomId,missionId:mission.missionId});
   }
 
   renderSpinner() {
@@ -43,9 +49,9 @@ class SolveDeterministicForm extends Component {
   }
 
   renderButton(){
-    const {currentRoom} = this.props
+    const {loading} = this.props
 
-    return currentRoom.currentMission.loading ? (
+    return loading ? (
       this.renderSpinner()
     ) : (
       <Button
@@ -70,25 +76,33 @@ class SolveDeterministicForm extends Component {
     }
   }
 
-  render() {
-    const { currentRoom } = this.props;
-
-    if(currentRoom){
+  renderTextBox(){
+    const {currentAnswer,isInCharge} = this.props;
+    if(isInCharge){
       return (
-        <KeyboardAwareScrollView style={styles.container}>
-          <Header>{currentRoom.currentMission.question}</Header>
-          <TextInput
-            label={enter_answer}
-            value={currentRoom.currentMission.currentAnswer}
-            onChangeText={this.onAnswerChanged}
-            placeholder='תשובה'
-          />
-          {this.renderButton()}
-          {this.renderError()}
-        </KeyboardAwareScrollView>
-      );
+      <TextInput
+          label={enter_answer}
+          value={currentAnswer}
+          onChangeText={this.onAnswerChanged}
+          placeholder='תשובה'
+        />
+      )
     }
-    return this.renderSpinner();
+  }
+
+  render() {
+    const { mission } = this.props;
+    return (
+      <KeyboardAwareScrollView style={styles.container}>
+        <Appbar.Header>
+          <Appbar.BackAction onPress={() => {this.onBackPress()}} />
+        </Appbar.Header>
+        <Header>{mission.question}</Header>
+        {this.renderTextBox()}
+        {this.renderButton()}
+        {this.renderError()}
+      </KeyboardAwareScrollView>
+    );
   }
 }
 
@@ -121,11 +135,12 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  const { currentRoom,apiKey, errorMessage } = state.ChooseStudentRoom;
-  return { currentRoom,apiKey, errorMessage };
+  const { roomId,loading,mission,currentAnswer,apiKey,tries,isInCharge, errorMessage } = state.SolveDeterministic;
+  return { roomId,loading,mission,currentAnswer,apiKey,tries,isInCharge, errorMessage };
 };
 
 export default connect(mapStateToProps, {
   answerChanged,
   sendDeterministicAnswer,
+  handleBack,
 })(SolveDeterministicForm);

@@ -38,9 +38,9 @@ class ChooseStudentRoomForm extends Component{
     }
 
     onButtonPress() {
-        const {currentRoom,navigation} = this.props;
+        const {currentRoom,navigation,apiKey} = this.props;
         
-        this.props.passToSolveMission( {currentRoom,navigation} );
+        this.props.passToSolveMission( {currentRoom,navigation,apiKey} );
     }
 
     renderButton(){
@@ -164,8 +164,8 @@ const styles = StyleSheet.create({
   });
 
 const mapStateToProps = (state) => {
-    const { rooms,currentRoom, errorMessage } = state.ChooseStudentRoom;
-    return { rooms,currentRoom, errorMessage };
+    const { rooms,currentRoom, apiKey, errorMessage } = state.ChooseStudentRoom;
+    return { rooms,currentRoom,apiKey, errorMessage };
   };
   
 export default connect(mapStateToProps, {

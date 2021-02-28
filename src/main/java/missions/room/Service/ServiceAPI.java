@@ -381,16 +381,6 @@ public class ServiceAPI {
     }
 
     /**
-     * req 6.4 - adding new IT to the system
-     * @param auth - authentication object
-     * @param newUser - new IT details
-     * @return if user added successfully
-     */
-    public Response<Boolean> addNewIT(Auth auth,UserProfileData newUser){
-        throw new NotImplementedException();
-    }
-
-    /**
      * req 6.5.1 - update user mail
      * @param auth - authentication object
      * @param userMail - the identifier of the user that needs to update his mail.

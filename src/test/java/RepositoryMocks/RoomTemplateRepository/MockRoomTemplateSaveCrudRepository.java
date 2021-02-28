@@ -1,7 +1,6 @@
 package RepositoryMocks.RoomTemplateRepository;
 
 import CrudRepositories.RoomTemplateCrudRepository;
-import missions.room.Domain.Mission;
 import missions.room.Domain.RoomTemplate;
 
 import javax.persistence.EntityNotFoundException;
