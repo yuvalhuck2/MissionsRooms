@@ -167,17 +167,6 @@ public class ServiceAPI {
     }
 
 
-    /**
-     * req3.6.2.5 - answer story mission
-     * @param auth - authentication object
-     * @param roomId - room id
-     * @param sentence - the next sentence to add to the story
-     * @return - the whole story after adding the next sentence
-     */
-    public Response<String> answerStoryMission(Auth auth,String roomId, String sentence){
-        throw new NotImplementedException();
-    }
-
 
     //TODO change to all answers in one request and return all the answers.
     /**

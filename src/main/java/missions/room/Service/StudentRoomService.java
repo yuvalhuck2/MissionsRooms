@@ -6,6 +6,7 @@ import DataAPI.RoomDetailsData;
 import missions.room.Managers.ManagerRoomStudent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
@@ -53,6 +54,17 @@ public class StudentRoomService {
      */
     public Response<Boolean> answerDeterministicQuestion(String apiKey,String roomId,Boolean answer){
         return managerRoomStudent.answerDeterministicQuestion(apiKey,roomId,answer);
+    }
+
+    /**
+     * req3.6.2.4 - answer story mission
+     * @param apiKey - authentication object
+     * @param roomId - room id
+     * @param sentence - the next sentence to add to the story
+     * @return - the whole story after adding the next sentence
+     */
+    public Response<String> answerStoryMission(String apiKey,String roomId, String sentence){
+        throw new NotImplementedException();
     }
 
     /**

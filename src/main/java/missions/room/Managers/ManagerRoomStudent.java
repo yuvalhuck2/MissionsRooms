@@ -11,6 +11,8 @@ import missions.room.Domain.Rooms.GroupRoom;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Rooms.StudentRoom;
 import missions.room.Domain.Users.Student;
+import missions.room.Domain.missions.Mission;
+import missions.room.Domain.missions.StoryMission;
 import missions.room.Repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ import java.util.Set;
 
 @Service
 public class ManagerRoomStudent extends StudentManager {
+
+    private static final String STORY_MISSION_NAME = "Story_Mission";
 
     @Autowired
     private RoomRepo roomRepo;
@@ -60,6 +64,7 @@ public class ManagerRoomStudent extends StudentManager {
      * @return if the answer was correct
      */
 
+    //TODO check that the apiKry is of mission in charge
     @Transactional
     public Response<Boolean> answerDeterministicQuestion(String apiKey, String roomId, boolean answer){
         Response<Student> checkStudent = checkStudent(apiKey);
@@ -171,7 +176,6 @@ public class ManagerRoomStudent extends StudentManager {
         if(!room.isBelongToRoom(student.getAlias())){
             return new Response<>(null,OpCode.NOT_BELONGS_TO_ROOM);
         }
-
         OpCode opCode=ram.connectToRoom(roomId,student.getAlias());
         return new Response<>(room.getData(),opCode);
     }
@@ -325,6 +329,68 @@ public class ManagerRoomStudent extends StudentManager {
             }
         }
         return new Response<>(roomDetailsDataList,OpCode.Success);
+    }
+
+    /**
+     * req3.6.2.4 - answer story mission
+     * @param apiKey - authentication object
+     * @param roomId - room id
+     * @param sentence - the next sentence to add to the story
+     * @return - the whole story after adding the next sentence
+     */
+    public Response<String> answerStoryMission(String apiKey,String roomId, String sentence){
+        Response<Student> checkStudent=checkStudent(apiKey);
+        if(checkStudent.getReason()!=OpCode.Success){
+            return new Response<>(null,checkStudent.getReason());
+        }
+
+        Response<Room> roomResponse = getRoomById(roomId);
+        if(roomResponse.getReason()!=OpCode.Success){
+            return new Response<>(null,roomResponse.getReason());
+        }
+
+        Student student=checkStudent.getValue();
+        Room room=roomResponse.getValue();
+        if(!room.isBelongToRoom(student.getAlias())){
+            return new Response<>(null,OpCode.NOT_BELONGS_TO_ROOM);
+        }
+
+        Mission mission=room.getCurrentMission();
+        MissionData storyMission = getRoomCurrentStoryMission(mission);
+        if(storyMission == null){
+            return new Response<>(null,OpCode.Not_Story);
+        }
+
+        synchronized (room) {
+            Set<String> users=room.getConnectedUsersAliases();
+            if(!room.isEnoughConnected()){
+                return new Response<>(null,OpCode.Not_Enough_Connected);
+            }
+            String story = ((StoryMission) mission).updateStory(sentence);
+            String nextInCharge = room.drawMissionInChargeForStory();
+            if(nextInCharge==null){
+                //TODO
+                return null;
+            }
+            else{
+                NonPersistenceNotification<String> inChargeNotification=new NonPersistenceNotification<>(OpCode.STORY_IN_CHARGE,
+                        roomId,
+                        story);
+                publisher.update(ram.getApiKey(nextInCharge),inChargeNotification);
+            }
+
+        }
+
+
+
+    }
+
+    private MissionData getRoomCurrentStoryMission(Mission mission) {
+        MissionData storyMission=mission.getData();
+        if(storyMission.getName().equals(STORY_MISSION_NAME)){
+            return storyMission;
+        }
+        return null;
     }
 
 }

@@ -280,7 +280,7 @@ public class DataGenerator {
         missions.put(Data.EMPTY_QUESTION_DETERMINISTIC,new KnownAnswerMission("ddd",types,"","answer"));
         missions.put(Data.NULL_ANSWER_DETERMINISTIC,new KnownAnswerMission("ddd",types,"question",null));
         missions.put(Data.EMPTY_ANSWER_DETERMINISTIC,new KnownAnswerMission("ddd",types,"question",""));
-        missions.put(Data.VALID_STORY,new StoryMission("ggg",types,5,4,"story"));
+        missions.put(Data.VALID_STORY,new StoryMission("ggg",types,5,"story"));
     }
 
     private void initTeacher() {

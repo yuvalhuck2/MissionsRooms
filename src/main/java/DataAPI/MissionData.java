@@ -13,15 +13,22 @@ public class MissionData {
     private List<String> question;
     private int timeForAns;
     private List<String> answers;
+    private String story;
 
+    public MissionData(String missionId, Set<RoomType> missionTypes, String name, String story) {
+        this.missionId = missionId;
+        this.missionTypes = missionTypes;
+        this.name = name;
+        this.story = story;
+    }
 
-    public MissionData(String missionId,Set<RoomType> missionTypes){
+    public MissionData(String missionId, Set<RoomType> missionTypes){
         this.missionId=missionId;
         this.missionTypes=missionTypes;
         this.question=null;
         this.timeForAns=-1;
-
     }
+
     public MissionData(String missionId, Set<RoomType> missionTypes, String name, List<String> question, int timeForAns) {
         this.missionId = missionId;
         this.missionTypes = missionTypes;
@@ -68,6 +75,10 @@ public class MissionData {
 
     public void setAnswers(List<String> answers) {
         this.answers = answers;
+    }
+
+    public String getStory() {
+        return story;
     }
 
     @Override

@@ -16,6 +16,8 @@ import java.util.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Room {
 
+    private static final String STORY_MISSION_NAME = "Story_Mission";
+
     @Id
     protected String roomId;
 
@@ -29,6 +31,9 @@ public abstract class Room {
 
     @Transient
     protected Set<String>  studentWereChosen;
+
+    @Transient
+    protected Set<String>  studentWereChosenForStory;
 
     @Transient
     protected Set<String>  connectedStudents;
@@ -49,6 +54,7 @@ public abstract class Room {
     public Room() {
         studentWereChosen=new HashSet<>();
         connectedStudents=new HashSet<>();
+
     }
 
     public Room(String roomId,String name,Teacher teacher,RoomTemplate roomTemplate,int bonus) {
@@ -76,6 +82,20 @@ public abstract class Room {
         return missionIncharge;
     }
 
+    public String drawMissionInChargeForStory() {
+        studentWereChosenForStory.add(missionIncharge);
+        Set<String> studentsToChooseFrom=new HashSet<>(connectedStudents);
+        studentsToChooseFrom.removeAll(studentWereChosenForStory);
+        if(studentsToChooseFrom.isEmpty()){
+            studentWereChosenForStory.clear();
+            missionIncharge=null;
+        }
+        else {
+            missionIncharge = Utils.getRandomFromSet(studentsToChooseFrom);
+        }
+        return missionIncharge;
+    }
+
     public String getRoomId() {
         return roomId;
     }
@@ -88,7 +108,7 @@ public abstract class Room {
         return bonus;
     }
 
-    public int getCurrentMission() {
+    public int getCurrentMissionIndex() {
         return currentMission;
     }
 
@@ -143,7 +163,6 @@ public abstract class Room {
             return null;
         }
         MissionData missionData = mission.getData();
-        //MissionData missionData = getMissionData(mission);
         return new RoomDetailsData(roomId,name,missionData,roomTemplate.getType());
     }
 
@@ -166,7 +185,6 @@ public abstract class Room {
         }
         if (mission instanceof StoryMission) {
             md.setName("Story Mission");
-            md.setTimeForAns(((StoryMission) mission).getSecondsForEachStudent());
         }
         if (mission instanceof TriviaMission) {
             md.setName("Trivia Mission");
@@ -214,5 +232,21 @@ public abstract class Room {
 
     public String getMissionInCharge() {
         return missionIncharge;
+    }
+
+    public Mission getCurrentMission() {
+        return roomTemplate.getMission(currentMission);
+    }
+
+    public boolean isEnoughConnected() {
+        return (getParticipantsSize() / 2) <= connectedStudents.size();
+    }
+
+    protected abstract int getParticipantsSize();
+
+    public void updateStudentsWereChosen() {
+        if(getCurrentMission().getMissionName().equals(STORY_MISSION_NAME)){
+            studentWereChosen.clear();
+        }
     }
 }
