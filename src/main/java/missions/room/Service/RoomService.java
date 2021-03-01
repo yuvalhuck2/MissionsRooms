@@ -1,13 +1,9 @@
 package missions.room.Service;
 
 import DataAPI.*;
-import missions.room.Managers.ManagerRoomStudent;
 import missions.room.Managers.RoomManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import java.util.List;
 
 @Service
 public class RoomService {
