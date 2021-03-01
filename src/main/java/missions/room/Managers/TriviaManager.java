@@ -7,6 +7,7 @@ import DataAPI.TriviaQuestionData;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;
 import missions.room.Domain.*;
+import missions.room.Domain.Users.Teacher;
 import missions.room.Repo.TriviaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
