@@ -5,9 +5,9 @@ import Data.Data;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import missions.room.Domain.Ram;
-import missions.room.Domain.Student;
 import missions.room.Domain.Suggestion;
-import missions.room.Domain.Teacher;
+import missions.room.Domain.Users.Student;
+import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.TriviaManager;
 import missions.room.Repo.StudentRepo;
 import missions.room.Repo.TeacherRepo;
@@ -75,13 +75,13 @@ public class TriviaManagerTestsAllStubs {
         closeable= MockitoAnnotations.openMocks(this);
         Student student=dataGenerator.getStudent(Data.VALID);
         Teacher teacher=dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD);
-        when(mockRam.getApi(studentApiKey))
+        when(mockRam.getAlias(studentApiKey))
                 .thenReturn(student.getAlias());
-        when(mockRam.getApi(teacherApiKey))
+        when(mockRam.getAlias(teacherApiKey))
                 .thenReturn(teacher.getAlias());
-        when(mockRam.getApi(INVALID_KEY))
+        when(mockRam.getAlias(INVALID_KEY))
                 .thenReturn(null);
-        when(mockRam.getApi(NULL_TEACHER_KEY))
+        when(mockRam.getAlias(NULL_TEACHER_KEY))
                 .thenReturn(WRONG_TEACHER_NAME);
         when(mockTeacherRepo.findTeacherById(eq(teacher.getAlias())))
                 .thenReturn(new Response<>(teacher,OpCode.Success));

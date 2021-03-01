@@ -30,8 +30,8 @@ public class TriviaManagerTestsRealRam extends TriviaManagerTestsAllStubs{
         realRam.addApi(teacherApiKey
                 ,dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD)
                         .getAlias());
-        realRam.addApi(NULL_STUDENT_KEY
-                ,WRONG_STUDENT_NAME);
+        realRam.addApi(NULL_USER_KEY
+                ,WRONG_USER_NAME);
         realRam.addApi(NULL_TEACHER_KEY
                 ,WRONG_TEACHER_NAME);
     }
