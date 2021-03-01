@@ -5,6 +5,7 @@ import missions.room.Communications.Publisher.SinglePublisher;
 import missions.room.Domain.Notifications.NonPersistenceNotification;
 import missions.room.Service.StudentRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,9 +53,10 @@ public class StudentRoomController extends AbsController{
                 data.getRoomId(),data.isAnswer());
         return response;
     }
-
+    // @RequestParam("solutionData") SolutionData openAnswer,
     @PostMapping("/openAns")
-    public Response<?> answerOpenQuestion(@RequestBody SolutionData openAnswer, @RequestParam("file") MultipartFile file, @RequestParam String token) {
-        return studentRoomService.answerOpenQuestionMission(token, openAnswer, file);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Response<?> answerOpenQuestion(@RequestParam("file") MultipartFile file, @RequestParam String token) {
+        return studentRoomService.answerOpenQuestionMission(token, null, file);
     }
 }
