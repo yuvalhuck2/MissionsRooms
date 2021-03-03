@@ -2,21 +2,21 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import {
-  AddDeterministicMissionScreen,
-  AddRoomScreen,
-  AddRoomTemplateScreen,
-  AuthScreen,
-  ChooseMissionsForTemplateScreen,
-  ChooseMissionToAddScreen,
-  ChooseStudentRoomScreen,
-  ChooseTemplateScreen,
-  ITScreen,
-  LoginScreen,
-  RegisterScreen,
-  SolveDeterministicScreen,
-  StudentScreen,
-  TeacherScreen,
-  UploadCsvScreen
+    AddDeterministicMissionScreen,
+    AddRoomScreen,
+    AddRoomTemplateScreen, AddSuggestionScreen,
+    AuthScreen,
+    ChooseMissionsForTemplateScreen,
+    ChooseMissionToAddScreen,
+    ChooseStudentRoomScreen,
+    ChooseTemplateScreen,
+    ITScreen,
+    LoginScreen,
+    RegisterScreen,
+    SolveDeterministicScreen,
+    StudentScreen,
+    TeacherScreen,
+    UploadCsvScreen
 } from './components/screens';
 
 const Stack = createStackNavigator();
@@ -55,6 +55,7 @@ const App = () => {
         <Stack.Screen name='AddRoom' component={AddRoomScreen} />
         <Stack.Screen name='IT' component={ITScreen} />
         <Stack.Screen name="UploadCsv" component={UploadCsvScreen}/>
+        <Stack.Screen name="AddSuggestion" component={AddSuggestionScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

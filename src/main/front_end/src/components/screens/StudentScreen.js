@@ -9,11 +9,12 @@ import Header from '../common/Header';
 import TextInput from '../common/TextInput';
 import { Icon } from 'react-native-elements'
 import * as NavPaths from '../../navigation/NavPaths'
-import {passToMyRooms,logout} from '../../actions'
+import {passToMyRooms,logout,passToAddSuggestion} from '../../actions'
 
 const {
   watchMyRoom,
   main_screen,
+  addSuggestion,
 } = StudentStrings;
 
 const DeviceWidth  = Dimensions.get('window').width;
@@ -46,10 +47,13 @@ class StudentForm extends Component {
           <Text style={{color:"white"}}> {watchMyRoom}</Text> 
             <Icon name='meeting-room' />
           </Button>
-          <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
-          <Text style={{color:"white"}}></Text> 
+          <Button  onPress={()=>this.props.passToAddSuggestion({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
+          <Text style={{color:"white"}}>{addSuggestion}</Text>
           </Button>
           <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]}/>
+
+
+
           
         </View>
         <View>
@@ -123,4 +127,5 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps,{
   passToMyRooms,
   logout,
+  passToAddSuggestion,
 })(StudentForm);

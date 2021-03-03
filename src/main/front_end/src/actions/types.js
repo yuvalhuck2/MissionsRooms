@@ -59,3 +59,5 @@ export const UPLOAD_CSV_SUCCESS = "UPLOAD_CSV_SUCCESS"
 export const STUDENT_NOT_EXIST_IN_CLASS = 'student_not_exist_in_class';
 export const STUDENT_NOT_EXIST_IN_GROUP = 'student_not_exist_in_group';
 export const WRONG_MISSION = 'wrong_mission';
+export const ADD_SUGGESTION='add_suggestion';
+export const SUGGESTION_CHANGED='suggestion_changed';
