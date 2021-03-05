@@ -798,7 +798,7 @@ public class ManagerRoomStudentAllStubs {
         testInvalidAnswerStory(Not_Enough_Connected);
     }
 
-    private void testInvalidAnswerStory(OpCode opCode) {
+    protected void testInvalidAnswerStory(OpCode opCode) {
         Response<Boolean> response = managerRoomStudentWithMock.answerStoryMission(studentApiKey,
                 validRoomId,
                 SENTENCE);
@@ -896,7 +896,7 @@ public class ManagerRoomStudentAllStubs {
         testInvalidFinishStoryMission(Not_Story);
     }
 
-    private void testInvalidFinishStoryMission(OpCode opCode) {
+    protected void testInvalidFinishStoryMission(OpCode opCode) {
         Response<Boolean> response = managerRoomStudentWithMock.finishStoryMission(studentApiKey,validRoomId);
         assertFalse(response.getValue());
         assertEquals(response.getReason(), opCode);

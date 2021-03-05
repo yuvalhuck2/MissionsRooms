@@ -54,6 +54,12 @@ public class ManagerRoomStudentRealRamRealClassRoomRealRamStudentClassroomClassG
     }
 
     @Override
+    protected void initStoryRoom() {
+        realStudentRepo.save((missions.room.Domain.Users.Student) dataGenerator.getUser(Data.VALID_STUDENT));
+        super.initStoryRoom();
+    }
+
+    @Override
     void setUpMocks(){
         roomRepo=new RoomCrudRepositoryMock(dataGenerator);
         ram=new Ram();
@@ -167,4 +173,37 @@ public class ManagerRoomStudentRealRamRealClassRoomRealRamStudentClassroomClassG
         Assert.assertEquals(roomDetailsDataResponse.getReason(), NOT_IN_CHARGE);
         Assert.assertEquals(roomDetailsDataResponse.getValue(),room.getData());
     }
+
+    @Test
+    @Override
+    void testAnswerStoryNotBelongToRoom(){
+        initStoryRoom();
+        studentApiKey=thirdStudentKey;
+        testInvalidAnswerStory(NOT_BELONGS_TO_ROOM);
+    }
+
+    @Test
+    @Override
+    void testAnswerStoryFindStudentThrowsException(){
+        initStoryRoom();
+        setUpStudentFindByIdThrowsException();
+        testInvalidAnswerStory(DB_Error);
+    }
+
+    @Test
+    @Override
+    void testFinishStoryMissionNotBelongToRoom(){
+        initStoryRoom();
+        studentApiKey=thirdStudentKey;
+        testInvalidFinishStoryMission(NOT_BELONGS_TO_ROOM);
+    }
+
+    @Test
+    @Override
+    void testAFinishStoryMissionFindStudentThrowsException(){
+        initStoryRoom();
+        setUpStudentFindByIdThrowsException();
+        testInvalidFinishStoryMission(DB_Error);
+    }
+
 }

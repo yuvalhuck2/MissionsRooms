@@ -3,6 +3,7 @@ package missions.room.ManagerRoomStudentTests;
 
 import CrudRepositories.RoomCrudRepository;
 import Data.Data;
+import DataAPI.Response;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Managers.ManagerRoomStudent;
@@ -51,6 +52,8 @@ public class ManagerRoomStudentRealRoomRamStudentClassroomClassGroupRepo extends
         }
         missionCrudRepository.save(dataGenerator.getMission(Data.Valid_Deterministic));
         missionCrudRepository.save(dataGenerator.getMission(Data.Valid_Deterministic_All_Types));
+        missionCrudRepository.save(dataGenerator.getMission(Data.VALID_STORY));
+        missionCrudRepository.save(dataGenerator.getMission(Data.VALID_STORY2));
         roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.VALID));
         roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.Valid_Group));
         roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.Valid_Classroom));
@@ -194,6 +197,20 @@ public class ManagerRoomStudentRealRoomRamStudentClassroomClassGroupRepo extends
         assertEquals(realRam.getRoom(room.getRoomId()).getMissionInCharge()
                 ,dataGenerator.getStudent(Data.VALID)
                         .getAlias());
+    }
+
+    @Test
+    @Override
+    void testFinishStoryMissionHappyCase(){
+        super.testFinishStoryMissionHappyCase();
+    }
+
+    @Test
+    @Override
+    void testFinishStoryMissionFindRoomByIdThrowsException(){
+        initStoryRoom();
+        setUpFindRoomThrowsException();
+        testInvalidFinishStoryMission(DB_Error);
     }
 
     @Override
