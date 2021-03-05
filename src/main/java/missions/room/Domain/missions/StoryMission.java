@@ -38,7 +38,8 @@ public class StoryMission extends Mission{
 
     @Override
     protected MissionData completeTheRestOfMissionData(MissionData missionData) {
-        return super.completeTheRestOfMissionData(missionData);
+        missionData.setStory(story);
+        return missionData;
     }
 
     public String updateStory(String sentence) {

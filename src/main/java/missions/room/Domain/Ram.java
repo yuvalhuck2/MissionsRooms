@@ -69,7 +69,6 @@ public class Ram {
                 return room.connect(alias);
             }
         }
-        //unreachable path
         return OpCode.Not_Exist_Room;
     }
 

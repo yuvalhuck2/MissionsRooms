@@ -1,6 +1,5 @@
 package missions.room.Service;
 
-import DataAPI.Auth;
 import DataAPI.Response;
 import DataAPI.RoomDetailsData;
 import DataAPI.SolutionData;
@@ -8,7 +7,6 @@ import missions.room.Managers.ManagerRoomStudent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
@@ -84,7 +82,6 @@ public class StudentRoomService {
      * @param file
      * @return if the answer was accepted successfully
      */
-    //TODO real time notifications to move the other clients a room
     public Response<Boolean> answerOpenQuestionMission(String apiKey, SolutionData openAnswer, MultipartFile file){
         return managerRoomStudent.answerOpenQuestionMission(apiKey, openAnswer, file);
     }
@@ -94,7 +91,7 @@ public class StudentRoomService {
      * @param apiKey - authentication object
      * @param roomId - room id
      */
-    public void finishRoomMission(String apiKey,String roomId){
-        managerRoomStudent.finishRoomMission(apiKey, roomId);
+    public void finishStoryMission(String apiKey,String roomId){
+        managerRoomStudent.finishStoryMission(apiKey, roomId);
     }
 }

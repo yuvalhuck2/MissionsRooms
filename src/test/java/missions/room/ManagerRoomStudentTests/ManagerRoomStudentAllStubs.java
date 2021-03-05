@@ -18,10 +18,12 @@ import RepositoryMocks.RoomTemplateRepository.RoomTemplateCrudRepositoryMock;
 import RepositoryMocks.StudentRepositoryMock.StudentRepositoryMock;
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
 import missions.room.Communications.Publisher.Publisher;
+import missions.room.Domain.Notifications.NonPersistenceNotification;
 import missions.room.Domain.Notifications.Notification;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Users.Student;
+import missions.room.Domain.Users.User;
 import missions.room.Managers.ManagerRoomStudent;
 import missions.room.Repo.ClassGroupRepo;
 import missions.room.Repo.ClassroomRepo;
@@ -123,6 +125,10 @@ public class ManagerRoomStudentAllStubs {
 
     protected String valid2StudentApiKey;
 
+    protected String thirdStudentKey;
+
+    protected String validRoomId;
+
     private AutoCloseable closeable;
 
     @BeforeEach
@@ -130,6 +136,7 @@ public class ManagerRoomStudentAllStubs {
         dataGenerator=new DataGenerator();
         studentApiKey = VALID_STUDENT_APIKEY;
         valid2StudentApiKey = VALID2_STUDENT_APIKEY;
+        thirdStudentKey=THIRD_VALID_STUDENT_APIKEY;
         initMocks();
         mockPublisher=new PublisherMock();
         try {
@@ -142,10 +149,38 @@ public class ManagerRoomStudentAllStubs {
         }
     }
 
+    protected void initStoryRoom(){
+        Room room =dataGenerator.getRoom(Data.VALID_STORY);
+        Student student = dataGenerator.getStudent(Data.VALID);
+        Student student2 = dataGenerator.getStudent(Data.VALID2);
+        initMockRoom(Data.VALID_STORY);
+        room.connect(student.getAlias());
+        room.connect(student2.getAlias());
+        validRoomId=room.getRoomId();
+        when(mockRam.isRoomExist(room.getRoomId()))
+                .thenReturn(true);
+    }
+
+    protected void initFinishStoryRoom() {
+        initStoryRoom();
+        Room room =dataGenerator.getRoom(Data.VALID_STORY);
+        managerRoomStudentWithMock.answerStoryMission(studentApiKey,room.getRoomId(),SENTENCE);
+    }
+
+    protected void initMockRoom(Data data){
+        Room room =dataGenerator.getRoom(data);
+        when(mockRam.getRoom(room.getRoomId()))
+                .thenReturn(null)
+                .thenReturn(room);
+        when(mockRoomRepo.findRoomById(room.getRoomId()))
+                .thenReturn(new Response<>(room, Success));
+    }
+
     protected void initMocks() {
         closeable = MockitoAnnotations.openMocks(this);
         Student student = dataGenerator.getStudent(Data.VALID);
         Student student2 = dataGenerator.getStudent(Data.VALID2);
+        User user=dataGenerator.getUser(Data.VALID_STUDENT);
         Room studentRoom=dataGenerator.getRoom(Data.Valid_Student);
         Room groupRoom=dataGenerator.getRoom(Data.Valid_Group);
         Room classroomRoom = dataGenerator.getRoom(Data.Valid_Classroom);
@@ -154,10 +189,14 @@ public class ManagerRoomStudentAllStubs {
         Room valid2MissionsClassRoom =dataGenerator.getRoom(Data.VALID_2Mission_Class);
         Room valid2StudentsFromDifferentGroups2Missions=dataGenerator.getRoom(Data.Valid_2Students_From_Different_Groups);
 
+        when(mockRam.getAlias(thirdStudentKey))
+                .thenReturn(user.getAlias());
         when(mockRam.getAlias(studentApiKey))
                 .thenReturn(student.getAlias());
         when(mockRam.getApiKey(student.getAlias()))
                 .thenReturn(studentApiKey);
+        when(mockRam.getAlias(NULL_USER_KEY))
+                .thenReturn(WRONG_USER_NAME);
         when(mockRam.getAlias(INVALID_KEY))
                 .thenReturn(null);
         when(mockRam.getAlias(NULL_USER_KEY))
@@ -198,10 +237,15 @@ public class ManagerRoomStudentAllStubs {
 
         when(mockStudentRepo.findStudentById(student.getAlias()))
                 .thenReturn(new Response<>(student, OpCode.Success));
+        when(mockStudentRepo.findStudentById(user.getAlias()))
+                .thenReturn(new Response<>((Student) user, OpCode.Success));
         when(mockStudentRepo.findStudentById(student2.getAlias()))
                 .thenReturn(new Response<>(student2, OpCode.Success));
+        when(mockStudentRepo.findStudentById(WRONG_USER_NAME))
+                .thenReturn(new Response<>(null,OpCode.Success));
         when(mockStudentRepo.save(any()))
                 .thenReturn(new Response<>(student,OpCode.Success));
+
 
         when(mockClassroomRepo.save(any()))
                 .thenReturn(new Response<>(null,OpCode.Success));
@@ -340,8 +384,6 @@ public class ManagerRoomStudentAllStubs {
 
     @Test
     void testAnswerDeterministicStudentNotFound(){
-        when(mockStudentRepo.findStudentById(any()))
-                .thenReturn(new Response<>(null,OpCode.Success));
         testFailAnswerDeterministic(NULL_USER_KEY,
                 dataGenerator.getRoom(Data.VALID_2MissionStudent).getRoomId(),
                 OpCode.Not_Exist);
@@ -461,8 +503,6 @@ public class ManagerRoomStudentAllStubs {
 
     @Test
     void testWatchRoomDataStudentNotFound(){
-        when(mockStudentRepo.findStudentById(any()))
-                .thenReturn(new Response<>(null,OpCode.Success));
         testWatchRoomDataFailCase(NULL_USER_KEY,
                 dataGenerator.getRoom(Data.VALID_2MissionStudent).getRoomId(),
                 OpCode.Not_Exist);
@@ -633,6 +673,234 @@ public class ManagerRoomStudentAllStubs {
         roomRepo.delete(dataGenerator.getRoom(Data.Valid_Student));
         studentCrudRepository.delete(dataGenerator.getStudent(Data.VALID));
 
+    }
+
+    @Test
+    void testAnswerStoryHappyCase(){
+        initStoryRoom();
+        Response<Boolean> response = managerRoomStudentWithMock.answerStoryMission(studentApiKey,
+                validRoomId,
+                SENTENCE);
+        assertTrue(response.getValue());
+        assertEquals(response.getReason(), Success);
+
+        checkNotification(valid2StudentApiKey,
+                STORY_IN_CHARGE,
+                SENTENCE + "\n",
+                0);
+
+        response = managerRoomStudentWithMock.answerStoryMission(valid2StudentApiKey,
+                validRoomId,
+                SENTENCE2);
+        assertTrue(response.getValue());
+        assertEquals(response.getReason(), Success);
+
+        checkNotification(studentApiKey,
+                STORY_FINISH,
+                SENTENCE + "\n" + SENTENCE2 + "\n",
+                0);
+
+        checkNotification(valid2StudentApiKey,
+                STORY_FINISH,
+                SENTENCE + "\n" + SENTENCE2 + "\n",
+                1);
+    }
+
+    private void checkNotification(String apiKey,OpCode opCode,String content,int index){
+        NonPersistenceNotification<String> notification= (NonPersistenceNotification<String>) ((PublisherMock)mockPublisher)
+                .getNotifications(apiKey).get(index);
+        assertEquals(notification.getAdditionalData(),content);
+        assertEquals(notification.getReason(), opCode);
+        assertEquals(notification.getValue(), validRoomId);
+    }
+
+    @Test
+    void testAnswerStoryWrongKey(){
+        initStoryRoom();
+        studentApiKey=INVALID_KEY;
+        testInvalidAnswerStory(Wrong_Key);
+    }
+
+    @Test
+    void testAnswerStoryNotExistStudent(){
+        initStoryRoom();
+        studentApiKey=NULL_USER_KEY;
+        testInvalidAnswerStory(Not_Exist);
+    }
+
+    @Test
+    void testAnswerStoryFindStudentThrowsException(){
+        initStoryRoom();
+        when(mockStudentRepo.findStudentById(any()))
+                .thenReturn(new Response<>(null, DB_Error));
+        testInvalidAnswerStory(DB_Error);
+    }
+
+    @Test
+    void testAnswerStoryNotExistRoom(){
+        initStoryRoom();
+        validRoomId=WRONG_ROOM_ID;
+        testInvalidAnswerStory(Not_Exist_Room);
+    }
+
+    @Test
+    void testAnswerStoryFindRoomByIdThrowsException(){
+        initStoryRoom();
+        when(mockRoomRepo.findRoomById(any()))
+                .thenReturn(new Response<>(null,DB_Error));
+        testInvalidAnswerStory(DB_Error);
+    }
+
+    @Test
+    void testAnswerStoryNullSentence(){
+        initStoryRoom();
+        Response<Boolean> response = managerRoomStudentWithMock.answerStoryMission(studentApiKey,
+                validRoomId,
+                null);
+        assertNull(response.getValue());
+        assertEquals(response.getReason(), Wrong_Sentence);
+        assertTrue(((PublisherMock)mockPublisher).getAllNotifications().isEmpty());
+    }
+
+    @Test
+    void testAnswerStoryEmptySentence(){
+        initStoryRoom();
+        Response<Boolean> response = managerRoomStudentWithMock.answerStoryMission(studentApiKey,
+                validRoomId,
+                "");
+        assertNull(response.getValue());
+        assertEquals(response.getReason(), Wrong_Sentence);
+        assertTrue(((PublisherMock)mockPublisher).getAllNotifications().isEmpty());
+    }
+
+    @Test
+    void testAnswerStoryNotBelongToRoom(){
+        initStoryRoom();
+        studentApiKey=thirdStudentKey;
+        testInvalidAnswerStory(NOT_BELONGS_TO_ROOM);
+    }
+
+    @Test
+    void testAnswerStoryNotStoryMission(){
+        initStoryRoom();
+        validRoomId=dataGenerator.getRoom(Data.Valid_Classroom).getRoomId();
+        testInvalidAnswerStory(Not_Story);
+    }
+
+    @Test
+    void testAnswerStoryNotEnoughConnected(){
+        initStoryRoom();
+        Student student = dataGenerator.getStudent(Data.VALID);
+        Student student2 = dataGenerator.getStudent(Data.VALID2);
+        Room room= dataGenerator.getRoom(Data.VALID_STORY);
+        room.disconnect(student.getAlias());
+        room.disconnect(student2.getAlias());
+        testInvalidAnswerStory(Not_Enough_Connected);
+    }
+
+    private void testInvalidAnswerStory(OpCode opCode) {
+        Response<Boolean> response = managerRoomStudentWithMock.answerStoryMission(studentApiKey,
+                validRoomId,
+                SENTENCE);
+        assertNull(response.getValue());
+        assertEquals(response.getReason(), opCode);
+        assertTrue(((PublisherMock)mockPublisher).getAllNotifications().isEmpty());
+    }
+
+    //TODO check add points  and delete room
+    @Test
+    void testFinishStoryMissionHappyCase(){
+        initFinishStoryRoom();
+        Room room=dataGenerator.getRoom(Data.VALID_STORY);
+        RoomDetailsData roomDetailsData=room.getData();
+        roomDetailsData.setCurrentMission(dataGenerator.getMission(Data.VALID_STORY2).getData());
+
+        Response<Boolean> response = managerRoomStudentWithMock.finishStoryMission(studentApiKey,validRoomId);
+        assertTrue(response.getValue());
+        assertEquals(response.getReason(), Success);
+
+        NonPersistenceNotification<String> notification= (NonPersistenceNotification<String>) ((PublisherMock)mockPublisher)
+                .getNotifications(studentApiKey).get(0);
+        assertEquals(notification.getReason(), Update_Room);
+        assertEquals(notification.getValue(), roomDetailsData);
+
+        notification= (NonPersistenceNotification<String>) ((PublisherMock)mockPublisher)
+                .getNotifications(valid2StudentApiKey).get(1);
+        assertEquals(notification.getReason(), Update_Room);
+        assertEquals(notification.getValue(), roomDetailsData);
+
+        try {
+            notification = (NonPersistenceNotification<String>) ((PublisherMock) mockPublisher)
+                    .getNotifications(valid2StudentApiKey).get(2);
+            assertEquals(notification.getReason(), IN_CHARGE);
+            assertEquals(notification.getValue(), room.getRoomId());
+        }
+        catch(Exception e){
+            notification = (NonPersistenceNotification<String>) ((PublisherMock) mockPublisher)
+                    .getNotifications(studentApiKey).get(1);
+            assertEquals(notification.getReason(), IN_CHARGE);
+            assertEquals(notification.getValue(), room.getRoomId());
+        }
+    }
+
+
+    @Test
+    void testFinishStoryMissionWrongKey(){
+        initStoryRoom();
+        studentApiKey=INVALID_KEY;
+        testInvalidFinishStoryMission(Wrong_Key);
+    }
+
+
+    @Test
+    void testFinishStoryMissionNotExistStudent(){
+        initStoryRoom();
+        studentApiKey=NULL_USER_KEY;
+        testInvalidFinishStoryMission(Not_Exist);
+    }
+
+    @Test
+    void testAFinishStoryMissionFindStudentThrowsException(){
+        initStoryRoom();
+        when(mockStudentRepo.findStudentById(any()))
+                .thenReturn(new Response<>(null, DB_Error));
+        testInvalidFinishStoryMission(DB_Error);
+    }
+
+    @Test
+    void testFinishStoryMissionNotExistRoom(){
+        initStoryRoom();
+        validRoomId=WRONG_ROOM_ID;
+        testInvalidFinishStoryMission(Not_Exist_Room);
+    }
+
+    @Test
+    void testFinishStoryMissionFindRoomByIdThrowsException(){
+        initStoryRoom();
+        when(mockRoomRepo.findRoomById(any()))
+                .thenReturn(new Response<>(null,DB_Error));
+        testInvalidFinishStoryMission(DB_Error);
+    }
+
+    @Test
+    void testFinishStoryMissionNotBelongToRoom(){
+        initStoryRoom();
+        studentApiKey=thirdStudentKey;
+        testInvalidFinishStoryMission(NOT_BELONGS_TO_ROOM);
+    }
+
+    @Test
+    void testFinishStoryMissionNotStoryMission(){
+        initStoryRoom();
+        validRoomId=dataGenerator.getRoom(Data.Valid_Classroom).getRoomId();
+        testInvalidFinishStoryMission(Not_Story);
+    }
+
+    private void testInvalidFinishStoryMission(OpCode opCode) {
+        Response<Boolean> response = managerRoomStudentWithMock.finishStoryMission(studentApiKey,validRoomId);
+        assertFalse(response.getValue());
+        assertEquals(response.getReason(), opCode);
+        assertTrue(((PublisherMock)mockPublisher).getAllNotifications().isEmpty());
     }
 
     @AfterEach

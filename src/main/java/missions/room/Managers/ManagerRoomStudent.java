@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static Utils.Utils.checkString;
+
 @Service
 @CommonsLog
 public class ManagerRoomStudent extends StudentManager {
@@ -426,33 +428,22 @@ public class ManagerRoomStudent extends StudentManager {
      * @return - the whole story after adding the next sentence
      */
     public Response<Boolean> answerStoryMission(String apiKey,String roomId, String sentence){
-        Response<Student> checkStudent=checkStudent(apiKey);
-        if(checkStudent.getReason()!=OpCode.Success){
-            return new Response<>(null,checkStudent.getReason());
+        if(!checkString(sentence)){
+            return new Response<>(null,OpCode.Wrong_Sentence);
         }
 
-        Response<Room> roomResponse = getRoomById(roomId);
-        if(roomResponse.getReason()!=OpCode.Success){
-            return new Response<>(null,roomResponse.getReason());
+        Response<Room> checkStoryResponse=checkStoryMissionValidity(apiKey, roomId);
+        OpCode reason=checkStoryResponse.getReason();
+        if(reason!=OpCode.Success){
+            return new Response<>(null,reason);
         }
-
-        Student student=checkStudent.getValue();
-        Room room=roomResponse.getValue();
-        if(!room.isBelongToRoom(student.getAlias())){
-            return new Response<>(null,OpCode.NOT_BELONGS_TO_ROOM);
-        }
-
-        Mission mission=room.getCurrentMission();
-        MissionData storyMission = getRoomCurrentStoryMission(mission);
-        if(storyMission == null){
-            return new Response<>(null,OpCode.Not_Story);
-        }
+        Room room=checkStoryResponse.getValue();
 
         synchronized (room) {
             if(!room.isEnoughConnected()){
                 return new Response<>(null,OpCode.Not_Enough_Connected);
             }
-            String story = ((StoryMission) mission).updateStory(sentence);
+            String story = ((StoryMission) room.getCurrentMission()).updateStory(sentence);
             String nextInCharge = room.drawMissionInChargeForStory();
             if(nextInCharge==null){
                 NonPersistenceNotification<String> storyNotification=new NonPersistenceNotification<>(OpCode.STORY_FINISH,
@@ -479,36 +470,46 @@ public class ManagerRoomStudent extends StudentManager {
      * req3.6.2.4 - answer story mission
      * @param apiKey - authentication object
      * @param roomId - room id
+     * @return
      */
-    public void finishRoomMission(String apiKey,String roomId){
+    public Response<Boolean> finishStoryMission(String apiKey, String roomId){
+        Response<Room> checkStoryResponse=checkStoryMissionValidity(apiKey, roomId);
+        OpCode reason=checkStoryResponse.getReason();
+        Room room=checkStoryResponse.getValue();
+        if(reason==OpCode.Success){
+            synchronized (room) {
+                if(room.clearStoryMission()) {
+                    updateRoomAndMissionInCharge(room);
+                }
+                return new Response<>(true,OpCode.Success);
+            }
+        }
+        return new Response<>(false,reason);
+    }
+
+    private Response<Room> checkStoryMissionValidity(String apiKey,String roomId){
         Response<Student> checkStudent=checkStudent(apiKey);
         if(checkStudent.getReason()!=OpCode.Success){
-            return;
+            return new Response<>(null,checkStudent.getReason());
         }
 
         Response<Room> roomResponse = getRoomById(roomId);
         if(roomResponse.getReason()!=OpCode.Success){
-            return;
+            return new Response<>(null,roomResponse.getReason());
         }
 
         Student student=checkStudent.getValue();
         Room room=roomResponse.getValue();
         if(!room.isBelongToRoom(student.getAlias())){
-            log.error(String.format("Function finishRoomMission: student %s is not belong to room %s"
-                    ,student.getAlias(),room.getRoomId()));
-            return;
+            return new Response<>(null,OpCode.NOT_BELONGS_TO_ROOM);
         }
 
         Mission mission=room.getCurrentMission();
         MissionData storyMission = getRoomCurrentStoryMission(mission);
-        if(storyMission != null){
-            updateRoomAndMissionInCharge(room);
+        if(storyMission == null){
+            return new Response<>(null,OpCode.Not_Story);
         }
-        else{
-            log.error(String.format("Function finishRoomMission: current mission of room %s is not story mission"
-                    ,room.getRoomId()));
-        }
-
+        return new Response<>(room,OpCode.Success);
     }
 
     private MissionData getRoomCurrentStoryMission(Mission mission) {

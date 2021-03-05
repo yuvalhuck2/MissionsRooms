@@ -54,6 +54,7 @@ public abstract class Room {
     public Room() {
         studentWereChosen=new HashSet<>();
         connectedStudents=new HashSet<>();
+        studentWereChosenForStory=new HashSet<>();
 
     }
 
@@ -68,6 +69,7 @@ public abstract class Room {
         this.countCorrectAnswer=0;
         studentWereChosen=new HashSet<>();
         connectedStudents=new HashSet<>();
+        studentWereChosenForStory=new HashSet<>();
     }
 
     public String drawMissionInCharge() {
@@ -87,7 +89,6 @@ public abstract class Room {
         Set<String> studentsToChooseFrom=new HashSet<>(connectedStudents);
         studentsToChooseFrom.removeAll(studentWereChosenForStory);
         if(studentsToChooseFrom.isEmpty()){
-            studentWereChosenForStory.clear();
             missionIncharge=null;
         }
         else {
@@ -225,6 +226,9 @@ public abstract class Room {
             return new Response<>(null, OpCode.Delete);
         }
         else if(missionIncharge.equals(alias)){
+            if(roomTemplate.getMission(currentMission).getMissionName().equals(STORY_MISSION_NAME)){
+                return new Response<>(drawMissionInChargeForStory(),OpCode.Success);
+            }
             return new Response<>(drawMissionInCharge(),OpCode.Success);
         }
         return new Response<>(null,OpCode.Success);
@@ -244,9 +248,10 @@ public abstract class Room {
 
     protected abstract int getParticipantsSize();
 
-    public void updateStudentsWereChosen() {
-        if(getCurrentMission().getMissionName().equals(STORY_MISSION_NAME)){
-            studentWereChosen.clear();
-        }
+    public boolean clearStoryMission(){
+        if(studentWereChosenForStory.isEmpty())
+            return false;
+        studentWereChosenForStory.clear();
+        return true;
     }
 }

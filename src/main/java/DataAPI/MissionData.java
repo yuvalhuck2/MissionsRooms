@@ -92,4 +92,8 @@ public class MissionData {
                 Objects.equals(timeForAns,missionData.timeForAns) &&
                 Objects.equals(answers,missionData.answers);
     }
+
+    public void setStory(String story) {
+        this.story=story;
+    }
 }

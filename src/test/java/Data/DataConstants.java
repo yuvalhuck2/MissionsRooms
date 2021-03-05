@@ -12,4 +12,7 @@ public class DataConstants {
     public static final String VALID_TEACHER_APIKEY = "valid_teacher_key";
     public static final String WRONG_ROOM_ID = "wrong_room_id";
     public static final String IT_API_KEY="it_api_key";
+    public static final String SENTENCE="sentence";
+    public static final String SENTENCE2="sentence2";
+    public static final String THIRD_VALID_STUDENT_APIKEY="third apiKey";
 }
