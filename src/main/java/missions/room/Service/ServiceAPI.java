@@ -2,8 +2,6 @@ package missions.room.Service;
 
 import DataAPI.*;
 import org.springframework.stereotype.Service;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
@@ -43,7 +41,7 @@ public class ServiceAPI {
 //     * @return API key if login succeeded
 //     */
 //    public Response<String> login (String alias, String password){
-//        throw new NotImplementedException();
+//        throw new RuntimeException();
 //    }
 
 
@@ -54,7 +52,7 @@ public class ServiceAPI {
      * @return the record table
      */
     public Response<RecordTableData> watchTable (Auth auth, RoomType tableType){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
     /**
@@ -70,7 +68,7 @@ public class ServiceAPI {
      * @return if the password was changed
      */
     public Response<Boolean> changePassword (Auth auth,String newPassword){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
 
@@ -82,7 +80,7 @@ public class ServiceAPI {
      * @return if the message was sent successfully
      */
     public Response<Boolean> sendMessage(Auth auth,String message,String mail){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
     /**
@@ -92,7 +90,7 @@ public class ServiceAPI {
      * @return user profile details
      */
     public Response<UserProfileData> watchProfile(Auth auth, String mail){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
     /**
@@ -103,10 +101,21 @@ public class ServiceAPI {
      * TODO check on database if can generate unique string
      */
     public Response<RoomDetailsData> watchRoomDetails (Auth auth, String roomId){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
-
+    /**
+     * req 3.6.2.1 - answer open question mission
+     * @param auth - authentication object
+     * @param roomId - room id
+     * @param answer - verbal answer of the open question
+     * @param file - file attached to the solution
+     * @return if the answer was accepted successfully
+     */
+    //TODO real time notifications to move the other clients a room
+    public Response<Boolean> answerOpenQuestionMission(Auth auth, String roomId,String answer,String file){
+        throw new RuntimeException();
+    }
 
 
     //TODO talk about discussion mission
@@ -125,7 +134,7 @@ public class ServiceAPI {
      */
 
     public Response<Boolean> answerDeterministicQuestion(Auth auth,String roomId,String answer){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
 
@@ -139,7 +148,7 @@ public class ServiceAPI {
      * @return if the sentences were added to the mission
      */
     public Response<Boolean> fillTrueLieSentences(Auth auth, String roomId, String trueSentence, String falseSentence){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
 
@@ -152,9 +161,20 @@ public class ServiceAPI {
      * @return if the answer was correct
      */
     public Response<Boolean> answerTrueLieMission(Auth auth, String roomId, String otherAlias, int trueAnswer){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
+
+    /**
+     * req3.6.2.5 - answer story mission
+     * @param auth - authentication object
+     * @param roomId - room id
+     * @param sentence - the next sentence to add to the story
+     * @return - the whole story after adding the next sentence
+     */
+    public Response<String> answerStoryMission(Auth auth,String roomId, String sentence){
+        throw new RuntimeException();
+    }
 
 
     //TODO change to all answers in one request and return all the answers.
@@ -166,7 +186,7 @@ public class ServiceAPI {
      * @return - the correct answer number
      */
     public Response<Integer> answerTriviaQuestion(Auth auth,String roomId, int answerNumber){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
     /**
@@ -180,7 +200,7 @@ public class ServiceAPI {
      * @return if an email was sent with verification code
      */
     public Response<Boolean> resetPassword(Auth auth){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
     /**
@@ -192,7 +212,7 @@ public class ServiceAPI {
      * @return if the message was sent successfully
      */
     public Response<Boolean> sendMessage(Auth auth,String message,String mail,String roomId){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
 //    /**
@@ -202,7 +222,7 @@ public class ServiceAPI {
 //     * @return if the room was closed successfully
 //     */
 //    public Response<Boolean> closeRoom(Auth auth, String roomId){
-//        throw new NotImplementedException();
+//        throw new RuntimeException();
 //    }
 
 
@@ -213,7 +233,7 @@ public class ServiceAPI {
 //     * @return - list of the missions were filtered
 //     */
 //    public Response<List<MissionData>> searchMissions(Auth auth, MissionFilterData filter){
-//        throw new NotImplementedException();
+//        throw new RuntimeException();
 //    }
 
 
@@ -224,7 +244,7 @@ public class ServiceAPI {
 //     * @return if the template was added successfully
 //     */
 //    public Response<Boolean> createRoomTemplate(Auth auth, RoomTemplateDetailsData details){
-//        throw new NotImplementedException();
+//        throw new RuntimeException();
 //    }
 
 
@@ -235,7 +255,7 @@ public class ServiceAPI {
 //     * @return if the mission was added successfully
 //     */
 //    public Response<Boolean> createMission(Auth auth, MissionData missionData){
-//        throw new NotImplementedException();
+//        throw new RuntimeException();
 //    }
 
 
@@ -246,7 +266,7 @@ public class ServiceAPI {
 //     * @return if the subject was added successfully
 //     */
 //    public Response<Boolean> createTriviaSubject(Auth auth, String subject){
-//        throw new NotImplementedException();
+//        throw new RuntimeException();
 //    }
 //
 //
@@ -257,7 +277,7 @@ public class ServiceAPI {
 //     * @return if the question was added successfully
 //     */
 //    public Response<Boolean> addTriviaQuestion(Auth auth, TriviaQuestionData question){
-//        throw new NotImplementedException();
+//        throw new RuntimeException();
 //    }
 
 
@@ -268,7 +288,7 @@ public class ServiceAPI {
      * @return if the question was deleted successfully
      */
     public Response<Boolean> deleteTriviaQuestion(Auth auth, String questionID){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
     /**
@@ -277,7 +297,7 @@ public class ServiceAPI {
      * @return all the solutions that wait to be approved
      */
     public Response<List<SolutionData>> watchSolutions(Auth auth){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
     /**
@@ -289,7 +309,7 @@ public class ServiceAPI {
      * @return if the mission was approved successfully
      */
     public Response<Boolean> responseStudentSolution(Auth auth,String roomId, String missionId,boolean isApproved){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
 
@@ -300,7 +320,7 @@ public class ServiceAPI {
      * @return if the suggestion was deleted successfully
      */
     public Response<Boolean> responseStudentSuggestion(Auth auth,String suggestionId){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
 
@@ -312,7 +332,7 @@ public class ServiceAPI {
      * @return if the points were deducted successfully
      */
     public Response<Boolean> deducePoints(Auth auth,String studentMail, int pointsToDeduce){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
 
@@ -323,7 +343,7 @@ public class ServiceAPI {
 //     * @return list of filtered room templates
 //     */
 //    public Response<List<RoomTemplateDetailsData>> searchRoomTemplates(Auth auth, TemplateFilerData filter){
-//        throw new NotImplementedException();
+//        throw new RuntimeException();
 //    }
 
     /**
@@ -334,7 +354,7 @@ public class ServiceAPI {
      * @return if classroom changed successfully
      */
     public Response<Boolean> changeStudentClassroom(Auth auth,String alias, String newGroup){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
     /**
@@ -344,7 +364,7 @@ public class ServiceAPI {
      * @return if user deleted successfully
      */
     public Response<Boolean> deleteUser(Auth auth,String userMail){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
 
@@ -355,7 +375,7 @@ public class ServiceAPI {
      * @return if users details updated in system
      */
     public Response<Boolean> UploadCSV(Auth auth,List<UserProfileData> usersList){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
     /**
@@ -366,7 +386,7 @@ public class ServiceAPI {
      * @return if mail updated successfully
      */
     public Response<Boolean> UpdateUserMail(Auth auth,String userMail,String newMail){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
     /**
@@ -377,7 +397,7 @@ public class ServiceAPI {
      * @return if first name updated successfully
      */
     public Response<Boolean> UpdateUserFirstName(Auth auth,String userMail,String FirstName){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
     /**
@@ -388,7 +408,7 @@ public class ServiceAPI {
      * @return if last name updated successfully
      */
     public Response<Boolean> UpdateUserLastName(Auth auth,String userMail,String LastName){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
     /**
@@ -399,7 +419,7 @@ public class ServiceAPI {
      * @return if phone number updated successfully
      */
     public Response<Boolean> UpdateUserPhoneNumber(Auth auth,String userMail,String PhoneNumber){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
 
@@ -409,7 +429,7 @@ public class ServiceAPI {
      * @return if users deleted successfully
      */
     public Response<Boolean> DeleteAllLastGradeStudents(Auth auth){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
     /**
@@ -419,7 +439,7 @@ public class ServiceAPI {
      * @return if classroom closed successfully
      */
     public Response<Boolean> CloseClassroom(Auth auth,String classroom){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
     /**
@@ -430,7 +450,7 @@ public class ServiceAPI {
      * @return if classroom changed successfully
      */
     public Response<Boolean> changeTeacherClassroom(Auth auth,String teacherMail, String newClassroom){
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
 

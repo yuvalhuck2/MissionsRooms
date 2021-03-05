@@ -1,6 +1,5 @@
 package missions.room.Communications.RealTime;
 
-import jdk.nashorn.internal.runtime.logging.Logger;
 import missions.room.Service.StudentRoomService;
 import missions.room.Service.UserAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
  */
 
 
-@Logger
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {

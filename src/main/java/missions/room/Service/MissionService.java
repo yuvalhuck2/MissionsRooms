@@ -1,13 +1,10 @@
 package missions.room.Service;
 
-import DataAPI.Auth;
 import DataAPI.MissionData;
-import DataAPI.MissionFilterData;
 import DataAPI.Response;
 import missions.room.Managers.MissionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
