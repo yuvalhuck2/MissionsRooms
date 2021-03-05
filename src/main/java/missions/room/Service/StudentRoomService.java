@@ -63,10 +63,10 @@ public class StudentRoomService {
      * @param apiKey - authentication object
      * @param roomId - room id
      * @param sentence - the next sentence to add to the story
-     * @return - the whole story after adding the next sentence
+     * @return - if the story was added successfully
      */
-    public Response<String> answerStoryMission(String apiKey,String roomId, String sentence){
-        throw new NotImplementedException();
+    public Response<Boolean> answerStoryMission(String apiKey,String roomId, String sentence){
+        return managerRoomStudent.answerStoryMission(apiKey, roomId, sentence);
     }
 
     /**
@@ -87,5 +87,14 @@ public class StudentRoomService {
     //TODO real time notifications to move the other clients a room
     public Response<Boolean> answerOpenQuestionMission(String apiKey, SolutionData openAnswer, MultipartFile file){
         return managerRoomStudent.answerOpenQuestionMission(apiKey, openAnswer, file);
+    }
+
+    /**
+     * req3.6.2.4 - answer story mission
+     * @param apiKey - authentication object
+     * @param roomId - room id
+     */
+    public void finishRoomMission(String apiKey,String roomId){
+        managerRoomStudent.finishRoomMission(apiKey, roomId);
     }
 }

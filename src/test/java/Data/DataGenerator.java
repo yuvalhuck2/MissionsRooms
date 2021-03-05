@@ -209,6 +209,14 @@ public class DataGenerator {
                         teachers.get(Data.Valid_2Students_From_Different_Groups),
                         roomTemplates.get(Data.VALID_2Mission_Class),
                         3));
+
+        roomsMap.put(Data.VALID_STORY,
+                new ClassroomRoom("roomIdStory",
+                        "storyRoom",
+                        classRoomMap.get(Data.Valid_2Students_From_Different_Groups),
+                        teachers.get(Data.Valid_2Students_From_Different_Groups),
+                        roomTemplates.get(Data.VALID_STORY),
+                        3));
     }
 
     private void initRoomTemplateDatas() {
@@ -239,6 +247,11 @@ public class DataGenerator {
         List<String> missionsWithNull=new ArrayList<>();
         missionsWithNull.add("not exist");
         roomTemplatesDatas.put(Data.WRONG_ID,new RoomTemplateDetailsData(missionsWithNull,"name",1,RoomType.Personal));
+
+        List<String> storyMission=new ArrayList<>();
+        storyMission.add(getMission(Data.VALID_STORY).getMissionId());
+        storyMission.add(getMission(Data.VALID_STORY2).getMissionId());
+        roomTemplatesDatas.put(Data.VALID_STORY,new RoomTemplateDetailsData(storyMission,"story",1,RoomType.Class));
     }
 
     private void initRoomTemplates() {
@@ -282,6 +295,11 @@ public class DataGenerator {
         roomTemplateDetailsData=getRoomTemplateData(Data.VALID_2Mission_Class);
         roomTemplateDetailsData.setId("twoMissionsClass");
         roomTemplates.put(Data.VALID_2Mission_Class,new RoomTemplate(roomTemplateDetailsData,missionsMap2MissionsNonPersonal));
+
+        List<Mission> storyMission=new ArrayList<>();
+        storyMission.add(getMission(Data.VALID_STORY));
+        storyMission.add(getMission(Data.VALID_STORY2));
+        roomTemplates.put(Data.VALID_STORY,new RoomTemplate(getRoomTemplateData(Data.VALID_STORY),storyMission));
     }
 
     private void initMissions() {
@@ -304,7 +322,8 @@ public class DataGenerator {
         missions.put(Data.EMPTY_QUESTION_DETERMINISTIC,new KnownAnswerMission("ddd",types,"","answer"));
         missions.put(Data.NULL_ANSWER_DETERMINISTIC,new KnownAnswerMission("ddd",types,"question",null));
         missions.put(Data.EMPTY_ANSWER_DETERMINISTIC,new KnownAnswerMission("ddd",types,"question",""));
-        missions.put(Data.VALID_STORY,new StoryMission("ggg",types,5,"story"));
+        missions.put(Data.VALID_STORY,new StoryMission("story",types,""));
+        missions.put(Data.VALID_STORY2,new StoryMission("story2",types,""));
     }
 
     private void initTeacher() {

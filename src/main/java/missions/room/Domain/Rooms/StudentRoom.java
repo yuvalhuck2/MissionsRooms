@@ -36,6 +36,11 @@ public class StudentRoom extends Room {
         return alias.equals(participant.getAlias());
     }
 
+    @Override
+    protected int getParticipantsSize() {
+        return 1;
+    }
+
     public StudentRoom(String roomId,String name, Student participant, Teacher teacher, RoomTemplate roomTemplate,int bonus) {
         super(roomId,name,teacher,roomTemplate,bonus);
         this.participant = participant;

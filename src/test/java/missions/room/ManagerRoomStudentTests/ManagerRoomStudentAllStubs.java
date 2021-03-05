@@ -597,12 +597,12 @@ public class ManagerRoomStudentAllStubs {
 
     @Test
     @Transactional
-    void testWatchRoomValid_norooms(){
+    void testWatchRoomValid_noRooms(){
         setUpMocks();
-        testWatchRoomValid_noroomsTest();
+        testWatchRoomValid_noRoomsTest();
     }
 
-    protected void testWatchRoomValid_noroomsTest() {
+    protected void testWatchRoomValid_noRoomsTest() {
         roomRepo.deleteAll();
         studentCrudRepository.save(dataGenerator.getStudent(Data.VALID));
         Response<List<RoomDetailsData>> response=managerRoomStudent.watchRoomDetails("apiKey");

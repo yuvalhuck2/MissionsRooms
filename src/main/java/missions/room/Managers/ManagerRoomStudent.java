@@ -425,7 +425,7 @@ public class ManagerRoomStudent extends StudentManager {
      * @param sentence - the next sentence to add to the story
      * @return - the whole story after adding the next sentence
      */
-    public Response<String> answerStoryMission(String apiKey,String roomId, String sentence){
+    public Response<Boolean> answerStoryMission(String apiKey,String roomId, String sentence){
         Response<Student> checkStudent=checkStudent(apiKey);
         if(checkStudent.getReason()!=OpCode.Success){
             return new Response<>(null,checkStudent.getReason());
@@ -449,15 +449,20 @@ public class ManagerRoomStudent extends StudentManager {
         }
 
         synchronized (room) {
-            Set<String> users=room.getConnectedUsersAliases();
             if(!room.isEnoughConnected()){
                 return new Response<>(null,OpCode.Not_Enough_Connected);
             }
             String story = ((StoryMission) mission).updateStory(sentence);
             String nextInCharge = room.drawMissionInChargeForStory();
             if(nextInCharge==null){
-                //TODO
-                return null;
+                NonPersistenceNotification<String> storyNotification=new NonPersistenceNotification<>(OpCode.STORY_FINISH,
+                        roomId,
+                        story);
+                Set<String> userKeys=room.getConnectedUsersAliases();
+                for (String alias :
+                        userKeys) {
+                    publisher.update(ram.getApiKey(alias),storyNotification);
+                }
             }
             else{
                 NonPersistenceNotification<String> inChargeNotification=new NonPersistenceNotification<>(OpCode.STORY_IN_CHARGE,
@@ -465,10 +470,44 @@ public class ManagerRoomStudent extends StudentManager {
                         story);
                 publisher.update(ram.getApiKey(nextInCharge),inChargeNotification);
             }
-
+            return new Response<>(true,OpCode.Success);
         }
 
+    }
 
+    /**
+     * req3.6.2.4 - answer story mission
+     * @param apiKey - authentication object
+     * @param roomId - room id
+     */
+    public void finishRoomMission(String apiKey,String roomId){
+        Response<Student> checkStudent=checkStudent(apiKey);
+        if(checkStudent.getReason()!=OpCode.Success){
+            return;
+        }
+
+        Response<Room> roomResponse = getRoomById(roomId);
+        if(roomResponse.getReason()!=OpCode.Success){
+            return;
+        }
+
+        Student student=checkStudent.getValue();
+        Room room=roomResponse.getValue();
+        if(!room.isBelongToRoom(student.getAlias())){
+            log.error(String.format("Function finishRoomMission: student %s is not belong to room %s"
+                    ,student.getAlias(),room.getRoomId()));
+            return;
+        }
+
+        Mission mission=room.getCurrentMission();
+        MissionData storyMission = getRoomCurrentStoryMission(mission);
+        if(storyMission != null){
+            updateRoomAndMissionInCharge(room);
+        }
+        else{
+            log.error(String.format("Function finishRoomMission: current mission of room %s is not story mission"
+                    ,room.getRoomId()));
+        }
 
     }
 

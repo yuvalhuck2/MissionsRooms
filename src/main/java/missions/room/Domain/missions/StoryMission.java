@@ -11,7 +11,6 @@ import java.util.Set;
 public class StoryMission extends Mission{
 
     private static final String MISSION_NAME = "Story_Mission";
-    private int amountOfSentencesForEachStudent;
 
     @Transient
     private String story;
@@ -19,18 +18,9 @@ public class StoryMission extends Mission{
     public StoryMission() {
     }
 
-    public StoryMission(String missionId, Set<RoomType> missionTypes, int secondsForEachStudent, String story) {
+    public StoryMission(String missionId, Set<RoomType> missionTypes, String story) {
         super(missionId, missionTypes);
-        this.amountOfSentencesForEachStudent = amountOfSentencesForEachStudent;
         this.story = story;
-    }
-
-    public int getAmountOfSentencesForEachStudent() {
-        return amountOfSentencesForEachStudent;
-    }
-
-    public void setAmountOfSentencesForEachStudent(int amountOfSentencesForEachStudent) {
-        this.amountOfSentencesForEachStudent = amountOfSentencesForEachStudent;
     }
 
     public String getStory() {

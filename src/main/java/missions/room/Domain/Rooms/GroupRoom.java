@@ -31,6 +31,11 @@ public class GroupRoom extends Room {
         return participant.containsStudent(alias);
     }
 
+    @Override
+    protected int getParticipantsSize() {
+        return participant.getStudent().size();
+    }
+
     public GroupRoom(String roomId, String roomName, ClassGroup participant, Teacher teacher, RoomTemplate roomTemplate,int bonus) {
         super(roomId,roomName,teacher,roomTemplate,bonus);
         this.participant = participant;
