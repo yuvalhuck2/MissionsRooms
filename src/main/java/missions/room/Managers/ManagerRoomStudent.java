@@ -479,6 +479,7 @@ public class ManagerRoomStudent extends StudentManager {
         if(reason==OpCode.Success){
             synchronized (room) {
                 if(room.clearStoryMission()) {
+                    updateCorrectAnswer(room);
                     updateRoomAndMissionInCharge(room);
                 }
                 return new Response<>(true,OpCode.Success);

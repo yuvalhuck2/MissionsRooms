@@ -299,7 +299,9 @@ public class DataGenerator {
         List<Mission> storyMission=new ArrayList<>();
         storyMission.add(getMission(Data.VALID_STORY));
         storyMission.add(getMission(Data.VALID_STORY2));
-        roomTemplates.put(Data.VALID_STORY,new RoomTemplate(getRoomTemplateData(Data.VALID_STORY),storyMission));
+        roomTemplateDetailsData=getRoomTemplateData(Data.VALID_STORY);
+        roomTemplateDetailsData.setId("story template");
+        roomTemplates.put(Data.VALID_STORY,new RoomTemplate(roomTemplateDetailsData,storyMission));
     }
 
     private void initMissions() {

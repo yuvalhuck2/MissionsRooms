@@ -16,6 +16,7 @@ public class StoryMission extends Mission{
     private String story;
 
     public StoryMission() {
+        story="";
     }
 
     public StoryMission(String missionId, Set<RoomType> missionTypes, String story) {

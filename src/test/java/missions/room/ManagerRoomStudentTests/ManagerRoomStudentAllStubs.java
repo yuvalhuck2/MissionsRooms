@@ -807,7 +807,6 @@ public class ManagerRoomStudentAllStubs {
         assertTrue(((PublisherMock)mockPublisher).getAllNotifications().isEmpty());
     }
 
-    //TODO check add points  and delete room
     @Test
     void testFinishStoryMissionHappyCase(){
         initFinishStoryRoom();
