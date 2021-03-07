@@ -9,7 +9,7 @@ import Header from '../common/Header';
 import TextInput from '../common/TextInput';
 import { Icon } from 'react-native-elements'
 import * as NavPaths from '../../navigation/NavPaths'
-import {passToAddTemplate,passToAddRoom,logout} from '../../actions'
+import {passToAddTemplate,passToAddRoom,logout,passToRooms} from '../../actions'
 
 const {
   addMission,
@@ -17,6 +17,7 @@ const {
   createRoom,
   closeRoom,
   main_screen,
+  passToRooms,
 } = TeacherStrings;
 
 
@@ -61,8 +62,8 @@ class TeacherForm extends Component {
             <Text style={{color:"white"}}>{createRoom}</Text> 
             <Icon name='create' />
           </Button>
-          <Button /*onPress={()=>this.navigate(NavPaths.addTemplate)}*/ style={[styles.button, styles.bottom_button_marg, styles.right_button_border]} >
-            {/* <Text style={{color:"white"}}>{closeRoom}</Text>  */}
+          <Button onPress={()=>this.props.passToRooms({navigation,apiKey,rooms})} style={[styles.button, styles.bottom_button_marg, styles.right_button_border]} >
+             <Text style={{color:"white"}}>{passToRooms}</Text>
             {/* <Icon name='delete' /> */}
           </Button>
           <Button onPress={this.onLogout} style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]}>
@@ -130,4 +131,5 @@ export default connect(mapStateToProps,{
 passToAddTemplate,
 passToAddRoom,
 logout,
+passToRooms,
 })(TeacherForm);

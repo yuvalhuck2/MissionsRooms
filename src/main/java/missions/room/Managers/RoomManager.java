@@ -178,7 +178,7 @@ public class RoomManager extends TeacherManager {
         Response<Teacher> checkTeacher = checkTeacher(apiKey);
         if (checkTeacher.getReason() == OpCode.Success) {
             Teacher teacher = checkTeacher.getValue();
-            String inCharge=ram.disconnectFromRoomTeacher(roomId,teacher.getAlias());
+            String inCharge=ram.disconnectFromRoom(roomId,teacher.getAlias());
             if(inCharge!=null){
                 publisher.update(ram.getApiKey(inCharge),new NonPersistenceNotification<>(OpCode.IN_CHARGE,roomId));
             }
@@ -194,10 +194,34 @@ public class RoomManager extends TeacherManager {
         if(roomDetailsListResponse.getReason()==OpCode.Success){
             for(RoomsDataByRoomType roomDetailsData:roomDetailsListResponse.getValue()){
                 for(RoomDetailsData rdd:roomDetailsData.getRoomDetailsDataList()) {
-                    disconnectFromRoomTeacher(apiKey, rdd.getRoomId());
+                    disconnectFromRoom(apiKey, rdd.getRoomId());
                 }
             }
         }
+    }
+
+    /**
+     * req 3.6.1 - watch data of a specific room
+     * @param apiKey - authentication object
+     * @return the mission details of the given room
+     */
+    public Response<Boolean> watchSpecificRoom(String apiKey, String roomId) {
+        Response<Teacher> checkTeacher = checkTeacher(apiKey);
+        if (checkTeacher.getReason() != OpCode.Success) {
+            return new Response<>(false, checkTeacher.getReason());
+        }
+
+        Response<Room> roomResponse = getRoomById(roomId);
+        if(roomResponse.getReason()!=OpCode.Success){
+            return new Response<>(false,roomResponse.getReason());
+        }
+
+        Teacher teacher=checkTeacher.getValue();
+        OpCode opCode=ram.connectToRoom(roomId,teacher.getAlias());
+        if(opCode==OpCode.Teacher){
+            return new Response<>(true,OpCode.Success);
+        }
+        return new Response<>(false,opCode);
     }
 
 

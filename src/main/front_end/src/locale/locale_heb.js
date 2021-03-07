@@ -127,6 +127,7 @@ export const TeacherStrings = {
   createRoom: 'יצירת חדר',
   closeRoom: 'סגירת חדר',
   main_screen: 'התנתק/י',
+  passToRooms:'צפיה בחדרים',
 };
 
 export const AddRoomStrings = {

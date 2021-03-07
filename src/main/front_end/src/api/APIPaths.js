@@ -13,3 +13,4 @@ export const addSuggestion="/suggestion/add"
 export const watchRoomData="student/room/data"
 export const disconnectFromRoom="student/room/disconnect"
 export const addNewIT = "it/add"
+export const watchTeacherRooms='room/view'

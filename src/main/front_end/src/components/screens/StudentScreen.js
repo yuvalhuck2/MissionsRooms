@@ -9,8 +9,7 @@ import Header from '../common/Header';
 import TextInput from '../common/TextInput';
 import { Icon } from 'react-native-elements'
 import * as NavPaths from '../../navigation/NavPaths'
-import {passToMyRooms,logout,passToAddSuggestion} from '../../actions'
-import {passToMyRooms,logout,changeDialog} from '../../actions'
+import {passToMyRooms,logout,changeDialog,passToAddSuggestion} from '../../actions'
 import { Dialog,Paragraph,Portal } from 'react-native-paper';
 
 const {
