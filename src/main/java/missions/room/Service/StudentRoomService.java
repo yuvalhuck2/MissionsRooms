@@ -3,9 +3,12 @@ package missions.room.Service;
 import DataAPI.Auth;
 import DataAPI.Response;
 import DataAPI.RoomDetailsData;
+import DataAPI.SolutionData;
 import missions.room.Managers.ManagerRoomStudent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
@@ -61,5 +64,16 @@ public class StudentRoomService {
      */
     public void disconnectFromRooms(String apiKey) {
         managerRoomStudent.disconnectFromAllRooms(apiKey);
+    }
+
+    /**
+     * req 3.6.2.1 - answer open question mission
+     * @param apiKey
+     * @param openAnswer
+     * @param file
+     * @return if the answer was accepted successfully
+     */
+    public Response<Boolean> answerOpenQuestionMission(String apiKey, SolutionData openAnswer, MultipartFile file){
+        return managerRoomStudent.answerOpenQuestionMission(apiKey, openAnswer, file);
     }
 }
