@@ -66,14 +66,12 @@ public class ManagerRoomStudent extends StudentManager {
      * @param file
      * @return if the answer was accepted successfully
      */
-    //TODO real time notifications to move the other clients a room
     public Response<Boolean> answerOpenQuestionMission(String apiKey, SolutionData openAnswerData, MultipartFile file){
         OpCode validity = checkStudentIsMissionManager(apiKey, openAnswerData.getRoomId());
         if (validity == OpCode.Success) {
             try {
-                byte[] fileBytes = file.getBytes();
                 OpenAnswer openAnswer = new OpenAnswer(openAnswerData.getRoomId(), openAnswerData.getMissionId()
-                                            , fileBytes, openAnswerData.getOpenAnswer());
+                                            , openAnswerData.getOpenAnswer(), file);
                 Room room = ram.getRoom(openAnswerData.getRoomId());
                 if (room != null) {
                     synchronized (room) {
@@ -87,7 +85,6 @@ public class ManagerRoomStudent extends StudentManager {
         } else {
             return new Response<>(false, validity);
         }
-
     }
 
 

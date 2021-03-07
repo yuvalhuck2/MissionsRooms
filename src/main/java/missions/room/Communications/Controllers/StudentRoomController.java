@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @RestController // This means that this class is a Controller
@@ -53,10 +51,10 @@ public class StudentRoomController extends AbsController{
                 data.getRoomId(),data.isAnswer());
         return response;
     }
-    // @RequestParam("solutionData") SolutionData openAnswer,
     @PostMapping("/openAns")
     @ResponseStatus(HttpStatus.CREATED)
-    public Response<?> answerOpenQuestion(@RequestParam("file") MultipartFile file, @RequestParam String token) {
-        return studentRoomService.answerOpenQuestionMission(token, null, file);
+    public Response<?> answerOpenQuestion(@RequestParam(name = "file", required = false) MultipartFile file, @RequestParam("missionId") String missionId, @RequestParam("roomId") String roomId, @RequestParam(name = "openAnswer", defaultValue = "") String openAnswer, @RequestParam String token) {
+        SolutionData solutionData = new SolutionData(missionId, roomId, openAnswer);
+        return studentRoomService.answerOpenQuestionMission(token, solutionData, file);
     }
 }

@@ -1,10 +1,12 @@
 package missions.room.Domain;
 
 import ExternalSystems.UniqueStringGenerator;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.Transient;
 
 @Entity
 public class OpenAnswer {
@@ -13,16 +15,16 @@ public class OpenAnswer {
     private String id;
     private String roomId;
     private String missionId;
-    @Lob
-    private byte[] file;
     private String openAnswerText;
+    @Transient
+    private MultipartFile file;
 
-    public OpenAnswer(String roomId, String missionId, byte[] file, String openAnswerText) {
+    public OpenAnswer(String roomId, String missionId, String openAnswerText, MultipartFile file) {
         this.id = UniqueStringGenerator.getTimeNameCode("OPEN_ANS");
         this.roomId = roomId;
         this.missionId = missionId;
-        this.file = file;
         this.openAnswerText = openAnswerText;
+        this.file = file;
     }
 
     public OpenAnswer() {
@@ -45,12 +47,8 @@ public class OpenAnswer {
         this.missionId = missionId;
     }
 
-    public byte[] getFile() {
+    public MultipartFile getFile() {
         return file;
-    }
-
-    public void setFile(byte[] file) {
-        this.file = file;
     }
 
     public String getOpenAnswerText() {
@@ -60,4 +58,9 @@ public class OpenAnswer {
     public void setOpenAnswerText(String openAnswerText) {
         this.openAnswerText = openAnswerText;
     }
+
+    public boolean fileExist(){
+        return this.file != null;
+    }
+
 }

@@ -3,6 +3,8 @@ package Utils;
 import DataAPI.UserType;
 import javafx.util.Pair;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Random;
 import java.util.Set;
 import java.util.List;
@@ -100,5 +102,11 @@ public class Utils {
     public static<T> T getRandomFromSet(Set<T> set) {
         T[] asArray = (T[]) set.toArray();
         return asArray[randomizer.nextInt(asArray.length)];
+    }
+
+    public static String getRootDirectory(){
+        Path currentRelativePath = Paths.get("").toAbsolutePath();
+        String rootDirectory = currentRelativePath.getRoot().toString();
+        return rootDirectory;
     }
 }
