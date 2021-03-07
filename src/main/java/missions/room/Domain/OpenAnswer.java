@@ -16,6 +16,7 @@ public class OpenAnswer {
     private String roomId;
     private String missionId;
     private String openAnswerText;
+    private boolean hasFile;
     @Transient
     private MultipartFile file;
 
@@ -25,6 +26,7 @@ public class OpenAnswer {
         this.missionId = missionId;
         this.openAnswerText = openAnswerText;
         this.file = file;
+        this.hasFile = file != null;
     }
 
     public OpenAnswer() {
@@ -59,8 +61,7 @@ public class OpenAnswer {
         this.openAnswerText = openAnswerText;
     }
 
-    public boolean fileExist(){
-        return this.file != null;
+    public boolean isHasFile() {
+        return hasFile;
     }
-
 }

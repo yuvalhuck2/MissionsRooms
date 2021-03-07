@@ -40,7 +40,7 @@ public class OpenAnswerRepo {
     }
     public Response<Boolean> saveOpenAnswer(OpenAnswer openAnswer){
         Response res = new Response(true, OpCode.Success);
-        if (openAnswer.fileExist() && saveOpenAnswerFile(openAnswer.getRoomId(), openAnswer.getMissionId(), openAnswer.getFile())){
+        if (openAnswer.isHasFile() && saveOpenAnswerFile(openAnswer.getRoomId(), openAnswer.getMissionId(), openAnswer.getFile())){
             try{
                 openAnswerRepository.save(openAnswer);
             } catch(Exception e) {
