@@ -3,7 +3,7 @@ package missions.room.Repo;
 import CrudRepositories.UserCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
-import missions.room.Domain.User;
+import missions.room.Domain.Users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +40,15 @@ public class UserRepo {
         }
         catch(LockTimeoutException e){
             return new Response<>(null,OpCode.TimeOut);
+        }
+        catch(Exception e){
+            return new Response<>(null,OpCode.DB_Error);
+        }
+    }
+
+    public Response<Boolean> isExistsById(String alias){
+        try {
+            return new Response<>(userCrudRepository.existsById(alias), OpCode.Success);
         }
         catch(Exception e){
             return new Response<>(null,OpCode.DB_Error);

@@ -3,15 +3,12 @@ package missions.room.Managers;
 import CrudRepositories.TeacherCrudRepository;
 import DataAPI.*;
 import missions.room.Domain.*;
+import missions.room.Domain.Users.Teacher;
 import missions.room.Repo.TeacherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * class for all the managers that need to find a teacher for their methods
@@ -39,7 +36,7 @@ public abstract class TeacherManager {
     }
 
     protected Response<Teacher> checkTeacher(String apiKey){
-        String alias=ram.getApi(apiKey);
+        String alias=ram.getAlias(apiKey);
         if(alias==null){
             return new Response<>(null, OpCode.Wrong_Key);
         }

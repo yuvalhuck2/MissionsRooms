@@ -15,3 +15,4 @@ export const deterministicScreen = 'SolveDeterministic';
 export const chooseStudentRoom = 'ChooseStudentRoom';
 export const uploadCsv = 'UploadCsv';
 export const addSuggestion='AddSuggestion'
+export const addIT = 'AddIT';

@@ -8,9 +8,9 @@ import Data.DataGenerator;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import missions.room.Domain.Ram;
-import missions.room.Domain.Student;
+import missions.room.Domain.Users.Student;
 import missions.room.Domain.Suggestion;
-import missions.room.Domain.Teacher;
+import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.SuggestionManager;
 import missions.room.Repo.StudentRepo;
 import missions.room.Repo.SuggestionRepo;
@@ -25,7 +25,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -75,8 +74,6 @@ public class SuggestionManagerTestsAllStubs {
     @Mock
     protected SuggestionCrudRepository mockSuggestionCrudRepository;
 
-
-
     private AutoCloseable closeable;
 
     @BeforeEach
@@ -94,13 +91,13 @@ public class SuggestionManagerTestsAllStubs {
         Student student=dataGenerator.getStudent(Data.VALID);
         Suggestion suggestion=dataGenerator.getSuggestion(Data.VALID);
         Teacher teacher=dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM);
-        when(mockRam.getApi(studentApiKey))
+        when(mockRam.getAlias(studentApiKey))
                 .thenReturn(student.getAlias());
-        when(mockRam.getApi(teacherApiKey))
+        when(mockRam.getAlias(teacherApiKey))
                 .thenReturn(teacher.getAlias());
-        when(mockRam.getApi(INVALID_KEY))
+        when(mockRam.getAlias(INVALID_KEY))
                 .thenReturn(null);
-        when(mockRam.getApi(NULL_TEACHER_KEY))
+        when(mockRam.getAlias(NULL_TEACHER_KEY))
                 .thenReturn(WRONG_TEACHER_NAME);
         when(mockStudentRepo.findStudentById(student.getAlias()))
                 .thenReturn(new Response<>(student, OpCode.Success));
@@ -129,11 +126,11 @@ public class SuggestionManagerTestsAllStubs {
 
     @Test
     void addSuggestionNullStudentTest(){
-        studentApiKey =NULL_STUDENT_KEY;
-        when(mockStudentRepo.findStudentById(WRONG_STUDENT_NAME))
+        studentApiKey = NULL_USER_KEY;
+        when(mockStudentRepo.findStudentById(WRONG_USER_NAME))
                 .thenReturn(new Response<>(null,OpCode.Success));
-        when(mockRam.getApi(studentApiKey))
-                .thenReturn(WRONG_STUDENT_NAME);
+        when(mockRam.getAlias(studentApiKey))
+                .thenReturn(WRONG_USER_NAME);
         testAddSuggestionInvalid(OpCode.Not_Exist);
     }
 

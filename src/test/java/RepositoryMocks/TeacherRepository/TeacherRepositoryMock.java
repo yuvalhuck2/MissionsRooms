@@ -3,8 +3,7 @@ package RepositoryMocks.TeacherRepository;
 import CrudRepositories.TeacherCrudRepository;
 import Data.Data;
 import Data.DataGenerator;
-import missions.room.Domain.Teacher;
-import org.springframework.stereotype.Repository;
+import missions.room.Domain.Users.Teacher;
 
 import java.util.List;
 import java.util.Optional;

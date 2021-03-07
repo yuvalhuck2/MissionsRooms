@@ -2,13 +2,11 @@ package missions.room.RegisterManagerTests;
 
 import Data.Data;
 import DataAPI.*;
-import javafx.scene.chart.XYChart;
-import missions.room.Domain.GroupType;
-import missions.room.Domain.Student;
+import DataAPI.GroupType;
+import missions.room.Domain.Users.Student;
 import ExternalSystemMocks.MailSenderTrueMock;
 import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
-import missions.room.Domain.Teacher;
 import missions.room.Managers.UserAuthenticationManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

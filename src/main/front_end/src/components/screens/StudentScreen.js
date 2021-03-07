@@ -9,7 +9,8 @@ import Header from '../common/Header';
 import TextInput from '../common/TextInput';
 import { Icon } from 'react-native-elements'
 import * as NavPaths from '../../navigation/NavPaths'
-import {passToMyRooms,logout,passToAddSuggestion} from '../../actions'
+import {passToMyRooms,logout,changeDialog,passToAddSuggestion} from '../../actions'
+import { Dialog,Paragraph,Portal } from 'react-native-paper';
 
 const {
   watchMyRoom,
@@ -26,6 +27,7 @@ class StudentForm extends Component {
     super(...args);
     this.navigate=this.navigate.bind(this);
     this.onLogout=this.onLogout.bind(this);
+    this.exitDailog=this.exitDailog.bind(this);
   }
 
   navigate(screen){
@@ -36,6 +38,24 @@ class StudentForm extends Component {
   onLogout(){
     const {navigation}=this.props;
     return this.props.logout(navigation);
+  }
+
+  exitDailog(){
+    return this.props.changeDialog("")
+  }
+
+  renderDialog(){
+    const {dialog}=this.props;
+    const visible= (dialog !="")
+    return (
+      <Portal>
+        <Dialog visible={visible} onDismiss={()=>this.exitDailog()}>
+          <Dialog.Content>
+            <Paragraph>{dialog}</Paragraph>
+          </Dialog.Content>
+        </Dialog>
+      </Portal>
+    )
   }
 
   render() {
@@ -54,7 +74,7 @@ class StudentForm extends Component {
 
 
 
-          
+
         </View>
         <View>
           <Button mode="contained" style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >
@@ -68,7 +88,7 @@ class StudentForm extends Component {
             <Icon name='exit-to-app' />
           </Button>
         </View>
-
+        {this.renderDialog()}
       </View>
     );
   }
@@ -120,12 +140,13 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  const { apiKey,rooms } = state.ChooseStudentRoom;
-  return { apiKey,rooms };
+  const { apiKey,rooms,dialog } = state.ChooseStudentRoom;
+  return { apiKey,rooms,dialog };
 };
 
 export default connect(mapStateToProps,{
   passToMyRooms,
   logout,
+  changeDialog,
   passToAddSuggestion,
 })(StudentForm);

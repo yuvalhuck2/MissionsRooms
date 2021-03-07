@@ -4,14 +4,14 @@ import java.util.List;
 
 public class TriviaQuestionData {
     private String question;
-    private List<String> answers;
-    private int numberOfCorrectAnswer;
+    private List<String> wrongAnswers;
+    private String correctAnswer;
     private String subject;
 
-    public TriviaQuestionData(String question, List<String> answers, int numberOfCorrectAnswer, String subject) {
+    public TriviaQuestionData(String question, List<String> answers, String correctAnswer, String subject) {
         this.question = question;
-        this.answers = answers;
-        this.numberOfCorrectAnswer = numberOfCorrectAnswer;
+        this.wrongAnswers = answers;
+        this.correctAnswer = correctAnswer;
         this.subject = subject;
     }
 
@@ -20,11 +20,11 @@ public class TriviaQuestionData {
     }
 
     public List<String> getAnswers() {
-        return answers;
+        return wrongAnswers;
     }
 
-    public int getNumberOfCorrectAnswer() {
-        return numberOfCorrectAnswer;
+    public String getCorrectAnswer() {
+        return correctAnswer;
     }
 
     public String getSubject() {

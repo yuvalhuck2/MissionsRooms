@@ -2,7 +2,7 @@ package missions.room.RoomManagerTests;
 
 import Data.Data;
 import DataAPI.OpCode;
-import missions.room.Domain.Room;
+import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
 import missions.room.Domain.Rooms.StudentRoom;

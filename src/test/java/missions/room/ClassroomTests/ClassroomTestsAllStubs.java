@@ -5,7 +5,7 @@ import Data.DataGenerator;
 import DataAPI.ClassRoomData;
 import missions.room.Domain.ClassGroup;
 import missions.room.Domain.Classroom;
-import missions.room.Domain.GroupType;
+import DataAPI.GroupType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

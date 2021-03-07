@@ -34,3 +34,5 @@ build/
 /derby.log
 /src/test/resources/f.sql
 /src/main/java/META-INF/MANIFEST.MF
+/logs/spring.log
+/logs/spring.log.2021-02-26.0.gz

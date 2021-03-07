@@ -1,7 +1,5 @@
 package DataAPI;
 
-import missions.room.Domain.GroupType;
-
 /**
  * user type - enum that tell if it is student, teacher, supervisor or IT
  */

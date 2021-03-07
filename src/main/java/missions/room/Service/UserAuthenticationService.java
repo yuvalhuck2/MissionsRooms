@@ -5,7 +5,7 @@ import DataAPI.Response;
 import DataAPI.TeacherData;
 import ExternalSystems.MailSender;
 import ExternalSystems.VerificationCodeGenerator;
-import missions.room.Domain.GroupType;
+import DataAPI.GroupType;
 import missions.room.Managers.UserAuthenticationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,4 +58,11 @@ public class UserAuthenticationService {
     }
 
 
+    public void openWebSocket(String apiKey) {
+        userAuthenticationManager.openWebSocket(apiKey);
+    }
+
+    public void closeWebsocket(String userId) {
+        userAuthenticationManager.closeWebSocket(userId);
+    }
 }

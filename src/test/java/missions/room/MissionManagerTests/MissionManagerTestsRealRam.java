@@ -4,7 +4,7 @@ import Data.Data;
 import DataAPI.OpCode;
 import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
-import missions.room.Domain.Mission;
+import missions.room.Domain.missions.Mission;
 import missions.room.Domain.Ram;
 import DomainMocks.MissionMock;
 import missions.room.Managers.MissionManager;

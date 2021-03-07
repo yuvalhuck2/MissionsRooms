@@ -1,6 +1,8 @@
-package missions.room.Domain;
+package missions.room.Domain.Users;
 
+import DataAPI.GroupType;
 import DataAPI.OpCode;
+import missions.room.Domain.Classroom;
 
 import javax.persistence.Entity;
 

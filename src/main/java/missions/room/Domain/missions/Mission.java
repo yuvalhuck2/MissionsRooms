@@ -1,7 +1,9 @@
-package missions.room.Domain;
+package missions.room.Domain.missions;
 
+import DataAPI.MissionData;
 import DataAPI.OpCode;
 import DataAPI.RoomType;
+import missions.room.Domain.RoomTemplate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -64,5 +66,21 @@ public abstract class Mission implements Serializable {
 
     public int getPoints(){
         return this.points;
+    }
+
+    public MissionData getData() {
+        MissionData missionData = new MissionData(missionId, missionTypes);
+        missionData.setName(getMissionName());
+        return completeTheRestOfMissionData(missionData);
+    }
+
+    //TODO need to become abstract after implement all the missions
+    protected String getMissionName() {
+        return null;
+    }
+
+    //TODO need to become abstract after implement all the missions
+    protected MissionData completeTheRestOfMissionData(MissionData missionData){
+        return null;
     }
 }

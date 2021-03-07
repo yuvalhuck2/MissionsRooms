@@ -1,6 +1,6 @@
 package CrudRepositories;
 
-import missions.room.Domain.Room;
+import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
 import missions.room.Domain.Rooms.StudentRoom;
@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import java.util.List;
 
 import javax.persistence.LockModeType;
 
