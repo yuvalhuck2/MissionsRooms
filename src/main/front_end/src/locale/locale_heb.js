@@ -262,3 +262,15 @@ export const addITErrors = {
   already_exist:'כבר קיים משתמש עם שם משתמש זהה',
   added_successfully:' !הוספת המנהל הטכני הצליחה',
 }
+
+export const SolveStoryMissionStrings ={
+  header:"סיפור בהמשכים",
+  enter_answer:"הכנס/י משפט",
+  send_answer:"הוספת המשפט",
+  end_mission:"סיים משימה"
+}
+
+export const StoryStrings ={
+  wrong_sentence:'משפט שגוי',
+  sentence_added:'המשפט נוסף בהצלחה',
+}

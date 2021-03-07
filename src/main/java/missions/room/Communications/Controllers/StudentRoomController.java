@@ -57,4 +57,16 @@ public class StudentRoomController extends AbsController{
     public Response<?> answerOpenQuestion(@RequestBody SolutionData openAnswer, @RequestParam("file") MultipartFile file, @RequestParam String token) {
         return studentRoomService.answerOpenQuestionMission(token, openAnswer, file);
     }
+
+    @PostMapping("/story")
+    public Response<?> answerStory(@RequestBody String storyAnswer) {
+        StoryAnswerData data= json.fromJson(storyAnswer, StoryAnswerData.class);
+        return studentRoomService.answerStoryMission(data.getApiKey(), data.getRoomId(), data.getSentence());
+    }
+
+    @PostMapping("/finish/story")
+    public Response<?> finishStory(@RequestBody String storyFinish) {
+        RoomIdAndApiKeyData data= json.fromJson(storyFinish, RoomIdAndApiKeyData.class);
+        return studentRoomService.finishStoryMission(data.getApiKey(), data.getRoomId());
+    }
 }

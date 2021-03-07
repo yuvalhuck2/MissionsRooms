@@ -18,6 +18,7 @@ import {
   TeacherScreen,
   UploadCsvScreen,
   AddITScreen,
+  SolveStoryScreen,
 } from './components/screens';
 
 const Stack = createStackNavigator();
@@ -33,6 +34,10 @@ const App = () => {
         <Stack.Screen
           name='SolveDeterministic'
           component={SolveDeterministicScreen}
+        />
+        <Stack.Screen
+          name='SolveStory'
+          component={SolveStoryScreen}
         />
         <Stack.Screen
           name='ChooseStudentRoom'

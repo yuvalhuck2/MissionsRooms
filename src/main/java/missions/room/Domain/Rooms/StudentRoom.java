@@ -19,7 +19,8 @@ public class StudentRoom extends Room {
 
     @Override
     public String drawMissionInCharge() {
-        return participant.getAlias();
+        missionIncharge=participant.getAlias();;
+        return missionIncharge;
     }
 
     @Override

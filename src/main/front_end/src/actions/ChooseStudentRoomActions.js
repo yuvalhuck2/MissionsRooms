@@ -7,8 +7,10 @@ import {
     PASS_TO_SOLVE_MISSIONS,
     UPDATE_ERROR_CHOOSE_ROOM,
     DETERMINISTIC_NAME,
+    STORY_NAME,
     INIT_DETEREMINISTIC,
     WAIT_FOR_ROOM_DATA,
+    INIT_STORY_MISSION,
     EXIT_ROOM,
   } from './types';
  
@@ -72,10 +74,8 @@ const {
         return dispatch({ type: UPDATE_ERROR_CHOOSE_ROOM, payload: room_error });
       case IN_CHARGE:
         return moveToMission(value,dispatch,navigation,true)
-        break;
       case NOT_IN_CHARGE:
         return moveToMission(value,dispatch,navigation,false)
-        break;
     }
     alert("didn't handle room")
   }
@@ -87,6 +87,11 @@ const {
         dispatch({ type: INIT_DETEREMINISTIC, payload: {roomData, isInCharge} })
         navigation.navigate(NavPaths.deterministicScreen);
         break;
+      case STORY_NAME:
+          dispatch({ type: PASS_TO_SOLVE_MISSIONS});
+          dispatch({ type: INIT_STORY_MISSION, payload: {roomData, isInCharge} })
+          navigation.navigate(NavPaths.storyScreen);
+          break;
       default:
         console.log(roomData)
         alert("didn't move from room")

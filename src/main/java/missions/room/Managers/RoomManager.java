@@ -168,7 +168,7 @@ public class RoomManager extends TeacherManager {
             return new Response<>(false,roomResponse.getReason());
         }
         Room room=roomResponse.getValue();
-        //TODO don't close  room if someone is connected to it
+        //TODO don't close room if someone is connected to it
         return roomRepo.deleteRoom(room);
     }
 

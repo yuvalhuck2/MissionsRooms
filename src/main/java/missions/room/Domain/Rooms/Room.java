@@ -51,11 +51,14 @@ public abstract class Room {
     @OneToOne
     protected RoomTemplate roomTemplate;
 
+    @Transient
+    private boolean waitingForStory;
+
     public Room() {
         studentWereChosen=new HashSet<>();
         connectedStudents=new HashSet<>();
         studentWereChosenForStory=new HashSet<>();
-
+        waitingForStory=false;
     }
 
     public Room(String roomId,String name,Teacher teacher,RoomTemplate roomTemplate,int bonus) {
@@ -70,6 +73,7 @@ public abstract class Room {
         studentWereChosen=new HashSet<>();
         connectedStudents=new HashSet<>();
         studentWereChosenForStory=new HashSet<>();
+        waitingForStory=false;
     }
 
     public String drawMissionInCharge() {
@@ -90,6 +94,7 @@ public abstract class Room {
         studentsToChooseFrom.removeAll(studentWereChosenForStory);
         if(studentsToChooseFrom.isEmpty()){
             missionIncharge=null;
+            waitingForStory=true;
         }
         else {
             missionIncharge = Utils.getRandomFromSet(studentsToChooseFrom);
@@ -164,43 +169,43 @@ public abstract class Room {
             return null;
         }
         MissionData missionData = mission.getData();
-        return new RoomDetailsData(roomId,name,missionData,roomTemplate.getType());
+        return new RoomDetailsData(roomId,name,missionData,roomTemplate.getType(),waitingForStory);
     }
 
 
-    //TODO refactor to the mission object to return it's own data
-    private MissionData getMissionData(Mission mission) {
-        MissionData md = new MissionData(mission.getMissionId(), mission.getMissionTypes());
-        List<String> questList = new ArrayList<>();
-        List<String> answerList = new ArrayList<>();
-        if (mission instanceof KnownAnswerMission) {
-            md.setName("Known answer mission");
-            questList.add(((KnownAnswerMission) mission).getQuestion());
-            md.setQuestion(questList);
-            answerList.add(((KnownAnswerMission) mission).getRealAnswer());
-            md.setAnswers(answerList);
-        }
-        if (mission instanceof OpenAnswerMission) {
-            md.setName("Open Answer Mission");
-            questList.add(((OpenAnswerMission) mission).getQuestion());
-        }
-        if (mission instanceof StoryMission) {
-            md.setName("Story Mission");
-        }
-        if (mission instanceof TriviaMission) {
-            md.setName("Trivia Mission");
-            md.setTimeForAns(((TriviaMission) mission).getSecondsForAnswer());
-            for (Map.Entry<String, TriviaQuestion> entry : ((TriviaMission) mission).getQuestions().entrySet()) {
-                questList.add(entry.getValue().getQuestion());
-            }
-            md.setQuestion(questList);
-        }
-        if (mission instanceof TrueLieMission) {
-            md.setName("True False Mission");
-            md.setTimeForAns(((TrueLieMission) mission).getAnswerTimeForStudent());
-        }
-        return md;
-    }
+//    //TODO refactor to the mission object to return it's own data
+//    private MissionData getMissionData(Mission mission) {
+//        MissionData md = new MissionData(mission.getMissionId(), mission.getMissionTypes());
+//        List<String> questList = new ArrayList<>();
+//        List<String> answerList = new ArrayList<>();
+//        if (mission instanceof KnownAnswerMission) {
+//            md.setName("Known answer mission");
+//            questList.add(((KnownAnswerMission) mission).getQuestion());
+//            md.setQuestion(questList);
+//            answerList.add(((KnownAnswerMission) mission).getRealAnswer());
+//            md.setAnswers(answerList);
+//        }
+//        if (mission instanceof OpenAnswerMission) {
+//            md.setName("Open Answer Mission");
+//            questList.add(((OpenAnswerMission) mission).getQuestion());
+//        }
+//        if (mission instanceof StoryMission) {
+//            md.setName("Story Mission");
+//        }
+//        if (mission instanceof TriviaMission) {
+//            md.setName("Trivia Mission");
+//            md.setTimeForAns(((TriviaMission) mission).getSecondsForAnswer());
+//            for (Map.Entry<String, TriviaQuestion> entry : ((TriviaMission) mission).getQuestions().entrySet()) {
+//                questList.add(entry.getValue().getQuestion());
+//            }
+//            md.setQuestion(questList);
+//        }
+//        if (mission instanceof TrueLieMission) {
+//            md.setName("True False Mission");
+//            md.setTimeForAns(((TrueLieMission) mission).getAnswerTimeForStudent());
+//        }
+//        return md;
+//    }
 
     public Set<String> getConnectedUsersAliases(){
         return connectedStudents;
@@ -209,7 +214,7 @@ public abstract class Room {
     public OpCode connect(String alias) {
         if(isBelongToRoom(alias)) {
             connectedStudents.add(alias);
-            if (missionIncharge == null) {
+            if (missionIncharge == null&&!waitingForStory) {
                 missionIncharge = alias;
                 return OpCode.IN_CHARGE;
             }
@@ -252,6 +257,7 @@ public abstract class Room {
         if(studentWereChosenForStory.isEmpty())
             return false;
         studentWereChosenForStory.clear();
+        waitingForStory=false;
         return true;
     }
 }

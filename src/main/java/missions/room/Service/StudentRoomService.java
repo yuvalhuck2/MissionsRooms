@@ -91,7 +91,7 @@ public class StudentRoomService {
      * @param apiKey - authentication object
      * @param roomId - room id
      */
-    public void finishStoryMission(String apiKey,String roomId){
-        managerRoomStudent.finishStoryMission(apiKey, roomId);
+    public Response<Boolean> finishStoryMission(String apiKey,String roomId){
+        return managerRoomStudent.finishStoryMission(apiKey, roomId);
     }
 }
