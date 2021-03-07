@@ -34,7 +34,7 @@ INSERT INTO STORY_MISSION(mission_id) VALUES
 
 INSERT INTO ROOM_TEMPLATE(room_template_id,minimal_missions_to_pass,name,type) VALUES
 ('tid1',0,'תבנית אישית',0),('tid2',0,'תבנית קבוצתית',1),('tid3',0,'תבנית כיתתית',2),
-('tid_story',0,'תבנית סיפור',0);
+('tid_story',0,'תבנית סיפור',2);
 
 INSERT INTO MISSION_TEMPLATES(room_template_id,mission_id,index) VALUES
 ('tid1','mid2',0),('tid1','mid1',1),('tid2','mid1',0),('tid2','mid2',1),('tid3','mid1',0),('tid3','mid2',1)
@@ -43,8 +43,9 @@ INSERT INTO MISSION_TEMPLATES(room_template_id,mission_id,index) VALUES
 INSERT INTO ROOM(room_id,bonus,count_correct_answer
 ,current_mission,name,room_template_room_template_id,teacher_alias) VALUES
 ('rid1',1,0,0,'אישי של ניב','tid1','tal'),('rid2',1,0,0,'קבוצתי של איי','tid2','tal'),
-('rid3',1,0,0,'כיתתי של קלאס','tid3','tal'),-- ('rid4',1,0,0,'אישי של רוי','tid1','tal')
-('rid_story',1,0,0,'אישי של רוי','tid_story','tal');
+-- ('rid3',1,0,0,'כיתתי של קלאס','tid3','tal')
+-- ,('rid4',1,0,0,'אישי של רוי','tid1','tal')
+('rid_story',1,0,0,'סיפור כיתתי','tid_story','tal');
 
 INSERT INTO STUDENT_ROOM(room_id,participant_alias) values
 ('rid1','niv'),--('rid4','roy4');
