@@ -12,6 +12,7 @@ import * as APIPaths from '../api/APIPaths';
 import { GeneralErrors } from '../locale/locale_heb';
 import * as NavPaths from '../navigation/NavPaths';
 import { Not_Exist, Success, Wrong_Key } from './OpCodeTypes';
+import {closeSocket} from '../handler/WebSocketHandler'
 
 const {
   server_error,
@@ -116,6 +117,7 @@ const checkSearchTemplatesResponse = (data, dispatch) => {
 export const logout = (navigation) => {
   return async (dispatch) => {
     dispatch({ type: CLEAR_STATE });
+    closeSocket();
     return navigation.navigate(NavPaths.loginScreen);
   };
 };

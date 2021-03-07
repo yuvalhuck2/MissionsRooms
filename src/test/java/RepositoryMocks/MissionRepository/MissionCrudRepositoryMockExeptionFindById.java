@@ -1,7 +1,7 @@
 package RepositoryMocks.MissionRepository;
 
 import CrudRepositories.MissionCrudRepository;
-import missions.room.Domain.Mission;
+import missions.room.Domain.missions.Mission;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;

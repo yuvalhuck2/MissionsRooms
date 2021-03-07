@@ -1,6 +1,6 @@
 package CrudRepositories;
 
-import missions.room.Domain.IT;
+import missions.room.Domain.Users.IT;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

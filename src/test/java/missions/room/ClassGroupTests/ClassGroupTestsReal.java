@@ -1,12 +1,11 @@
 package missions.room.ClassGroupTests;
 
 import Data.Data;
-import missions.room.Domain.GroupType;
+import DataAPI.GroupType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.when;
 
 public class ClassGroupTestsReal extends ClassGroupTestsAllStub{
 

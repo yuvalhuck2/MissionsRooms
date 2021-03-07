@@ -3,7 +3,6 @@ package RepositoryMocks.RoomTemplateRepository;
 import CrudRepositories.RoomTemplateCrudRepository;
 import Data.Data;
 import Data.DataGenerator;
-import missions.room.Domain.Mission;
 import missions.room.Domain.RoomTemplate;
 
 import java.util.Optional;

@@ -1,7 +1,7 @@
 package DataAPI;
 
 
-import missions.room.Domain.Room;
+import java.util.Objects;
 
 //TODO implement needs to only the current mission and not all the missions
 public class RoomDetailsData {
@@ -9,6 +9,8 @@ public class RoomDetailsData {
     private String name;
     private MissionData currentMission;
     private RoomType roomType;
+    private int currentMissionNumber;
+    private int numberOfMissions;
 
     public RoomDetailsData(String roomId, String name, MissionData currentMission, RoomType roomType){
         this.roomId=roomId;
@@ -16,6 +18,32 @@ public class RoomDetailsData {
         this.currentMission=currentMission;
         this.roomType=roomType;
 
+    }
+
+    public RoomDetailsData(String roomId, String name, MissionData currentMission, RoomType roomType,int currentMissionNumber,int numberOfMissions){
+        this.roomId=roomId;
+        this.name=name;
+        this.currentMission=currentMission;
+        this.roomType=roomType;
+        this.currentMissionNumber=currentMissionNumber;
+        this.numberOfMissions=numberOfMissions;
+
+    }
+
+    public int getCurrentMissionNumber() {
+        return currentMissionNumber;
+    }
+
+    public void setCurrentMissionNumber(int currentMissionNumber) {
+        this.currentMissionNumber = currentMissionNumber;
+    }
+
+    public int getNumberOfMissions() {
+        return numberOfMissions;
+    }
+
+    public void setNumberOfMissions(int numberOfMissions) {
+        this.numberOfMissions = numberOfMissions;
     }
 
     public String getRoomId() {
@@ -48,5 +76,15 @@ public class RoomDetailsData {
 
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RoomDetailsData roomDetailsData = (RoomDetailsData) o;
+        return  Objects.equals(name, roomDetailsData.name) &&
+                Objects.equals(currentMission,roomDetailsData.currentMission) &&
+                Objects.equals(roomType,roomDetailsData.roomType);
     }
 }

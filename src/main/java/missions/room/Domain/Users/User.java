@@ -1,11 +1,13 @@
-package missions.room.Domain;
+package missions.room.Domain.Users;
 
 import DataAPI.OpCode;
+import DataAPI.StudentData;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -42,5 +44,14 @@ public abstract class User {
     }
 
     public abstract OpCode getOpcode();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return  Objects.equals(user.alias, alias) &&
+                Objects.equals(user.password,password);
+    }
 }
 

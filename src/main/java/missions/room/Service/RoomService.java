@@ -1,11 +1,9 @@
 package missions.room.Service;
 
 import DataAPI.*;
-import missions.room.Managers.ManagerRoomStudent;
 import missions.room.Managers.RoomManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
@@ -44,5 +42,35 @@ public class RoomService {
     public Response<ClassRoomData> getClassRoomData(String apiKey){
         return roomManager.getClassRoomData(apiKey);
     }
+
+
+    /**
+     * watch rooms details
+     * @param apiKey
+     * @return rooms details by type
+     */
+    public Response<List<RoomsDataByRoomType>> watchMyClassroomRooms (String apiKey){
+        return roomManager.watchMyClassroomRooms(apiKey);
+    }
+
+    /**
+     * disconnect from room
+     * @param apiKey - authentication object
+     * @return the mission details of the given room
+     */
+    public void disconnectFromRoom (String apiKey,String roomId){
+        roomManager.disconnectFromRoom(apiKey,roomId);
+    }
+
+    /**
+     * disconnect from all of my rooms
+     * @param apiKey - authentication object
+     */
+    public void disconnectFromRooms(String apiKey) {
+
+        roomManager.disconnectFromAllRooms(apiKey);
+    }
+
+
 
 }

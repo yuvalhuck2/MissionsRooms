@@ -4,7 +4,8 @@ import React from 'react';
 import {
     AddDeterministicMissionScreen,
     AddRoomScreen,
-    AddRoomTemplateScreen, AddSuggestionScreen,
+    AddRoomTemplateScreen,
+    AddSuggestionScreen,
     AuthScreen,
     ChooseMissionsForTemplateScreen,
     ChooseMissionToAddScreen,
@@ -16,7 +17,8 @@ import {
     SolveDeterministicScreen,
     StudentScreen,
     TeacherScreen,
-    UploadCsvScreen
+    UploadCsvScreen,
+  AddITScreen,
 } from './components/screens';
 
 const Stack = createStackNavigator();
@@ -25,6 +27,10 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Register'>
+      <Stack.Screen
+          name='AddIT'
+          component={AddITScreen}
+        />
         <Stack.Screen
           name='SolveDeterministic'
           component={SolveDeterministicScreen}

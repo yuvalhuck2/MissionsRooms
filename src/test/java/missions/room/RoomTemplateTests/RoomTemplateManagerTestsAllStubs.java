@@ -19,7 +19,7 @@ import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMockExceptionFindB
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMockNotExist;
 import Utils.InterfaceAdapter;
 import com.google.gson.GsonBuilder;
-import missions.room.Domain.Mission;
+import missions.room.Domain.missions.Mission;
 import missions.room.Domain.Ram;
 import missions.room.Domain.RoomTemplate;
 import missions.room.Managers.RoomTemplateManager;

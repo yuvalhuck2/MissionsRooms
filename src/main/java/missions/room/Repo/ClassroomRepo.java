@@ -4,12 +4,9 @@ import CrudRepositories.ClassroomRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import missions.room.Domain.Classroom;
-import missions.room.Domain.Teacher;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

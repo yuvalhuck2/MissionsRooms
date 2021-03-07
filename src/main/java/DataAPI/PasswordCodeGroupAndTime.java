@@ -1,7 +1,5 @@
 package DataAPI;
 
-import missions.room.Domain.GroupType;
-
 import java.time.LocalDateTime;
 
 public class PasswordCodeGroupAndTime {

@@ -18,9 +18,8 @@ import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMockExceptionFindById;
 import RepositoryMocks.ClassroomRepository.ClassRoomRepositoryMock;
 import missions.room.Domain.Ram;
-import missions.room.Domain.Teacher;
+import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.RoomManager;
-import missions.room.Managers.TeacherManager;
 import missions.room.Repo.TeacherRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,12 +33,9 @@ import org.mockito.quality.Strictness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
-
 import static Data.DataConstants.*;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @Service
@@ -105,11 +101,11 @@ public class RoomManagerTestsAllStubs {
         closeable= MockitoAnnotations.openMocks(this);
         Teacher teacher=dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM);
         String teacherAlias=dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getAlias();
-        when(mockRam.getApi(apiKey))
+        when(mockRam.getAlias(apiKey))
                 .thenReturn(teacherAlias);
-        when(mockRam.getApi(INVALID_KEY))
+        when(mockRam.getAlias(INVALID_KEY))
                 .thenReturn(null);
-        when(mockRam.getApi(NULL_TEACHER_KEY))
+        when(mockRam.getAlias(NULL_TEACHER_KEY))
                 .thenReturn(WRONG_TEACHER_NAME);
         when(mockTeacherRepo.findTeacherById(teacherAlias))
                 .thenReturn(new Response<>(teacher,OpCode.Success));

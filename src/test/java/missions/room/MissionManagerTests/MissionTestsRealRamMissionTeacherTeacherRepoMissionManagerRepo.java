@@ -1,15 +1,11 @@
 package missions.room.MissionManagerTests;
 
 import CrudRepositories.MissionCrudRepository;
-import CrudRepositories.TeacherCrudRepository;
 import Data.Data;
 import DataAPI.OpCode;
-import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock2TypesMission;
-import RepositoryMocks.MissionRepository.MissionCrudRepositoryMockNoMissions;
-import missions.room.Domain.Mission;
+import missions.room.Domain.missions.Mission;
 import missions.room.Domain.Ram;
 import missions.room.Domain.missions.KnownAnswerMission;
-import missions.room.Managers.MissionManager;
 import missions.room.Managers.TeacherManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

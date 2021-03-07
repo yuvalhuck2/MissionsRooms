@@ -1,11 +1,8 @@
 package missions.room.Domain;
 
-import DataAPI.ClassRoomData;
-import DataAPI.GroupData;
-import DataAPI.OpCode;
-import DataAPI.Response;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import DataAPI.*;
+import missions.room.Domain.Users.SchoolUser;
+import missions.room.Domain.Users.Student;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -132,5 +129,14 @@ public class Classroom{
                                         collect(Collectors.toList());
 
         return new ClassRoomData(className,groupDataList);
+    }
+
+    public List<String> getStudentsAlias() {
+        ArrayList<String> aliases=new ArrayList<>();
+        for (ClassGroup group: classGroups) {
+            if(group.getGroupType()!=GroupType.C)
+            aliases.addAll(group.getStudentsAlias());
+        }
+        return aliases;
     }
 }

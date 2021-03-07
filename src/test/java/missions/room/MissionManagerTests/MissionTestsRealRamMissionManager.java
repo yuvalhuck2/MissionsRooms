@@ -4,7 +4,7 @@ import Data.Data;
 import DataAPI.OpCode;
 import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
-import missions.room.Domain.Mission;
+import missions.room.Domain.missions.Mission;
 import missions.room.Domain.Ram;
 import missions.room.Managers.MissionManager;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package missions.room.Domain;
+package DataAPI;
 
 public enum GroupType {
     A,

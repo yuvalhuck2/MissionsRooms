@@ -1,6 +1,5 @@
 package DataAPI;
 
-import missions.room.Domain.GroupType;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;

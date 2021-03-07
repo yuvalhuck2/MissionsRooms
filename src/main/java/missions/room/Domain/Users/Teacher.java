@@ -1,15 +1,12 @@
-package missions.room.Domain;
+package missions.room.Domain.Users;
 
+import DataAPI.GroupType;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import DataAPI.TeacherData;
-import missions.room.Repo.MissionRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import missions.room.Domain.ClassGroup;
+import missions.room.Domain.Classroom;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
-import org.springframework.context.ApplicationContext;
-import missions.room.*;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
