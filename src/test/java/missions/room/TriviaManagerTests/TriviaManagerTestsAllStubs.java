@@ -75,13 +75,13 @@ public class TriviaManagerTestsAllStubs {
         closeable= MockitoAnnotations.openMocks(this);
         Student student=dataGenerator.getStudent(Data.VALID);
         Teacher teacher=dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD);
-        when(mockRam.getApiKey(studentApiKey))
+        when(mockRam.getAlias(studentApiKey))
                 .thenReturn(student.getAlias());
-        when(mockRam.getApiKey(teacherApiKey))
+        when(mockRam.getAlias(teacherApiKey))
                 .thenReturn(teacher.getAlias());
-        when(mockRam.getApiKey(INVALID_KEY))
+        when(mockRam.getAlias(INVALID_KEY))
                 .thenReturn(null);
-        when(mockRam.getApiKey(NULL_TEACHER_KEY))
+        when(mockRam.getAlias(NULL_TEACHER_KEY))
                 .thenReturn(WRONG_TEACHER_NAME);
         when(mockTeacherRepo.findTeacherById(eq(teacher.getAlias())))
                 .thenReturn(new Response<>(teacher,OpCode.Success));

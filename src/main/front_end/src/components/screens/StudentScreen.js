@@ -9,12 +9,13 @@ import Header from '../common/Header';
 import TextInput from '../common/TextInput';
 import { Icon } from 'react-native-elements'
 import * as NavPaths from '../../navigation/NavPaths'
-import {passToMyRooms,logout,changeDialog} from '../../actions'
+import {passToMyRooms,logout,changeDialog,passToAddSuggestion} from '../../actions'
 import { Dialog,Paragraph,Portal } from 'react-native-paper';
 
 const {
   watchMyRoom,
   main_screen,
+  addSuggestion,
 } = StudentStrings;
 
 const DeviceWidth  = Dimensions.get('window').width;
@@ -45,7 +46,7 @@ class StudentForm extends Component {
 
   renderDialog(){
     const {dialog}=this.props;
-    const visible= (dialog !="") 
+    const visible= (dialog !="")
     return (
       <Portal>
         <Dialog visible={visible} onDismiss={()=>this.exitDailog()}>
@@ -66,10 +67,14 @@ class StudentForm extends Component {
           <Text style={{color:"white"}}> {watchMyRoom}</Text> 
             <Icon name='meeting-room' />
           </Button>
-          <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
-          <Text style={{color:"white"}}></Text> 
+          <Button  onPress={()=>this.props.passToAddSuggestion({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
+          <Text style={{color:"white"}}>{addSuggestion}</Text>
           </Button>
           <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]}/>
+
+
+
+
         </View>
         <View>
           <Button mode="contained" style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >
@@ -143,4 +148,5 @@ export default connect(mapStateToProps,{
   passToMyRooms,
   logout,
   changeDialog,
+  passToAddSuggestion,
 })(StudentForm);

@@ -7,7 +7,7 @@ const initialState = {
   apiKey: '',
   userType: '',
   authCode: '',
-  userType: ''
+  //userType: ''
 };
 import { IT, Student, Supervisor, Teacher } from '../actions/OpCodeTypes';
 import {

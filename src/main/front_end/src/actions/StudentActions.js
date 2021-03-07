@@ -1,10 +1,13 @@
 import {
-  GET_STUDENT_ROOMS,
-  LOGIN_STUDENT,
+    GET_STUDENT_ROOMS,
+    LOGIN_STUDENT,
+    UPDATE_ERROR_SOLVE_ROOM,
+    Student_Not_Exist_In_Class,
+    Student_Not_Exist_In_Group,
+    Wrong_Mission, UPDATE_ERROR,
+    SUGGESTION_CHANGED, ADD_SUGGESTION,
+    CLEAR_STATE,
   UPDATE_ERROR_SOLVE_DETERMINISTIC,
-  Student_Not_Exist_In_Class,
-  Student_Not_Exist_In_Group,
-  Wrong_Mission,
   STUDENT_DIALOG,
 } from '../actions/types';
 import API from '../api/API';
@@ -20,6 +23,7 @@ const {
   student_not_exist_in_group_error,
   wrong_mission_error,
   wrong_key_error,
+    Wrong_Suggestion,wrong_key
 } = passToMyRoomsErrors;
 
 export const passToMyRooms = ({ navigation, apiKey, rooms }) => {
@@ -88,4 +92,73 @@ export const changeDialog = (content)=>{
   return async (dispatch)=>{
     dispatch({type:STUDENT_DIALOG, payload:content})
   }
+};
+
+export const passToAddSuggestion = ({ navigation, apiKey}) => {
+    return async (dispatch) => {
+        dispatch({ type: LOGIN_STUDENT, payload: apiKey  });
+        return navigation.navigate(NavPaths.addSuggestion);
+    };
+};
+
+
+export const addSuggestion = ({navigation, apiKey,suggestion})=>{
+  return async (dispatch)=>{
+    dispatch({type:LOGIN_STUDENT,payload:apiKey});
+    try{
+      const  res= await API.post(APIPaths.addSuggestion,{apiKey, suggestion});
+      if(res){
+          checkAddSuggestionResponse({
+              data:res.data,
+              dispatch,
+              navigation,
+          })
+      } else{
+        dispatch({type:UPDATE_ERROR,payload:server_error});
+      }
+    }catch (e) {
+      console.log(e);
+        return dispatch({type:UPDATE_ERROR,payload:server_error});
+
+    }
+  };
+};
+
+const checkAddSuggestionResponse = ({
+  data,
+  dispatch,
+  navigation,
+}) => {
+  const { reason, value } = data;
+  switch (reason) {
+    case Wrong_Key:
+      return dispatch({ type: UPDATE_ERROR, payload: wrong_key });
+    case Student_Not_Exist_In_Class:
+      return dispatch({
+        type: UPDATE_ERROR,
+        payload: student_not_exist_in_class_error,
+      });
+    case Student_Not_Exist_In_Group:
+      return dispatch({
+        type: UPDATE_ERROR,
+        payload: student_not_exist_in_group_error,
+      });
+    case Wrong_Suggestion:
+      return dispatch({
+        type: UPDATE_ERROR,
+        payload: Wrong_Suggestion,
+      });
+    case Success:
+      navigation.navigate(NavPaths.studentMainScreen);
+      return dispatch({ type: ADD_SUGGESTION, payload: value });
+    default:
+      return dispatch({ type: UPDATE_ERROR, payload: server_error });
+  }
+};
+
+export const suggestionChange = (text) => {
+    return {
+        type: SUGGESTION_CHANGED,
+        payload: text,
+    };
 };

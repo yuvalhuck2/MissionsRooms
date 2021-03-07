@@ -49,18 +49,18 @@ class SolveDeterministicForm extends Component {
   }
 
   renderButton(){
-    const {loading} = this.props
+    const {loading, isInCharge} = this.props
 
     return loading ? (
       this.renderSpinner()
     ) : (
-      <Button
-      mode='contained'
-      style={styles.button}
-      onPress={this.onButtonPress}
-      >
-      {send_answer}
-      </Button>
+        isInCharge ?
+            (<Button
+                mode='contained'
+                style={styles.button}
+                onPress={this.onButtonPress}>
+              {send_answer}
+            </Button>) : null
     )
   }
 

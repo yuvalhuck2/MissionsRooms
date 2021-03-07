@@ -1,13 +1,10 @@
 package missions.room.Service;
 
-import DataAPI.Auth;
 import DataAPI.Response;
 import DataAPI.TriviaQuestionData;
-import missions.room.Domain.TriviaQuestion;
 import missions.room.Managers.TriviaManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 @Service
 public class TriviaService {

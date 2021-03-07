@@ -7,14 +7,16 @@ import AuthReducer from './AuthReducer';
 import ChooseStudentRoom from './ChooseStudentRoomReducer';
 import ITReducer from './ITReducer';
 import SolveDeterministic from './SolveDeterministicReducer'
+import AddSuggestionReducer from './AddSuggestionReducer';
 
 export default combineReducers({
-  auth: AuthReducer,
-  addMission: addMissionReducer,
-  addRoomTemplate: addRoomTemplateReducer,
-  addRoom: addRoomReducer,
-  ChooseStudentRoom: ChooseStudentRoom,
-  IT: ITReducer,
-  SolveDeterministic: SolveDeterministic,
-  addIT: addITReducer
+    auth: AuthReducer,
+    addMission: addMissionReducer,
+    addRoomTemplate: addRoomTemplateReducer,
+    addRoom: addRoomReducer,
+    ChooseStudentRoom: ChooseStudentRoom,
+    IT: ITReducer,
+    addSuggestion: AddSuggestionReducer,
+    SolveDeterministic: SolveDeterministic,
+    addIT: addITReducer
 });

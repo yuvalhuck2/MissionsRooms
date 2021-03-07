@@ -181,7 +181,14 @@ export const SolveDeterministicMissionStrings = {
 
 export const StudentStrings = {
   watchMyRoom: 'החדרים שלי',
+  addSuggestion:'הוספת הצעה',
   main_screen: 'התנתק/י',
+};
+
+export const AddSuggestionStrings = {
+    header: 'הוספת הצעה',
+    addSuggestionText: 'הכנס/י הצעה',
+    send_suggestion: 'שלח/י',
 };
 
 export const registerCodeErrors = {
