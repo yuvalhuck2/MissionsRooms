@@ -7,6 +7,7 @@ import AuthReducer from './AuthReducer';
 import ChooseStudentRoom from './ChooseStudentRoomReducer';
 import ITReducer from './ITReducer';
 import SolveDeterministic from './SolveDeterministicReducer'
+import AddSuggestionReducer from './AddSuggestionReducer';
 import SolveStory from './SolveStoryReducer'
 import WatchProfileReducer from './WatchProfileReducer'
 import WatchMessagesReducer from './WatchMessagesReducer'
@@ -23,4 +24,5 @@ export default combineReducers({
   solveStory: SolveStory,
   WatchProfile: WatchProfileReducer,
   WatchMessages: WatchMessagesReducer,
+  addSuggestion: AddSuggestionReducer,
 });

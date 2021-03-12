@@ -2,21 +2,22 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import {
-  AddDeterministicMissionScreen,
-  AddRoomScreen,
-  AddRoomTemplateScreen,
-  AuthScreen,
-  ChooseMissionsForTemplateScreen,
-  ChooseMissionToAddScreen,
-  ChooseStudentRoomScreen,
-  ChooseTemplateScreen,
-  ITScreen,
-  LoginScreen,
-  RegisterScreen,
-  SolveDeterministicScreen,
-  StudentScreen,
-  TeacherScreen,
-  UploadCsvScreen,
+    AddDeterministicMissionScreen,
+    AddRoomScreen,
+    AddRoomTemplateScreen,
+    AddSuggestionScreen,
+    AuthScreen,
+    ChooseMissionsForTemplateScreen,
+    ChooseMissionToAddScreen,
+    ChooseStudentRoomScreen,
+    ChooseTemplateScreen,
+    ITScreen,
+    LoginScreen,
+    RegisterScreen,
+    SolveDeterministicScreen,
+    StudentScreen,
+    TeacherScreen,
+    UploadCsvScreen,
   AddITScreen,
   SolveStoryScreen,
   WatchProfileScreen,
@@ -28,7 +29,7 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login'>
+      <Stack.Navigator initialRouteName='Register'>
       <Stack.Screen
           name='AddIT'
           component={AddITScreen}
@@ -69,6 +70,7 @@ const App = () => {
         <Stack.Screen name="UploadCsv" component={UploadCsvScreen}/>
         <Stack.Screen name="WatchProfile" component={WatchProfileScreen}/>
         <Stack.Screen name="WatchMessages" component={WatchMessagesScreen}/>
+        <Stack.Screen name="AddSuggestion" component={AddSuggestionScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

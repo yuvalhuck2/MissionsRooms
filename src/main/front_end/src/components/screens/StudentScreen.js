@@ -9,7 +9,7 @@ import Header from '../common/Header';
 import TextInput from '../common/TextInput';
 import { Icon } from 'react-native-elements'
 import * as NavPaths from '../../navigation/NavPaths'
-import {passToMyRooms,logout,changeDialog, passToWatchProfiles, passToWatchMessages} from '../../actions'
+import {passToMyRooms,logout,changeDialog, passToWatchProfiles, passToWatchMessages,passToAddSuggestion} from '../../actions'
 import { Dialog,Paragraph,Portal } from 'react-native-paper';
 
 const {
@@ -17,6 +17,7 @@ const {
   main_screen,
   watchProfiles,
   watch_messages,
+  addSuggestion,
 } = StudentStrings;
 
 const DeviceWidth  = Dimensions.get('window').width;
@@ -68,9 +69,11 @@ class StudentForm extends Component {
           <Text style={{color:"white"}}> {watchMyRoom}</Text> 
             <Icon name='meeting-room' />
           </Button>
-          <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} 
+          <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}
             onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
-            <Text style={{color:"white"}}>{watchProfiles}</Text> 
+            <Text style={{color:"white"}}>{watchProfiles}</Text>
+          <Button  onPress={()=>this.props.passToAddSuggestion({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
+          <Text style={{color:"white"}}>{addSuggestion}</Text>
           </Button>
           <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]}/>
         </View>
@@ -78,9 +81,9 @@ class StudentForm extends Component {
           <Button mode="contained" style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >
             <Text style={{color:"white"}}></Text> 
           </Button>
-          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]} 
+          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
             onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
-            <Text style={{color:"white"}}>{watch_messages}</Text> 
+            <Text style={{color:"white"}}>{watch_messages}</Text>
           </Button>
           <Button onPress={this.onLogout} style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]} >
           <Text style={{color:"white"}}>{main_screen}</Text> 
@@ -147,6 +150,7 @@ export default connect(mapStateToProps,{
   passToMyRooms,
   logout,
   changeDialog,
+  passToAddSuggestion,
   passToWatchProfiles,
   passToWatchMessages,
 })(StudentForm);
