@@ -72,10 +72,10 @@ class StudentForm extends Component {
           <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}
             onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
             <Text style={{color:"white"}}>{watchProfiles}</Text>
-          <Button  onPress={()=>this.props.passToAddSuggestion({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
+          </Button>
+          <Button  onPress={()=>this.props.passToAddSuggestion({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]} >
           <Text style={{color:"white"}}>{addSuggestion}</Text>
           </Button>
-          <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]}/>
         </View>
         <View>
           <Button mode="contained" style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >

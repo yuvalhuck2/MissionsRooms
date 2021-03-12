@@ -171,6 +171,7 @@ const checkWatchMessagesResponse = ({data, dispatch, navigation,}) => {
       return dispatch({ type: UPDATE_ERROR_WATCH_MESSAGES, payload: server_error });
   }
 }
+
 export const passToAddSuggestion = ({ navigation, apiKey}) => {
     return async (dispatch) => {
         dispatch({ type: LOGIN_STUDENT, payload: apiKey  });
