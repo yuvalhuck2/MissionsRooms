@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController // This means that this class is a Controller
-@RequestMapping(path="/it") // This means URL's start with /demo (after Application path)
+@RequestMapping(path="/it")
 public class ITController extends AbsController{
 
     @Autowired

@@ -8,6 +8,8 @@ import ChooseStudentRoom from './ChooseStudentRoomReducer';
 import ITReducer from './ITReducer';
 import SolveDeterministic from './SolveDeterministicReducer'
 import SolveStory from './SolveStoryReducer'
+import WatchProfileReducer from './WatchProfileReducer'
+import WatchMessagesReducer from './WatchMessagesReducer'
 
 export default combineReducers({
   auth: AuthReducer,
@@ -19,4 +21,6 @@ export default combineReducers({
   SolveDeterministic: SolveDeterministic,
   addIT: addITReducer,
   solveStory: SolveStory,
+  WatchProfile: WatchProfileReducer,
+  WatchMessages: WatchMessagesReducer,
 });

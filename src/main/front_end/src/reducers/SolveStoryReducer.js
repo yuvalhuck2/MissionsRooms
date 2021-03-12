@@ -40,8 +40,6 @@ const initialState = {
         case CHANGE_IN_CHARGE:
             return { ...state, isInCharge: action.payload, isInchargeByMission:action.payload }; 
         case CHANGE_STORY_IN_CHARGE:
-            console.log(state)
-            console.log(action.payload)
             return { ...state, loading: false, isInCharge: action.payload.isInCharge,
                 story: state.isFinish ? state.story : action.payload.story, isInchargeByMission:false };
         case EXIT_ROOM:
@@ -49,12 +47,9 @@ const initialState = {
         case FINISH_MISSION:
             return {...initialState, apiKey:action.payload, isInCharge:state.isInchargeByMission, roomId:state.roomId}
         case FINISH_STORY_MISSION:
-            console.log("here")
-            console.log(action.payload)
             return {... state, isInCharge:false, isFinish:true, story: action.payload}
         case UPDATE_ERROR_SOLVE_STORY:
             alert(action.payload)
-            console.log(state)
             return { ...state, errorMessage: action.payload, loading: false};
         case CLEAR_STATE:
             return initialState;

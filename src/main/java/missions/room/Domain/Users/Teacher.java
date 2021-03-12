@@ -1,9 +1,6 @@
 package missions.room.Domain.Users;
 
-import DataAPI.GroupType;
-import DataAPI.OpCode;
-import DataAPI.Response;
-import DataAPI.TeacherData;
+import DataAPI.*;
 import missions.room.Domain.ClassGroup;
 import missions.room.Domain.Classroom;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -23,6 +20,7 @@ public class Teacher extends SchoolUser {
     protected GroupType groupType;
 
     public Teacher() {
+        super();
     }
 
     @Override
@@ -99,5 +97,10 @@ public class Teacher extends SchoolUser {
            return classroom.moveStudentToMyGroup(student,groupType);
         }
         return new Response<>(false,OpCode.Not_Exist_Group);
+    }
+
+    @Override
+    public UserProfileData getProfileData() {
+        return new UserProfileData(firstName,lastName,alias,getOpcode());
     }
 }

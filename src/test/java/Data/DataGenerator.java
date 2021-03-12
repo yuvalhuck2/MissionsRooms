@@ -41,6 +41,7 @@ public class DataGenerator {
     private HashMap<Data,Suggestion> suggestionHashMap;
     private HashMap<Data, String> triviaSubjectHashMap;
     private HashMap<Data, TriviaQuestionData> triviaQuestionHashMap;
+    private HashMap<Data, MessageData> messageDataMap;
 
     public DataGenerator() {
         initStudents();
@@ -61,6 +62,14 @@ public class DataGenerator {
         initLoginDatas();
         initUsers();
         initTriviaData();
+        initMessagesData();
+    }
+
+    private void initMessagesData() {
+        messageDataMap=new HashMap<Data, MessageData>();
+        messageDataMap.put(Data.VALID,new MessageData("messageId",
+                "hello",
+                students.get(Data.VALID).getAlias(), "01/02/2030", "14:34"));
     }
 
     private void initTriviaData() {
@@ -474,4 +483,6 @@ public class DataGenerator {
     public TriviaQuestionData getTriviaQuestion(Data data) {
         return triviaQuestionHashMap.get(data);
     }
+
+    public MessageData getMessageData(Data data){ return messageDataMap.get(data); }
 }

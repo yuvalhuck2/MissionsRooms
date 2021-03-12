@@ -16,3 +16,5 @@ export const chooseStudentRoom = 'ChooseStudentRoom';
 export const uploadCsv = 'UploadCsv';
 export const addIT = 'AddIT';
 export const storyScreen='SolveStory';
+export const watchProfile='WatchProfile'
+export const watchMessages='WatchMessages'

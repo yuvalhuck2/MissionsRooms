@@ -3,8 +3,8 @@ import { StyleSheet, Text, Dimensions, View } from 'react-native';
 import { connect } from 'react-redux';
 import Button from '../common/Button';
 import { Icon } from 'react-native-elements'
-import  { navigateToUploadCSV, navigateToAddNewIT } from '../../actions'
-import { ITStrings } from '../../locale/locale_heb';
+import  { navigateToUploadCSV, navigateToAddNewIT,passToWatchProfiles, passToWatchMessages } from '../../actions'
+import { ITStrings, StudentStrings  } from '../../locale/locale_heb';
 import {logout} from '../../actions'
 
 const {
@@ -12,6 +12,11 @@ const {
   main_screen,
   addNewIT,
 } = ITStrings
+
+const {
+  watchProfiles,
+  watch_messages,
+} = StudentStrings;
 
 const DeviceWidth  = Dimensions.get('window').width;
 const backgroundColor = 'purple';
@@ -42,14 +47,17 @@ class ITForm extends Component {
 
 
   render() {
-    
+    const {navigation,apiKey} =this.props
     return (
       <View style={styles.container}>
         <View>
           <Button onPress={this.navigateToAddNewIT} style={[styles.button, styles.top_button_marg, styles.left_button_border, styles.top_button_border]} >
             <Text style={{color:"white"}}>{addNewIT}</Text> 
           </Button>
-          <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} />
+          <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}
+            onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watchProfiles}</Text>
+          </Button> 
           <Button onPress={this.onLogout} style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]} >
             <Text style={{color:"white"}}>{main_screen}</Text> 
             <Icon name='exit-to-app' />
@@ -59,7 +67,10 @@ class ITForm extends Component {
           <Button  mode="contained" onPress={this.navigateToUploadCSV} style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >
             <Text style={{color:"white"}}>{uploadCSV}</Text> 
           </Button>
-          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]} />
+          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
+            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watch_messages}</Text> 
+          </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]} />
         </View>
 
@@ -114,11 +125,14 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  return { };
+  const {apiKey} = state.IT;
+  return {apiKey};
 };
 
 export default connect(mapStateToProps, {
   navigateToUploadCSV,
   logout,
   navigateToAddNewIT,
+  passToWatchProfiles,
+  passToWatchMessages,
 })(ITForm);

@@ -48,11 +48,15 @@ INSERT INTO ROOM(room_id,bonus,count_correct_answer
 ('rid_story',1,0,0,'סיפור כיתתי','tid_story','tal');
 
 INSERT INTO STUDENT_ROOM(room_id,participant_alias) values
-('rid1','niv'),--('rid4','roy4');
-('rid_story','roy4');
+('rid1','niv');--,('rid4','roy4');
+
 
 INSERT INTO GROUP_ROOM(room_id,participant_group_name) values
 ('rid2','A');
 
 INSERT INTO CLASSROOM_ROOM(room_id,participant_class_name) values
-('rid3','class');
+--('rid3','class');
+('rid_story','class');
+
+INSERT INTO MESSAGE(id, content, sender, date, time, dest) values
+('123', 'hello', 'shmulik', '12/12/2012','20:30','niv')

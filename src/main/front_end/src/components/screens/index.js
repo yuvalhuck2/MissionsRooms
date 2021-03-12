@@ -15,3 +15,5 @@ export { default as StudentScreen } from './StudentScreen';
 export { default as ITScreen } from './ITScreen'
 export { default as AddITScreen } from './AddITScreen'
 export { default as SolveStoryScreen} from './SolveStoryScreen'
+export { default as WatchProfileScreen} from './WatchProfileScreen'
+export { default as WatchMessagesScreen} from './WatchMessagesScreen'

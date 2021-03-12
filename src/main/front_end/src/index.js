@@ -19,6 +19,8 @@ import {
   UploadCsvScreen,
   AddITScreen,
   SolveStoryScreen,
+  WatchProfileScreen,
+  WatchMessagesScreen,
 } from './components/screens';
 
 const Stack = createStackNavigator();
@@ -26,7 +28,7 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Register'>
+      <Stack.Navigator initialRouteName='Login'>
       <Stack.Screen
           name='AddIT'
           component={AddITScreen}
@@ -65,6 +67,8 @@ const App = () => {
         <Stack.Screen name='AddRoom' component={AddRoomScreen} />
         <Stack.Screen name='IT' component={ITScreen} />
         <Stack.Screen name="UploadCsv" component={UploadCsvScreen}/>
+        <Stack.Screen name="WatchProfile" component={WatchProfileScreen}/>
+        <Stack.Screen name="WatchMessages" component={WatchMessagesScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 public class Supervisor extends Teacher {
 
     public Supervisor() {
+        super();
     }
 
     public Supervisor(String alias, String firstName, String lastName, Classroom classroom, GroupType groupType) {
