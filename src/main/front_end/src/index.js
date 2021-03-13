@@ -4,7 +4,8 @@ import React from 'react';
 import {
     AddDeterministicMissionScreen,
     AddRoomScreen,
-    AddRoomTemplateScreen, AddSuggestionScreen,
+    AddRoomTemplateScreen,
+    AddSuggestionScreen,
     AuthScreen,
     ChooseMissionsForTemplateScreen,
     ChooseMissionToAddScreen,
@@ -18,6 +19,9 @@ import {
     TeacherScreen,
     UploadCsvScreen,
   AddITScreen,
+  SolveStoryScreen,
+  WatchProfileScreen,
+  WatchMessagesScreen,
 } from './components/screens';
 
 const Stack = createStackNavigator();
@@ -33,6 +37,10 @@ const App = () => {
         <Stack.Screen
           name='SolveDeterministic'
           component={SolveDeterministicScreen}
+        />
+        <Stack.Screen
+          name='SolveStory'
+          component={SolveStoryScreen}
         />
         <Stack.Screen
           name='ChooseStudentRoom'
@@ -60,6 +68,8 @@ const App = () => {
         <Stack.Screen name='AddRoom' component={AddRoomScreen} />
         <Stack.Screen name='IT' component={ITScreen} />
         <Stack.Screen name="UploadCsv" component={UploadCsvScreen}/>
+        <Stack.Screen name="WatchProfile" component={WatchProfileScreen}/>
+        <Stack.Screen name="WatchMessages" component={WatchMessagesScreen}/>
         <Stack.Screen name="AddSuggestion" component={AddSuggestionScreen}/>
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,5 +1,6 @@
 package missions.room.Domain.missions;
 
+import DataAPI.MissionData;
 import DataAPI.RoomType;
 
 import javax.persistence.Entity;
@@ -9,37 +10,18 @@ import java.util.Set;
 @Entity
 public class StoryMission extends Mission{
 
-    private int secondsForEachStudent;
-
-    private int amountOfSentencesForEachStudent;
+    private static final String MISSION_NAME = "Story_Mission";
 
     @Transient
     private String story;
 
     public StoryMission() {
+        story="";
     }
 
-    public StoryMission(String missionId, Set<RoomType> missionTypes, int secondsForEachStudent, int amountOfSentencesForEachStudent, String story) {
+    public StoryMission(String missionId, Set<RoomType> missionTypes, String story) {
         super(missionId, missionTypes);
-        this.secondsForEachStudent = secondsForEachStudent;
-        this.amountOfSentencesForEachStudent = amountOfSentencesForEachStudent;
         this.story = story;
-    }
-
-    public int getSecondsForEachStudent() {
-        return secondsForEachStudent;
-    }
-
-    public void setSecondsForEachStudent(int secondsForEachStudent) {
-        this.secondsForEachStudent = secondsForEachStudent;
-    }
-
-    public int getAmountOfSentencesForEachStudent() {
-        return amountOfSentencesForEachStudent;
-    }
-
-    public void setAmountOfSentencesForEachStudent(int amountOfSentencesForEachStudent) {
-        this.amountOfSentencesForEachStudent = amountOfSentencesForEachStudent;
     }
 
     public String getStory() {
@@ -48,5 +30,21 @@ public class StoryMission extends Mission{
 
     public void setStory(String story) {
         this.story = story;
+    }
+
+    @Override
+    public String getMissionName() {
+        return MISSION_NAME;
+    }
+
+    @Override
+    protected MissionData completeTheRestOfMissionData(MissionData missionData) {
+        missionData.setStory(story);
+        return missionData;
+    }
+
+    public String updateStory(String sentence) {
+        story += sentence+"\n";
+        return story;
     }
 }

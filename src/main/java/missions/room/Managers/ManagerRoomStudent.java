@@ -12,6 +12,8 @@ import missions.room.Domain.Rooms.GroupRoom;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Rooms.StudentRoom;
 import missions.room.Domain.Users.Student;
+import missions.room.Domain.missions.Mission;
+import missions.room.Domain.missions.StoryMission;
 import missions.room.Repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static Utils.Utils.checkString;
+
 @Service
 @CommonsLog
 public class ManagerRoomStudent extends StudentManager {
+
+    private static final String STORY_MISSION_NAME = "Story_Mission";
 
     @Autowired
     private RoomRepo roomRepo;
@@ -96,6 +102,7 @@ public class ManagerRoomStudent extends StudentManager {
      * @return if the answer was correct
      */
 
+    //TODO check that the apiKry is of mission in charge
     @Transactional
     public Response<Boolean> answerDeterministicQuestion(String apiKey, String roomId, boolean answer){
         Response<Student> checkStudent = checkStudent(apiKey);
@@ -408,6 +415,107 @@ public class ManagerRoomStudent extends StudentManager {
             return OpCode.STUDENT_NOT_IN_CHARGE;
         }
         return OpCode.INVALID_ROOM_ID;
+    }
+
+    /**
+     * req3.6.2.4 - answer story mission
+     * @param apiKey - authentication object
+     * @param roomId - room id
+     * @param sentence - the next sentence to add to the story
+     * @return - the whole story after adding the next sentence
+     */
+    public Response<Boolean> answerStoryMission(String apiKey,String roomId, String sentence){
+        if(!checkString(sentence)){
+            return new Response<>(null,OpCode.Wrong_Sentence);
+        }
+
+        Response<Room> checkStoryResponse=checkStoryMissionValidity(apiKey, roomId);
+        OpCode reason=checkStoryResponse.getReason();
+        if(reason!=OpCode.Success){
+            return new Response<>(null,reason);
+        }
+        Room room=checkStoryResponse.getValue();
+
+        synchronized (room) {
+            if(!room.isEnoughConnected()){
+                return new Response<>(null,OpCode.Not_Enough_Connected);
+            }
+            String story = ((StoryMission) room.getCurrentMission()).updateStory(sentence);
+            String nextInCharge = room.drawMissionInChargeForStory();
+            if(nextInCharge==null){
+                NonPersistenceNotification<String> storyNotification=new NonPersistenceNotification<>(OpCode.STORY_FINISH,
+                        roomId,
+                        story);
+                Set<String> userKeys=room.getConnectedUsersAliases();
+                for (String alias :
+                        userKeys) {
+                    publisher.update(ram.getApiKey(alias),storyNotification);
+                }
+            }
+            else{
+                NonPersistenceNotification<String> inChargeNotification=new NonPersistenceNotification<>(OpCode.STORY_IN_CHARGE,
+                        roomId,
+                        story);
+                publisher.update(ram.getApiKey(nextInCharge),inChargeNotification);
+            }
+            return new Response<>(true,OpCode.Success);
+        }
+
+    }
+
+    /**
+     * req3.6.2.4 - answer story mission
+     * @param apiKey - authentication object
+     * @param roomId - room id
+     * @return
+     */
+    public Response<Boolean> finishStoryMission(String apiKey, String roomId){
+        Response<Room> checkStoryResponse=checkStoryMissionValidity(apiKey, roomId);
+        OpCode reason=checkStoryResponse.getReason();
+        Room room=checkStoryResponse.getValue();
+        if(reason==OpCode.Success){
+            synchronized (room) {
+                if(room.clearStoryMission()) {
+                    updateCorrectAnswer(room);
+                    updateRoomAndMissionInCharge(room);
+                }
+                return new Response<>(true,OpCode.Success);
+            }
+        }
+        return new Response<>(false,reason);
+    }
+
+    private Response<Room> checkStoryMissionValidity(String apiKey,String roomId){
+        Response<Student> checkStudent=checkStudent(apiKey);
+        if(checkStudent.getReason()!=OpCode.Success){
+            return new Response<>(null,checkStudent.getReason());
+        }
+
+        Response<Room> roomResponse = getRoomById(roomId);
+        if(roomResponse.getReason()!=OpCode.Success){
+            return new Response<>(null,roomResponse.getReason());
+        }
+
+        Student student=checkStudent.getValue();
+        Room room=roomResponse.getValue();
+        if(!room.isBelongToRoom(student.getAlias())){
+            return new Response<>(null,OpCode.NOT_BELONGS_TO_ROOM);
+        }
+
+        Mission mission=room.getCurrentMission();
+        MissionData storyMission = getRoomCurrentStoryMission(mission);
+        if(storyMission == null){
+            return new Response<>(null,OpCode.Not_Story);
+        }
+        return new Response<>(room,OpCode.Success);
+    }
+
+    private MissionData getRoomCurrentStoryMission(Mission mission) {
+        MissionData storyMission=mission.getData();
+        if(storyMission.getName().equals(STORY_MISSION_NAME)){
+            return storyMission;
+        }
+        return null;
     }
 
 }

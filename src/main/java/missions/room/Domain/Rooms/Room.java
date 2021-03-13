@@ -16,6 +16,8 @@ import java.util.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Room {
 
+    private static final String STORY_MISSION_NAME = "Story_Mission";
+
     @Id
     protected String roomId;
 
@@ -29,6 +31,9 @@ public abstract class Room {
 
     @Transient
     protected Set<String>  studentWereChosen;
+
+    @Transient
+    protected Set<String>  studentWereChosenForStory;
 
     @Transient
     protected Set<String>  connectedStudents;
@@ -46,9 +51,14 @@ public abstract class Room {
     @OneToOne
     protected RoomTemplate roomTemplate;
 
+    @Transient
+    private boolean waitingForStory;
+
     public Room() {
         studentWereChosen=new HashSet<>();
         connectedStudents=new HashSet<>();
+        studentWereChosenForStory=new HashSet<>();
+        waitingForStory=false;
     }
 
     public Room(String roomId,String name,Teacher teacher,RoomTemplate roomTemplate,int bonus) {
@@ -62,6 +72,8 @@ public abstract class Room {
         this.countCorrectAnswer=0;
         studentWereChosen=new HashSet<>();
         connectedStudents=new HashSet<>();
+        studentWereChosenForStory=new HashSet<>();
+        waitingForStory=false;
     }
 
     public String drawMissionInCharge() {
@@ -73,6 +85,20 @@ public abstract class Room {
             studentsToChooseFrom=connectedStudents;
         }
         missionIncharge=Utils.getRandomFromSet(studentsToChooseFrom);
+        return missionIncharge;
+    }
+
+    public String drawMissionInChargeForStory() {
+        studentWereChosenForStory.add(missionIncharge);
+        Set<String> studentsToChooseFrom=new HashSet<>(connectedStudents);
+        studentsToChooseFrom.removeAll(studentWereChosenForStory);
+        if(studentsToChooseFrom.isEmpty()){
+            missionIncharge=null;
+            waitingForStory=true;
+        }
+        else {
+            missionIncharge = Utils.getRandomFromSet(studentsToChooseFrom);
+        }
         return missionIncharge;
     }
 
@@ -88,7 +114,7 @@ public abstract class Room {
         return bonus;
     }
 
-    public int getCurrentMission() {
+    public int getCurrentMissionIndex() {
         return currentMission;
     }
 
@@ -143,45 +169,43 @@ public abstract class Room {
             return null;
         }
         MissionData missionData = mission.getData();
-        //MissionData missionData = getMissionData(mission);
-        return new RoomDetailsData(roomId,name,missionData,roomTemplate.getType());
+        return new RoomDetailsData(roomId,name,missionData,roomTemplate.getType(),waitingForStory);
     }
 
 
-    //TODO refactor to the mission object to return it's own data
-    private MissionData getMissionData(Mission mission) {
-        MissionData md = new MissionData(mission.getMissionId(), mission.getMissionTypes());
-        List<String> questList = new ArrayList<>();
-        List<String> answerList = new ArrayList<>();
-        if (mission instanceof KnownAnswerMission) {
-            md.setName("Known answer mission");
-            questList.add(((KnownAnswerMission) mission).getQuestion());
-            md.setQuestion(questList);
-            answerList.add(((KnownAnswerMission) mission).getRealAnswer());
-            md.setAnswers(answerList);
-        }
-        if (mission instanceof OpenAnswerMission) {
-            md.setName("Open Answer Mission");
-            questList.add(((OpenAnswerMission) mission).getQuestion());
-        }
-        if (mission instanceof StoryMission) {
-            md.setName("Story Mission");
-            md.setTimeForAns(((StoryMission) mission).getSecondsForEachStudent());
-        }
-        if (mission instanceof TriviaMission) {
-            md.setName("Trivia Mission");
-            md.setTimeForAns(((TriviaMission) mission).getSecondsForAnswer());
-            for (Map.Entry<String, TriviaQuestion> entry : ((TriviaMission) mission).getQuestions().entrySet()) {
-                questList.add(entry.getValue().getQuestion());
-            }
-            md.setQuestion(questList);
-        }
-        if (mission instanceof TrueLieMission) {
-            md.setName("True False Mission");
-            md.setTimeForAns(((TrueLieMission) mission).getAnswerTimeForStudent());
-        }
-        return md;
-    }
+//    //TODO refactor to the mission object to return it's own data
+//    private MissionData getMissionData(Mission mission) {
+//        MissionData md = new MissionData(mission.getMissionId(), mission.getMissionTypes());
+//        List<String> questList = new ArrayList<>();
+//        List<String> answerList = new ArrayList<>();
+//        if (mission instanceof KnownAnswerMission) {
+//            md.setName("Known answer mission");
+//            questList.add(((KnownAnswerMission) mission).getQuestion());
+//            md.setQuestion(questList);
+//            answerList.add(((KnownAnswerMission) mission).getRealAnswer());
+//            md.setAnswers(answerList);
+//        }
+//        if (mission instanceof OpenAnswerMission) {
+//            md.setName("Open Answer Mission");
+//            questList.add(((OpenAnswerMission) mission).getQuestion());
+//        }
+//        if (mission instanceof StoryMission) {
+//            md.setName("Story Mission");
+//        }
+//        if (mission instanceof TriviaMission) {
+//            md.setName("Trivia Mission");
+//            md.setTimeForAns(((TriviaMission) mission).getSecondsForAnswer());
+//            for (Map.Entry<String, TriviaQuestion> entry : ((TriviaMission) mission).getQuestions().entrySet()) {
+//                questList.add(entry.getValue().getQuestion());
+//            }
+//            md.setQuestion(questList);
+//        }
+//        if (mission instanceof TrueLieMission) {
+//            md.setName("True False Mission");
+//            md.setTimeForAns(((TrueLieMission) mission).getAnswerTimeForStudent());
+//        }
+//        return md;
+//    }
 
     public Set<String> getConnectedUsersAliases(){
         return connectedStudents;
@@ -190,7 +214,7 @@ public abstract class Room {
     public OpCode connect(String alias) {
         if(isBelongToRoom(alias)) {
             connectedStudents.add(alias);
-            if (missionIncharge == null) {
+            if (missionIncharge == null&&!waitingForStory) {
                 missionIncharge = alias;
                 return OpCode.IN_CHARGE;
             }
@@ -207,6 +231,9 @@ public abstract class Room {
             return new Response<>(null, OpCode.Delete);
         }
         else if(missionIncharge.equals(alias)){
+            if(roomTemplate.getMission(currentMission).getMissionName().equals(STORY_MISSION_NAME)){
+                return new Response<>(drawMissionInChargeForStory(),OpCode.Success);
+            }
             return new Response<>(drawMissionInCharge(),OpCode.Success);
         }
         return new Response<>(null,OpCode.Success);
@@ -214,5 +241,23 @@ public abstract class Room {
 
     public String getMissionInCharge() {
         return missionIncharge;
+    }
+
+    public Mission getCurrentMission() {
+        return roomTemplate.getMission(currentMission);
+    }
+
+    public boolean isEnoughConnected() {
+        return (getParticipantsSize() / 2) <= connectedStudents.size();
+    }
+
+    protected abstract int getParticipantsSize();
+
+    public boolean clearStoryMission(){
+        if(studentWereChosenForStory.isEmpty())
+            return false;
+        studentWereChosenForStory.clear();
+        waitingForStory=false;
+        return true;
     }
 }

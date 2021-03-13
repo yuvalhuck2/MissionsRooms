@@ -15,20 +15,14 @@ public abstract class SchoolUser extends User {
 
     protected String lastName;
 
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @MapKeyColumn(name = "id")
-    @JoinColumn(name="dest",referencedColumnName = "alias")
-    protected Map<String, Message> messages;
-
     public SchoolUser() {
+        super();
     }
 
     public SchoolUser(String alias, String firstName, String lastName) {
         super(alias);
         this.firstName = firstName;
         this.lastName = lastName;
-        messages=new ConcurrentHashMap<>();
     }
 
     public String getFirstName() {
@@ -39,7 +33,4 @@ public abstract class SchoolUser extends User {
         return lastName;
     }
 
-    public Map<String, Message> getMessages() {
-        return messages;
-    }
 }

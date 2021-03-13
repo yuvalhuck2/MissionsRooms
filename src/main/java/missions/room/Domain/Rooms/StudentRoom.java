@@ -19,7 +19,8 @@ public class StudentRoom extends Room {
 
     @Override
     public String drawMissionInCharge() {
-        return participant.getAlias();
+        missionIncharge=participant.getAlias();;
+        return missionIncharge;
     }
 
     @Override
@@ -34,6 +35,11 @@ public class StudentRoom extends Room {
     @Override
     public boolean isBelongToRoom(String alias) {
         return alias.equals(participant.getAlias());
+    }
+
+    @Override
+    protected int getParticipantsSize() {
+        return 1;
     }
 
     public StudentRoom(String roomId,String name, Student participant, Teacher teacher, RoomTemplate roomTemplate,int bonus) {

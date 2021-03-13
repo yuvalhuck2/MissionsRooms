@@ -1,6 +1,7 @@
 package missions.room.Domain.Users;
 
 import DataAPI.OpCode;
+import DataAPI.UserProfileData;
 
 import javax.persistence.Entity;
 
@@ -8,6 +9,7 @@ import javax.persistence.Entity;
 public class IT extends User {
 
     public IT() {
+        super();
     }
 
     public IT(String alias, String password) {
@@ -19,4 +21,7 @@ public class IT extends User {
         return OpCode.IT;
     }
 
+    public UserProfileData getProfileData(){
+        return new UserProfileData(alias,OpCode.IT);
+    };
 }

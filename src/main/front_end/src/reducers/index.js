@@ -1,22 +1,28 @@
 import { combineReducers } from 'redux';
-import addITReducer from './addITReducer';
-import addMissionReducer from './addMissionReducer';
+import addITReducer from './AddITReducer';
+import addMissionReducer from './AddMissionReducer';
 import addRoomReducer from './AddRoomReducer';
-import addRoomTemplateReducer from './addRoomTemlateReducer';
+import addRoomTemplateReducer from './AddRoomTemlateReducer';
 import AuthReducer from './AuthReducer';
 import ChooseStudentRoom from './ChooseStudentRoomReducer';
 import ITReducer from './ITReducer';
 import SolveDeterministic from './SolveDeterministicReducer'
 import AddSuggestionReducer from './AddSuggestionReducer';
+import SolveStory from './SolveStoryReducer'
+import WatchProfileReducer from './WatchProfileReducer'
+import WatchMessagesReducer from './WatchMessagesReducer'
 
 export default combineReducers({
-    auth: AuthReducer,
-    addMission: addMissionReducer,
-    addRoomTemplate: addRoomTemplateReducer,
-    addRoom: addRoomReducer,
-    ChooseStudentRoom: ChooseStudentRoom,
-    IT: ITReducer,
-    addSuggestion: AddSuggestionReducer,
-    SolveDeterministic: SolveDeterministic,
-    addIT: addITReducer
+  auth: AuthReducer,
+  addMission: addMissionReducer,
+  addRoomTemplate: addRoomTemplateReducer,
+  addRoom: addRoomReducer,
+  ChooseStudentRoom: ChooseStudentRoom,
+  IT: ITReducer,
+  SolveDeterministic: SolveDeterministic,
+  addIT: addITReducer,
+  solveStory: SolveStory,
+  WatchProfile: WatchProfileReducer,
+  WatchMessages: WatchMessagesReducer,
+  addSuggestion: AddSuggestionReducer,
 });

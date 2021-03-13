@@ -32,6 +32,11 @@ public class ClassroomRoom extends Room {
                 participant.getStudent(alias,GroupType.B)!=null;
     }
 
+    @Override
+    protected int getParticipantsSize() {
+        return participant.getStudentsAlias().size();
+    }
+
     public ClassroomRoom(String roomId, String roomName, Classroom participant, Teacher teacher, RoomTemplate roomTemplate, int bonus) {
         super(roomId,roomName,teacher,roomTemplate,bonus);
         this.participant = participant;

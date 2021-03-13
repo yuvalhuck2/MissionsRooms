@@ -4,11 +4,15 @@ import CrudRepositories.UserCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import missions.room.Domain.Users.User;
+import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.LockTimeoutException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserRepo {
@@ -48,7 +52,7 @@ public class UserRepo {
 
     public Response<Boolean> isExistsById(String alias){
         try {
-            return new Response<>(userCrudRepository.existsById(alias), OpCode.Success);
+            return new Response<>(alias!=null && userCrudRepository.existsById(alias), OpCode.Success);
         }
         catch(Exception e){
             return new Response<>(null,OpCode.DB_Error);
@@ -64,4 +68,25 @@ public class UserRepo {
         }
     }
 
+    public Response<User> findUser(String alias) {
+        try {
+            Optional<User> user=userCrudRepository.findById(alias);
+            return user.map(value -> new Response<>(value, OpCode.Success)).
+                    orElseGet(() -> new Response<>(null, OpCode.Not_Exist));
+        }
+        catch(Exception e){
+            return new Response<>(null,OpCode.DB_Error);
+        }
+    }
+
+    public Response<List<User>> findAllUsers() {
+        try{
+            List<User> users = Lists.newArrayList(userCrudRepository.findAll());
+            return new Response<>(users,OpCode.Success);
+        }
+        catch (Exception e){
+            return new Response<>(new ArrayList<>(),OpCode.DB_Error);
+        }
+
+    }
 }

@@ -3,8 +3,12 @@ package missions.room.ManagerRoomStudentTests;
 
 import CrudRepositories.RoomCrudRepository;
 import Data.Data;
+import DataAPI.Response;
+import missions.room.Domain.Classroom;
 import missions.room.Domain.Ram;
+import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.Room;
+import missions.room.Domain.Users.Student;
 import missions.room.Managers.ManagerRoomStudent;
 import missions.room.Repo.RoomRepo;
 import org.junit.jupiter.api.AfterEach;
@@ -58,6 +62,7 @@ public class ManagerRoomStudentRealRoomRamStudentClassroomClassGroupRepo extends
         roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.VALID_2Mission_Group));
         roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.VALID_2Mission_Class));
 
+
         Room studentRoom=dataGenerator.getRoom(Data.Valid_Student);
         Room groupRoom=dataGenerator.getRoom(Data.Valid_Group);
         Room classroomRoom = dataGenerator.getRoom(Data.Valid_Classroom);
@@ -65,6 +70,7 @@ public class ManagerRoomStudentRealRoomRamStudentClassroomClassGroupRepo extends
         Room valid2MissionsGroupRoom =dataGenerator.getRoom(Data.VALID_2Mission_Group);
         Room valid2MissionsClassRoom =dataGenerator.getRoom(Data.VALID_2Mission_Class);
         Room valid2StudentsFromDifferentGroups2Missions=dataGenerator.getRoom(Data.Valid_2Students_From_Different_Groups);
+
 
         realRoomCrudRepository.save(studentRoom);
         realRoomCrudRepository.save(groupRoom);
@@ -74,6 +80,7 @@ public class ManagerRoomStudentRealRoomRamStudentClassroomClassGroupRepo extends
         realRoomCrudRepository.save(valid2MissionsClassRoom);
         realRoomCrudRepository.save(valid2StudentsFromDifferentGroups2Missions);
 
+
         //add the rooms to the ram to connect the students to the room
         realRam.addRoom(studentRoom);
         realRam.addRoom(groupRoom);
@@ -81,6 +88,35 @@ public class ManagerRoomStudentRealRoomRamStudentClassroomClassGroupRepo extends
         realRam.addRoom(valid2MissionsStudentRoom);
         realRam.addRoom(valid2MissionsGroupRoom);
         realRam.addRoom(valid2MissionsClassRoom);
+
+
+    }
+
+    @Override
+    protected void initStoryRoom() {
+        Room storyRoom = dataGenerator.getRoom(Data.VALID_STORY);
+        String studentAlias=dataGenerator.getStudent(Data.VALID)
+                .getAlias();
+        String studentAlias2=dataGenerator.getStudent(Data.VALID2)
+                .getAlias();
+
+        super.initStoryRoom();
+
+        missionCrudRepository.save(dataGenerator.getMission(Data.VALID_STORY));
+        missionCrudRepository.save(dataGenerator.getMission(Data.VALID_STORY2));
+
+        roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.VALID_STORY));
+
+        realRoomCrudRepository.save(storyRoom);
+
+        connectUserToRoom(studentApiKey,storyRoom.getRoomId(),studentAlias);
+        connectUserToRoom(studentApiKey,storyRoom.getRoomId(),studentAlias2);
+
+    }
+
+    private void connectUserToRoom(String studentApiKey, String roomId, String studentAlias) {
+        managerRoomStudentWithMock.watchRoomData(studentApiKey,roomId);
+        realRam.connectToRoom(roomId,studentAlias);
     }
 
     @Override
@@ -194,6 +230,46 @@ public class ManagerRoomStudentRealRoomRamStudentClassroomClassGroupRepo extends
         assertEquals(realRam.getRoom(room.getRoomId()).getMissionInCharge()
                 ,dataGenerator.getStudent(Data.VALID)
                         .getAlias());
+    }
+
+    @Test
+    @Override
+    void testFinishStoryMissionHappyCase(){
+        super.testFinishStoryMissionHappyCase();
+        ClassroomRoom room= (ClassroomRoom) dataGenerator.getRoom(Data.VALID_STORY);
+        final int pointOfMission=dataGenerator.getMission(Data.VALID_STORY).getPoints();
+        Classroom classroom=classroomRepository.findById(room.getParticipant()
+                .getClassName())
+                .get();
+        assertEquals(classroom.getPoints(),pointOfMission);
+    }
+
+    @Test
+    @Override
+    void testFinishStoryMissionFindRoomByIdThrowsException(){
+        initStoryRoom();
+        setUpFindRoomThrowsException();
+        testInvalidFinishStoryMission(DB_Error);
+    }
+
+    @Test
+    @Override
+    void testAnswerStoryFindRoomByIdThrowsException(){
+        initStoryRoom();
+        setUpFindRoomThrowsException();
+        testInvalidAnswerStory(DB_Error);
+    }
+
+    @Test
+    @Override
+    void testAnswerStoryNotEnoughConnected(){
+        initStoryRoom();
+        Student student = dataGenerator.getStudent(Data.VALID);
+        Student student2 = dataGenerator.getStudent(Data.VALID2);
+        Room room= dataGenerator.getRoom(Data.VALID_STORY);
+        realRam.disconnectFromRoom(room.getRoomId(),student.getAlias());
+        realRam.disconnectFromRoom(room.getRoomId(),student2.getAlias());
+        testInvalidAnswerStory(Not_Enough_Connected);
     }
 
     @Override

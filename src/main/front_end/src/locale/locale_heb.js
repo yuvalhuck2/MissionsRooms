@@ -183,6 +183,8 @@ export const StudentStrings = {
   watchMyRoom: 'החדרים שלי',
   addSuggestion:'הוספת הצעה',
   main_screen: 'התנתק/י',
+  watchProfiles:'חיפוש פרופיל',
+  watch_messages:'ההודעות שלי',
 };
 
 export const AddSuggestionStrings = {
@@ -208,6 +210,7 @@ export const GeneralErrors = {
   teacher_not_exists_error: 'מורה לא קיים',
   student_not_exist: 'סטודנט לא קיים',
   room_error:'יש תקלה עם החדר, מומלץ לנסות להתחבר אליו שנית',
+  user_not_exist:'המשתמש לא קיים',
 };
 
 export const ITStrings = {
@@ -268,4 +271,55 @@ export const addITErrors = {
   not_exist:'המערכת לא זיהתה אותך, יש להתחבר מחדש ולנסות שוב',
   already_exist:'כבר קיים משתמש עם שם משתמש זהה',
   added_successfully:' !הוספת המנהל הטכני הצליחה',
+}
+
+export const SolveStoryMissionStrings ={
+  header:"סיפור בהמשכים",
+  enter_answer:"הכנס/י משפט",
+  send_answer:"הוספת המשפט",
+  end_mission:"סיים משימה"
+}
+
+export const StoryStrings ={
+  wrong_sentence:'משפט שגוי',
+  sentence_added:'המשפט נוסף בהצלחה',
+}
+
+export const WatchProfileStrings = {
+  search_profile:'חיפוש פרופיל',
+  press_profile:'יש ללחוץ על פרופיל משתמש על מנת לשלוח לו הודעה',
+  enter_search:'יש להזין קידומת מייל',
+  name: "שם: ",
+  role:"תפקיד: ",
+  points:"נקודות: ",
+  type_message:"יש להקליד הודעה",
+  send_message:"שלח",
+  exit:'יציאה',
+}
+
+export const ProfileErrors = {
+  message_empty:'לא ניתן לשלוח הודעה ריקה',
+  message_sent:"ההודעה נשלחה בהצלחה",
+}
+
+export const RolesStrings = {
+  student:'תלמיד',
+  teacher:'מורה',
+  it:'מנהל טכני',
+  supervisor:'מנהל מפקח',
+}
+
+export const WatchMessagesStrings = {
+  sender:'',
+  enter_search:'יש להזין את קידומת מייל השולח',
+  delete_message:'מחיקה',
+  date:'תאריך: ',
+  time:'שעה: ',
+  watch_messages:'צפייה בהודעות',
+  exit:'יציאה',
+}
+
+export const MessageErrors = {
+  message_not_found:"ההודעה כבר נמחקה",
+  message_deleted:"ההודעה נמחקה בהצלחה!",
 }
