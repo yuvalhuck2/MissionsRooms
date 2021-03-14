@@ -59,4 +59,7 @@ INSERT INTO CLASSROOM_ROOM(room_id,participant_class_name) values
 ('rid_story','class');
 
 INSERT INTO MESSAGE(id, content, sender, date, time, dest) values
-('123', 'hello', 'shmulik', '12/12/2012','20:30','niv')
+('123', 'הודעה טובה מאוד', 'shmulik', '12/12/2012','20:30','niv');
+
+INSERT INTO SUGGESTION(id,suggestion) values
+('123','הצעה טובה מאוד');

@@ -293,17 +293,6 @@ public class ServiceAPI {
 
 
     /**
-     * req 4.12 - delete student's suggestion
-     * @param auth - authentication object
-     * @param suggestionId - identifier of the suggestion need to be deleted
-     * @return if the suggestion was deleted successfully
-     */
-    public Response<Boolean> responseStudentSuggestion(Auth auth,String suggestionId){
-        throw new RuntimeException();
-    }
-
-
-    /**
      * req 4.13 - deduce points to a student
      * @param auth - authentication object
      * @param studentMail - the identifier of the student need to deduce points to.

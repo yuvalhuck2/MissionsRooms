@@ -2,7 +2,9 @@ package missions.room.Managers;
 
 import DataAPI.OpCode;
 import DataAPI.Response;
+import DataAPI.SuggestionData;
 import ExternalSystems.UniqueStringGenerator;
+import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Suggestion;
 import missions.room.Domain.Users.Teacher;
@@ -12,8 +14,10 @@ import Utils.Utils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@CommonsLog
 public class SuggestionManager extends StudentTeacherManager {
 
     private static final String PREFIX="sug";
@@ -50,12 +54,36 @@ public class SuggestionManager extends StudentTeacherManager {
      * @param apiKey - authentication object
      * @return the student's suggestions
      */
-    public Response<List<Suggestion>> watchSuggestions(String apiKey) {
+    public Response<List<SuggestionData>> watchSuggestions(String apiKey) {
         Response<Teacher> teacherResponse=checkTeacher(apiKey);
         if (teacherResponse.getReason()!=OpCode.Success){
             return new Response<>(null
                     ,teacherResponse.getReason());
         }
-        return suggestionRepo.findAllSuggestions();
+        Response<List<Suggestion>> suggestionsResponse=suggestionRepo.findAllSuggestions();
+        if(suggestionsResponse.getReason()!=OpCode.Success){
+            return new Response<>(null,suggestionsResponse.getReason());
+        }
+        return new Response<>(suggestionRepo.findAllSuggestions()
+                .getValue()
+                .stream()
+                .map((Suggestion::getData))
+                .collect(Collectors.toList()),
+                OpCode.Success);
+    }
+
+    /**
+     * req 4.12 - delete student's suggestion
+     * @param apiKey - authentication object
+     * @param suggestionId - identifier of the suggestion need to be deleted
+     * @return if the suggestion was deleted successfully
+     */
+    public Response<Boolean> deleteSuggestion(String apiKey, String suggestionId) {
+        Response<Teacher> teacherResponse=checkTeacher(apiKey);
+        if (teacherResponse.getReason()!=OpCode.Success){
+            return new Response<>(null
+                    ,teacherResponse.getReason());
+        }
+        return suggestionRepo.delete(suggestionId);
     }
 }

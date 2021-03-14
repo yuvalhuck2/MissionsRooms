@@ -73,6 +73,14 @@ class StudentForm extends Component {
             onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
             <Text style={{color:"white"}}>{watchProfiles}</Text>
           </Button>
+          <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}
+            onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watchProfiles}</Text>
+          </Button>
+          <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}
+            onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watchProfiles}</Text>
+          </Button>
           <Button  onPress={()=>this.props.passToAddSuggestion({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]} >
           <Text style={{color:"white"}}>{addSuggestion}</Text>
           </Button>
@@ -80,6 +88,14 @@ class StudentForm extends Component {
         <View>
           <Button mode="contained" style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >
             <Text style={{color:"white"}}></Text> 
+          </Button>
+          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
+            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watch_messages}</Text>
+          </Button>
+          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
+            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watch_messages}</Text>
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
             onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
@@ -107,7 +123,7 @@ const styles = StyleSheet.create({
     backgroundColor: backgroundColor
   },
   button: {width: DeviceWidth*0.5,
-     height: DeviceWidth*0.45,
+     height: DeviceWidth*0.33,
      borderStyle: 'solid',
      borderWidth: 1,
      borderColor: 'black',

@@ -22,6 +22,8 @@ import {
   SolveStoryScreen,
   WatchProfileScreen,
   WatchMessagesScreen,
+  WatchSuggestionsScreen,
+  Test,
 } from './components/screens';
 
 const Stack = createStackNavigator();
@@ -30,6 +32,10 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Register'>
+      <Stack.Screen
+          name='Test'
+          component={Test}
+        />
       <Stack.Screen
           name='AddIT'
           component={AddITScreen}
@@ -71,6 +77,7 @@ const App = () => {
         <Stack.Screen name="WatchProfile" component={WatchProfileScreen}/>
         <Stack.Screen name="WatchMessages" component={WatchMessagesScreen}/>
         <Stack.Screen name="AddSuggestion" component={AddSuggestionScreen}/>
+        <Stack.Screen name="WatchSuggestions" component={WatchSuggestionsScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
