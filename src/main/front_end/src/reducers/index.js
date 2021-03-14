@@ -12,6 +12,7 @@ import SolveStory from './SolveStoryReducer'
 import WatchProfileReducer from './WatchProfileReducer'
 import WatchMessagesReducer from './WatchMessagesReducer'
 import WatchSuggestionsReducer from './WatchSuggestionReducer'
+import ChangePasswordReducer from './ChangePasswordReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -27,4 +28,5 @@ export default combineReducers({
   WatchMessages: WatchMessagesReducer,
   addSuggestion: AddSuggestionReducer,
   watchSuggestions: WatchSuggestionsReducer,
+  changePassword: ChangePasswordReducer,
 });

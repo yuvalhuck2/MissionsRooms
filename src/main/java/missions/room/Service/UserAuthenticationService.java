@@ -47,6 +47,16 @@ public class UserAuthenticationService {
         return userAuthenticationManager.login(alias,password);
     }
 
+    /**
+     * req 3.3
+     * @param apiKey - authentication object
+     * @param newPassword - the new password to change to
+     * @return if the password was changed
+     */
+    public Response<Boolean> changePassword (String apiKey, String newPassword){
+        return userAuthenticationManager.changePassword(apiKey,newPassword);
+    }
+
     public void setExternalSystems(MailSender mailSender, VerificationCodeGenerator verificationCodeGenerator){
         if (mailSender != null){
             userAuthenticationManager.setSender(mailSender);

@@ -183,9 +183,6 @@ export const SolveDeterministicMissionStrings = {
 export const StudentStrings = {
   watchMyRoom: 'החדרים שלי',
   addSuggestion:'הוספת הצעה',
-  main_screen: 'התנתק/י',
-  watchProfiles:'חיפוש פרופיל',
-  watch_messages:'ההודעות שלי',
 };
 
 export const AddSuggestionStrings = {
@@ -331,3 +328,17 @@ export const WatchSuggestionsStrings = {
   exit:'יציאה',
   suggestion_deleted:'ההודעה נמחקה בהצלחה',
 } 
+
+export const ChangePasswordStrings = {
+  header:'שינוי סיסמא',
+  enter_new_password:'יש להכניס סיסמא חדשה',
+  change_password:"שנה סיסמא",
+  password_changed:'הסיסמא הוחלפה בהצלחה',
+}
+
+export const AllUsersStrings = {
+  main_screen: 'התנתק/י',
+  watchProfiles:'חיפוש פרופיל',
+  watch_messages:'ההודעות שלי',
+  changePassword:'שינוי סיסמא'
+}

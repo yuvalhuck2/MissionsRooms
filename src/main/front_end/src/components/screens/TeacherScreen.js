@@ -3,7 +3,7 @@ import { StyleSheet, Text, Dimensions, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
-import { TeacherStrings, StudentStrings } from '../../locale/locale_heb';
+import { TeacherStrings, AllUsersStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
 import Header from '../common/Header';
 import TextInput from '../common/TextInput';
@@ -16,14 +16,16 @@ const {
   addTemplate,
   createRoom,
   closeRoom,
-  main_screen,
   watch_suggestions,
 } = TeacherStrings;
 
+
 const {
+  changePassword,
   watchProfiles,
   watch_messages,
-} = StudentStrings;
+  main_screen,
+} = AllUsersStrings
 
 
 const DeviceWidth  = Dimensions.get('window').width;
@@ -63,8 +65,8 @@ class TeacherForm extends Component {
           <Button onPress={()=>this.props.passToWatchSuggestions({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
           <Text style={{color:"white"}}>{watch_suggestions}</Text> 
           </Button>
-          <Button onPress={()=>this.props.passToAddTemplate({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
-          <Text style={{color:"white"}}>{addTemplate}</Text> 
+          <Button onPress={()=>navigation.navigate(NavPaths.changePassword)} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
+          <Text style={{color:"white"}}>{changePassword}</Text> 
           </Button>
           <Button onPress={()=>this.props.passToAddTemplate({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
           <Text style={{color:"white"}}>{addTemplate}</Text> 

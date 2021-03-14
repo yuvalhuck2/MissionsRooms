@@ -60,18 +60,6 @@ public class ServiceAPI {
      * TODO talk about delete profile
      */
 
-
-    /**
-     * req 3.3
-     * @param auth - authentication object
-     * @param newPassword - the new password to change to
-     * @return if the password was changed
-     */
-    public Response<Boolean> changePassword (Auth auth,String newPassword){
-        throw new RuntimeException();
-    }
-
-
     /**
      * req 3.6.1 - watch details of the room
      * @param auth - authentication object

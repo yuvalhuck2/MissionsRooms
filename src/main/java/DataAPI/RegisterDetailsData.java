@@ -6,6 +6,7 @@ package DataAPI;
 public class RegisterDetailsData {
     private final String alias;
     private String password;
+    private String apiKey;
 
     public RegisterDetailsData(String alias, String password) {
         this.alias = alias;
@@ -23,5 +24,9 @@ public class RegisterDetailsData {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getApiKey() {
+        return apiKey;
     }
 }
