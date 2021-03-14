@@ -274,6 +274,31 @@ public class UserAuthenticationManager extends TeacherManager {
         }
     }
 
+    /**
+     * req 3.3
+     * @param apiKey - authentication object
+     * @param newPassword - the new password to change to
+     * @return if the password was changed
+     */
+    @Transactional
+    public Response<Boolean> changePassword(String apiKey, String newPassword) {
+        if(!Utils.checkString(newPassword)){
+            return new Response<>(false,OpCode.Wrong_Password);
+        }
+        String alias = ram.getAlias(apiKey);
+        Response<User> rsp= userRepo.findUserForWrite(alias);
+        if (rsp.getReason()!=OpCode.Success){
+            return new Response<>(false, rsp.getReason());
+        }
+        User user=rsp.getValue();
+        if(user==null){
+            return new Response<>(false,OpCode.Not_Exist);
+        }
+        user.setPassword(hashSystem.encrypt(newPassword));
+        rsp=userRepo.save(user);
+        return new Response<>(rsp.getReason()==OpCode.Success,rsp.getReason());
+    }
+
     public void setHashSystem(HashSystem hashSystem) {
         this.hashSystem = hashSystem;
     }

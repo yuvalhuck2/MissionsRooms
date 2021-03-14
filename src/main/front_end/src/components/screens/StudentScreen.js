@@ -3,7 +3,7 @@ import { StyleSheet, Text, Dimensions, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
-import { StudentStrings } from '../../locale/locale_heb';
+import { StudentStrings, AllUsersStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
 import Header from '../common/Header';
 import TextInput from '../common/TextInput';
@@ -14,11 +14,15 @@ import { Dialog,Paragraph,Portal } from 'react-native-paper';
 
 const {
   watchMyRoom,
-  main_screen,
-  watchProfiles,
-  watch_messages,
   addSuggestion,
 } = StudentStrings;
+
+const {
+  changePassword,
+  watchProfiles,
+  watch_messages,
+  main_screen,
+} = AllUsersStrings
 
 const DeviceWidth  = Dimensions.get('window').width;
 const backgroundColor = 'purple';
@@ -74,8 +78,8 @@ class StudentForm extends Component {
             <Text style={{color:"white"}}>{watchProfiles}</Text>
           </Button>
           <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}
-            onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
-            <Text style={{color:"white"}}>{watchProfiles}</Text>
+            onPress={()=>navigation.navigate(NavPaths.changePassword)}>
+            <Text style={{color:"white"}}>{changePassword}</Text>
           </Button>
           <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}
             onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>

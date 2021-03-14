@@ -23,6 +23,7 @@ import {
   WatchProfileScreen,
   WatchMessagesScreen,
   WatchSuggestionsScreen,
+  ChangePasswordScreen,
   Test,
 } from './components/screens';
 
@@ -32,6 +33,10 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Register'>
+      <Stack.Screen
+          name='ChangePassword'
+          component={ChangePasswordScreen}
+        />
       <Stack.Screen
           name='Test'
           component={Test}

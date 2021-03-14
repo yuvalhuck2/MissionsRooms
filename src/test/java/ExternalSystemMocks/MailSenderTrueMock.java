@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class MailSenderTrueMock extends MailSender {
 
     @Override
-    public boolean send(String to, String code) {
+    public Boolean send(String to, String code) {
 
         return true;
     }

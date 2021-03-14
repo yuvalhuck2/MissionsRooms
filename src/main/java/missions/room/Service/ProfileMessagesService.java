@@ -1,5 +1,6 @@
 package missions.room.Service;
 
+import DataAPI.Auth;
 import DataAPI.MessageData;
 import DataAPI.Response;
 import DataAPI.UserProfileData;

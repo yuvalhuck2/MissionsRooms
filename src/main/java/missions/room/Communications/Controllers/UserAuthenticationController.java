@@ -46,4 +46,11 @@ public class UserAuthenticationController extends AbsController{
         return loginResponse;
     }
 
+    @PostMapping("/password/change")
+    public Response<?> changePassword(@RequestBody String changePasswordDataStr){
+        RegisterDetailsData changePasswordData= json.fromJson(changePasswordDataStr,RegisterDetailsData.class);
+        Response<Boolean> changePassword=authenticationService.changePassword(changePasswordData.getApiKey(),changePasswordData.getPassword());
+        return changePassword;
+    }
+
 }

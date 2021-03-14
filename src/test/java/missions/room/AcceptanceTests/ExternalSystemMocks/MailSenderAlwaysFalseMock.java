@@ -8,7 +8,7 @@ public class MailSenderAlwaysFalseMock extends MailSender {
     }
 
     @Override
-    public boolean send(String to, String code) {
+    public Boolean send(String to, String code) {
         return false;
     }
 }
