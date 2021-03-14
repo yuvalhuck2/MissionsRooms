@@ -2,6 +2,7 @@ package missions.room.Service;
 
 import DataAPI.Auth;
 import DataAPI.Response;
+import DataAPI.SuggestionData;
 import missions.room.Domain.Suggestion;
 import missions.room.Managers.SuggestionManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class SuggestionService {
      * @param apiKey - authentication object
      * @return the student's suggestions
      */
-    public Response<List<Suggestion>> watchSuggestions(String apiKey){
+    public Response<List<SuggestionData>> watchSuggestions(String apiKey){
 
         return suggestionManager.watchSuggestions(apiKey);
     }

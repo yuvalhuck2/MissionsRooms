@@ -48,4 +48,23 @@ public class SuggestionManagerTestsRealRamStudentTeacher extends SuggestionManag
         }
         testWatchSuggestionsInvalid(OpCode.DB_Error);
     }
+
+    @Override
+    @Test
+    void testDeleteSuggestionInvalidFindTeacherByIdThrowsExceptionTest() {
+        when(mockTeacherCrudRepository.findById(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM)
+                .getAlias()))
+                .thenThrow(new DataAccessResourceFailureException(""));
+        realTeacherRepo=new TeacherRepo(mockTeacherCrudRepository);
+        try {
+            Field teacherRepo = TeacherManager.class.getDeclaredField("teacherRepo");
+            teacherRepo.setAccessible(true);
+            teacherRepo.set(suggestionManager,realTeacherRepo);
+
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            fail();
+        }
+        testDeleteSuggestionInvalid(OpCode.DB_Error);
+    }
+
 }

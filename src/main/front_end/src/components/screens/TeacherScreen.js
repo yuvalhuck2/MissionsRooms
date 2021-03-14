@@ -9,7 +9,7 @@ import Header from '../common/Header';
 import TextInput from '../common/TextInput';
 import { Icon } from 'react-native-elements'
 import * as NavPaths from '../../navigation/NavPaths'
-import {passToAddTemplate,passToAddRoom,logout, passToWatchProfiles, passToWatchMessages} from '../../actions'
+import {passToAddTemplate,passToAddRoom,logout, passToWatchProfiles, passToWatchMessages,passToWatchSuggestions} from '../../actions'
 
 const {
   addMission,
@@ -17,6 +17,7 @@ const {
   createRoom,
   closeRoom,
   main_screen,
+  watch_suggestions,
 } = TeacherStrings;
 
 const {
@@ -59,8 +60,8 @@ class TeacherForm extends Component {
           <Button onPress={()=>this.props.passToAddTemplate({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
           <Text style={{color:"white"}}>{addTemplate}</Text> 
           </Button>
-          <Button onPress={()=>this.props.passToAddTemplate({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
-          <Text style={{color:"white"}}>{addTemplate}</Text> 
+          <Button onPress={()=>this.props.passToWatchSuggestions({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
+          <Text style={{color:"white"}}>{watch_suggestions}</Text> 
           </Button>
           <Button onPress={()=>this.props.passToAddTemplate({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
           <Text style={{color:"white"}}>{addTemplate}</Text> 
@@ -161,4 +162,5 @@ passToAddRoom,
 logout,
 passToWatchProfiles,
 passToWatchMessages,
+passToWatchSuggestions,
 })(TeacherForm);

@@ -3,6 +3,7 @@ package missions.room.Repo;
 import CrudRepositories.SuggestionCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
+import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Domain.Suggestion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
+@CommonsLog
 public class SuggestionRepo {
 
     @Autowired
@@ -26,6 +28,12 @@ public class SuggestionRepo {
             return new Response<>(suggestionCrudRepository.save(suggestion), OpCode.Success);
         }
         catch (Exception e){
+            if(suggestion!=null){
+                log.error(String.format("couldn't save suggestion with id %s",suggestion.getId()),e);
+            }
+            else{
+                log.error("couldn't save suggestion with null suggestion",e);
+            }
             return new Response<>(null,OpCode.DB_Error);
         }
     }
@@ -40,6 +48,7 @@ public class SuggestionRepo {
             return new Response<>(suggestions,OpCode.Success);
         }
         catch (Exception e){
+            log.error("couldn't find all suggestions",e);
             return new Response<>(null,OpCode.DB_Error);
         }
     }
@@ -50,6 +59,7 @@ public class SuggestionRepo {
             return new Response<>(true,OpCode.Success);
         }
         catch(Exception e){
+            log.error(String.format("couldn't delete suggestion with id %s",suggestionId),e);
             return new Response<>(null,OpCode.DB_Error);
         }
     }

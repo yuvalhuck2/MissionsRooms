@@ -127,6 +127,7 @@ export const TeacherStrings = {
   createRoom: 'יצירת חדר',
   closeRoom: 'סגירת חדר',
   main_screen: 'התנתק/י',
+  watch_suggestions:'צפייה בהצעות',
 };
 
 export const AddRoomStrings = {
@@ -323,3 +324,10 @@ export const MessageErrors = {
   message_not_found:"ההודעה כבר נמחקה",
   message_deleted:"ההודעה נמחקה בהצלחה!",
 }
+
+export const WatchSuggestionsStrings = {
+  delete_suggestion:'מחיקת הצעה',
+  watch_suggestions:'צפייה בהצעות',
+  exit:'יציאה',
+  suggestion_deleted:'ההודעה נמחקה בהצלחה',
+} 

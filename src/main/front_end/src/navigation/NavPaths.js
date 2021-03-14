@@ -19,3 +19,4 @@ export const addIT = 'AddIT';
 export const storyScreen='SolveStory';
 export const watchProfile='WatchProfile'
 export const watchMessages='WatchMessages'
+export const watchSuggestions='WatchSuggestions'

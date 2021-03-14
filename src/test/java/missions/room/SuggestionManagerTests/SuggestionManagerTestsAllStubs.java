@@ -6,6 +6,7 @@ import CrudRepositories.TeacherCrudRepository;
 import Data.DataGenerator;
 import DataAPI.OpCode;
 import DataAPI.Response;
+import DataAPI.SuggestionData;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Suggestion;
@@ -180,8 +181,8 @@ public class SuggestionManagerTestsAllStubs {
 
     @Test
     void testWatchSuggestionsHappyTest(){
-        Response<List<Suggestion>> actual=suggestionManager.watchSuggestions(teacherApiKey);
-        List<Suggestion> expected = Collections.singletonList(dataGenerator.getSuggestion(VALID));
+        Response<List<SuggestionData>> actual=suggestionManager.watchSuggestions(teacherApiKey);
+        List<SuggestionData> expected = Collections.singletonList(dataGenerator.getSuggestion(VALID).getData());
         assertEquals(actual.getValue(),expected);
         assertEquals(actual.getReason(),OpCode.Success);
     }
@@ -219,7 +220,7 @@ public class SuggestionManagerTestsAllStubs {
 
 
     protected void testWatchSuggestionsInvalid(OpCode opCode) {
-        Response<List<Suggestion>> actual=suggestionManager.watchSuggestions(teacherApiKey);
+        Response<List<SuggestionData>> actual=suggestionManager.watchSuggestions(teacherApiKey);
         assertNull(actual.getValue());
         assertEquals(opCode,actual.getReason());
     }

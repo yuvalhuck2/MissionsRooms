@@ -22,6 +22,7 @@ import {
   SolveStoryScreen,
   WatchProfileScreen,
   WatchMessagesScreen,
+  WatchSuggestionsScreen,
   Test,
 } from './components/screens';
 
@@ -76,6 +77,7 @@ const App = () => {
         <Stack.Screen name="WatchProfile" component={WatchProfileScreen}/>
         <Stack.Screen name="WatchMessages" component={WatchMessagesScreen}/>
         <Stack.Screen name="AddSuggestion" component={AddSuggestionScreen}/>
+        <Stack.Screen name="WatchSuggestions" component={WatchSuggestionsScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

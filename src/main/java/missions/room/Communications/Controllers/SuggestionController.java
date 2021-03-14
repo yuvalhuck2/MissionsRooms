@@ -1,10 +1,11 @@
 package missions.room.Communications.Controllers;
 
 
+import DataAPI.ApiKey;
 import DataAPI.Response;
-import DataAPI.RoomTemplateDetailsData;
+import java.util.List;
 import DataAPI.SuggestionData;
-import missions.room.Service.RoomTemplateService;
+import missions.room.Domain.Suggestion;
 import missions.room.Service.SuggestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,20 @@ public class SuggestionController extends AbsController {
     public Response<?> addSuggestion(@RequestBody String suggestionData) {
         SuggestionData data = json.fromJson(suggestionData, SuggestionData.class);
         Response<Boolean> response = suggestionService.addSuggestion(data.getApiKey(),data.getSuggestion());
+        return response;
+    }
+
+    @PostMapping("/view")
+    public Response<?> viewSuggestions(@RequestBody String apiKey) {
+        ApiKey data = json.fromJson(apiKey, ApiKey.class);
+        Response<List<SuggestionData>> response = suggestionService.watchSuggestions(data.getApiKey());
+        return response;
+    }
+
+    @PostMapping("/delete")
+    public Response<?> deleteSuggestion(@RequestBody String suggestionData) {
+        SuggestionData data = json.fromJson(suggestionData, SuggestionData.class);
+        Response<Boolean> response = suggestionService.deleteSuggestion(data.getApiKey(),data.getId());
         return response;
     }
 }

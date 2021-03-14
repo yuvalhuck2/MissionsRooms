@@ -11,6 +11,7 @@ import AddSuggestionReducer from './AddSuggestionReducer';
 import SolveStory from './SolveStoryReducer'
 import WatchProfileReducer from './WatchProfileReducer'
 import WatchMessagesReducer from './WatchMessagesReducer'
+import WatchSuggestionsReducer from './WatchSuggestionReducer'
 
 export default combineReducers({
   auth: AuthReducer,
@@ -25,4 +26,5 @@ export default combineReducers({
   WatchProfile: WatchProfileReducer,
   WatchMessages: WatchMessagesReducer,
   addSuggestion: AddSuggestionReducer,
+  watchSuggestions: WatchSuggestionsReducer,
 });
