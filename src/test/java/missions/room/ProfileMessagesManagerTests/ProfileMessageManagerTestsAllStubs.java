@@ -269,7 +269,6 @@ public class ProfileMessageManagerTestsAllStubs {
         List<UserProfileData> userProfileDataList=new ArrayList<>();
         for( User u: users)
             userProfileDataList.add(u.getProfileData());
-        //List<UserProfileData> userProfileDataList=users.parallelStream().map(User::getProfileData).collect(Collectors.toList());
         Response<List<UserProfileData>> userResponse = profileMessagesManager.watchProfile(studentApiKey);
         assertEquals(userResponse.getReason(),OpCode.Success);
         assertEquals(userResponse.getValue(),userProfileDataList);

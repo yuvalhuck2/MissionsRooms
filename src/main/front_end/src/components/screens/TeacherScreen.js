@@ -59,6 +59,15 @@ class TeacherForm extends Component {
           <Button onPress={()=>this.props.passToAddTemplate({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
           <Text style={{color:"white"}}>{addTemplate}</Text> 
           </Button>
+          <Button onPress={()=>this.props.passToAddTemplate({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
+          <Text style={{color:"white"}}>{addTemplate}</Text> 
+          </Button>
+          <Button onPress={()=>this.props.passToAddTemplate({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
+          <Text style={{color:"white"}}>{addTemplate}</Text> 
+          </Button>
+          <Button onPress={()=>this.props.passToAddTemplate({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
+          <Text style={{color:"white"}}>{addTemplate}</Text> 
+          </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]}
             onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
             <Text style={{color:"white"}}>{watchProfiles}</Text>  
@@ -68,6 +77,18 @@ class TeacherForm extends Component {
           <Button  onPress={()=>this.props.passToAddRoom({navigation,apiKey})} mode="contained" style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >
             <Text style={{color:"white"}}>{createRoom}</Text> 
             <Icon name='create' />
+          </Button>
+          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
+            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watch_messages}</Text> 
+          </Button>
+          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
+            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watch_messages}</Text> 
+          </Button>
+          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
+            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watch_messages}</Text> 
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
             onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
@@ -95,7 +116,7 @@ const styles = StyleSheet.create({
     backgroundColor: backgroundColor
   },
   button: {width: DeviceWidth*0.5,
-     height: DeviceWidth*0.45,
+     height: DeviceWidth*0.28,
      borderStyle: 'solid',
      borderWidth: 1,
      borderColor: 'black',

@@ -58,4 +58,19 @@ public class SuggestionManager extends StudentTeacherManager {
         }
         return suggestionRepo.findAllSuggestions();
     }
+
+    /**
+     * req 4.12 - delete student's suggestion
+     * @param apiKey - authentication object
+     * @param suggestionId - identifier of the suggestion need to be deleted
+     * @return if the suggestion was deleted successfully
+     */
+    public Response<Boolean> deleteSuggestion(String apiKey, String suggestionId) {
+        Response<Teacher> teacherResponse=checkTeacher(apiKey);
+        if (teacherResponse.getReason()!=OpCode.Success){
+            return new Response<>(null
+                    ,teacherResponse.getReason());
+        }
+        return suggestionRepo.delete(suggestionId);
+    }
 }

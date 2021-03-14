@@ -43,4 +43,14 @@ public class SuggestionRepo {
             return new Response<>(null,OpCode.DB_Error);
         }
     }
+
+    public Response<Boolean> delete(String suggestionId) {
+        try{
+            suggestionCrudRepository.deleteById(suggestionId);
+            return new Response<>(true,OpCode.Success);
+        }
+        catch(Exception e){
+            return new Response<>(false,OpCode.DB_Error);
+        }
+    }
 }

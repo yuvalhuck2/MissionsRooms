@@ -1,5 +1,6 @@
 package missions.room.Service;
 
+import DataAPI.Auth;
 import DataAPI.Response;
 import missions.room.Domain.Suggestion;
 import missions.room.Managers.SuggestionManager;
@@ -32,5 +33,15 @@ public class SuggestionService {
     public Response<List<Suggestion>> watchSuggestions(String apiKey){
 
         return suggestionManager.watchSuggestions(apiKey);
+    }
+
+    /**
+     * req 4.12 - delete student's suggestion
+     * @param apiKey - authentication object
+     * @param suggestionId - identifier of the suggestion need to be deleted
+     * @return if the suggestion was deleted successfully
+     */
+    public Response<Boolean> deleteSuggestion(String apiKey, String suggestionId){
+        return suggestionManager.deleteSuggestion(apiKey, suggestionId);
     }
 }
