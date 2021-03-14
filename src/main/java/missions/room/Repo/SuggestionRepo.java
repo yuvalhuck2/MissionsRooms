@@ -50,7 +50,7 @@ public class SuggestionRepo {
             return new Response<>(true,OpCode.Success);
         }
         catch(Exception e){
-            return new Response<>(false,OpCode.DB_Error);
+            return new Response<>(null,OpCode.DB_Error);
         }
     }
 }

@@ -3,7 +3,6 @@ package missions.room.SuggestionManagerTests;
 import CrudRepositories.StudentCrudRepository;
 import CrudRepositories.SuggestionCrudRepository;
 import CrudRepositories.TeacherCrudRepository;
-import Data.Data;
 import Data.DataGenerator;
 import DataAPI.OpCode;
 import DataAPI.Response;
@@ -30,10 +29,13 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
+import static Data.Data.VALID;
+import static Data.Data.VALID_WITH_CLASSROOM;
 import static Data.DataConstants.*;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 
@@ -76,21 +78,24 @@ public class SuggestionManagerTestsAllStubs {
 
     private AutoCloseable closeable;
 
+    protected String suggestionId;
+
     @BeforeEach
     void setUp() {
         dataGenerator=new DataGenerator();
         studentApiKey = VALID_STUDENT_APIKEY;
         teacherApiKey =VALID_TEACHER_APIKEY;
-        validSuggestion=dataGenerator.getSuggestion(Data.VALID)
+        suggestionId=dataGenerator.getSuggestion(VALID).getId();
+        validSuggestion=dataGenerator.getSuggestion(VALID)
                 .getSuggestion();
         initMocks();
     }
 
     protected void initMocks() {
         closeable= MockitoAnnotations.openMocks(this);
-        Student student=dataGenerator.getStudent(Data.VALID);
-        Suggestion suggestion=dataGenerator.getSuggestion(Data.VALID);
-        Teacher teacher=dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM);
+        Student student=dataGenerator.getStudent(VALID);
+        Suggestion suggestion=dataGenerator.getSuggestion(VALID);
+        Teacher teacher=dataGenerator.getTeacher(VALID_WITH_CLASSROOM);
         when(mockRam.getAlias(studentApiKey))
                 .thenReturn(student.getAlias());
         when(mockRam.getAlias(teacherApiKey))
@@ -106,8 +111,10 @@ public class SuggestionManagerTestsAllStubs {
         when(mockSuggestionRepo.save(any()))
                 .thenReturn(new Response<>(suggestion,OpCode.Success));
         when(mockSuggestionRepo.findAllSuggestions())
-                .thenReturn(new Response<>(Collections.singletonList(dataGenerator.getSuggestion(Data.VALID))
+                .thenReturn(new Response<>(Collections.singletonList(dataGenerator.getSuggestion(VALID))
                 ,OpCode.Success));
+        when(mockSuggestionRepo.delete(anyString()))
+                .thenReturn(new Response<>(true,OpCode.Success));
     }
 
     @Test
@@ -148,7 +155,7 @@ public class SuggestionManagerTestsAllStubs {
 
     @Test
     void addSuggestionFindStudentByIdThrowsExceptionTest(){
-        when(mockStudentRepo.findStudentById(dataGenerator.getStudent(Data.VALID)
+        when(mockStudentRepo.findStudentById(dataGenerator.getStudent(VALID)
                 .getAlias()))
                 .thenReturn(new Response<>(null
                         ,OpCode.DB_Error));
@@ -174,7 +181,7 @@ public class SuggestionManagerTestsAllStubs {
     @Test
     void testWatchSuggestionsHappyTest(){
         Response<List<Suggestion>> actual=suggestionManager.watchSuggestions(teacherApiKey);
-        List<Suggestion> expected = Collections.singletonList(dataGenerator.getSuggestion(Data.VALID));
+        List<Suggestion> expected = Collections.singletonList(dataGenerator.getSuggestion(VALID));
         assertEquals(actual.getValue(),expected);
         assertEquals(actual.getReason(),OpCode.Success);
     }
@@ -195,7 +202,7 @@ public class SuggestionManagerTestsAllStubs {
 
     @Test
     void testWatchSuggestionsFindTeacherByIdThrowsExceptionTest(){
-        when(mockTeacherRepo.findTeacherById(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM)
+        when(mockTeacherRepo.findTeacherById(dataGenerator.getTeacher(VALID_WITH_CLASSROOM)
                 .getAlias()))
                 .thenReturn(new Response<>(null
                         ,OpCode.DB_Error));
@@ -213,6 +220,51 @@ public class SuggestionManagerTestsAllStubs {
 
     protected void testWatchSuggestionsInvalid(OpCode opCode) {
         Response<List<Suggestion>> actual=suggestionManager.watchSuggestions(teacherApiKey);
+        assertNull(actual.getValue());
+        assertEquals(opCode,actual.getReason());
+    }
+
+    @Test
+    void testDeleteSuggestionsHappyTest(){
+        Response<Boolean> actual=suggestionManager.deleteSuggestion(teacherApiKey,suggestionId);
+        assertTrue(actual.getValue());
+        assertEquals(actual.getReason(),OpCode.Success);
+    }
+
+    @Test
+    void testDeleteSuggestionInvalidApiKeyTest(){
+        teacherApiKey=INVALID_KEY;
+        testDeleteSuggestionInvalid(OpCode.Wrong_Key);
+    }
+
+    @Test
+    void testDeleteSuggestionNullTeacherTest(){
+        teacherApiKey=NULL_TEACHER_KEY;
+        when(mockTeacherRepo.findTeacherById(WRONG_TEACHER_NAME))
+                .thenReturn(new Response<>(null,OpCode.Success));
+        testDeleteSuggestionInvalid(OpCode.Not_Exist);
+    }
+
+    @Test
+    void testDeleteSuggestionInvalidFindTeacherByIdThrowsExceptionTest(){
+        when(mockTeacherRepo.findTeacherById(dataGenerator.getTeacher(VALID_WITH_CLASSROOM)
+                .getAlias()))
+                .thenReturn(new Response<>(null
+                        ,OpCode.DB_Error));
+        testDeleteSuggestionInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    void testDeleteSuggestionInvalidDeleteSuggestionThrowsExceptionTest(){
+        when(mockSuggestionRepo.delete(anyString()))
+                .thenReturn(new Response<>(null
+                        ,OpCode.DB_Error));
+        testDeleteSuggestionInvalid(OpCode.DB_Error);
+    }
+
+
+    protected void testDeleteSuggestionInvalid(OpCode opCode) {
+        Response<Boolean> actual=suggestionManager.deleteSuggestion(teacherApiKey,suggestionId);
         assertNull(actual.getValue());
         assertEquals(opCode,actual.getReason());
     }
