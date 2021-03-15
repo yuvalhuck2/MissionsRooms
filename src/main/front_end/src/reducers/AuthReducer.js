@@ -11,21 +11,21 @@ const initialState = {
 };
 import { IT, Student, Supervisor, Teacher } from '../actions/OpCodeTypes';
 import {
-  CLEAR_STATE,
-  CODE_CHANGED,
-  EMAIL_CHANGED,
-  LOGIN_IT,
-  LOGIN_STUDENT,
-  LOGIN_SUPERVISOR,
-  LOGIN_TEACHER,
-  LOGIN_USER,
-  PASSWORD_CHANGED,
-  REGISTER_CODE,
-  REGISTER_CODE_SUCCESS,
-  REGISTER_STUDENT,
-  REGISTER_TEACHER,
-  REGISTER_USER,
-  UPDATE_ERROR,
+    CLEAR_STATE,
+    CODE_CHANGED,
+    EMAIL_CHANGED, GET_TEACHER_ROOMS_TYPE,
+    LOGIN_IT,
+    LOGIN_STUDENT,
+    LOGIN_SUPERVISOR,
+    LOGIN_TEACHER,
+    LOGIN_USER,
+    PASSWORD_CHANGED,
+    REGISTER_CODE,
+    REGISTER_CODE_SUCCESS,
+    REGISTER_STUDENT,
+    REGISTER_TEACHER,
+    REGISTER_USER,
+    UPDATE_ERROR,
 } from '../actions/types';
 
 export default (state = initialState, action) => {

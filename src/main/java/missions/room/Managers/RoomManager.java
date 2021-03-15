@@ -289,6 +289,9 @@ public class RoomManager extends TeacherManager {
             temp.add(responseRoomClass.getValue());
             classroomResponse=getRoomDetailFromRoom(temp).getValue();
         }
+        else  if (responseClass.getReason() == OpCode.Success&&responseClass.getValue()==null) {
+            classroomResponse=new ArrayList<>();
+        }
         else return new Response<>(null,responseClass.getReason());
         List<RoomDetailsData> classGroupResponse=getClassGroupRooms(teacher).getValue();
         List<RoomDetailsData> studentsResponse=getStudentsRoom(teacher).getValue();
@@ -309,27 +312,37 @@ public class RoomManager extends TeacherManager {
         List<Room> groupRooms=new ArrayList<>();
 
         Response<GroupRoom> responseGroup;
-        switch (teacher.getGroupType()){
-            case A:
+        switch (teacher.getGroupType().name()){
+            case "A":
+                if(a==null)
+                    break;
                 responseGroup =roomRepo.findGroupRoomByAlias(a.getGroupName());
                 Response<Room> response=checkResponse(responseGroup);
-                if(response.getValue()==null){ return new Response<>(null,response.getReason()); }
-                else{ groupRooms.add(response.getValue()); }
+                if(response.getReason()!=OpCode.Success){ return new Response<>(null,response.getReason()); }
+                else if(response.getValue()!=null){ groupRooms.add(response.getValue()); }
 
-            case B:
+            case "B":
+                if(b==null)
+                    break;
                 responseGroup =roomRepo.findGroupRoomByAlias(b.getGroupName());
                 response=checkResponse(responseGroup);
-                if(response.getValue()==null){ return new Response<>(null,response.getReason()); }
-                else{ groupRooms.add(response.getValue()); }
-            case BOTH:
-                responseGroup =roomRepo.findGroupRoomByAlias(a.getGroupName());
-                response=checkResponse(responseGroup);
-                if(response.getValue()==null){ return new Response<>(null,response.getReason()); }
-                else{ groupRooms.add(response.getValue()); }
+                if(response.getReason()!=OpCode.Success){ return new Response<>(null,response.getReason()); }
+                else if(response.getValue()!=null){ groupRooms.add(response.getValue()); }
+            case "BOTH":
+                if(a!=null) {
+                    responseGroup = roomRepo.findGroupRoomByAlias(a.getGroupName());
+                    response = checkResponse(responseGroup);
+                    if (response.getReason()!=OpCode.Success) {
+                        return new Response<>(null, response.getReason());
+                    } else if(response.getValue()!=null){
+                        groupRooms.add(response.getValue());
+                    }
+                }
+                if(b!=null){
                 responseGroup =roomRepo.findGroupRoomByAlias(b.getGroupName());
                 response=checkResponse(responseGroup);
-                if(response.getValue()==null){ return new Response<>(null,response.getReason()); }
-                else{ groupRooms.add(response.getValue()); }
+                if(response.getReason()!=OpCode.Success){ return new Response<>(null,response.getReason()); }
+                else if(response.getValue()!=null){ groupRooms.add(response.getValue()); }}
         }
 
         return getRoomDetailFromRoom(groupRooms);
@@ -340,14 +353,22 @@ public class RoomManager extends TeacherManager {
         ClassGroup a=classGroups.getKey(); ClassGroup b=classGroups.getValue();
         Set<String> students=new HashSet<>();
         List<Room> studentsRooms=new ArrayList<>();
-        switch (teacher.getGroupType()) {
-            case A:
-                students.addAll(a.getStudentsAlias());
-            case B:
-                students.addAll(b.getStudentsAlias());
-            case BOTH:
-                students.addAll(a.getStudentsAlias());
-                students.addAll(b.getStudentsAlias());
+        switch (teacher.getGroupType().name()) {
+            case "A":
+                if(a!=null) {
+                    students.addAll(a.getStudentsAlias());
+                }
+            case "B":
+                if(b!=null) {
+                    students.addAll(b.getStudentsAlias());
+                }
+            case "BOTH":
+                if(a!=null) {
+                    students.addAll(a.getStudentsAlias());
+                }
+                if(b!=null) {
+                    students.addAll(b.getStudentsAlias());
+                }
         }
 
         for(String alias:students) {

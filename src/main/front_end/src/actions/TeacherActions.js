@@ -6,19 +6,20 @@ import {
     LOGIN_TEACHER,
     UPDATE_ERROR_ROOM, UPDATE_ERROR_SOLVE_DETERMINISTIC,
     UPDATE_ERROR_TEMPLATE,
+    UPDATE_ERROR_TEACHER_ROOMS, CURRENT_ROOM_CHANGED,PASS_TEACHER_ROOM_ERROR,GET_TEACHER_ROOMS_TYPE
 } from '../actions/types';
 import API from '../api/API';
 import * as APIPaths from '../api/APIPaths';
 import { GeneralErrors } from '../locale/locale_heb';
 import * as NavPaths from '../navigation/NavPaths';
-import { Not_Exist, Success, Wrong_Key } from './OpCodeTypes';
+import { Not_Exist, Success, Wrong_Key,Teacher_Classroom_Is_Null,DB_Error,Not_Exist_Room } from './OpCodeTypes';
 import {closeSocket} from '../handler/WebSocketHandler'
 import {Student_Not_Exist_In_Class, Student_Not_Exist_In_Group, Wrong_Mission} from "./types";
 
 const {
   server_error,
   wrong_key_error,
-  teacher_not_exists_error,
+  teacher_not_exists_error, not_exist_room_error,teacher_classroom_is_null_error,db_error
 } = GeneralErrors;
 
 export const passToAddTemplate = ({ navigation, apiKey }) => {
@@ -55,7 +56,7 @@ const checkSearchMissionResponse = (data, dispatch) => {
 };
 
 
-export const passToRooms = ({ navigation, apiKey, rooms }) => {
+export const passToRooms = ({ navigation, apiKey, roomsType }) => {
     return async (dispatch) => {
         dispatch({ type: LOGIN_TEACHER, payload: apiKey });
         try {
@@ -65,7 +66,7 @@ export const passToRooms = ({ navigation, apiKey, rooms }) => {
                     data: res.data,
                     dispatch,
                     navigation,
-                    rooms,
+                    roomsType,
                 });
             } else {
                 dispatch({ type: PASS_TEACHER_ROOM_ERROR, payload: server_error });
@@ -81,39 +82,36 @@ const checkGetSTeacherRoomsResponse = ({
                                           data,
                                           dispatch,
                                           navigation,
-                                          rooms,
+                                           roomsType,
                                       }) => {
     const { reason, value } = data;
     switch (reason) {
         case Wrong_Key:
-            return dispatch({ type: , payload: wrong_key_error });
-        case Student_Not_Exist_In_Class:
+            return dispatch({ type:UPDATE_ERROR_TEACHER_ROOMS , payload: wrong_key_error });
+        case Teacher_Classroom_Is_Null:
             return dispatch({
-                type: UPDATE_ERROR_SOLVE_DETERMINISTIC,
-                payload: student_not_exist_in_class_error,
+                type: UPDATE_ERROR_TEACHER_ROOMS,
+                payload: teacher_classroom_is_null_error,
             });
-        case Student_Not_Exist_In_Group:
+        case DB_Error:
             return dispatch({
-                type: UPDATE_ERROR_SOLVE_DETERMINISTIC,
-                payload: student_not_exist_in_group_error,
+                type: UPDATE_ERROR_TEACHER_ROOMS,
+                payload: db_error,
             });
-        case Wrong_Mission:
+        case Not_Exist_Room:
             return dispatch({
-                type: UPDATE_ERROR_SOLVE_DETERMINISTIC,
-                payload: wrong_mission_error,
+                type: UPDATE_ERROR_TEACHER_ROOMS,
+                payload: not_exist_room_error,
             });
         case Success:
-            rooms = new Map(
-                value.map((newRoom) =>
-                    rooms.has(newRoom.roomId)
-                        ? [newRoom.roomId, rooms.get(newRoom.roomId)]
-                        : [newRoom.roomId, newRoom]
-                )
-            );
-            dispatch({ type: GET_STUDENT_ROOMS, payload: rooms });
-            return navigation.navigate(NavPaths.chooseStudentRoom);
+            roomsType = value;
+            /*new Map(
+                value.map((roomType) => [roomType.roomType, roomType])
+            );*/
+            dispatch({ type: GET_TEACHER_ROOMS_TYPE, payload: roomsType });
+            return navigation.navigate(NavPaths.chooseTeacherRoomType);
         default:
-            return dispatch({ type: UPDATE_ERROR_SOLVE_DETERMINISTIC, payload: server_error });
+            return dispatch({ type: UPDATE_ERROR_TEACHER_ROOMS, payload: server_error });
     }
 };
 
@@ -184,4 +182,11 @@ export const logout = (navigation) => {
     closeSocket();
     return navigation.navigate(NavPaths.loginScreen);
   };
+};
+
+export const roomChanged = (room) => {
+    return {
+        type: CURRENT_ROOM_CHANGED,
+        payload: room.roomId,
+    };
 };

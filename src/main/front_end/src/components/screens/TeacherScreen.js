@@ -17,7 +17,7 @@ const {
   createRoom,
   closeRoom,
   main_screen,
-  passToRooms,
+  WatchRooms,
 } = TeacherStrings;
 
 
@@ -44,7 +44,7 @@ class TeacherForm extends Component {
 
 
   render() {
-    const { navigation,apiKey } = this.props;
+    const { navigation,apiKey ,roomsType} = this.props;
     return (
       <View style={styles.container}>
         <View>
@@ -62,8 +62,8 @@ class TeacherForm extends Component {
             <Text style={{color:"white"}}>{createRoom}</Text> 
             <Icon name='create' />
           </Button>
-          <Button onPress={()=>this.props.passToRooms({navigation,apiKey,rooms})} style={[styles.button, styles.bottom_button_marg, styles.right_button_border]} >
-             <Text style={{color:"white"}}>{passToRooms}</Text>
+          <Button onPress={()=>this.props.passToRooms({navigation,apiKey,roomsType})} style={[styles.button, styles.bottom_button_marg, styles.right_button_border]} >
+             <Text style={{color:"white"}}>{WatchRooms}</Text>
             {/* <Icon name='delete' /> */}
           </Button>
           <Button onPress={this.onLogout} style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]}>

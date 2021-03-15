@@ -18,8 +18,10 @@ import {
     StudentScreen,
     TeacherScreen,
     UploadCsvScreen,
-  AddITScreen,
+    AddITScreen,
+    ChooseTeacherRoomTypeScreen,ChooseClassroomRoomScreen
 } from './components/screens';
+import TeacherRoomMenuScreen from "./components/screens/TeacherRoomMenuScreen";
 
 const Stack = createStackNavigator();
 
@@ -62,6 +64,9 @@ const App = () => {
         <Stack.Screen name='IT' component={ITScreen} />
         <Stack.Screen name="UploadCsv" component={UploadCsvScreen}/>
         <Stack.Screen name="AddSuggestion" component={AddSuggestionScreen}/>
+        <Stack.Screen name ="ChooseTeacherRoomType" component={ChooseTeacherRoomTypeScreen}/>
+        <Stack.Screen name ="ChooseClassroomRoom" component={ChooseClassroomRoomScreen}/>
+        <Stack.Screen name = "TeacherRoomMenu" component={TeacherRoomMenuScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

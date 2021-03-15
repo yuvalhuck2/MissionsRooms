@@ -127,7 +127,7 @@ export const TeacherStrings = {
   createRoom: 'יצירת חדר',
   closeRoom: 'סגירת חדר',
   main_screen: 'התנתק/י',
-  passToRooms:'צפיה בחדרים',
+  WatchRooms:'צפיה בחדרים',
 };
 
 export const AddRoomStrings = {
@@ -167,6 +167,29 @@ export const ChooseStudentRoomStrings = {
   solve: 'כניסה',
   no_rooms: 'אין לך חדרים פעילים',
 };
+
+
+export const ChooseTeacherRoomStrings = {
+    header: 'בחירת חדר',
+    room_name: 'שם החדר: ',
+    solve: 'כניסה',
+    no_rooms: 'אין לך חדרים פעילים',
+};
+
+export const ChooseTeacherRoomTypeStrings={
+  classroom: 'חדרים כיתתיים',
+  group: 'חדרים קבוצתיים',
+  personal:'חדרים אישיים',
+  header:'בחירת סוג חדר',
+}
+
+export const TeacherRoomMenuStrings={
+    chat: 'כניסה לצאט',
+    approve_answer: 'אישור תשובות',
+    close_room:'סגירת החדר',
+    mission:'משימה',
+    of:'מתוך',
+}
 
 export const ChooseRoomStudentErrors = {
   room_empty: 'יש לבחור חדר',

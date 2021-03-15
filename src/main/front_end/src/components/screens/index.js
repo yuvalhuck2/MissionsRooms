@@ -15,3 +15,7 @@ export { default as StudentScreen } from './StudentScreen';
 export { default as ITScreen } from './ITScreen'
 export { default as AddSuggestionScreen } from './AddSuggestionScreen'
 export { default as AddITScreen } from './AddITScreen'
+export { default as ChooseTeacherRoomTypeScreen } from './ChooseTeacherRoomTypeScreen'
+export {default as ChooseClassroomRoomScreen} from './ChooseTeacherRoomScreen'
+export {default as TeacherRoomMenuScreen} from './TeacherRoomMenuScreen'
+//export {default as ChoosePersonalRoomScreen} from './ChoosePersonalRoomScreen'

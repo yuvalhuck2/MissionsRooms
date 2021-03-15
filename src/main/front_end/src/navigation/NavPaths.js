@@ -16,3 +16,6 @@ export const chooseStudentRoom = 'ChooseStudentRoom';
 export const uploadCsv = 'UploadCsv';
 export const addSuggestion='AddSuggestion'
 export const addIT = 'AddIT';
+export const chooseTeacherRoomType='ChooseTeacherRoomType'
+export const chooseClassroomRoom='ChooseClassroomRoom'
+export const teacherRoomMenu='TeacherRoomMenu'
