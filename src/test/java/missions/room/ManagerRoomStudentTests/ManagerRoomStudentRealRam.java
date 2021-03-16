@@ -37,6 +37,9 @@ public class ManagerRoomStudentRealRam extends ManagerRoomStudentAllStubs{
         } catch (IllegalAccessException | NoSuchFieldException e) {
             fail();
         }
+        realRam.addApi(thirdStudentKey,
+                dataGenerator.getUser(Data.VALID_STUDENT)
+                        .getAlias());
         realRam.addApi(studentApiKey
                 ,dataGenerator.getStudent(Data.VALID)
                         .getAlias());

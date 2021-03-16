@@ -39,14 +39,14 @@ export const filterMessages = (search, messages) =>{
         type: PRESENTED_MESSAGES_CHANGED,
         payload: messages.filter((message)=> message.writer.includes(search))
     }
-};
+}
 
 export const messageChanged = (message) => {
     return {
         type: CHOOSE_MESSAGE,
         payload: message,
     }
-};
+}
 
 export const deleteMessage = ({apiKey, message}) => {
     return async (dispatch)=>{

@@ -75,7 +75,7 @@ public abstract class Mission implements Serializable {
     }
 
     //TODO need to become abstract after implement all the missions
-    protected String getMissionName() {
+    public String getMissionName() {
         return null;
     }
 

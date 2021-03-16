@@ -40,6 +40,10 @@ public class PublisherMock extends Publisher {
         return notifications.get(userId);
     }
 
+    public HashMap<String, ArrayList<Notification>> getAllNotifications() {
+        return notifications;
+    }
+
     public void clear() {
         notifications.clear();
     }

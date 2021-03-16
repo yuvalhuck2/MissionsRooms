@@ -14,6 +14,7 @@ public class SinglePublisher {
         publisher=pub;
         ManagerRoomStudent.initPublisher();
         RoomManager.initPublisher();
+
     }
 
 

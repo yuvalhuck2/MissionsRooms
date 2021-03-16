@@ -1,13 +1,12 @@
 package missions.room.Domain.Users;
 
 import DataAPI.OpCode;
-import DataAPI.StudentData;
+import DataAPI.Response;
+import DataAPI.UserProfileData;
+import missions.room.Domain.Message;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import java.util.Objects;
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -18,17 +17,24 @@ public abstract class User {
 
     protected String password;
 
-    public User(){
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER,orphanRemoval = true)
+    @MapKey
+    @JoinColumn(name="dest",referencedColumnName = "alias")
+    private Map<String, Message> messages;
 
+    public User(){
+        messages=new HashMap<>();
     }
 
     public User(String alias, String password) {
         this.alias = alias;
         this.password = password;
+        messages=new HashMap<>();
     }
 
     public User(String alias){
         this.alias=alias;
+        messages=new HashMap<>();
     }
 
     public String getPassword() {
@@ -53,5 +59,21 @@ public abstract class User {
         return  Objects.equals(user.alias, alias) &&
                 Objects.equals(user.password,password);
     }
-}
 
+    public void addMessage(Message message) {
+        messages.put(message.getId(),message);
+    }
+
+    public Response<Boolean> deleteMessage(String messageId) {
+        if(messages.remove(messageId)==null){
+            return new Response<>(false,OpCode.Message_Not_Exist);
+        }
+        return new Response<>(true,OpCode.Success);
+    }
+
+    public Collection<Message> getMessages() {
+        return messages.values();
+    }
+
+    public abstract UserProfileData getProfileData();
+}

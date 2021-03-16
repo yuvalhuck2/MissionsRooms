@@ -1,19 +1,22 @@
 import {
-    CLEAR_STATE,
-    GET_CLASSROOM,
-    GET_MISSIONS, GET_STUDENT_ROOMS,
-    GET_TEMPLATES, LOGIN_STUDENT,
-    LOGIN_TEACHER,
-    UPDATE_ERROR_ROOM, UPDATE_ERROR_SOLVE_DETERMINISTIC,
-    UPDATE_ERROR_TEMPLATE,
+  CLEAR_STATE,
+  GET_CLASSROOM,
+  GET_MISSIONS,
+  GET_TEMPLATES,
+  LOGIN_TEACHER,
+  UPDATE_ALL_SUGGESTIONS,
+  UPDATE_ERROR_ROOM,
+  UPDATE_ERROR_TEMPLATE,
+  UPDATE_ERROR_WATCH_SUGGESTIONS,
     UPDATE_ERROR_TEACHER_ROOMS, CURRENT_ROOM_CHANGED,PASS_TEACHER_ROOM_ERROR,GET_TEACHER_ROOMS_TYPE
 } from '../actions/types';
 import API from '../api/API';
 import * as APIPaths from '../api/APIPaths';
 import { GeneralErrors } from '../locale/locale_heb';
 import * as NavPaths from '../navigation/NavPaths';
-import { Not_Exist, Success, Wrong_Key,Teacher_Classroom_Is_Null,DB_Error,Not_Exist_Room } from './OpCodeTypes';
+import { Not_Exist, Success, Wrong_Key } from './OpCodeTypes';
 import {closeSocket} from '../handler/WebSocketHandler'
+import { Teacher_Classroom_Is_Null,DB_Error,Not_Exist_Room } from './OpCodeTypes';
 import {Student_Not_Exist_In_Class, Student_Not_Exist_In_Group, Wrong_Mission} from "./types";
 
 const {
@@ -175,6 +178,43 @@ const checkSearchTemplatesResponse = (data, dispatch) => {
       return dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
   }
 };
+
+export const passToWatchSuggestions = ({navigation,apiKey}) => {
+  return async (dispatch)=> {
+    dispatch({ type: LOGIN_TEACHER, payload: apiKey });
+    try {
+      const res = await API.post(APIPaths.watchSuggestions, { apiKey });
+      if (res) {
+        checkWatchSuggestionsResponse({
+          data: res.data,
+          dispatch,
+          navigation,
+        });
+      } else {
+        dispatch({ type: UPDATE_ERROR_WATCH_SUGGESTIONS, payload: server_error });
+      }
+    } catch (err) {
+      console.log(err);
+      return dispatch({ type: UPDATE_ERROR_WATCH_SUGGESTIONS, payload: server_error });
+    }
+  };
+}
+
+const checkWatchSuggestionsResponse = ({data, dispatch, navigation,}) => {
+  const { reason, value } = data;
+  switch (reason) {
+    case Not_Exist:
+      return dispatch({
+        type: UPDATE_ERROR_WATCH_SUGGESTIONS,
+        payload: teacher_not_exists_error,
+      });
+    case Success:
+      dispatch({ type: UPDATE_ALL_SUGGESTIONS, payload: value });
+      return navigation.navigate(NavPaths.watchSuggestions);
+    default:
+      return dispatch({ type: UPDATE_ERROR_WATCH_MESSAGES, payload: server_error });
+  }
+}
 
 export const logout = (navigation) => {
   return async (dispatch) => {

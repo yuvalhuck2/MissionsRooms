@@ -60,7 +60,7 @@ public class KnownAnswerMission extends Mission {
     }
 
     @Override
-    protected String getMissionName() {
+    public String getMissionName() {
         return missionName;
     }
 }

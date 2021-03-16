@@ -6,6 +6,7 @@ import CrudRepositories.TeacherCrudRepository;
 import DataAPI.*;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;
+import lombok.extern.apachecommons.CommonsLog;
 import javafx.util.Pair;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Communications.Publisher.Publisher;
@@ -53,6 +54,7 @@ public class RoomManager extends TeacherManager {
         super(ram, teacherCrudRepository);
         this.roomRepo = new RoomRepo(roomCrudRepository);
         this.roomTemplateRepo=new RoomTemplateRepo(roomTemplateCrudRepository);
+
         publisher=SinglePublisher.getInstance();
 
     }
@@ -243,7 +245,7 @@ public class RoomManager extends TeacherManager {
             return new Response<>(false,roomResponse.getReason());
         }
         Room room=roomResponse.getValue();
-
+        //TODO don't close room if someone is connected to it
         return roomRepo.deleteRoom(room);
     }
 

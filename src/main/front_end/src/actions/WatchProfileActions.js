@@ -33,7 +33,7 @@ export const searchChanged= (text) => {
         type: SEARCH_CHANGED,
         payload: text,
     };
-};
+} ;
 
 export const filterUsers = (search, users) =>{
     return {
@@ -62,7 +62,7 @@ export const sendMessage = ({apiKey, message, profile}) =>{
             return dispatch({ type: UPDATE_ERROR_WATCH_PROFILE, payload: message_empty });  
         }
         try {
-            dispatch({type: WAIT_FOR_MESSAGE});
+            dispatch({type: WAIT_FOR_MESSAGE})
             const request = {apiKey, message, target: profile};
             const res = await API.post(APIPaths.sendMessage,request);
             res
@@ -76,22 +76,22 @@ export const sendMessage = ({apiKey, message, profile}) =>{
 };
 
 const checkSendMessageResponse = (data, dispatch) => {
-    const {reason} = data;
+    const {reason} = data
     switch (reason) {
       case Empty:
         return dispatch({ type: UPDATE_ERROR_WATCH_PROFILE, payload: message_empty }); 
       case Not_Exist:
         return dispatch({ type: UPDATE_ERROR_WATCH_PROFILE, payload: user_not_exist });
       case Success:
-        alert(message_sent);
+        alert(message_sent)
         return dispatch({ type: MESSAGE_SENT});
       default:
         return dispatch({ type: UPDATE_ERROR_WATCH_PROFILE, payload: server_error });
     }
-}
+};
 
 export const handleBack = ({navigation,apiKey}) =>{
-    navigation.goBack();
+    navigation.goBack()
     return {
         type: RESET_WATCH_PROFILE,
         payload: apiKey

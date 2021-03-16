@@ -60,39 +60,6 @@ public class ServiceAPI {
      * TODO talk about delete profile
      */
 
-
-    /**
-     * req 3.3
-     * @param auth - authentication object
-     * @param newPassword - the new password to change to
-     * @return if the password was changed
-     */
-    public Response<Boolean> changePassword (Auth auth,String newPassword){
-        throw new RuntimeException();
-    }
-
-
-    /**
-     * req 3.4 - send message
-     * @param auth - authentication object
-     * @param message - message to send to the other user
-     * @param mail - target user mail
-     * @return if the message was sent successfully
-     */
-    public Response<Boolean> sendMessage(Auth auth,String message,String mail){
-        throw new RuntimeException();
-    }
-
-    /**
-     * req 3.5 - watch user profile
-     * @param auth - authentication object
-     * @param mail - target user mail
-     * @return user profile details
-     */
-    public Response<UserProfileData> watchProfile(Auth auth, String mail){
-        throw new RuntimeException();
-    }
-
     /**
      * req 3.6.1 - watch details of the room
      * @param auth - authentication object
@@ -314,17 +281,6 @@ public class ServiceAPI {
 
 
     /**
-     * req 4.12 - delete student's suggestion
-     * @param auth - authentication object
-     * @param suggestionId - identifier of the suggestion need to be deleted
-     * @return if the suggestion was deleted successfully
-     */
-    public Response<Boolean> responseStudentSuggestion(Auth auth,String suggestionId){
-        throw new RuntimeException();
-    }
-
-
-    /**
      * req 4.13 - deduce points to a student
      * @param auth - authentication object
      * @param studentMail - the identifier of the student need to deduce points to.
@@ -367,16 +323,6 @@ public class ServiceAPI {
         throw new RuntimeException();
     }
 
-
-    /**
-     * req 6.3 - upload csv file with users details
-     * @param auth - authentication object
-     * @param usersList -  list of users details to add/update in system
-     * @return if users details updated in system
-     */
-    public Response<Boolean> UploadCSV(Auth auth,List<UserProfileData> usersList){
-        throw new RuntimeException();
-    }
 
     /**
      * req 6.5.1 - update user mail

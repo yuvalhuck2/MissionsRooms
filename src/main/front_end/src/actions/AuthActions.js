@@ -24,9 +24,11 @@ import {
   Wrong_Code,
   Not_Exist_Group,
   Already_Exist_Student,
-  Update_Room, 
+  Update_Room,
   Finish_Missions_In_Room,
   IN_CHARGE,
+  STORY_FINISH,
+  STORY_IN_CHARGE,
 } from './OpCodeTypes';
 import {
   CLEAR_STATE,
@@ -47,6 +49,8 @@ import {
   FINISH_MISSION,
   STUDENT_DIALOG,
   CHANGE_IN_CHARGE,
+  FINISH_STORY_MISSION,
+  CHANGE_STORY_IN_CHARGE,
 } from './types';
 
 const {
@@ -270,7 +274,7 @@ const checkLoginUserResponse = (data, dispatch, navigation) => {
 
 const connectToWebSocketFromLogin = (apiKey,dispatch, navigation) => {
   connectToWebSocket(apiKey,(notification)=>{
-    const {value,reason} =notification;
+    const {additionalData,value,reason} =notification;
     switch(reason){
       case Finish_Missions_In_Room:
         dispatch({ type: FINISH_MISSION, payload: apiKey });
@@ -284,11 +288,17 @@ const connectToWebSocketFromLogin = (apiKey,dispatch, navigation) => {
       case IN_CHARGE:
           dispatch({ type: CHANGE_IN_CHARGE, payload: true });
           break;
+      case STORY_IN_CHARGE:
+        dispatch({ type: CHANGE_STORY_IN_CHARGE, payload: {isInCharge:true, story:additionalData} });
+        break;
+      case STORY_FINISH:
+        dispatch({ type: FINISH_STORY_MISSION, payload: additionalData});
+        break;
       default:
         console.log("No match case in web socket for"+reason)
     }
-    
-    
+
+
   })
 }
 

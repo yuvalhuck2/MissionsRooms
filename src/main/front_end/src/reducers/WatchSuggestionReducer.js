@@ -36,12 +36,12 @@ const initialState = {
                 allSuggestions:state.allSuggestions.filter((suggestion) => suggestion.id != action.payload)
             }
         case UPDATE_ALL_SUGGESTIONS:
-            return {... state, allSuggestions: action.payload};
+            return {... state, allSuggestions: action.payload}
         case UPDATE_ERROR_WATCH_SUGGESTIONS:
             alert(action.payload)
             return { ...state, errorMessage: action.payload, loading:false};
         case CLEAR_STATE:
-            return initialState;
+            return initialState
         default:
             return state;
     }

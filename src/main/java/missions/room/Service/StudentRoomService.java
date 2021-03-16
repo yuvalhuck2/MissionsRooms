@@ -1,11 +1,12 @@
 package missions.room.Service;
 
-import DataAPI.Auth;
 import DataAPI.Response;
 import DataAPI.RoomDetailsData;
+import DataAPI.SolutionData;
 import missions.room.Managers.ManagerRoomStudent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -56,11 +57,41 @@ public class StudentRoomService {
     }
 
     /**
+     * req3.6.2.4 - answer story mission
+     * @param apiKey - authentication object
+     * @param roomId - room id
+     * @param sentence - the next sentence to add to the story
+     * @return - if the story was added successfully
+     */
+    public Response<Boolean> answerStoryMission(String apiKey,String roomId, String sentence){
+        return managerRoomStudent.answerStoryMission(apiKey, roomId, sentence);
+    }
+
+    /**
      * disconnect from all of my rooms
      * @param apiKey - authentication object
      */
     public void disconnectFromRooms(String apiKey) {
-
         managerRoomStudent.disconnectFromAllRooms(apiKey);
+    }
+
+    /**
+     * req 3.6.2.1 - answer open question mission
+     * @param apiKey
+     * @param openAnswer
+     * @param file
+     * @return if the answer was accepted successfully
+     */
+    public Response<Boolean> answerOpenQuestionMission(String apiKey, SolutionData openAnswer, MultipartFile file){
+        return managerRoomStudent.answerOpenQuestionMission(apiKey, openAnswer, file);
+    }
+
+    /**
+     * req3.6.2.4 - answer story mission
+     * @param apiKey - authentication object
+     * @param roomId - room id
+     */
+    public Response<Boolean> finishStoryMission(String apiKey,String roomId){
+        return managerRoomStudent.finishStoryMission(apiKey, roomId);
     }
 }

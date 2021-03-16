@@ -41,7 +41,7 @@ public class Student extends SchoolUser {
         return new StudentData(alias,firstName,lastName);
     }
 
-
+    @Override
     public UserProfileData getProfileData() {
         return new UserProfileData(firstName,lastName,alias,OpCode.Student,points);
     }

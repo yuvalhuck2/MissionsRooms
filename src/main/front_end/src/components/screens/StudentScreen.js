@@ -3,20 +3,26 @@ import { StyleSheet, Text, Dimensions, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
-import { StudentStrings } from '../../locale/locale_heb';
+import { StudentStrings, AllUsersStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
 import Header from '../common/Header';
 import TextInput from '../common/TextInput';
 import { Icon } from 'react-native-elements'
 import * as NavPaths from '../../navigation/NavPaths'
-import {passToMyRooms,logout,changeDialog,passToAddSuggestion} from '../../actions'
+import {passToMyRooms,logout,changeDialog, passToWatchProfiles, passToWatchMessages,passToAddSuggestion} from '../../actions'
 import { Dialog,Paragraph,Portal } from 'react-native-paper';
 
 const {
   watchMyRoom,
-  main_screen,
   addSuggestion,
 } = StudentStrings;
+
+const {
+  changePassword,
+  watchProfiles,
+  watch_messages,
+  main_screen,
+} = AllUsersStrings
 
 const DeviceWidth  = Dimensions.get('window').width;
 const backgroundColor = 'purple';
@@ -46,7 +52,7 @@ class StudentForm extends Component {
 
   renderDialog(){
     const {dialog}=this.props;
-    const visible= (dialog !="")
+    const visible= (dialog !="") 
     return (
       <Portal>
         <Dialog visible={visible} onDismiss={()=>this.exitDailog()}>
@@ -67,21 +73,37 @@ class StudentForm extends Component {
           <Text style={{color:"white"}}> {watchMyRoom}</Text> 
             <Icon name='meeting-room' />
           </Button>
-          <Button  onPress={()=>this.props.passToAddSuggestion({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
+          <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}
+            onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watchProfiles}</Text>
+          </Button>
+          <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}
+            onPress={()=>navigation.navigate(NavPaths.changePassword)}>
+            <Text style={{color:"white"}}>{changePassword}</Text>
+          </Button>
+          <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}
+            onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watchProfiles}</Text>
+          </Button>
+          <Button  onPress={()=>this.props.passToAddSuggestion({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]} >
           <Text style={{color:"white"}}>{addSuggestion}</Text>
           </Button>
-          <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]}/>
-
-
-
-
         </View>
         <View>
           <Button mode="contained" style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >
             <Text style={{color:"white"}}></Text> 
           </Button>
-          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]} >
-            <Text style={{color:"white"}}></Text> 
+          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
+            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watch_messages}</Text>
+          </Button>
+          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
+            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watch_messages}</Text>
+          </Button>
+          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
+            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watch_messages}</Text>
           </Button>
           <Button onPress={this.onLogout} style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]} >
           <Text style={{color:"white"}}>{main_screen}</Text> 
@@ -105,7 +127,7 @@ const styles = StyleSheet.create({
     backgroundColor: backgroundColor
   },
   button: {width: DeviceWidth*0.5,
-     height: DeviceWidth*0.45,
+     height: DeviceWidth*0.33,
      borderStyle: 'solid',
      borderWidth: 1,
      borderColor: 'black',
@@ -149,4 +171,6 @@ export default connect(mapStateToProps,{
   logout,
   changeDialog,
   passToAddSuggestion,
+  passToWatchProfiles,
+  passToWatchMessages,
 })(StudentForm);

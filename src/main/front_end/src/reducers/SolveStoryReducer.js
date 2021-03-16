@@ -27,8 +27,8 @@ const initialState = {
   export default (state = initialState, action) => {
     switch (action.type) {
         case INIT_STORY_MISSION:
-            let roomData=action.payload.roomData;
-            let missionData=roomData.currentMission;
+            roomData=action.payload.roomData
+            missionData=roomData.currentMission
             return {... state, roomId:roomData.roomId, loading: false, isInCharge:action.payload.isInCharge,
                 isFinish:roomData.waitingForStory, story:missionData.story}
         case CURRENT_ANSWER_STORY_CHANGED:

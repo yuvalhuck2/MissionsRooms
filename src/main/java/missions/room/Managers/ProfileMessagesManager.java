@@ -87,7 +87,7 @@ public class ProfileMessagesManager {
         String userAlias=ram.getAlias(apiKey);
         Response<User> userResponse=userRepo.findUser(userAlias);
         if(userResponse.getReason()!=OpCode.Success) {
-           /* log.warn(String.format("There was a problem from kind %s when trying to find user %s",
+            /*log.warn(String.format("There was a problem from kind %s when trying to find user %s",
                     userResponse.getReason(),
                     userAlias));*/
             return new Response<>(null,userResponse.getReason());

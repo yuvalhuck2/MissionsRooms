@@ -3,22 +3,30 @@ import { StyleSheet, Text, Dimensions, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
-import { TeacherStrings } from '../../locale/locale_heb';
+import { TeacherStrings, AllUsersStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
 import Header from '../common/Header';
 import TextInput from '../common/TextInput';
 import { Icon } from 'react-native-elements'
 import * as NavPaths from '../../navigation/NavPaths'
-import {passToAddTemplate,passToAddRoom,logout,passToRooms} from '../../actions'
+import {passToAddTemplate,passToAddRoom,logout, passToWatchProfiles, passToWatchMessages,passToWatchSuggestions,passToRooms} from '../../actions'
 
 const {
   addMission,
   addTemplate,
   createRoom,
   closeRoom,
-  main_screen,
-  WatchRooms,
+    watch_suggestions,
+    WatchRooms,
 } = TeacherStrings;
+
+
+const {
+  changePassword,
+  watchProfiles,
+  watch_messages,
+  main_screen,
+} = AllUsersStrings;
 
 
 const DeviceWidth  = Dimensions.get('window').width;
@@ -55,7 +63,19 @@ class TeacherForm extends Component {
           <Button onPress={()=>this.props.passToAddTemplate({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
           <Text style={{color:"white"}}>{addTemplate}</Text> 
           </Button>
-          <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]}/> 
+          <Button onPress={()=>this.props.passToWatchSuggestions({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
+          <Text style={{color:"white"}}>{watch_suggestions}</Text>
+          </Button>
+          <Button onPress={()=>navigation.navigate(NavPaths.changePassword)} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
+          <Text style={{color:"white"}}>{changePassword}</Text>
+          </Button>
+          <Button onPress={()=>this.props.passToAddTemplate({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
+          <Text style={{color:"white"}}>{addTemplate}</Text>
+          </Button>
+          <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]}
+            onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watchProfiles}</Text>
+          </Button>
         </View>
         <View>
           <Button  onPress={()=>this.props.passToAddRoom({navigation,apiKey})} mode="contained" style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >
@@ -65,6 +85,18 @@ class TeacherForm extends Component {
           <Button onPress={()=>this.props.passToRooms({navigation,apiKey,roomsType})} style={[styles.button, styles.bottom_button_marg, styles.right_button_border]} >
              <Text style={{color:"white"}}>{WatchRooms}</Text>
             {/* <Icon name='delete' /> */}
+          </Button>
+          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
+            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watch_messages}</Text>
+          </Button>
+          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
+            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watch_messages}</Text>
+          </Button>
+          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
+            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{watch_messages}</Text>
           </Button>
           <Button onPress={this.onLogout} style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]}>
           <Text style={{color:"white"}}>{main_screen}</Text> 
@@ -88,7 +120,7 @@ const styles = StyleSheet.create({
     backgroundColor: backgroundColor
   },
   button: {width: DeviceWidth*0.5,
-     height: DeviceWidth*0.45,
+     height: DeviceWidth*0.28,
      borderStyle: 'solid',
      borderWidth: 1,
      borderColor: 'black',
@@ -131,5 +163,8 @@ export default connect(mapStateToProps,{
 passToAddTemplate,
 passToAddRoom,
 logout,
+passToWatchProfiles,
+passToWatchMessages,
+passToWatchSuggestions,
 passToRooms,
 })(TeacherForm);

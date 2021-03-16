@@ -18,8 +18,16 @@ import {
     StudentScreen,
     TeacherScreen,
     UploadCsvScreen,
-    AddITScreen,
-    ChooseTeacherRoomTypeScreen,ChooseClassroomRoomScreen
+    ChooseTeacherRoomTypeScreen,
+    ChooseClassroomRoomScreen,
+    UploadCsvScreen,
+  AddITScreen,
+  SolveStoryScreen,
+  WatchProfileScreen,
+  WatchMessagesScreen,
+  WatchSuggestionsScreen,
+  ChangePasswordScreen,
+  Test,
 } from './components/screens';
 import TeacherRoomMenuScreen from "./components/screens/TeacherRoomMenuScreen";
 
@@ -33,9 +41,25 @@ const App = () => {
           name='AddIT'
           component={AddITScreen}
         />
+      <Stack.Screen
+          name='ChangePassword'
+          component={ChangePasswordScreen}
+        />
+      <Stack.Screen
+          name='Test'
+          component={Test}
+        />
+      <Stack.Screen
+          name='AddIT'
+          component={AddITScreen}
+        />
         <Stack.Screen
           name='SolveDeterministic'
           component={SolveDeterministicScreen}
+        />
+        <Stack.Screen
+          name='SolveStory'
+          component={SolveStoryScreen}
         />
         <Stack.Screen
           name='ChooseStudentRoom'
@@ -63,7 +87,10 @@ const App = () => {
         <Stack.Screen name='AddRoom' component={AddRoomScreen} />
         <Stack.Screen name='IT' component={ITScreen} />
         <Stack.Screen name="UploadCsv" component={UploadCsvScreen}/>
+        <Stack.Screen name="WatchProfile" component={WatchProfileScreen}/>
+        <Stack.Screen name="WatchMessages" component={WatchMessagesScreen}/>
         <Stack.Screen name="AddSuggestion" component={AddSuggestionScreen}/>
+        <Stack.Screen name="WatchSuggestions" component={WatchSuggestionsScreen}/>
         <Stack.Screen name ="ChooseTeacherRoomType" component={ChooseTeacherRoomTypeScreen}/>
         <Stack.Screen name ="ChooseClassroomRoom" component={ChooseClassroomRoomScreen}/>
         <Stack.Screen name = "TeacherRoomMenu" component={TeacherRoomMenuScreen}/>
