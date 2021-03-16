@@ -11,6 +11,7 @@ import missions.room.Repo.StudentRepo;
 import missions.room.Repo.SuggestionRepo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
@@ -19,6 +20,7 @@ import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class SuggestionMangerTestsAllReal extends SuggestionManagerTestsRealRamStudentTeacher{
@@ -44,6 +46,10 @@ public class SuggestionMangerTestsAllReal extends SuggestionManagerTestsRealRamS
 
     private void setUpAddSuggestion() {
         suggestionCrudRepository.save(dataGenerator.getSuggestion(Data.VALID));
+        suggestionId=suggestionCrudRepository.findAll()
+                .iterator()
+                .next()
+                .getId();
     }
 
     @Override
@@ -95,6 +101,29 @@ public class SuggestionMangerTestsAllReal extends SuggestionManagerTestsRealRamS
             fail();
         }
         testWatchSuggestionsInvalid(OpCode.DB_Error);
+    }
+
+    @Override
+    @Test
+    void testDeleteSuggestionsHappyTest() {
+        setUpAddSuggestion();
+        super.testDeleteSuggestionsHappyTest();
+    }
+
+    @Override
+    void testDeleteSuggestionInvalidDeleteSuggestionThrowsExceptionTest() {
+        Mockito.doThrow(new DataRetrievalFailureException(""))
+                .when(mockSuggestionCrudRepository).deleteById(anyString());
+        realSuggestionRepo=new SuggestionRepo(mockSuggestionCrudRepository);
+        try {
+            Field suggestionRepo = SuggestionManager.class.getDeclaredField("suggestionRepo");
+            suggestionRepo.setAccessible(true);
+            suggestionRepo.set(suggestionManager,realSuggestionRepo);
+
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            fail();
+        }
+        testDeleteSuggestionInvalid(OpCode.DB_Error);
     }
 
     @Override

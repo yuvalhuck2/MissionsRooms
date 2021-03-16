@@ -2,6 +2,7 @@ package missions.room.Domain.Users;
 
 import DataAPI.OpCode;
 import DataAPI.StudentData;
+import DataAPI.UserProfileData;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -14,6 +15,7 @@ public class Student extends SchoolUser {
     private int points;
 
     public Student() {
+        super();
     }
 
     @Override
@@ -37,5 +39,10 @@ public class Student extends SchoolUser {
 
     public StudentData getStudentData() {
         return new StudentData(alias,firstName,lastName);
+    }
+
+
+    public UserProfileData getProfileData() {
+        return new UserProfileData(firstName,lastName,alias,OpCode.Student,points);
     }
 }

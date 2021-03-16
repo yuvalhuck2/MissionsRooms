@@ -1,6 +1,7 @@
 package missions.room.Domain;
 
 import DataAPI.StudentData;
+import DataAPI.SuggestionData;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -36,5 +37,9 @@ public class Suggestion {
         if (o == null || getClass() != o.getClass()) return false;
         Suggestion suggestion = (Suggestion) o;
         return  Objects.equals(suggestion.suggestion, this.suggestion);
+    }
+
+    public SuggestionData getData() {
+        return new SuggestionData(id,suggestion);
     }
 }

@@ -23,7 +23,7 @@ public class MailSender {
         properties.put("mail.smtp.port", "587");
     }
 
-    public boolean send(String to, String code){
+    public Boolean send(String to, String code){
 
         // Get the default Session object.
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {

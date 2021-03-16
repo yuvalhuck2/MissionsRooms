@@ -5,10 +5,9 @@ import missions.room.Communications.Publisher.SinglePublisher;
 import missions.room.Domain.Notifications.NonPersistenceNotification;
 import missions.room.Service.StudentRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,5 +52,23 @@ public class StudentRoomController extends AbsController{
         Response<Boolean> response = studentRoomService.answerDeterministicQuestion(data.getApiKey(),
                 data.getRoomId(),data.isAnswer());
         return response;
+    }
+    @PostMapping("/openAns")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Response<?> answerOpenQuestion(@RequestParam(name = "file", required = false) MultipartFile file, @RequestParam("missionId") String missionId, @RequestParam("roomId") String roomId, @RequestParam(name = "openAnswer", defaultValue = "") String openAnswer, @RequestParam String token) {
+        SolutionData solutionData = new SolutionData(missionId, roomId, openAnswer);
+        return studentRoomService.answerOpenQuestionMission(token, solutionData, file);
+    }
+
+    @PostMapping("/story")
+    public Response<?> answerStory(@RequestBody String storyAnswer) {
+        StoryAnswerData data= json.fromJson(storyAnswer, StoryAnswerData.class);
+        return studentRoomService.answerStoryMission(data.getApiKey(), data.getRoomId(), data.getSentence());
+    }
+
+    @PostMapping("/finish/story")
+    public Response<?> finishStory(@RequestBody String storyFinish) {
+        RoomIdAndApiKeyData data= json.fromJson(storyFinish, RoomIdAndApiKeyData.class);
+        return studentRoomService.finishStoryMission(data.getApiKey(), data.getRoomId());
     }
 }

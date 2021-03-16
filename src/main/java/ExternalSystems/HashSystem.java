@@ -9,7 +9,7 @@ public class HashSystem {
     /**
      * use case 2.2 - Register
      * use case 2.3 - Login
-     * @param passwordToHash
+     * @param passwordToHash - the password t hash
      * @return encrypted password
      */
     public String encrypt(String passwordToHash)  {
