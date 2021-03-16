@@ -20,7 +20,6 @@ import {
     UploadCsvScreen,
     ChooseTeacherRoomTypeScreen,
     ChooseClassroomRoomScreen,
-    UploadCsvScreen,
   AddITScreen,
   SolveStoryScreen,
   WatchProfileScreen,
@@ -37,10 +36,6 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Register'>
-      <Stack.Screen
-          name='AddIT'
-          component={AddITScreen}
-        />
       <Stack.Screen
           name='ChangePassword'
           component={ChangePasswordScreen}

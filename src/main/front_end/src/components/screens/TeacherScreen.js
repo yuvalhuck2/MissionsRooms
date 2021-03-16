@@ -69,9 +69,6 @@ class TeacherForm extends Component {
           <Button onPress={()=>navigation.navigate(NavPaths.changePassword)} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
           <Text style={{color:"white"}}>{changePassword}</Text>
           </Button>
-          <Button onPress={()=>this.props.passToAddTemplate({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
-          <Text style={{color:"white"}}>{addTemplate}</Text>
-          </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]}
             onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
             <Text style={{color:"white"}}>{watchProfiles}</Text>
@@ -85,10 +82,6 @@ class TeacherForm extends Component {
           <Button onPress={()=>this.props.passToRooms({navigation,apiKey,roomsType})} style={[styles.button, styles.bottom_button_marg, styles.right_button_border]} >
              <Text style={{color:"white"}}>{WatchRooms}</Text>
             {/* <Icon name='delete' /> */}
-          </Button>
-          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
-            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
-            <Text style={{color:"white"}}>{watch_messages}</Text>
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
             onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
