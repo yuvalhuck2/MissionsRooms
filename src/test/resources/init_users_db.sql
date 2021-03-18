@@ -19,13 +19,14 @@ INSERT INTO TEACHER (alias,group_type, classroom_class_name) VALUES
 ('tal', 0,'class');
 
 INSERT INTO MISSION(mission_id,points) VALUES
-('mid1',2), ('mid2',2),('story1',2),('story2',4);
+('mid1',2), ('mid2',2),('story1',2),('story2',4),('open1',1);
 
 INSERT INTO MISSION_MISSION_TYPES(mission_mission_id,mission_types) VALUES
 ('mid1',0), ('mid2',2),('mid1',1),('mid1',2),
 ('story1',0),('story1',1),('story1',2),
-('story2',0),('story2',1),('story2',2);
+('story2',0),('story2',1),('story2',2),('open1',0);
 
+INSERT INTO OPEN_ANSWER_MISSION(question,mission_id) VALUES ('WHATS MY NAME','open1');
 INSERT INTO KNOWN_ANSWER_MISSION(question,real_answer,mission_id) VALUES
 ('שאלה','תשובה','mid1'),('שאלה2','תשובה2','mid2');
 
@@ -34,21 +35,21 @@ INSERT INTO STORY_MISSION(mission_id) VALUES
 
 INSERT INTO ROOM_TEMPLATE(room_template_id,minimal_missions_to_pass,name,type) VALUES
 ('tid1',0,'תבנית אישית',0),('tid2',0,'תבנית קבוצתית',1),('tid3',0,'תבנית כיתתית',2),
-('tid_story',0,'תבנית סיפור',2);
+('tid_story',0,'תבנית סיפור',2),('tid_open',1,'open',0);
 
 INSERT INTO MISSION_TEMPLATES(room_template_id,mission_id,index) VALUES
 ('tid1','mid2',0),('tid1','mid1',1),('tid2','mid1',0),('tid2','mid2',1),('tid3','mid1',0),('tid3','mid2',1)
-,('tid_story','story1',0),('tid_story','story2',1);
+,('tid_story','story1',0),('tid_story','story2',1),('tid_open','open1',0),('tid_open','mid1',1);
 
 INSERT INTO ROOM(room_id,bonus,count_correct_answer
-,current_mission,name,room_template_room_template_id,teacher_alias) VALUES
-('rid1',1,0,0,'אישי של ניב','tid1','tal'),('rid2',1,0,0,'קבוצתי של איי','tid2','tal'),
+,current_mission,is_teacher_connect,name,room_template_room_template_id,teacher_alias) VALUES
+('rid1',1,0,0,false,'אישי של ניב','tid1','tal'),('rid2',1,0,0,false,'קבוצתי של איי','tid2','tal'),
 -- ('rid3',1,0,0,'כיתתי של קלאס','tid3','tal')
 -- ,('rid4',1,0,0,'אישי של רוי','tid1','tal')
-('rid_story',1,0,0,'סיפור כיתתי','tid_story','tal');
+('rid_story',1,0,0,false,'סיפור כיתתי','tid_story','tal'),('rid_open',1,0,0,false,'open','tid_open','tal');
 
 INSERT INTO STUDENT_ROOM(room_id,participant_alias) values
-('rid1','niv');--,('rid4','roy4');
+('rid1','niv'),('rid_open','roy4');
 
 
 INSERT INTO GROUP_ROOM(room_id,participant_group_name) values

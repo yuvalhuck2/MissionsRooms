@@ -23,3 +23,4 @@ export const deleteSuggestion = "suggestion/delete"
 export const watchSuggestions = "suggestion/view"
 export const changePassword = "UserAuth/password/change"
 export const watchTeacherRooms='room/view'
+export const closeRoom='room/close'

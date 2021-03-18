@@ -6,6 +6,7 @@ import CrudRepositories.TeacherCrudRepository;
 import DataAPI.*;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;
+import javassist.bytecode.Opcode;
 import lombok.extern.apachecommons.CommonsLog;
 import javafx.util.Pair;
 import lombok.extern.apachecommons.CommonsLog;
@@ -245,6 +246,9 @@ public class RoomManager extends TeacherManager {
             return new Response<>(false,roomResponse.getReason());
         }
         Room room=roomResponse.getValue();
+        if(room.getConnectedUsersAliases().size()>0){
+            return new Response<>(false, OpCode.CONNECTED_STUDENTS);
+        }
         //TODO don't close room if someone is connected to it
         return roomRepo.deleteRoom(room);
     }

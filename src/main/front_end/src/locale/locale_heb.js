@@ -152,6 +152,11 @@ export const AddRoomErrors = {
   room_added: 'החדר נוסף בהצלחה',
 };
 
+export const CloseRoom ={
+    room_closed:'החדר נמחק בהצלחה',
+    connected_students:'המחיקה נכשלה: ישנם תלמידים מחוברים לחדר',
+}
+
 export const ChooseTempalteStrings = {
   header: 'יש לבחור תבנית לחדר',
   template_name: 'שם התבנית: ',

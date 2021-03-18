@@ -28,7 +28,8 @@ public class Ram {
     }
 
     public String getApiKey(String alias){
-        return aliasToApi.get(alias);
+        String api=aliasToApi.get(alias);
+        return api;
     }
 
     public Room getRoom(String roomId){

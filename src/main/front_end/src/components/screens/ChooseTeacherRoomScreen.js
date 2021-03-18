@@ -36,18 +36,28 @@ class ChooseClassroomRoomForm extends Component{
         this.props.passToRoomMenu( {currentRoom,navigation,apiKey} );
     }
 
-    renderButton(){
-        const{apiKey,presentRooms}=this.props;
-        if (presentRooms.roomDetailsDataList.length>0){
-            return (
-                <Button
-                    mode='contained'
-                    style={styles.button}
-                    onPress={this.onButtonPress}
-                >
-                    {solve}
-                </Button>
-            )
+    renderButton=({apiKey,presentRooms})=>{
+        //const{apiKey,presentRooms}=this.props;
+        console.log(presentRooms);
+        if(presentRooms!=''){
+            if (presentRooms.roomDetailsDataList.length>0){
+                return (
+                    <Button
+                        mode='contained'
+                        style={styles.button}
+                        onPress={this.onButtonPress}
+                    >
+                        {solve}
+                    </Button>
+                )
+            }
+            else{
+                return (
+                    <View>
+                        <Text style={styles.errorTextStyle}>{no_rooms}</Text>
+                    </View>
+                )
+            }
         }
         else{
             return (
@@ -79,29 +89,31 @@ class ChooseClassroomRoomForm extends Component{
         return room_name+room.name;
     }
 
-    renderRadioButtons(){
-        const {presentRooms}=this.props;
+    renderRadioButtons=({presentRooms})=>{
+        //const {presentRooms}=this.props;
         let lst=[];
-        if(presentRooms.roomDetailsDataList.length>0) {
-            presentRooms.roomDetailsDataList.map((room) => {
-                lst.push(
-                    <RadioButton.Item
-                        label={this.renderRoom(room)}
-                        value={room}
-                        color={theme.colors.primary}
-                        labelStyle={{
-                            fontWeight: 'bold',
-                            color: theme.colors.secondary,
-                        }}
+        if(presentRooms!='') {
+            if (presentRooms.roomDetailsDataList.length > 0) {
+                presentRooms.roomDetailsDataList.map((room) => {
+                    lst.push(
+                        <RadioButton.Item
+                            label={this.renderRoom(room)}
+                            value={room}
+                            color={theme.colors.primary}
+                            labelStyle={{
+                                fontWeight: 'bold',
+                                color: theme.colors.secondary,
+                            }}
 
-                    />)
-            });
+                        />)
+                });
+            }
         }
         return lst;
     }
 
     render(){
-        const {currentRoom}=this.props;
+        const {apiKey,presentRooms,currentRoom}=this.props;
 
         return (
             <KeyboardAwareScrollView style={styles.container}>
@@ -109,9 +121,9 @@ class ChooseClassroomRoomForm extends Component{
                 <RadioButton.Group
                     onValueChange={(value) => this.onRoomChanged(value)}
                     value={currentRoom}>
-                    {this.renderRadioButtons()}
+                    {this.renderRadioButtons({presentRooms})}
                 </RadioButton.Group>
-                {this.renderButton()}
+                {this.renderButton({apiKey,presentRooms})}
                 {this.renderError()}
             </KeyboardAwareScrollView>
         );
