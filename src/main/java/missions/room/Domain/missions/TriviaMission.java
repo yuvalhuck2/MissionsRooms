@@ -1,10 +1,13 @@
 package missions.room.Domain.missions;
 
 
+import DataAPI.MissionData;
 import DataAPI.RoomType;
 import missions.room.Domain.TriviaQuestion;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,6 +15,7 @@ import java.util.Set;
 public class TriviaMission extends Mission {
 
     private int secondsForAnswer;
+    private double correctPercentage;
 
     @OneToMany
     @MapKey(name = "id")
@@ -21,12 +25,15 @@ public class TriviaMission extends Mission {
     )
     private Map<String, TriviaQuestion> questions;
 
+    private final static String missionName = "Trivia Mission";
+
     public TriviaMission() {
     }
 
-    public TriviaMission(String missionId, Set<RoomType> missionTypes, int secondsForAnswer, Map<String, TriviaQuestion> questions) {
+    public TriviaMission(String missionId, Set<RoomType> missionTypes, int secondsForAnswer, double correctPercentage, Map<String, TriviaQuestion> questions) {
         super(missionId, missionTypes);
         this.secondsForAnswer = secondsForAnswer;
+        this.correctPercentage = correctPercentage;
         this.questions = questions;
     }
 
@@ -44,5 +51,50 @@ public class TriviaMission extends Mission {
 
     public void setQuestions(Map<String, TriviaQuestion> questions) {
         this.questions = questions;
+    }
+
+    public List<List<String>> getPossibleAnswers(){
+        List<List<String>> possibleAnswers = new ArrayList<>();
+
+        for(TriviaQuestion triviaQuestion : this.questions.values()){
+            List<String> currentAnswers = triviaQuestion.getAnswers();
+            possibleAnswers.add(currentAnswers);
+        }
+        return possibleAnswers;
+    }
+
+    public List<String> getTriviaCorrectAnswers(){
+        List<String> answers = new ArrayList<>();
+        for (TriviaQuestion triviaQuestion : this.questions.values()){
+            answers.add(triviaQuestion.getCorrectAnswer());
+        }
+        return answers;
+    }
+
+    public List<String> getTriviaQuestions(){
+        List<String> questions = new ArrayList<>();
+        for (TriviaQuestion triviaQuestion : this.questions.values()){
+            questions.add(triviaQuestion.getQuestion());
+        }
+        return questions;
+    }
+
+    @Override
+    public String getMissionName() {
+        return missionName;
+    }
+
+    @Override
+    public MissionData completeTheRestOfMissionData(MissionData missionData) {
+        List<String> questions = this.getTriviaQuestions();
+        List<String> answers = this.getTriviaCorrectAnswers();
+        List<List<String>> possibleAnswers = this.getPossibleAnswers();
+
+        missionData.setQuestion(questions);
+        missionData.setAnswers(answers);
+        missionData.setPossibleAnswers(possibleAnswers);
+        missionData.setCorrectPercentage(this.correctPercentage);
+
+        return missionData;
     }
 }

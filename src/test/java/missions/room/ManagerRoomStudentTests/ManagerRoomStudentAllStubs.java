@@ -161,6 +161,17 @@ public class ManagerRoomStudentAllStubs {
                 .thenReturn(true);
     }
 
+    protected void initTriviaRoom(){
+        Room room =dataGenerator.getRoom(Data.VALID_TRIVIA);
+        Student student = dataGenerator.getStudent(Data.VALID);
+        initMockRoom(Data.VALID_TRIVIA);
+        when(mockRam.connectToRoom(room.getRoomId(),student.getAlias()))
+                .thenReturn(NOT_IN_CHARGE);
+        validRoomId=room.getRoomId();
+        when(mockRam.isRoomExist(room.getRoomId()))
+                .thenReturn(true);
+    }
+
     protected void initFinishStoryRoom() {
         initStoryRoom();
         Room room =dataGenerator.getRoom(Data.VALID_STORY);
@@ -463,6 +474,16 @@ public class ManagerRoomStudentAllStubs {
                 room.getRoomId());
         assertEquals(roomDetailsDataResponse.getReason(), IN_CHARGE);
         assertEquals(roomDetailsDataResponse.getValue(),room.getData());
+    }
+
+    @Test
+    void testWatchRoomTriviaMissionHappyTest(){
+        initTriviaRoom();
+        Room room = dataGenerator.getRoom(Data.VALID_TRIVIA);
+        Response<RoomDetailsData> roomDetailsDataResponse = managerRoomStudentWithMock.watchRoomData(studentApiKey, room.getRoomId());
+        assertEquals(roomDetailsDataResponse.getReason(), NOT_IN_CHARGE);
+        assertEquals(roomDetailsDataResponse.getValue(), room.getData());
+
     }
 
     @Test

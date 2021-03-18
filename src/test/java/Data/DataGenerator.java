@@ -16,6 +16,7 @@ import missions.room.Domain.missions.KnownAnswerMission;
 import DomainMocks.TeacherMock;
 import missions.room.Domain.missions.Mission;
 import missions.room.Domain.missions.StoryMission;
+import missions.room.Domain.missions.TriviaMission;
 
 import java.util.*;
 
@@ -42,6 +43,7 @@ public class DataGenerator {
     private HashMap<Data, String> triviaSubjectHashMap;
     private HashMap<Data, TriviaQuestionData> triviaQuestionHashMap;
     private HashMap<Data, MessageData> messageDataMap;
+    private HashMap<Data, TriviaQuestion> triviaQuestionsMap;
 
     public DataGenerator() {
         initStudents();
@@ -54,6 +56,8 @@ public class DataGenerator {
         initRegisterDetailsDatas();
         initVerificationCodes();
         initTeacher();
+        initTriviaData();
+        initTriviaQuestionsData();
         initMissions();
         initRoomTemplateDatas();
         initRoomTemplates();
@@ -61,7 +65,6 @@ public class DataGenerator {
         initNewRoomDetails();
         initLoginDatas();
         initUsers();
-        initTriviaData();
         initMessagesData();
     }
 
@@ -93,6 +96,20 @@ public class DataGenerator {
                 "", triviaSubjectHashMap.get(Data.VALID)));
 
     }
+
+    private void initTriviaQuestionsData(){
+        triviaQuestionsMap = new HashMap<>();
+
+        TriviaQuestionData valid1 = triviaQuestionHashMap.get(Data.VALID);
+        TriviaQuestionData valid2 = triviaQuestionHashMap.get(Data.VALID2);
+
+        triviaQuestionsMap.put(Data.VALID, new TriviaQuestion("id0", valid1.getQuestion(),
+                valid1.getAnswers(), valid1.getCorrectAnswer(), valid1.getSubject()));
+        triviaQuestionsMap.put(Data.VALID2, new TriviaQuestion("id1", valid2.getQuestion(),
+                valid2.getAnswers(), valid2.getCorrectAnswer(), valid2.getSubject()));
+
+    }
+
     private void initSuggestions() {
         suggestionHashMap=new HashMap<Data, Suggestion>();
         suggestionHashMap.put(Data.VALID,new Suggestion("id","suggest something"));
@@ -226,6 +243,14 @@ public class DataGenerator {
                         teachers.get(Data.Valid_2Students_From_Different_Groups),
                         roomTemplates.get(Data.VALID_STORY),
                         3));
+
+        roomsMap.put(Data.VALID_TRIVIA,
+                new ClassroomRoom("triviaIdRoom", "triviaRoom",
+                        classRoomMap.get(Data.Valid_2Students_From_Different_Groups),
+                        teachers.get(Data.Valid_2Students_From_Different_Groups),
+                        roomTemplates.get(Data.VALID_TRIVIA),
+                        3
+                        ));
     }
 
     private void initRoomTemplateDatas() {
@@ -261,6 +286,10 @@ public class DataGenerator {
         storyMission.add(getMission(Data.VALID_STORY).getMissionId());
         storyMission.add(getMission(Data.VALID_STORY2).getMissionId());
         roomTemplatesDatas.put(Data.VALID_STORY,new RoomTemplateDetailsData(storyMission,"story",1,RoomType.Class));
+
+        List<String> triviaMissions = new ArrayList<>();
+        triviaMissions.add(getMission(Data.VALID_TRIVIA).getMissionId());
+        roomTemplatesDatas.put(Data.VALID_TRIVIA, new RoomTemplateDetailsData(triviaMissions, "trivia", 1, RoomType.Class));
     }
 
     private void initRoomTemplates() {
@@ -311,6 +340,12 @@ public class DataGenerator {
         roomTemplateDetailsData=getRoomTemplateData(Data.VALID_STORY);
         roomTemplateDetailsData.setId("story template");
         roomTemplates.put(Data.VALID_STORY,new RoomTemplate(roomTemplateDetailsData,storyMission));
+
+        List<Mission> triviaMissions = new ArrayList<>();
+        triviaMissions.add(getMission(Data.VALID_TRIVIA));
+        roomTemplateDetailsData = getRoomTemplateData(Data.VALID_TRIVIA);
+        roomTemplateDetailsData.setId("trivia template");
+        roomTemplates.put(Data.VALID_TRIVIA, new RoomTemplate(roomTemplateDetailsData, triviaMissions));
     }
 
     private void initMissions() {
@@ -335,6 +370,12 @@ public class DataGenerator {
         missions.put(Data.EMPTY_ANSWER_DETERMINISTIC,new KnownAnswerMission("ddd",types,"question",""));
         missions.put(Data.VALID_STORY,new StoryMission("story",types,""));
         missions.put(Data.VALID_STORY2,new StoryMission("story2",types,""));
+
+
+        Map<String, TriviaQuestion> triviaQuestions = new HashMap<>();
+        for (TriviaQuestion triviaQuestion: triviaQuestionsMap.values())
+            triviaQuestions.put(triviaQuestion.getId(), triviaQuestion);
+        missions.put(Data.VALID_TRIVIA, new TriviaMission("trivia", allTypes, 0, 0.5, triviaQuestions));
     }
 
     private void initTeacher() {

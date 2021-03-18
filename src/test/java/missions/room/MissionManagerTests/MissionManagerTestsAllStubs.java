@@ -159,7 +159,6 @@ public class MissionManagerTestsAllStubs {
         assertEquals(mission.getMissionId(),missionData.getMissionId());
         assertEquals(mission.getMissionTypes(),missionData.getMissionTypes());
         assertEquals(((KnownAnswerMission)mission).getQuestion(),missionData.getQuestion().get(0));
-        assertEquals(missionData.getTimeForAns(),-1);
     }
 
     @Test
@@ -211,7 +210,6 @@ public class MissionManagerTestsAllStubs {
 
     }
     protected void testSearchMissionsTeacherNotFoundErrorTest(){
-
         Response<List<MissionData>> response=missionManager.searchMissions(apiKey);
         assertEquals(response.getReason(),OpCode.Not_Exist);
         assertNull(response.getValue());

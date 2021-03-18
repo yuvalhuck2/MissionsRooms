@@ -19,18 +19,35 @@ INSERT INTO TEACHER (alias,group_type, classroom_class_name) VALUES
 ('tal', 0,'class');
 
 INSERT INTO MISSION(mission_id,points) VALUES
-('mid1',2), ('mid2',2),('story1',2),('story2',4);
+('mid1',2), ('mid2',2),('story1',2),('story2',4), ('trivia1', 5);
 
 INSERT INTO MISSION_MISSION_TYPES(mission_mission_id,mission_types) VALUES
 ('mid1',0), ('mid2',2),('mid1',1),('mid1',2),
 ('story1',0),('story1',1),('story1',2),
-('story2',0),('story2',1),('story2',2);
+('story2',0),('story2',1),('story2',2),
+('trivia1', 0), ('trivia1', 1), ('trivia1', 2);
 
 INSERT INTO KNOWN_ANSWER_MISSION(question,real_answer,mission_id) VALUES
 ('שאלה','תשובה','mid1'),('שאלה2','תשובה2','mid2');
 
 INSERT INTO STORY_MISSION(mission_id) VALUES
 ('story1'),('story2');
+
+INSERT INTO TRIVIA_MISSION(correct_percentage, seconds_for_answer, mission_id) VALUES
+(0.5, 10, 'trivia1');
+
+INSERT INTO TRIVIA_SUBJECT(name) VALUES ( 'subject1' );
+
+INSERT INTO TRIVIA_QUESTION(id, correct_answer, question, subject) VALUES
+('0', 'ans0', 'quest0', 'subject1'), ('1', 'ans1', 'quest1', 'subject1'), ('2', 'ans2', 'quest2', 'subject1');
+
+INSERT INTO TRIVIA_MISSION_QUESTIONS  (mission_id, id) VALUES
+('trivia1', 0), ('trivia1', 1), ('trivia1', 2);
+
+INSERT INTO TRIVIA_QUESTION_ANSWERS(trivia_question_id, answer) VALUES
+('0', 'ans0'),('0', 'ans0_1'),('0', 'ans0_2'),('0', 'ans0_3'),
+('1', 'ans1'),('1', 'ans1_1'),('1', 'ans1_2'),('1', 'ans1_3'),
+('0', 'ans2'),('1', 'ans2_1'),('2', 'ans2_2'),('2', 'ans2_3');
 
 INSERT INTO ROOM_TEMPLATE(room_template_id,minimal_missions_to_pass,name,type) VALUES
 ('tid1',0,'תבנית אישית',0),('tid2',0,'תבנית קבוצתית',1),('tid3',0,'תבנית כיתתית',2),

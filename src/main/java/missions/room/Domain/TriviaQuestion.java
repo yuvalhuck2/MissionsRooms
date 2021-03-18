@@ -16,7 +16,7 @@ public class TriviaQuestion {
     private String question;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @OrderColumn(name="INDEX")
+//    @OrderColumn(name="INDEX")
     @Column(name="answer")
     private List<String> answers;
 

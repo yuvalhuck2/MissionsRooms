@@ -11,9 +11,11 @@ public class MissionData {
     private Set<RoomType> missionTypes;
     private String name;
     private List<String> question;
-    private int timeForAns;
     private List<String> answers;
     private String story;
+    private List<List<String>> possibleAnswers;
+    private double correctPercentage;
+
 
     public MissionData(String missionId, Set<RoomType> missionTypes, String name, String story) {
         this.missionId = missionId;
@@ -26,7 +28,6 @@ public class MissionData {
         this.missionId=missionId;
         this.missionTypes=missionTypes;
         this.question=null;
-        this.timeForAns=-1;
     }
 
     public MissionData(String missionId, Set<RoomType> missionTypes, String name, List<String> question, int timeForAns) {
@@ -34,7 +35,6 @@ public class MissionData {
         this.missionTypes = missionTypes;
         this.name = name;
         this.question = question;
-        this.timeForAns = timeForAns;
     }
 
     public void setName(String name) {
@@ -43,10 +43,6 @@ public class MissionData {
 
     public void setQuestion(List<String> question) {
         this.question = question;
-    }
-
-    public void setTimeForAns(int timeForAns) {
-        this.timeForAns = timeForAns;
     }
 
     public String getMissionId() {
@@ -65,10 +61,6 @@ public class MissionData {
         return question;
     }
 
-    public int getTimeForAns() {
-        return timeForAns;
-    }
-
     public List<String> getAnswers() {
         return answers;
     }
@@ -81,6 +73,18 @@ public class MissionData {
         return story;
     }
 
+    public List<List<String>> getPossibleAnswers() {
+        return possibleAnswers;
+    }
+
+    public void setPossibleAnswers(List<List<String>> possibleAnswers) {
+        this.possibleAnswers = possibleAnswers;
+    }
+
+    public void setCorrectPercentage(double correctPercentage) {
+        this.correctPercentage = correctPercentage;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -89,7 +93,6 @@ public class MissionData {
         return  Objects.equals(name, missionData.name) &&
                 Objects.equals(missionTypes,missionData.missionTypes) &&
                 Objects.equals(question,missionData.question) &&
-                Objects.equals(timeForAns,missionData.timeForAns) &&
                 Objects.equals(answers,missionData.answers);
     }
 
