@@ -25,7 +25,7 @@ public class TriviaMission extends Mission {
     )
     private Map<String, TriviaQuestion> questions;
 
-    private final static String missionName = "Trivia Mission";
+    private final static String missionName = "Trivia_Mission";
 
     public TriviaMission() {
     }

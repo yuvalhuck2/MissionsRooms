@@ -33,7 +33,7 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="TriviaMissionScreen">
+      <Stack.Navigator initialRouteName="Register">
         <Stack.Screen name="TriviaMissionScreen" component={TriviaMissionScreen} />
         <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
         <Stack.Screen name="Test" component={Test} />

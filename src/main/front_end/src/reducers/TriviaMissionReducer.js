@@ -1,13 +1,14 @@
 import {
   CHANGE_ANSWER_TRIVIA_MISSION,
   CLEAR_STATE,
-  GET_TRIVIA_QUESTIONS,
+  INIT_TRIVIA_MISSION,
   SUBMIT_ANSWERS_TRIVIA_MISSION,
   UPDATE_ERROR_TRIVIA_MISSION,
 } from "../actions/types";
 
 const initialState = {
   missionId: "",
+  mission: undefined,
   questions: new Map([
     [
       "id0",
@@ -49,8 +50,13 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case GET_TRIVIA_QUESTIONS:
-      return { ...state, questions: action.payload };
+    case INIT_TRIVIA_MISSION:
+      return {
+        ...state,
+        questions: action.payload.triviaMap,
+        mission: action.payload.currentMission,
+        isInCharge: action.payload.isInCharge,
+      };
     case CHANGE_ANSWER_TRIVIA_MISSION:
       let question = state.questions.get(action.payload.questionId);
       question.currentAnswer = action.payload.answer;
