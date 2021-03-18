@@ -1,88 +1,81 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
+import TriviaMissionScreen from "./components/screens/TriviaMissionScreen";
 import {
-    AddDeterministicMissionScreen,
-    AddRoomScreen,
-    AddRoomTemplateScreen,
-    AddSuggestionScreen,
-    AuthScreen,
-    ChooseMissionsForTemplateScreen,
-    ChooseMissionToAddScreen,
-    ChooseStudentRoomScreen,
-    ChooseTemplateScreen,
-    ITScreen,
-    LoginScreen,
-    RegisterScreen,
-    SolveDeterministicScreen,
-    StudentScreen,
-    TeacherScreen,
-    UploadCsvScreen,
+  AddDeterministicMissionScreen,
   AddITScreen,
-  SolveStoryScreen,
-  WatchProfileScreen,
-  WatchMessagesScreen,
-  WatchSuggestionsScreen,
+  AddRoomScreen,
+  AddRoomTemplateScreen,
+  AddSuggestionScreen,
+  AuthScreen,
   ChangePasswordScreen,
+  ChooseMissionsForTemplateScreen,
+  ChooseMissionToAddScreen,
+  ChooseStudentRoomScreen,
+  ChooseTemplateScreen,
+  ITScreen,
+  LoginScreen,
+  RegisterScreen,
+  SolveDeterministicScreen,
+  SolveStoryScreen,
+  StudentScreen,
+  TeacherScreen,
   Test,
-} from './components/screens';
+  UploadCsvScreen,
+  WatchMessagesScreen,
+  WatchProfileScreen,
+  WatchSuggestionsScreen,
+} from "./components/screens";
 
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Register'>
-      <Stack.Screen
-          name='ChangePassword'
-          component={ChangePasswordScreen}
-        />
-      <Stack.Screen
-          name='Test'
-          component={Test}
-        />
-      <Stack.Screen
-          name='AddIT'
-          component={AddITScreen}
-        />
+      <Stack.Navigator initialRouteName="TriviaMissionScreen">
+        <Stack.Screen name="TriviaMissionScreen" component={TriviaMissionScreen} />
+        <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+        <Stack.Screen name="Test" component={Test} />
+        <Stack.Screen name="AddIT" component={AddITScreen} />
         <Stack.Screen
-          name='SolveDeterministic'
+          name="SolveDeterministic"
           component={SolveDeterministicScreen}
         />
+        <Stack.Screen name="SolveStory" component={SolveStoryScreen} />
         <Stack.Screen
-          name='SolveStory'
-          component={SolveStoryScreen}
-        />
-        <Stack.Screen
-          name='ChooseStudentRoom'
+          name="ChooseStudentRoom"
           component={ChooseStudentRoomScreen}
         />
         <Stack.Screen
-          name='ChooseTemplateScreen'
+          name="ChooseTemplateScreen"
           component={ChooseTemplateScreen}
         />
         <Stack.Screen
-          name='AddDeteministicMission'
+          name="AddDeteministicMission"
           component={AddDeterministicMissionScreen}
         />
-        <Stack.Screen name='AddMission' component={ChooseMissionToAddScreen} />
+        <Stack.Screen name="AddMission" component={ChooseMissionToAddScreen} />
         <Stack.Screen
-          name='ChooseMissionsForTemplate'
+          name="ChooseMissionsForTemplate"
           component={ChooseMissionsForTemplateScreen}
         />
-        <Stack.Screen name='AddTemplate' component={AddRoomTemplateScreen} />
-        <Stack.Screen name='Register' component={RegisterScreen} />
-        <Stack.Screen name='Login' component={LoginScreen} />
-        <Stack.Screen name='Auth' component={AuthScreen} />
-        <Stack.Screen name='Teacher' component={TeacherScreen} />
-        <Stack.Screen name='Student' component={StudentScreen} />
-        <Stack.Screen name='AddRoom' component={AddRoomScreen} />
-        <Stack.Screen name='IT' component={ITScreen} />
-        <Stack.Screen name="UploadCsv" component={UploadCsvScreen}/>
-        <Stack.Screen name="WatchProfile" component={WatchProfileScreen}/>
-        <Stack.Screen name="WatchMessages" component={WatchMessagesScreen}/>
-        <Stack.Screen name="AddSuggestion" component={AddSuggestionScreen}/>
-        <Stack.Screen name="WatchSuggestions" component={WatchSuggestionsScreen}/>
+        <Stack.Screen name="AddTemplate" component={AddRoomTemplateScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Auth" component={AuthScreen} />
+        <Stack.Screen name="Teacher" component={TeacherScreen} />
+        <Stack.Screen name="Student" component={StudentScreen} />
+        <Stack.Screen name="AddRoom" component={AddRoomScreen} />
+        <Stack.Screen name="IT" component={ITScreen} />
+        <Stack.Screen name="UploadCsv" component={UploadCsvScreen} />
+        <Stack.Screen name="WatchProfile" component={WatchProfileScreen} />
+        <Stack.Screen name="WatchMessages" component={WatchMessagesScreen} />
+        <Stack.Screen name="AddSuggestion" component={AddSuggestionScreen} />
+        <Stack.Screen
+          name="WatchSuggestions"
+          component={WatchSuggestionsScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

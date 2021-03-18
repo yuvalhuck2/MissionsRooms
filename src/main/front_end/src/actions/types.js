@@ -110,3 +110,7 @@ export const UPDATE_ERROR_CHANGE_PASSWORD= "update error password change"
 export const RESET_CHANGE_PASSWORD = "reset password change"
 export const NEW_PASSWORD_CHANGED = "new passord changed"
 export const WAIT_FOR_CHANGE_PASSWORD = "wait for password to change"
+export const GET_TRIVIA_QUESTIONS = "GET_TRIVIA_QUESTIONS";
+export const CHANGE_ANSWER_TRIVIA_MISSION = "CHANGE_ANSWER_TRIVIA_MISSION";
+export const SUBMIT_ANSWERS_TRIVIA_MISSION = "SUBMIT_ANSWERS_TRIVIA_MISSION";
+export const UPDATE_ERROR_TRIVIA_MISSION = "UPDATE_ERROR_TRIVIA_MISSION";
