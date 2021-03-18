@@ -42,6 +42,7 @@ public class DataGenerator {
     private HashMap<Data, String> triviaSubjectHashMap;
     private HashMap<Data, TriviaQuestionData> triviaQuestionHashMap;
     private HashMap<Data, MessageData> messageDataMap;
+    private HashMap<Data,HashSet<PointsData>> pointsDataSets;
 
     public DataGenerator() {
         initStudents();
@@ -63,6 +64,38 @@ public class DataGenerator {
         initUsers();
         initTriviaData();
         initMessagesData();
+        initPointsDataSet();
+    }
+
+    private void initPointsDataSet() {
+        pointsDataSets = new HashMap<Data, HashSet<PointsData>>();
+        HashSet<PointsData> hashSet = new HashSet<>();
+        HashSet<PointsData> groupHashSet = new HashSet<>();
+        Student student =students.get(Data.VALID);
+        hashSet.add(new PointsData(student.getAlias(),student.getPoints()));
+        student =students.get(Data.VALID2);
+        hashSet.add(new PointsData(student.getAlias(),student.getPoints()));
+
+        pointsDataSets.put(Data.Valid_Student,hashSet);
+        hashSet = new HashSet<>();
+        Classroom classroom = classRoomMap.get(Data.Valid_Classroom);
+        hashSet.add(new PointsData(classroom.getClassName(),classroom.getPoints()));
+        groupHashSet.add(new PointsData(classroom.getClassName()+" A",classroom.getPoints()));
+        groupHashSet.add(new PointsData(classroom.getClassName()+" B",classroom.getPoints()));
+        classroom = classRoomMap.get(Data.Valid_2Students_From_Different_Groups);
+        hashSet.add(new PointsData(classroom.getClassName(),classroom.getPoints()));
+        groupHashSet.add(new PointsData(classroom.getClassName()+" A",classroom.getPoints()));
+
+        pointsDataSets.put(Data.Valid_Classroom,hashSet);
+        pointsDataSets.put(Data.Valid_Group,groupHashSet);
+
+        hashSet = new HashSet<>();
+        student =students.get(Data.VALID);
+        hashSet.add(new PointsData(student.getAlias(),student.getPoints(), true));
+        student =students.get(Data.VALID2);
+        hashSet.add(new PointsData(student.getAlias(),student.getPoints()));
+
+        pointsDataSets.put(Data.VALID_TEACHER,hashSet);
     }
 
     private void initMessagesData() {
@@ -373,7 +406,7 @@ public class DataGenerator {
 
     private void initStudents() {
         students=new HashMap<Data, Student>();
-        students.put(Data.VALID,new Student("NoAlasIsExistWithThatName","Yuval","Sabag"));
+        students.put(Data.VALID,new Student("NoAlasIsExistWithThatName","Yuval","Sabag",4));
         students.put(Data.VALID2,new Student("valid2Alias","Tal","Cohen"));
     }
 
@@ -485,4 +518,6 @@ public class DataGenerator {
     }
 
     public MessageData getMessageData(Data data){ return messageDataMap.get(data); }
+
+    public HashSet<PointsData> getPointsHasSet(Data data){ return pointsDataSets.get(data); }
 }

@@ -128,7 +128,7 @@ public class Classroom{
                                         filter(Objects::nonNull).
                                         collect(Collectors.toList());
 
-        return new ClassRoomData(className,groupDataList);
+        return new ClassRoomData(className,points,groupDataList);
     }
 
     public List<String> getStudentsAlias() {
@@ -140,4 +140,14 @@ public class Classroom{
         return aliases;
     }
 
+
+    public RecordTable getClassroomPointsData(RecordTable recordTableData) {
+        recordTableData.addClassroomData(new PointsData(className,points));
+        for (ClassGroup group :
+                classGroups) {
+            group.getGroupPoints(recordTableData,className);
+        }
+        return recordTableData;
+
+    }
 }

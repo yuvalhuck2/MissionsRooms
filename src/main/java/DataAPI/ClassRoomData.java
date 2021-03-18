@@ -6,10 +6,12 @@ import java.util.Objects;
 public class ClassRoomData {
     private String name;
     private List<GroupData> groups;
+    private int points;
 
-    public ClassRoomData(String classroomName,List<GroupData> groupData) {
+    public ClassRoomData(String classroomName, int points, List<GroupData> groupData) {
         this.name = classroomName;
         this.groups = groupData;
+        this.points =points;
     }
 
     public String getName() {
@@ -18,6 +20,10 @@ public class ClassRoomData {
 
     public List<GroupData> getGroups() {
         return groups;
+    }
+
+    public int getPoints() {
+        return points;
     }
 
     @Override

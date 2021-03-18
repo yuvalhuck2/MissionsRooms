@@ -3,15 +3,17 @@ package DataAPI;
 import java.util.Objects;
 
 public class StudentData {
+    private int points;
     private String alias;
     private String firstName;
     private String lastName;
 
 
-    public StudentData(String alias, String firstName, String lastName) {
+    public StudentData(String alias, String firstName, String lastName, int points) {
         this.alias = alias;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.points=points;
     }
 
     public String getAlias() {
