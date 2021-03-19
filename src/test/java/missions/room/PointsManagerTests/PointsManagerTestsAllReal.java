@@ -1,9 +1,12 @@
 package missions.room.PointsManagerTests;
 
 import CrudRepositories.UserCrudRepository;
+import Data.Data;
+import DataAPI.OpCode;
+import DataAPI.Response;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.Teacher;
-import missions.room.Managers.PointsManager;l
+import missions.room.Managers.PointsManager;
 import missions.room.Repo.UserRepo;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -11,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -49,5 +52,13 @@ public class PointsManagerTestsAllReal extends PointsManagerRealRamTeacherStuden
         when(mockUserCrudRepository.existsById(anyString()))
                 .thenThrow(new RuntimeException());
         super.testWatchTableIsExistUserThrowsException();
+    }
+
+    @Test
+    @Override
+    void testReducePointsHappyCase(){
+        super.testReducePointsHappyCase();
+        assertEquals(realStudentRepo.findStudentById(studentAlias).getValue().getPoints(),
+                dataGenerator.getStudent(Data.VALID).getPoints()-points);
     }
 }

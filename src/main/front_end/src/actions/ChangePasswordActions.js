@@ -55,7 +55,6 @@ export const changePassword = ({apiKey, password}) => {
 
 const checkChangePasswordResponse = (data, dispatch,apiKey) => {
     const {reason} = data
-    console.log(data)
     switch (reason) {
       case Wrong_Password:
         return dispatch({ type: UPDATE_ERROR_CHANGE_PASSWORD, payload: wrong_password });

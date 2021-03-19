@@ -20,4 +20,6 @@ export { default as WatchProfileScreen} from './WatchProfileScreen'
 export { default as WatchMessagesScreen} from './WatchMessagesScreen'
 export { default as WatchSuggestionsScreen} from './WatchSuggestionsScreen'
 export { default as ChangePasswordScreen} from './ChangePasswordScreen'
-export {default as Test} from './Test'
+export { default as PointsTableScreen} from './PointsTableScreen'
+export { default as Test} from './Test'
+

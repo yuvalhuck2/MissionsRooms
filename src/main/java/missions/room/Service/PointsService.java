@@ -2,11 +2,14 @@ package missions.room.Service;
 
 import DataAPI.RecordTableData;
 import DataAPI.Response;
-import DataAPI.RoomType;
 import missions.room.Managers.PointsManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PointsService {
 
+    @Autowired
     private PointsManager pointsManager;
 
     /**
@@ -19,13 +22,13 @@ public class PointsService {
     }
 
     /**
-     * req 4.13 - deduce points to a student
+     * req 4.13 - reduce points to a student
      * @param apiKey - authentication object
      * @param studentAlias - the identifier of the student need to deduce points to.
      * @param pointsToDeduce - the amount of points to deduce the user
      * @return if the points were deducted successfully
      */
-    public Response<Boolean> deducePoints(String apiKey,String studentAlias, int pointsToDeduce){
-        return deducePoints(apiKey, studentAlias, pointsToDeduce);
+    public Response<Boolean> reducePoints(String apiKey, String studentAlias, int pointsToDeduce){
+        return pointsManager.reducePoints(apiKey, studentAlias, pointsToDeduce);
     }
 }

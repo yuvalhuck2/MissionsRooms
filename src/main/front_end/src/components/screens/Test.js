@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Dimensions} from 'react-native';
-import { Drawer,Button } from 'react-native-paper';
+import Header from '../common/Header';
+import { Button, DataTable, Appbar } from 'react-native-paper';
 import { connect } from 'react-redux';
-import { Icon } from 'react-native-elements'
+import TextInput from '../common/TextInput';
 
 
 const DeviceWidth  = Dimensions.get('window').width;
@@ -16,48 +17,64 @@ class TestForm extends Component {
 
     render() {
     return (
-        <View style={styles.container}>
-        <View>
-          <Button style={[styles.button, styles.top_button_marg, styles.left_button_border, styles.top_button_border]} >
-            <Text style={{color:"white"}}>1</Text> 
-          </Button>
-          <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}>
-            <Text style={{color:"white"}}>2</Text>
-          </Button> 
-          <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}>
-            <Text style={{color:"white"}}>2</Text>
-          </Button> 
-          <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}>
-            <Text style={{color:"white"}}>2</Text>
-          </Button> 
-          <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}>
-            <Text style={{color:"white"}}>2</Text>
-          </Button> 
-          <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]} >
-            <Text style={{color:"white"}}>3</Text> 
-            <Icon name='exit-to-app' />
-          </Button>
+      <View>
+        <Appbar.Header styles={styles.bottom}>
+           <Appbar.BackAction onPress={() => console.log('Pressed')} />
+         </Appbar.Header>
+          <DataTable style = {styles.container}>
+          <Header>טבלת השיאים</Header>
+          <DataTable.Row>
+            <Button style = {styles.tabButton} icon="account-group" mode="text" disabled = {false} onPress={() => console.log('Pressed')}>
+                כיתתי
+            </Button>
+            <Button style = {styles.tabButton} icon="account-multiple" mode="text" disabled = {false} onPress={() => console.log('Pressed')}>
+                קבוצתי
+            </Button>
+            <Button style = {styles.tabButton} icon="account" mode="contained" disabled = {false} onPress={() => console.log('Pressed')}>
+                אישי
+            </Button>
+          </DataTable.Row>
+          <DataTable.Row>
+          <TextInput 
+            label='הזנת מספר נקודות אשר ברצונך להוריד'
+            keyboardType = 'numeric'
+            onChangeText = {() => console.log('Pressed')}
+            value = {'3'}
+          /> 
+          </DataTable.Row>
+          <DataTable.Row></DataTable.Row>
+          <DataTable.Row>
+          <DataTable.Title>מקום</DataTable.Title>
+          <DataTable.Title>שם</DataTable.Title>
+          <DataTable.Title>נקודות</DataTable.Title>
+          <DataTable.Title numeric>הורדת נקודות</DataTable.Title>
+        </DataTable.Row>
+            <DataTable.Row>
+            <DataTable.Cell >1</DataTable.Cell>
+              <DataTable.Cell>שלום</DataTable.Cell>
+              <DataTable.Cell numeric>2</DataTable.Cell>
+              <DataTable.Cell></DataTable.Cell>
+              <Button icon="thumb-down" mode="outlined" disabled = {false} compact = {true} onPress={() => console.log('Pressed')}>
+              מינוס 3
+              </Button>
+            </DataTable.Row>
+            <DataTable.Row>
+            <DataTable.Cell>2</DataTable.Cell>
+              <DataTable.Cell>שמואל</DataTable.Cell>
+              <DataTable.Cell numeric>2</DataTable.Cell>
+              <DataTable.Cell></DataTable.Cell>
+              <Button icon="thumb-down" mode="outlined" disabled = {false} compact = {true} onPress={() => console.log('Pressed')}>
+                מינוס 3
+              </Button>
+                {/* <IconButton
+                  icon="camera"
+                  color={Colors.red500}
+                  size={20}
+                  onPress={() => console.log('Pressed')}
+                /> */}
+            </DataTable.Row>
+          </DataTable>
         </View>
-        <View>
-          <Button  mode="contained"style={[styles.button, styles.top_button_marg, styles.right_button_border, styles.top_button_border]} >
-            <Text style={{color:"white"}}>4</Text> 
-          </Button>
-          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}>
-            <Text style={{color:"white"}}>5</Text> 
-          </Button>
-          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}>
-            <Text style={{color:"white"}}>5</Text> 
-          </Button>
-          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}>
-            <Text style={{color:"white"}}>5</Text> 
-          </Button>
-          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}>
-            <Text style={{color:"white"}}>5</Text> 
-          </Button>
-          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]} />
-        </View>
-
-      </View>
     //     <View>
     //         <Drawer.Section title="Some title">
     //   <Drawer.Item
@@ -88,6 +105,7 @@ const styles = StyleSheet.create({
       marginTop: 0,
       backgroundColor: backgroundColor
     },
+    tabButton: {width: DeviceWidth*0.31 },
     button: {width: DeviceWidth*0.5,
        height: DeviceWidth*0.28,
        borderStyle: 'solid',

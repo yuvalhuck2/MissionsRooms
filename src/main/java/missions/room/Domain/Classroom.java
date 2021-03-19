@@ -67,6 +67,9 @@ public class Classroom{
         return className;
     }
 
+    //TODO implement to read it by the csv
+    public String getClassHebrewName(){return className;};
+
     public boolean addStudent(SchoolUser schoolUser, GroupType groupType) {
         for(ClassGroup classGroup: classGroups){
             if(classGroup.getGroupType().equals(groupType)){
@@ -142,7 +145,7 @@ public class Classroom{
 
 
     public RecordTable getClassroomPointsData(RecordTable recordTableData) {
-        recordTableData.addClassroomData(new PointsData(className,points));
+        recordTableData.addClassroomData(new PointsData(getClassHebrewName(),points));
         for (ClassGroup group :
                 classGroups) {
             group.getGroupPoints(recordTableData,className);

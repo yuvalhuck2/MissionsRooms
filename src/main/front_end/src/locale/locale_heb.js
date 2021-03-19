@@ -340,5 +340,25 @@ export const AllUsersStrings = {
   main_screen: 'התנתק/י',
   watchProfiles:'חיפוש פרופיל',
   watch_messages:'ההודעות שלי',
-  changePassword:'שינוי סיסמא'
+  changePassword:'שינוי סיסמא',
+  watchPointsTable:'טבלת הנקודות',
+}
+
+export const PointsTableStrings = {
+  header:'טבלת השיאים',
+  classroom:'כיתתי',
+  group:'קבוצתי',
+  personal:'אישי',
+  down_points:'הורדת נקודות',
+  points_label:'נקודות',
+  rank:'מקום',
+  alias:'כינוי',
+  down_points_label:'הזנת מספר נקודות אשר ברצונך להוריד',
+  minus:'מינוס '
+}
+
+export const PointsTableErrors = {
+  negative_points:'ניתן להוריד כמות נקודות חיובית בלבד',
+  permission_problem:'אין לך הרשאה להוריד נקודות לאישות זו',
+  points_reduced:'הנקודות הורדו בהצלחה, הטבלה לא מתעדכנת מיידית',
 }

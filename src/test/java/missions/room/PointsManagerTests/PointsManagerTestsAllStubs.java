@@ -43,7 +43,7 @@ import static org.mockito.Mockito.when;
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class PointsManagerTestsAllStubs {
 
-    private int points;
+    protected int points;
 
     protected DataGenerator dataGenerator;
 

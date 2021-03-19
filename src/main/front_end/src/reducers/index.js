@@ -13,6 +13,7 @@ import WatchProfileReducer from './WatchProfileReducer'
 import WatchMessagesReducer from './WatchMessagesReducer'
 import WatchSuggestionsReducer from './WatchSuggestionReducer'
 import ChangePasswordReducer from './ChangePasswordReducer';
+import PointsTableReducer from './PointsTableReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -29,4 +30,5 @@ export default combineReducers({
   addSuggestion: AddSuggestionReducer,
   watchSuggestions: WatchSuggestionsReducer,
   changePassword: ChangePasswordReducer,
+  pointsTable: PointsTableReducer,
 });
