@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, TouchableOpacity, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Button, DataTable, Appbar } from 'react-native-paper';
+import { StyleSheet, Text, Dimensions, TouchableOpacity, View } from 'react-native';
+import { Button, DataTable, Appbar, ActivityIndicator } from 'react-native-paper';
 import {PointsTableStrings} from '../../locale/locale_heb';
 import {tabChanged, changePoints, reducePoints, handleBack} from '../../actions/PointsTableActions';
 import { connect } from 'react-redux';
@@ -118,16 +117,36 @@ class PointsTableForm extends Component{
         )
       }
 
+      renderSpinner() {
+        return (
+          <ActivityIndicator
+            animating={true}
+            color={theme.colors.primary}
+            size='large'
+          />
+        );
+      }
+
+      renderButton(pointsData){
+        const{canReduceToAll, points, loading} = this.props;
+        return loading ? (
+          this.renderSpinner()
+        ) :(
+            <Button key = "button" icon="thumb-down" mode="outlined"
+              disabled = {(!canReduceToAll && !pointsData.canReduce)}
+              compact = {true} onPress={() => this.OnButtonPress(pointsData.name)}>
+              {minus + points}
+            </Button>
+        )
+      }
+
       renderCell(pointsData){
-        const{canReduceToAll, tab, points, isStudent} = this.props;
+        const{tab, isStudent} = this.props;
           return( tab == PERSONAL && !isStudent ?
             [<DataTable.Cell numeric>{pointsData.points}</DataTable.Cell>,
             <DataTable.Cell key= "cell"></DataTable.Cell>,
-                    <Button key = "button" icon="thumb-down" mode="outlined"
-                    disabled = {(!canReduceToAll && !pointsData.canReduce)}
-                    compact = {true} onPress={() => this.OnButtonPress(pointsData.name)}>
-                    {minus + points}
-                    </Button>]
+                    this.renderButton(pointsData)]
+                    
                 :<DataTable.Cell>{pointsData.points}</DataTable.Cell>
           )
       }
@@ -158,8 +177,9 @@ class PointsTableForm extends Component{
             {this.renderTabs()}
             {this.renderDataTableHeadlines()}
             {this.renderPointsTable()}
+            {this.renderError()}
             </DataTable>
-        )
+            )
     }
 
     render(){
@@ -196,6 +216,11 @@ const styles = StyleSheet.create({
        alignContent: 'center',
        justifyContent: 'center',
        
+      },
+    errorTextStyle: {
+        fontSize: 22,
+        alignSelf: 'center',
+        color: theme.colors.error,
       },
   });
 
