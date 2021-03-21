@@ -29,6 +29,7 @@ import {
   IN_CHARGE,
   STORY_FINISH,
   STORY_IN_CHARGE,
+    Update_Chat,
 } from './OpCodeTypes';
 import {
   CLEAR_STATE,
@@ -51,6 +52,7 @@ import {
   CHANGE_IN_CHARGE,
   FINISH_STORY_MISSION,
   CHANGE_STORY_IN_CHARGE,
+    UPDATE_CHAT_ROOM,
 } from './types';
 
 const {
@@ -293,6 +295,9 @@ const connectToWebSocketFromLogin = (apiKey,dispatch, navigation) => {
         break;
       case STORY_FINISH:
         dispatch({ type: FINISH_STORY_MISSION, payload: additionalData});
+        break;
+      case Update_Chat:
+        dispatch({type:UPDATE_CHAT_ROOM,payload:value});
         break;
       default:
         console.log("No match case in web socket for"+reason)

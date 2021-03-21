@@ -1,10 +1,12 @@
 package missions.room.Domain;
 
+import DataAPI.ChatMessageData;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import Utils.StringAndTime;
 import missions.room.Domain.Rooms.Room;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Ram {
@@ -15,6 +17,12 @@ public class Ram {
     private static final ConcurrentHashMap<String, Room> roomIdToRoom = new ConcurrentHashMap<>();
 
     private static final ConcurrentHashMap<String,String> aliasToApi = new ConcurrentHashMap<>();
+
+    private static final ConcurrentHashMap<String, List<ChatMessageData>> roomToChat=new ConcurrentHashMap<>();
+
+    public void addChatMessage(String roomId,ChatMessageData roomMessage){
+        roomToChat.get(roomId).add(roomMessage);
+    }
 
     public void addApi(String api,String alias){
         apiToAlias.put(api,new StringAndTime(alias));

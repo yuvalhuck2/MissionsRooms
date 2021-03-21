@@ -24,3 +24,5 @@ export const watchSuggestions = "suggestion/view"
 export const changePassword = "UserAuth/password/change"
 export const watchTeacherRooms='room/view'
 export const closeRoom='room/close'
+export const enterChat='chat/enter'
+export const sendChatMessage='chat/send'

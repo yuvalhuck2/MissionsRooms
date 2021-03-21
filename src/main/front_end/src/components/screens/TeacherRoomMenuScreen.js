@@ -10,7 +10,7 @@ import Button from '../common/Button';
 import Header from '../common/Header';
 import { Menu ,Card, Title, Paragraph} from 'react-native-paper';
 import {DETERMINISTIC_NAME} from "../../actions/types";
-import {closeRoom} from '../../actions/ChooseRoomTeacherActions'
+import {closeRoom,enterChatTeacher} from '../../actions/ChooseRoomTeacherActions'
 
 const {
     chat,
@@ -61,34 +61,35 @@ class TeacherRoomMenuForm extends Component{
     render(){
         const {navigation,apiKey ,roomsType,currentRoom}=this.props;
         console.log(currentRoom);
-        if(currentRoom!=''){
-            let progress=currentRoom.currentMissionNumber/currentRoom.numberOfMissions;
-            return (
-                <View style={styles.container}>
-                    <Card>
-                        <Card.Content>
-                            <Title>{currentRoom.name}</Title>
-                            <Paragraph>{this.getProgressPresentation(currentRoom)}</Paragraph>
-                            <ProgressBar progress={progress} color={theme.colors.primary} />
-                            <Paragraph>{this.getMissionPresentation(currentRoom.currentMission)}</Paragraph>
+        //if(currentRoom!=''){
+        let progress=currentRoom.currentMissionNumber/currentRoom.numberOfMissions;
+        return (
+            <View style={styles.container}>
+                <Card>
+                    <Card.Content>
+                        <Title>{currentRoom.name}</Title>
+                        <Paragraph>{this.getProgressPresentation(currentRoom)}</Paragraph>
+                        <ProgressBar progress={progress} color={theme.colors.primary} />
+                        <Paragraph>{this.getMissionPresentation(currentRoom.currentMission)}</Paragraph>
 
-                        </Card.Content>
-                    </Card>
-                    <View style={{ flex: 1 }}>
-                        <Menu.Item icon="chat" onPress={() => {}} title={chat} />
-                        <Menu.Item icon="answer" onPress={() => {}} title={approve_answer} />
-                        <Menu.Item icon="close" onPress={() => this.props.closeRoom({navigation,apiKey,currentRoom})} title={close_room} />
-                    </View>
+                    </Card.Content>
+                </Card>
+                <View style={{ flex: 1 }}>
+                    <Menu.Item icon="chat" onPress={() =>this.props.enterChatTeacher({navigation,apiKey,roomId:currentRoom.roomId}) } title={chat} />
+                    <Menu.Item icon="answer" onPress={() => {}} title={approve_answer} />
+                    <Menu.Item icon="close" onPress={() => this.props.closeRoom({navigation,apiKey,currentRoom})} title={close_room} />
                 </View>
-            );
-        }
+            </View>
+        );
+    }
+        /*
         else{
             return (
                 <View>
                     <Text style={styles.errorTextStyle}>{chat}</Text>
                 </View>
             )
-        }
+        }*/
 
 
             /*
@@ -115,7 +116,7 @@ class TeacherRoomMenuForm extends Component{
 
 
 
-    }
+
 }
 
 const styles = StyleSheet.create({
@@ -154,4 +155,5 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
     closeRoom,
+    enterChatTeacher,
 })(TeacherRoomMenuForm);

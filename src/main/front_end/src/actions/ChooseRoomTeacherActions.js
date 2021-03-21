@@ -5,7 +5,8 @@ import {
     LOGIN_STUDENT,
     LOGIN_TEACHER, PASS,
     PASS_TO_ROOMS, PERSONAL, TEMPLATE_CHANGED,
-    ROOM_CHANGED, PASS_TO_ROOM_MENU, UPDATE_ERROR_WATCH_SUGGESTIONS, UPDATE_ALL_SUGGESTIONS,UPDATE_ERROR_CLOSE_ROOM,UPDATE_CLOSE_ROOM
+    ROOM_CHANGED, PASS_TO_ROOM_MENU, UPDATE_ERROR_WATCH_SUGGESTIONS, UPDATE_ALL_SUGGESTIONS,
+    UPDATE_ERROR_CLOSE_ROOM,UPDATE_CLOSE_ROOM,UPDATE_ERROR_CHAT_ROOM,ENTER_CHAT_ROOM,UPDATE_SEND_CHAT_ROOM
 } from "./types";
 import {closeSocket} from "../handler/WebSocketHandler";
 import * as NavPaths from "../navigation/NavPaths";
@@ -49,6 +50,93 @@ export const passToRoomMenu = ({currentRoom,navigation,apiKey})=> {
         navigation.navigate(NavPaths.teacherRoomMenu);
     }
 }
+
+export const sendMessage = ({navigation,newMessage,roomId,apiKey}) =>
+{
+    return async (dispatch)=>{
+        dispatch({type:LOGIN_TEACHER,payload:apiKey});
+        try {
+            const res = await API.post(APIPaths.sendChatMessage, {apiKey, newMessage, roomId});
+            if (res) {
+                checkSendMessageResponse({
+                    data: res.data,
+                    dispatch,
+                    navigation,
+                });
+            } else {
+                dispatch({type: UPDATE_ERROR_CHAT_ROOM, payload: server_error});
+            }
+        }
+        catch(err){
+            return dispatch({type:UPDATE_ERROR_CHAT_ROOM,payload:server_error});
+        }
+    }
+};
+
+const checkSendMessageResponse=({data,dispatch,navigation})=>{
+    const { reason, value } = data;
+    switch (reason) {
+        case Success:
+            return ({ type: UPDATE_SEND_CHAT_ROOM});
+        default:
+            return dispatch({ type: UPDATE_ERROR_CLOSE_ROOM, payload: server_error });
+    }
+};
+
+
+export const enterChatTeacher = ({navigation,apiKey,roomId})=> {
+    return async (dispatch) => {
+        dispatch({
+            type: ENTER_CHAT_ROOM,
+            payload:"gal",
+        });
+        navigation.navigate(NavPaths.chatRoom);
+    }
+}
+
+/*
+export const enterChatTeacher = ({navigation,apiKey,roomId})=>{
+    return async (dispatch)=>{
+        dispatch({type:LOGIN_TEACHER,payload:apiKey});
+        try{
+            const res=await API.post(APIPaths.enterChat,{apiKey});
+            if(res){
+                checkEnterChatResponse({
+                    data:res.data,
+                    dispatch,
+                    navigation,
+                })
+            } else {
+                dispatch({type:UPDATE_ERROR_CHAT_ROOM,payload:server_error});
+            }
+        }
+        catch (err) {
+            return dispatch({type:UPDATE_ERROR_CHAT_ROOM,payload:server_error});
+
+        }
+    }
+
+};
+
+const checkEnterChatResponse=({data,dispatch,navigation})=>{
+    const {reason,value}=data;
+    switch(reason){
+        case Wrong_Key:
+            return dispatch({
+                type: UPDATE_ERROR_CHAT_ROOM,
+                payload:teacher_not_exists_error
+            });
+        case DB_Error:
+            return dispatch({
+                type: UPDATE_ERROR_CHAT_ROOM,
+                payload:teacher_not_exists_error,
+            });
+        case Success:
+            dispatch({ type: ENTER_CHAT_ROOM,payload:value});
+            return navigation.navigate(NavPaths.chatRoom);
+
+    }
+}*/
 
 
 export const closeRoom = ({navigation,apiKey,currentRoom}) => {
@@ -98,7 +186,57 @@ const checkCloseRoomResponse = ({data, dispatch, navigation}) => {
         default:
             return dispatch({ type: UPDATE_ERROR_CLOSE_ROOM, payload: server_error });
     }
+};
+
+/*
+export const enterChatTeacher = ({navigation,apiKey,roomId})=>{
+    return async (dispatch)=> {
+        dispatch({ type: LOGIN_TEACHER, payload: apiKey });
+        try {
+            const res = await API.post(APIPaths.enterChat, { apiKey });
+            if (res) {
+                checkCloseRoomResponse({
+                    data: res.data,
+                    dispatch,
+                    navigation,
+                });
+            } else {
+                dispatch({ type: UPDATE_ERROR_CLOSE_ROOM, payload: server_error });
+            }
+        } catch (err) {
+            console.log(err);
+            return dispatch({ type: UPDATE_ERROR_CLOSE_ROOM, payload: server_error });
+        }
+    };
 }
 
+const checkCloseRoomResponse = ({data, dispatch, navigation}) => {
+    const { reason, value } = data;
+    switch (reason) {
+        case Wrong_Key:
+            return dispatch({
+                type: UPDATE_ERROR_CLOSE_ROOM,
+                payload: teacher_not_exists_error,
+            });
+        case DB_Error:
+            return dispatch({
+                type: UPDATE_ERROR_CLOSE_ROOM,
+                payload:room_error,
+            });
+        case CONNECTED_STUDENTS:
+            alert(connected_students);
+            return dispatch({
+                type:UPDATE_ERROR_CLOSE_ROOM,
+                payload:connected_students,
+            })
+        case Success:
+            dispatch({ type: UPDATE_CLOSE_ROOM});
+            alert(room_closed);
+            return navigation.navigate(NavPaths.teacherMainScreen);
+        default:
+            return dispatch({ type: UPDATE_ERROR_CLOSE_ROOM, payload: server_error });
+    }
+};
 
+*/
 

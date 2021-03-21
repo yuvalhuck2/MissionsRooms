@@ -45,7 +45,7 @@ public class ITManager {
 
     private Response<IT> checkITResponse(Response<IT> ITResponse){
         if(ITResponse.getReason()!= OpCode.Success){
-            log.error("connection to db lost");
+            //log.error("connection to db lost");
             return new Response<>(null,ITResponse.getReason());
         }
         IT it = ITResponse.getValue();
@@ -65,16 +65,16 @@ public class ITManager {
         String alias=newUser.getAlias();
         String password=newUser.getPassword();
         if(!Utils.checkString(alias)){
-            log.info("add IT with empty or null alias");
+            //log.info("add IT with empty or null alias");
             return new Response<>(false,OpCode.Wrong_Alias);
         }
         if(!Utils.checkString(password)){
-            log.info("add IT with empty or null password");
+            //log.info("add IT with empty or null password");
             return new Response<>(false,OpCode.Wrong_Password);
         }
         Response<IT> itResponse = checkIT(apiKey);
         if(itResponse.getReason()!=OpCode.Success){
-            log.error(itResponse.getReason().toString());
+            //log.error(itResponse.getReason().toString());
             return new Response<>(false,itResponse.getReason());
         }
         return saveITInDB(alias, password,itResponse.getValue().getAlias());
@@ -85,19 +85,19 @@ public class ITManager {
         synchronized (ADD_USER_LOCK){
             Response<Boolean> userResponse = userRepo.isExistsById(alias);
             if(userResponse.getReason()!= OpCode.Success){
-                log.error("connection to db lost");
+                //log.error("connection to db lost");
                 return new Response<>(false,userResponse.getReason());
             }
             if(userResponse.getValue()){
-                log.info("there is user with that name already");
+                //log.info("there is user with that name already");
                return new Response<>(false,OpCode.Already_Exist);
             }
             Response<IT> itResponse= itRepo.save(new IT(alias,password));
             if(itResponse.getReason()!=OpCode.Success){
-                log.error("connection to db lost");
+                //log.error("connection to db lost");
                 return new Response<>(false,itResponse.getReason());
             }
-            log.info(myAlias + " added " + alias + " to be new IT successfully");
+            //log.info(myAlias + " added " + alias + " to be new IT successfully");
             return new Response<>(true,OpCode.Success);
         }
     }
