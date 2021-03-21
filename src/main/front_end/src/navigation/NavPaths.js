@@ -22,3 +22,4 @@ export const watchMessages='WatchMessages'
 export const watchSuggestions='WatchSuggestions'
 export const changePassword='ChangePassword'
 export const watchPointsTable='PointsTable'
+export const manageUsers = "ManageUsers"

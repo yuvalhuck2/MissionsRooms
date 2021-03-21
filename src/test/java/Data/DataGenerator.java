@@ -43,6 +43,7 @@ public class DataGenerator {
     private HashMap<Data, TriviaQuestionData> triviaQuestionHashMap;
     private HashMap<Data, MessageData> messageDataMap;
     private HashMap<Data,HashSet<PointsData>> pointsDataSets;
+    private HashMap<Data,UserProfileData> userProfileDataMap;
 
     public DataGenerator() {
         initStudents();
@@ -65,6 +66,19 @@ public class DataGenerator {
         initTriviaData();
         initMessagesData();
         initPointsDataSet();
+        initUserProfileDataMap();
+    }
+
+    private void initUserProfileDataMap() {
+        userProfileDataMap = new HashMap<Data, UserProfileData>();
+        String alias = students.get(Data.VALID).getAlias();
+        String fName= "first";
+        String lName = "last";
+        userProfileDataMap.put(Data.VALID,new UserProfileData(alias,lName,fName));
+        userProfileDataMap.put(Data.NULL_LAST_NAME,new UserProfileData(alias,null,fName));
+        userProfileDataMap.put(Data.NULL_NAME,new UserProfileData(alias,lName,null));
+        userProfileDataMap.put(Data.NULL,new UserProfileData(alias,null,null));
+        userProfileDataMap.put(Data.NULL_ALIAS,new UserProfileData(DataConstants.WRONG_USER_NAME,lName,fName));
     }
 
     private void initPointsDataSet() {
@@ -79,12 +93,12 @@ public class DataGenerator {
         pointsDataSets.put(Data.Valid_Student,hashSet);
         hashSet = new HashSet<>();
         Classroom classroom = classRoomMap.get(Data.Valid_Classroom);
-        hashSet.add(new PointsData(classroom.getClassName(),classroom.getPoints()));
-        groupHashSet.add(new PointsData(classroom.getClassName()+" A",classroom.getPoints()));
-        groupHashSet.add(new PointsData(classroom.getClassName()+" B",classroom.getPoints()));
+        hashSet.add(new PointsData(classroom.getClassHebrewName(),classroom.getPoints()));
+        groupHashSet.add(new PointsData(classroom.getClassHebrewName()+" A",classroom.getPoints()));
+        groupHashSet.add(new PointsData(classroom.getClassHebrewName()+" B",classroom.getPoints()));
         classroom = classRoomMap.get(Data.Valid_2Students_From_Different_Groups);
-        hashSet.add(new PointsData(classroom.getClassName(),classroom.getPoints()));
-        groupHashSet.add(new PointsData(classroom.getClassName()+" A",classroom.getPoints()));
+        hashSet.add(new PointsData(classroom.getClassHebrewName(),classroom.getPoints()));
+        groupHashSet.add(new PointsData(classroom.getClassHebrewName()+" A",classroom.getPoints()));
 
         pointsDataSets.put(Data.Valid_Classroom,hashSet);
         pointsDataSets.put(Data.Valid_Group,groupHashSet);
@@ -156,13 +170,13 @@ public class DataGenerator {
 
     private void initClassrooms() {
         classRoomMap=new HashMap<Data, Classroom>();
-        Classroom valid=new Classroom("class",classGroupMap.get(Data.Empty_Students),classGroupMap.get(Data.Valid_Group));
+        Classroom valid=new Classroom("2=4",classGroupMap.get(Data.Empty_Students),classGroupMap.get(Data.Valid_Group));
         classRoomMap.put(Data.Valid_Classroom,valid);
         List<ClassGroup> groups=new ArrayList<>();
         groups.add(classGroupMap.get(Data.Empty_Students));
         groups.add(classGroupMap.get(Data.VALID_WITH_GROUP_C));
-        classRoomMap.put(Data.VALID_WITH_GROUP_C,new Classroom("class",groups));
-        Classroom valid2StudentsFromDifferentGroups=new Classroom("class2"
+        classRoomMap.put(Data.VALID_WITH_GROUP_C,new Classroom("1=3",groups));
+        Classroom valid2StudentsFromDifferentGroups=new Classroom("0=2"
                 ,classGroupMap.get(Data.Valid_Group2)
                 ,classGroupMap.get(Data.Valid_Group));
         classRoomMap.put(Data.Valid_2Students_From_Different_Groups,
@@ -520,4 +534,8 @@ public class DataGenerator {
     public MessageData getMessageData(Data data){ return messageDataMap.get(data); }
 
     public HashSet<PointsData> getPointsHasSet(Data data){ return pointsDataSets.get(data); }
+
+    public UserProfileData getProfileData(Data data) {
+        return userProfileDataMap.get(data);
+    }
 }

@@ -112,9 +112,10 @@ public class ManagerRoomStudentRealRamRealClassRoomRealRamStudentClassroomClassG
     @Test
     @Override
     public void testAnswerDeterministicHappyTest() {
+        int points=dataGenerator.getStudent(Data.VALID).getPoints();
         super.testAnswerDeterministicHappyTest();
         Room room=dataGenerator.getRoom(Data.Valid_Student);
-        int points=room.getRoomTemplate().getMission(0).getPoints();
+        points += room.getRoomTemplate().getMission(0).getPoints();
         int bonus=room.getBonus();
         assertEquals(studentCrudRepository
                         .findById(dataGenerator.getStudent(Data.VALID).getAlias())
@@ -131,15 +132,16 @@ public class ManagerRoomStudentRealRamRealClassRoomRealRamStudentClassroomClassG
                         .findById(dataGenerator.getStudent(Data.VALID).getAlias())
                         .get()
                         .getPoints()
-                ,0);
+                ,dataGenerator.getStudent(Data.VALID).getPoints());
     }
 
     @Test
     @Override
     void testAnswerDeterministic_2MissionsRoomStudentTest() {
+        int points=dataGenerator.getStudent(Data.VALID).getPoints();
         super.testAnswerDeterministic_2MissionsRoomStudentTest();
         Room room=dataGenerator.getRoom(Data.VALID_2MissionStudent);
-        int points=room.getRoomTemplate().getMission(0).getPoints();
+        points += room.getRoomTemplate().getMission(0).getPoints();
         assertEquals(studentCrudRepository
                         .findById(dataGenerator.getStudent(Data.VALID).getAlias())
                         .get()

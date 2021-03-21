@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
 import TextInput from '../common/TextInput';
 import Header from '../common/Header';
-import { DETERMINISTIC_NAME } from '../../actions/types'; 
 import {
     PERSONAL, GROUP, CLASSROOM,
   } from '../../actions/types';

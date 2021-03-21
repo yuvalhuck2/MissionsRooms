@@ -10,7 +10,9 @@ import ExternalSystems.MailSender;
 import missions.room.Managers.UserAuthenticationManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Service;
 import org.springframework.test.context.TestPropertySource;
 import java.util.List;
 
@@ -19,17 +21,22 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.Assert.*;
 
+//TODO tests not passing fix it and  maybe change to mockito
+@Service
 @SpringBootTest
 @TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
 public class UserAuthenticationManagerTestsRealSchoolUserRepo extends UserAuthenticationManagerTestsAllStubs {
+
+    @Autowired
+    private UserAuthenticationManager realUserAuthenticationManager;
 
     //clear code to alias map before starting the tests
     @BeforeEach
     void SetUp(){
         super.setUp();
-        Field aliasToCode= null;
+        //userAuthenticationManager = realUserAuthenticationManager;
         try {
-            aliasToCode = UserAuthenticationManager.class.getDeclaredField("aliasToCode");
+            Field aliasToCode = UserAuthenticationManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
             ((ConcurrentHashMap)aliasToCode.get(userAuthenticationManager)).clear();
             MailSender mailSender=new MailSenderTrueMock();

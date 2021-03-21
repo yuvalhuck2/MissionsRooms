@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Dimensions} from 'react-native';
 import Header from '../common/Header';
-import { Button, DataTable, Appbar } from 'react-native-paper';
+import { Button, DataTable, Appbar, Switch } from 'react-native-paper';
 import { connect } from 'react-redux';
 import TextInput from '../common/TextInput';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const DeviceWidth  = Dimensions.get('window').width;
 const backgroundColor = 'purple';
@@ -17,8 +17,50 @@ class TestForm extends Component {
 
     render() {
     return (
-      <View>
-        <Appbar.Header styles={styles.bottom}>
+      <KeyboardAwareScrollView>
+        <DataTable>
+        <DataTable.Row>
+        <DataTable.Cell> vera254</DataTable.Cell>
+          <Button key = "button" mode="outlined"
+              compact = {true} onPress={() => {}}>
+              {"מחיקה"}
+            </Button>
+            <DataTable.Cell></DataTable.Cell>
+            <Button key = "button" mode="outlined"
+              compact = {true} onPress={() => {}}>
+              {"עריכה"}
+            </Button>
+            <DataTable.Cell></DataTable.Cell>
+            <Button key = "button" mode="outlined"
+              compact = {true} onPress={() => {}}>
+              {"העברה"}
+            </Button>
+        </DataTable.Row>
+        {/* <DataTable.Row>
+        <DataTable.Cell>היי</DataTable.Cell>
+          <Switch value={true} onValueChange={()=>{}} />
+          <DataTable.Cell>היי</DataTable.Cell>
+          <Switch value={true} onValueChange={()=>{}} />
+          <DataTable.Cell>היי</DataTable.Cell>
+          <Switch value={true} onValueChange={()=>{}} />
+        </DataTable.Row>
+        <DataTable.Row>
+        <DataTable.Cell>היי</DataTable.Cell>
+          <Switch value={true} onValueChange={()=>{}} />
+        </DataTable.Row>
+        <DataTable.Row>
+          <DataTable.Cell>היי</DataTable.Cell>
+          <Switch  value={true} onValueChange={()=>{}} />
+        </DataTable.Row> */}
+        </DataTable>
+        {/* <Switch value={true} onValueChange={()=>{}}><Text>4</Text></Switch>
+        <Switch value={true} onValueChange={()=>{}}><Text>1</Text></Switch> */}
+        <TextInput 
+          mode='outlined'
+          label="Label Name"
+          placeholder="Enter placeholder"
+            />
+        {/* <Appbar.Header styles={styles.bottom}>
            <Appbar.BackAction onPress={() => console.log('Pressed')} />
          </Appbar.Header>
           <DataTable style = {styles.container}>
@@ -71,10 +113,10 @@ class TestForm extends Component {
                   color={Colors.red500}
                   size={20}
                   onPress={() => console.log('Pressed')}
-                /> */}
+                /> }
             </DataTable.Row>
-          </DataTable>
-        </View>
+          </DataTable> */}
+         </KeyboardAwareScrollView>
     //     <View>
     //         <Drawer.Section title="Some title">
     //   <Drawer.Item

@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 @Entity
 public class Classroom{
 
+    private static final String YUD = "י ";
+    private static final String YUD_ALEF = "יא ";
+    private static final String YUD_BET = "יב ";
     @Id
     private String className;
 
@@ -67,8 +70,23 @@ public class Classroom{
         return className;
     }
 
-    //TODO implement to read it by the csv
-    public String getClassHebrewName(){return className;};
+    public String getClassHebrewName(){
+        String[] classStrings = className.split("=");
+        return getClassNameByNumber(classStrings[0])+classStrings[1];
+    }
+
+    private String getClassNameByNumber(String classString) {
+        if(classString.equals("0")){
+            return YUD;
+        }
+        if(classString.equals("1")){
+            return YUD_ALEF;
+        }
+        return YUD_BET;
+
+    }
+
+    ;
 
     public boolean addStudent(SchoolUser schoolUser, GroupType groupType) {
         for(ClassGroup classGroup: classGroups){
@@ -148,7 +166,7 @@ public class Classroom{
         recordTableData.addClassroomData(new PointsData(getClassHebrewName(),points));
         for (ClassGroup group :
                 classGroups) {
-            group.getGroupPoints(recordTableData,className);
+            group.getGroupPoints(recordTableData,getClassHebrewName());
         }
         return recordTableData;
 

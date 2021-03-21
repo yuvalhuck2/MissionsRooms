@@ -56,3 +56,4 @@ export const Empty="Empty"
 export const Message_Not_Exist="Message_Not_Exist"
 export const Negative_Points="Negative_Points"
 export const Dont_Have_Permission="Dont_Have_Permission"
+export const Wrong_Details = "Wrong_Details";
