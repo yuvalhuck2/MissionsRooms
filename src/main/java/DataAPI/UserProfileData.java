@@ -3,6 +3,7 @@ package DataAPI;
 import java.util.Objects;
 
 public class UserProfileData {
+    private String apiKey;
     private final String firstName;
     private final String lastName;
     private final String alias;
@@ -34,6 +35,13 @@ public class UserProfileData {
         this.points = null;
     }
 
+    public UserProfileData(String alias, String lastName, String firstName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.alias = alias;
+        userType = OpCode.Student;
+        points = 0;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -56,6 +64,10 @@ public class UserProfileData {
         return points;
     }
 
+    public String getApiKey() {
+        return apiKey;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,4 +79,5 @@ public class UserProfileData {
                 Objects.equals(alias, that.alias) &&
                 userType == that.userType;
     }
+
 }

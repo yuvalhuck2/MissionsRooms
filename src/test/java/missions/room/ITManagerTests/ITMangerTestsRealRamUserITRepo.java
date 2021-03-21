@@ -101,4 +101,20 @@ public class ITMangerTestsRealRamUserITRepo extends ITMangerRealRamUserRepo {
         Optional<IT> itOptional= itCrudRepository.findById(it2.getAlias());
         assertFalse(itOptional.isPresent());
     }
+
+    @Test
+    @Override
+    void updateUserDetailsTRepoFindByIdThrowsException(){
+        when(mockItCrudRepository.findById(anyString()))
+                .thenThrow(new RuntimeException());
+        try {
+            Field itRepo = ITManager.class.getDeclaredField("itRepo");
+            itRepo.setAccessible(true);
+            itRepo.set(itManager,new ITRepo(mockItCrudRepository));
+
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            fail();
+        }
+        updateUserDetailsInvalidTest(OpCode.DB_Error);
+    }
 }

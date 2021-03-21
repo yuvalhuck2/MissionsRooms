@@ -9,11 +9,13 @@ public class GroupData {
     private String name;
     private GroupType groupType;
     private List<StudentData> students;
+    private int points;
 
-    public GroupData(String groupName, GroupType groupType, Stream<StudentData> studentDataStream) {
+    public GroupData(String groupName, GroupType groupType, int points, Stream<StudentData> studentDataStream) {
         this.name = groupName;
         this.groupType = groupType;
         students=studentDataStream.collect(Collectors.toList());
+        this.points=points;
     }
 
     public String getName() {

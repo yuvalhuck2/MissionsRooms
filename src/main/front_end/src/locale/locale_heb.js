@@ -209,12 +209,15 @@ export const GeneralErrors = {
   student_not_exist: 'סטודנט לא קיים',
   room_error:'יש תקלה עם החדר, מומלץ לנסות להתחבר אליו שנית',
   user_not_exist:'המשתמש לא קיים',
+  empty_details:'לא מולאו פרטים',
+  action_succeeded:'הפעולה בוצעה בהצלחה!',
 };
 
 export const ITStrings = {
   uploadCSV: 'העלאת קבצים',
   main_screen: 'התנתק/י',
   addNewIT: 'הוספת מנהל טכני',
+  manageUsers:'ניהול משתמשים',
 };
 
 export const addMissionErrors = {
@@ -340,5 +343,37 @@ export const AllUsersStrings = {
   main_screen: 'התנתק/י',
   watchProfiles:'חיפוש פרופיל',
   watch_messages:'ההודעות שלי',
-  changePassword:'שינוי סיסמא'
+  changePassword:'שינוי סיסמא',
+  watchPointsTable:'טבלת הנקודות',
 }
+
+export const PointsTableStrings = {
+  header:'טבלת השיאים',
+  classroom:'כיתתי',
+  group:'קבוצתי',
+  personal:'אישי',
+  down_points:'הורדת נקודות',
+  points_label:'נקודות',
+  rank:'מקום',
+  alias:'כינוי',
+  down_points_label:'הזנת מספר נקודות אשר ברצונך להוריד',
+  minus:'מינוס '
+}
+
+export const PointsTableErrors = {
+  negative_points:'ניתן להוריד כמות נקודות חיובית בלבד',
+  permission_problem:'אין לך הרשאה להוריד נקודות לאישות זו',
+  points_reduced:'הנקודות הורדו בהצלחה, הטבלה לא מתעדכנת מיידית',
+}
+
+export const ManageUsersStrings = {
+  edit_details:'עריכה',
+  delete_user:'מחיקה',
+  enter_last_name:'יש להכניס שם משפחה חדש',
+  enter_first_name:'יש להכניס שם פרטי חדש',
+  enable_edit_first_name:'עריכת שם פרטי',
+  enable_edit_last_name:'עריכת שם משפחה',
+  manage_users:'ניהול משתמשים',
+  press_user_for_details:'לחצו על משתמש על מנת לערוך את נתוניו או למחוק אותו',
+  transfer:'העברת קבוצה',
+};

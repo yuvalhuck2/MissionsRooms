@@ -22,3 +22,7 @@ export const watchMessages = "profile/message/view"
 export const deleteSuggestion = "suggestion/delete"
 export const watchSuggestions = "suggestion/view"
 export const changePassword = "UserAuth/password/change"
+export const watchPointsTable = "points/view"
+export const reducePoints = "points/reduce"
+export const getAllSchoolUsers = "it/view/all"
+export const updateDetails = "it/update";

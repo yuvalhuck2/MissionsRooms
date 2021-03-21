@@ -9,7 +9,8 @@ import Header from '../common/Header';
 import TextInput from '../common/TextInput';
 import { Icon } from 'react-native-elements'
 import * as NavPaths from '../../navigation/NavPaths'
-import {passToMyRooms,logout,changeDialog, passToWatchProfiles, passToWatchMessages,passToAddSuggestion} from '../../actions'
+import {passToMyRooms,logout,changeDialog, passToWatchProfiles,
+  passToWatchMessages,passToAddSuggestion, passToWatchPointsTable} from '../../actions'
 import { Dialog,Paragraph,Portal } from 'react-native-paper';
 
 const {
@@ -22,6 +23,7 @@ const {
   watchProfiles,
   watch_messages,
   main_screen,
+  watchPointsTable,
 } = AllUsersStrings
 
 const DeviceWidth  = Dimensions.get('window').width;
@@ -82,8 +84,8 @@ class StudentForm extends Component {
             <Text style={{color:"white"}}>{changePassword}</Text>
           </Button>
           <Button  style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}
-            onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
-            <Text style={{color:"white"}}>{watchProfiles}</Text>
+            onPress={()=>this.props.passToWatchPointsTable({navigation,apiKey,isStudent: true})}>
+            <Text style={{color:"white"}}>{watchPointsTable}</Text>
           </Button>
           <Button  onPress={()=>this.props.passToAddSuggestion({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]} >
           <Text style={{color:"white"}}>{addSuggestion}</Text>
@@ -173,4 +175,5 @@ export default connect(mapStateToProps,{
   passToAddSuggestion,
   passToWatchProfiles,
   passToWatchMessages,
+  passToWatchPointsTable,
 })(StudentForm);

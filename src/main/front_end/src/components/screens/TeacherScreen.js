@@ -9,7 +9,8 @@ import Header from '../common/Header';
 import TextInput from '../common/TextInput';
 import { Icon } from 'react-native-elements'
 import * as NavPaths from '../../navigation/NavPaths'
-import {passToAddTemplate,passToAddRoom,logout, passToWatchProfiles, passToWatchMessages,passToWatchSuggestions} from '../../actions'
+import {passToAddTemplate,passToAddRoom,logout, passToWatchProfiles,
+  passToWatchMessages,passToWatchSuggestions, passToWatchPointsTable} from '../../actions'
 
 const {
   addMission,
@@ -25,6 +26,7 @@ const {
   watchProfiles,
   watch_messages,
   main_screen,
+  watchPointsTable,
 } = AllUsersStrings
 
 
@@ -68,11 +70,11 @@ class TeacherForm extends Component {
           <Button onPress={()=>navigation.navigate(NavPaths.changePassword)} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
           <Text style={{color:"white"}}>{changePassword}</Text> 
           </Button>
-          <Button onPress={()=>this.props.passToAddTemplate({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
-          <Text style={{color:"white"}}>{addTemplate}</Text> 
+          <Button onPress={()=>this.props.passToWatchPointsTable({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
+          <Text style={{color:"white"}}>{watchPointsTable}</Text> 
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]}
-            onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
+            onPress={()=>this.props.passToWatchProfiles({navigation,apiKey,isStudent: false})}>
             <Text style={{color:"white"}}>{watchProfiles}</Text>  
           </Button>
         </View>
@@ -165,4 +167,5 @@ logout,
 passToWatchProfiles,
 passToWatchMessages,
 passToWatchSuggestions,
+passToWatchPointsTable,
 })(TeacherForm);
