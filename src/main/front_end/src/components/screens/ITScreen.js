@@ -3,7 +3,8 @@ import { StyleSheet, Text, Dimensions, View } from 'react-native';
 import { connect } from 'react-redux';
 import Button from '../common/Button';
 import { Icon } from 'react-native-elements'
-import  { navigateToUploadCSV, navigateToAddNewIT,passToWatchProfiles, passToWatchMessages } from '../../actions'
+import  { navigateToUploadCSV, navigateToAddNewIT,passToWatchProfiles,
+  passToWatchMessages, passToManageUsers } from '../../actions'
 import { ITStrings, AllUsersStrings  } from '../../locale/locale_heb';
 import {logout} from '../../actions'
 import * as NavPaths from '../../navigation/NavPaths'
@@ -11,6 +12,7 @@ import * as NavPaths from '../../navigation/NavPaths'
 const {
   uploadCSV,
   addNewIT,
+  manageUsers,
 } = ITStrings
 
 const {
@@ -57,8 +59,8 @@ class ITForm extends Component {
             <Text style={{color:"white"}}>{addNewIT}</Text> 
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}
-            onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
-            <Text style={{color:"white"}}>{watchProfiles}</Text>
+            onPress={()=>this.props.passToManageUsers({navigation,apiKey})}>
+            <Text style={{color:"white"}}>{manageUsers}</Text>
           </Button> 
           <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}
             onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
@@ -155,4 +157,5 @@ export default connect(mapStateToProps, {
   navigateToAddNewIT,
   passToWatchProfiles,
   passToWatchMessages,
+  passToManageUsers,
 })(ITForm);

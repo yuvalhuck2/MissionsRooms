@@ -1,10 +1,12 @@
 package missions.room.Domain;
 
 import DataAPI.OpCode;
+import DataAPI.RecordTableData;
 import DataAPI.Response;
 import Utils.StringAndTime;
 import missions.room.Domain.Rooms.Room;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Ram {
@@ -15,6 +17,9 @@ public class Ram {
     private static final ConcurrentHashMap<String, Room> roomIdToRoom = new ConcurrentHashMap<>();
 
     private static final ConcurrentHashMap<String,String> aliasToApi = new ConcurrentHashMap<>();
+    private static final long TTL_OF_POINTS_TABLE = 2;
+
+    private static RecordTable recordTableData = null;
 
     public void addApi(String api,String alias){
         apiToAlias.put(api,new StringAndTime(alias));
@@ -111,5 +116,21 @@ public class Ram {
             return room.getMissionInCharge();
         }
         return null;
+    }
+
+    public RecordTable getRecordTable() {
+        if(recordTableData == null || recordDataIsOld()){
+            return null;
+        }
+        return recordTableData;
+    }
+
+    private boolean recordDataIsOld() {
+        return recordTableData.getTimeStamp().compareTo(LocalDateTime.now().plusHours(TTL_OF_POINTS_TABLE)) > 0;
+    }
+
+    public void updateTable(RecordTable tableData) {
+        recordTableData=tableData;
+        tableData.updateTimeStamp();
     }
 }

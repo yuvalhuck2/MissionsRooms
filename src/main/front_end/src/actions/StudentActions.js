@@ -13,6 +13,9 @@ import {
   UPDATE_ALL_USER_PROFILES,
   UPDATE_ERROR_WATCH_MESSAGES,
   UPDATE_ALL_MESSAGES,
+  RESET_POINTS_TABLE,
+  UPDATE_ERROR_POINTS_TABLE,
+  INIT_POINTS_TABLE,
 } from '../actions/types';
 import API from '../api/API';
 import * as APIPaths from '../api/APIPaths';
@@ -240,3 +243,41 @@ export const suggestionChange = (text) => {
         payload: text,
     };
 };
+
+export const passToWatchPointsTable = ({navigation,apiKey, isStudent}) => {
+  return async (dispatch)=> {
+    dispatch({ type: RESET_POINTS_TABLE, payload: apiKey });
+    try {
+      const res = await API.post(APIPaths.watchPointsTable, { apiKey });
+      if (res) {
+        checkWatchPointsTableResponse({
+          data: res.data,
+          dispatch,
+          navigation,
+          isStudent,
+        });
+      } else {
+        dispatch({ type: UPDATE_ERROR_POINTS_TABLE, payload: server_error });
+      }
+    } catch (err) {
+      console.log(err);
+      return dispatch({ type: UPDATE_ERROR_POINTS_TABLE, payload: server_error });
+    }
+  };
+}
+
+const checkWatchPointsTableResponse = ({data, dispatch, navigation,isStudent}) => {
+  const { reason, value } = data;
+  switch (reason) {
+    case Not_Exist:
+      return dispatch({
+        type: UPDATE_ERROR_POINTS_TABLE,
+        payload: wrong_key_error,
+      });
+    case Success:
+      dispatch({ type: INIT_POINTS_TABLE, payload: {... value, isStudent} });
+      return navigation.navigate(NavPaths.watchPointsTable);
+    default:
+      return dispatch({ type: UPDATE_ERROR_POINTS_TABLE, payload: server_error });
+  }
+}
