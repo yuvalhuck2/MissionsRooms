@@ -39,6 +39,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -52,28 +53,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-@Service
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class WatchOpenAnswersTestsAllStubs {
 
-    @Autowired
-    protected TeacherCrudRepository teacherCrudRepository;
-
-    @Autowired
-    protected RoomTemplateCrudRepository roomTemplateCrudRepository;
-
-    @Autowired
-    protected RoomCrudRepository roomCrudRepository;
-
-    @Autowired
-    protected RoomManager roomManger;
-
-    @Autowired
-    protected MissionCrudRepository missionCrudRepository;
-
-    @Autowired
-    protected ClassroomRepository classroomRepository;
 
     protected DataGenerator dataGenerator;
 
@@ -97,9 +81,6 @@ public class WatchOpenAnswersTestsAllStubs {
 
     @Mock
     protected OpenAnswerRepo mockOpenAnswerRepo;
-
-    @Mock
-    protected TeacherCrudRepository mockTeacherCrudRepository;
 
     private AutoCloseable closeable;
 

@@ -46,7 +46,7 @@ public abstract class Room {
     @JoinColumn(name="roomId",referencedColumnName = "roomId")
     protected List<RoomMessage> roomMessages;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "roomId", referencedColumnName = "roomId")
     protected List<OpenAnswer> openAnswers;
 

@@ -251,7 +251,10 @@ public class DataGenerator {
         roomsMap.put(Data.VALID_2MissionStudent,new StudentRoom("roomId5","name",students.get(Data.VALID),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.VALID_2MissionStudent),3));
         roomsMap.put(Data.VALID_2Mission_Group,new GroupRoom("roomIdGroup","name",classGroupMap.get(Data.Valid_Group),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.VALID_2Mission_Group),3));
         roomsMap.put(Data.VALID_2Mission_Class,new ClassroomRoom("roomIdClass","name",classRoomMap.get(Data.Valid_Classroom),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.VALID_2Mission_Class),3));
-        roomsMap.put(Data.VALID_OPEN_ANS, new StudentRoom("rid1", "name", students.get(Data.VALID), teachers.get(Data.VALID_WITH_CLASSROOM), roomTemplates.get(Data.VALID_OPEN_ANS),3));
+
+        Room openAnsRoom = new StudentRoom("rid1", "name", students.get(Data.VALID), teachers.get(Data.VALID_WITH_CLASSROOM), roomTemplates.get(Data.VALID_OPEN_ANS),3);
+        openAnsRoom.addOpenAnswer(new OpenAnswer("open1", "answer", null));
+        roomsMap.put(Data.VALID_OPEN_ANS, openAnsRoom);
 
         roomsMap.get(Data.VALID_OPEN_ANS).connect(alias);
         roomsMap.get(Data.Valid_Group).connect(alias);
