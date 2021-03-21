@@ -153,8 +153,8 @@ public class MissionManager extends TeacherManager {
      * @return all the solutions that wait to be approved
      */
     public Response<RoomOpenAnswerData> watchSolutions(String apiKey, String roomId){
-        Response<Teacher> teacherResponse=checkTeacher(apiKey); //TODO uncomment
-        if(teacherResponse.getReason()!=OpCode.Success){
+        Response<Teacher> teacherResponse = checkTeacher(apiKey); //TODO uncomment
+        if(teacherResponse.getReason()!= OpCode.Success){
             return new Response<>(null,teacherResponse.getReason());
         }
         Response<RoomOpenAnswersView> openAnswerResponse = openAnswerRepo.getOpenAnswers(teacherResponse.getValue().getAlias(), roomId);

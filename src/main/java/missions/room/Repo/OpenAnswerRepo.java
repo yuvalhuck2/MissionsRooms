@@ -64,6 +64,9 @@ public class OpenAnswerRepo {
     }
 
     public Response<RoomOpenAnswersView> getOpenAnswers(String teacherAlias, String roomId) {
+        if(!roomCrudRepository.existsById(roomId)) {
+            return new Response<>(null, OpCode.INVALID_ROOM_ID);
+        }
         try {
             RoomOpenAnswersView openAnswers = roomCrudRepository.findAByTeacherAndId(teacherAlias, roomId);
             return new Response<>(openAnswers, OpCode.Success);
