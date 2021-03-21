@@ -47,7 +47,7 @@ public class RoomCrudRepositoryExceptionSave implements RoomCrudRepository {
     }
 
     @Override
-    public List<RoomOpenAnswersView> findAllByTeacher(String teacherAlias) {
+    public RoomOpenAnswersView findAByTeacherAndId(String teacherAlias, String roomId) {
         return null;
     }
 

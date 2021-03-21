@@ -63,9 +63,9 @@ public class OpenAnswerRepo {
         return res;
     }
 
-    public Response<List<RoomOpenAnswersView>> getOpenAnswers(String teacherAlias) {
+    public Response<RoomOpenAnswersView> getOpenAnswers(String teacherAlias, String roomId) {
         try {
-            List<RoomOpenAnswersView> openAnswers = roomCrudRepository.findAllByTeacher(teacherAlias);
+            RoomOpenAnswersView openAnswers = roomCrudRepository.findAByTeacherAndId(teacherAlias, roomId);
             return new Response<>(openAnswers, OpCode.Success);
         } catch (Exception e) {
             return new Response<>(null, OpCode.DB_Error);

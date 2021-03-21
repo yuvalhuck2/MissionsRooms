@@ -36,8 +36,8 @@ public interface RoomCrudRepository extends CrudRepository<Room,String> {
     @Query("select a from ClassroomRoom a where a.participant.className = :classroomName")
     ClassroomRoom findClassroomRoomForWriteByAlias(@Param("classroomName") String classroomName);
 
-    @Query("SELECT r FROM Room r WHERE r.teacher.alias = ?1")
-    List<RoomOpenAnswersView> findAllByTeacher(String teacherAlias);
+    @Query("SELECT r FROM Room r WHERE r.teacher.alias = ?1 AND r.roomId = ?2")
+    RoomOpenAnswersView findAByTeacherAndId(String teacherAlias, String roomId);
 
     @Query("select a from StudentRoom a where a.participant.alias = :alias")
     StudentRoom findStudentRoomByAlias(@Param("alias") String alias);

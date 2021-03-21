@@ -152,17 +152,14 @@ public class MissionManager extends TeacherManager {
      * req 4.9 - watch students solutions
      * @return all the solutions that wait to be approved
      */
-    public Response<List<RoomOpenAnswerData>> watchSolutions(String apiKey){
-//        Response<Teacher> teacherResponse=checkTeacher(apiKey); //TODO uncomment
-//        if(teacherResponse.getReason()!=OpCode.Success){
-//            return new Response<>(null,teacherResponse.getReason());
-//        }
-        Response<List<RoomOpenAnswersView>> openAnswerResponse = openAnswerRepo.getOpenAnswers("tal"/*teacherResponse.getValue().getAlias()*/);
-        RoomOpenAnswersView rr = openAnswerResponse.getValue().get(0);
-        RoomTemplate tt = rr.getRoomTemplate();
-        Mission sss = tt.getMission(rr.getOpenAnswers().get(0).getMissionId());
+    public Response<RoomOpenAnswerData> watchSolutions(String apiKey, String roomId){
+        Response<Teacher> teacherResponse=checkTeacher(apiKey); //TODO uncomment
+        if(teacherResponse.getReason()!=OpCode.Success){
+            return new Response<>(null,teacherResponse.getReason());
+        }
+        Response<RoomOpenAnswersView> openAnswerResponse = openAnswerRepo.getOpenAnswers(teacherResponse.getValue().getAlias(), roomId);
         if(openAnswerResponse.getReason() == OpCode.Success) {
-            return new Response<>(convertRoomOpenAnswerViewListToRoomOpenAnswerDataList(openAnswerResponse.getValue()), OpCode.Success);
+            return new Response<>(convertRoomOpenAnswerViewToSolutionData(openAnswerResponse.getValue()), OpCode.Success);
         }
         return new Response<>(null, openAnswerResponse.getReason());
     }

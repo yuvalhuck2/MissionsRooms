@@ -34,8 +34,8 @@ public class MissionController extends AbsController {
     }
 
     @GetMapping("/unApprovedAnswers")
-    public Response<?> getUnApproveAnswers(@RequestParam String apiKey) {
-        Response<List<RoomOpenAnswerData>> res = missionService.watchSolutions(apiKey);
+    public Response<?> getUnApproveAnswers(@RequestParam String apiKey, @RequestParam(name = "roomId") String roomId) {
+        Response<RoomOpenAnswerData> res = missionService.watchSolutions(apiKey, roomId);
         return res;
     }
 

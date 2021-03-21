@@ -38,7 +38,7 @@ public class MissionService {
      * req 4.9 - watch students solutions
      * @return all the solutions that wait to be approved
      */
-    public Response<List<RoomOpenAnswerData>> watchSolutions(String apiKey){
-        return missionManager.watchSolutions(apiKey);
+    public Response<RoomOpenAnswerData> watchSolutions(String apiKey, String roomId){
+        return missionManager.watchSolutions(apiKey, roomId);
     }
 }
