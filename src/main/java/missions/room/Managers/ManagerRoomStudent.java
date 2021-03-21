@@ -64,6 +64,28 @@ public class ManagerRoomStudent extends StudentManager {
         publisher=SinglePublisher.getInstance();
     }
 
+    private OpCode checkOpenAnswerParamsValidity(String apiKey, SolutionData openAnswerData, MultipartFile file, Response<Room> roomRes) {
+        OpCode missionManagerValidity = checkStudentIsMissionManager(apiKey, openAnswerData.getRoomId());
+        if(missionManagerValidity == OpCode.Success) {
+            OpCode roomMissionValidity = checkRoomMissionValidity(roomRes, openAnswerData.getMissionId());
+            if(roomMissionValidity == OpCode.Success) {
+                OpCode openAnswerValidity = file == null && openAnswerData.getOpenAnswer() == null ? OpCode.INVALID_ANSWER : OpCode.Success;
+                return openAnswerValidity;
+            } else {
+                return roomMissionValidity;
+            }
+        } else {
+            return missionManagerValidity;
+        }
+    }
+
+    private OpCode checkRoomMissionValidity(Response<Room> roomRes, String missionId) {
+        Room room = roomRes.getValue();
+        if( room != null && room.containsMission(missionId)) {
+            return OpCode.Success;
+        }
+        return room == null ? roomRes.getReason() : OpCode.MISSION_NOT_IN_ROOM;
+    }
 
     /**
      * req 3.6.2.1 - answer open question mission
@@ -73,22 +95,21 @@ public class ManagerRoomStudent extends StudentManager {
      * @return if the answer was accepted successfully
      */
     public Response<Boolean> answerOpenQuestionMission(String apiKey, SolutionData openAnswerData, MultipartFile file){
-        //OpCode validity = checkStudentIsMissionManager(apiKey, openAnswerData.getRoomId()); //TODO return!!
-        OpCode validity = OpCode.Success;
         String roomId = openAnswerData.getRoomId();
+        Response<Room> roomRes = getRoomById(roomId);
+        OpCode validity = checkOpenAnswerParamsValidity(apiKey, openAnswerData, file, roomRes);//checkStudentIsMissionManager(apiKey, openAnswerData.getRoomId()); //TODO return!!
+        //OpCode validity = OpCode.Success;
         if (validity == OpCode.Success) {
             try {
                 OpenAnswer openAnswer = new OpenAnswer(openAnswerData.getMissionId()
                                             , openAnswerData.getOpenAnswer(), file);
-                Response<Room> roomRes = getRoomById(roomId);
+
                 Room room = roomRes.getValue();
-                if (room != null) {
-                    synchronized (room) {
-                        updateRoomAndMissionInCharge(room);
-                    }
-                    return openAnswerRepo.saveOpenAnswer(openAnswer, room);
+                synchronized (room) {
+                    updateRoomAndMissionInCharge(room);
                 }
-                return new Response<>(false, roomRes.getReason());
+                return openAnswerRepo.saveOpenAnswer(openAnswer, room);
+
             } catch (Exception ex) {
                 return new Response<>(false, OpCode.FAILED_READ_FILE_BYTES);
             }

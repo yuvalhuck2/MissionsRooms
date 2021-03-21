@@ -15,6 +15,7 @@ import missions.room.Domain.Users.*;
 import missions.room.Domain.missions.KnownAnswerMission;
 import DomainMocks.TeacherMock;
 import missions.room.Domain.missions.Mission;
+import missions.room.Domain.missions.OpenAnswerMission;
 import missions.room.Domain.missions.StoryMission;
 
 import java.util.*;
@@ -203,7 +204,9 @@ public class DataGenerator {
         roomsMap.put(Data.VALID_2MissionStudent,new StudentRoom("roomId5","name",students.get(Data.VALID),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.VALID_2MissionStudent),3));
         roomsMap.put(Data.VALID_2Mission_Group,new GroupRoom("roomIdGroup","name",classGroupMap.get(Data.Valid_Group),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.VALID_2Mission_Group),3));
         roomsMap.put(Data.VALID_2Mission_Class,new ClassroomRoom("roomIdClass","name",classRoomMap.get(Data.Valid_Classroom),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.VALID_2Mission_Class),3));
+        roomsMap.put(Data.VALID_OPEN_ANS, new StudentRoom("rid1", "name", students.get(Data.VALID), teachers.get(Data.VALID_WITH_CLASSROOM), roomTemplates.get(Data.VALID_OPEN_ANS),3));
 
+        roomsMap.get(Data.VALID_OPEN_ANS).connect(alias);
         roomsMap.get(Data.Valid_Group).connect(alias);
         roomsMap.get(Data.Valid_Classroom).connect(alias);
         roomsMap.get(Data.VALID_2MissionStudent).connect(alias);
@@ -239,6 +242,7 @@ public class DataGenerator {
         List<String> missions2NonPersonal=new ArrayList<>();
         missions2NonPersonal.add(getMission(Data.Valid_Deterministic_All_Types).getMissionId());
         missions2NonPersonal.add(getMission(Data.Valid_Deterministic_All_Types_2).getMissionId());
+        List<String> missionsOpenAns =  new ArrayList<String>(){{add(getMission(Data.VALID_OPEN_ANS).getMissionId());}};
         roomTemplatesDatas.put(Data.VALID,new RoomTemplateDetailsData(missions,"name",1,RoomType.Personal));
         roomTemplatesDatas.put(Data.VALID_2MissionStudent,new RoomTemplateDetailsData(missions2,"name",1,RoomType.Personal));
         roomTemplatesDatas.put(Data.VALID_2Mission_Group,new RoomTemplateDetailsData(missions2NonPersonal,"name",1,RoomType.Group));
@@ -253,6 +257,7 @@ public class DataGenerator {
         roomTemplatesDatas.put(Data.NULL_LIST,new RoomTemplateDetailsData(null,"name",1,RoomType.Personal));
         roomTemplatesDatas.put(Data.EMPTY_LIST,new RoomTemplateDetailsData(new ArrayList<>(),"name",0,RoomType.Personal));
         roomTemplatesDatas.put(Data.TYPE_NOT_MATCH,new RoomTemplateDetailsData(missions,"name",1,RoomType.Group));
+        roomTemplatesDatas.put(Data.VALID_OPEN_ANS, new RoomTemplateDetailsData("tid1",missionsOpenAns, "name", 1, RoomType.Personal));
         List<String> missionsWithNull=new ArrayList<>();
         missionsWithNull.add("not exist");
         roomTemplatesDatas.put(Data.WRONG_ID,new RoomTemplateDetailsData(missionsWithNull,"name",1,RoomType.Personal));
@@ -274,6 +279,8 @@ public class DataGenerator {
         List<Mission> missionsMapAllTypes=new ArrayList<>();
         missionsMapAllTypes.add(getMission(Data.Valid_Deterministic_All_Types));
 
+        List<Mission> missionMapOpenAns = new ArrayList<Mission>(){{add(getMission(Data.VALID_OPEN_ANS));}};
+
         RoomTemplateDetailsData templateDetailsDataGroup=getRoomTemplateData(Data.Valid_Group);
         templateDetailsDataGroup.setId("group");
 
@@ -283,7 +290,7 @@ public class DataGenerator {
         roomTemplates.put(Data.VALID,new RoomTemplate(templateDetailsData,missionsMap));
         roomTemplates.put(Data.Valid_Group,new RoomTemplate(templateDetailsDataGroup,missionsMapAllTypes));
         roomTemplates.put(Data.Valid_Classroom,new RoomTemplate(templateDetailsDataClass,missionsMapAllTypes));
-
+        roomTemplates.put(Data.VALID_OPEN_ANS, new RoomTemplate(getRoomTemplateData(Data.VALID_OPEN_ANS), missionMapOpenAns));
 
         List<Mission> missionsMap2Missions=new ArrayList<>();
         missionsMap2Missions.add(getMission(Data.Valid_Deterministic));
@@ -335,6 +342,7 @@ public class DataGenerator {
         missions.put(Data.EMPTY_ANSWER_DETERMINISTIC,new KnownAnswerMission("ddd",types,"question",""));
         missions.put(Data.VALID_STORY,new StoryMission("story",types,""));
         missions.put(Data.VALID_STORY2,new StoryMission("story2",types,""));
+        missions.put(Data.VALID_OPEN_ANS, new OpenAnswerMission("open1", types, "question"));
     }
 
     private void initTeacher() {

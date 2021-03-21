@@ -274,4 +274,8 @@ public abstract class Room {
     public boolean isMissionExists(String missionId) {
         return roomTemplate.getMission(missionId) != null;
     }
+
+    public boolean containsMission(String missionId) {
+        return roomTemplate.getMission(missionId) != null;
+    }
 }
