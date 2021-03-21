@@ -48,7 +48,7 @@ public class OpenAnswerRepo {
     }
     public Response<Boolean> saveOpenAnswer(OpenAnswer openAnswer, Room room){
         Response res = new Response(true, OpCode.Success);
-        if (openAnswer.isHasFile() && saveOpenAnswerFile(room.getRoomId(), openAnswer.getMissionId(), openAnswer.getFile())){
+        if (!openAnswer.isHasFile() || saveOpenAnswerFile(room.getRoomId(), openAnswer.getMissionId(), openAnswer.getFile())){
             try{
                 room.addOpenAnswer(openAnswer);
                 roomCrudRepository.save(room);
@@ -56,7 +56,7 @@ public class OpenAnswerRepo {
                 res.setValue(false);
                 res.setReason(OpCode.DB_Error);
             }
-        } else if(openAnswer.isHasFile()){
+        } else {
             res.setValue(false);
             res.setReason(OpCode.FAILED_TO_SAVE_FILE);
         }

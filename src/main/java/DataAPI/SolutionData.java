@@ -6,6 +6,7 @@ public class SolutionData {
     private String roomId;
     private String openAnswer;
     private Boolean hasFile;
+    private String missionQuestion;
 
     public SolutionData(String missionId, String roomId, String openAnswer) {
         this.missionId = missionId;
@@ -13,10 +14,19 @@ public class SolutionData {
         this.openAnswer = openAnswer;
     }
 
-    public SolutionData(String missionId, String openAnswer, boolean hasFile) {
+    public SolutionData(String missionId, String openAnswer, boolean hasFile, String missionQuestion) {
         this.missionId = missionId;
         this.openAnswer = openAnswer;
         this.hasFile = hasFile;
+        this.missionQuestion = missionQuestion;
+    }
+
+    public String getMissionQuestion() {
+        return missionQuestion;
+    }
+
+    public void setMissionQuestion(String missionQuestion) {
+        this.missionQuestion = missionQuestion;
     }
 
     public String getMissionId() {

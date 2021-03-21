@@ -6,4 +6,5 @@ public interface RoomOpenAnswersView {
     String getRoomId();
     String getName();
     List<OpenAnswer> getOpenAnswers();
+    RoomTemplate getRoomTemplate();
 }

@@ -79,6 +79,7 @@ public abstract class Room {
         connectedStudents=new HashSet<>();
         studentWereChosenForStory=new HashSet<>();
         waitingForStory=false;
+        openAnswers = new ArrayList<>();
     }
 
     public String drawMissionInCharge() {
@@ -268,5 +269,9 @@ public abstract class Room {
 
     public void addOpenAnswer(OpenAnswer openAnswer) {
         openAnswers.add(openAnswer);
+    }
+
+    public boolean isMissionExists(String missionId) {
+        return roomTemplate.getMission(missionId) != null;
     }
 }
