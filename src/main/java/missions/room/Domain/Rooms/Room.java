@@ -2,6 +2,7 @@ package missions.room.Domain.Rooms;
 
 import DataAPI.*;
 import Utils.Utils;
+import missions.room.Domain.OpenAnswer;
 import missions.room.Domain.missions.Mission;
 import missions.room.Domain.RoomMessage;
 import missions.room.Domain.RoomTemplate;
@@ -44,6 +45,10 @@ public abstract class Room {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="roomId",referencedColumnName = "roomId")
     protected List<RoomMessage> roomMessages;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "roomId", referencedColumnName = "roomId")
+    protected List<OpenAnswer> openAnswers;
 
     @OneToOne
     protected Teacher teacher;
@@ -160,7 +165,7 @@ public abstract class Room {
 
     //TODO implement after doing openRoomMission
     private boolean allOpenQuestionsApproved() {
-        return true;
+        return openAnswers.isEmpty();
     }
 
     public RoomDetailsData getData() {
@@ -259,5 +264,9 @@ public abstract class Room {
         studentWereChosenForStory.clear();
         waitingForStory=false;
         return true;
+    }
+
+    public void addOpenAnswer(OpenAnswer openAnswer) {
+        openAnswers.add(openAnswer);
     }
 }

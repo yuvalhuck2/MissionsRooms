@@ -7,13 +7,17 @@ import ExternalSystems.UniqueStringGenerator;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import missions.room.Domain.OpenAnswer;
+import missions.room.Domain.RoomOpenAnswersView;
 import missions.room.Domain.missions.Mission;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Users.Teacher;
 import missions.room.Repo.MissionRepo;
+import missions.room.Repo.OpenAnswerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +29,9 @@ public class MissionManager extends TeacherManager {
 
     @Autowired
     private MissionRepo missionRepo;
+
+    @Autowired
+    private OpenAnswerRepo openAnswerRepo;
 
     public MissionManager() {
         super();
@@ -80,6 +87,32 @@ public class MissionManager extends TeacherManager {
         return new Response<>(null,OpCode.Not_Mission);
     }
 
+    private List<RoomOpenAnswerData> convertRoomOpenAnswerViewListToRoomOpenAnswerList(List<RoomOpenAnswersView> roomOpenAnswersViews) {
+        List<RoomOpenAnswerData> roomOpenAnswerDataList = new ArrayList<>();
+        for(RoomOpenAnswersView roomOpenAnswersView : roomOpenAnswersViews) {
+            roomOpenAnswerDataList.add(convertRoomOpenAnswerViewToSolutionData(roomOpenAnswersView));
+        }
+        return roomOpenAnswerDataList;
+    }
+
+    private RoomOpenAnswerData convertRoomOpenAnswerViewToSolutionData(RoomOpenAnswersView roomOpenAnswersView) {
+        List<OpenAnswer> openAnswers = roomOpenAnswersView.getOpenAnswers();
+        List<SolutionData> solutionDataList = convertOpenAnswerListToSolutionDataList(openAnswers);
+        return new RoomOpenAnswerData(roomOpenAnswersView.getRoomId(), roomOpenAnswersView.getName(), solutionDataList);
+    }
+
+    private List<SolutionData> convertOpenAnswerListToSolutionDataList(List<OpenAnswer> openAnswers) {
+        List<SolutionData> solutionDataList = new ArrayList<>();
+        for(OpenAnswer openAnswer : openAnswers) {
+            solutionDataList.add(convertOpenAnswerToSolutionData(openAnswer));
+        }
+        return solutionDataList;
+    }
+
+    private SolutionData convertOpenAnswerToSolutionData(OpenAnswer openAnswer) {
+        return new SolutionData(openAnswer.getMissionId(), openAnswer.getOpenAnswerText(), openAnswer.isHasFile());
+    }
+
     public Response<Boolean> addMission(Mission mission) {
         Response<Mission> missionResponse=missionRepo.save(mission);
         if(missionResponse.getReason()!= OpCode.Success){
@@ -108,5 +141,21 @@ public class MissionManager extends TeacherManager {
                 .parallelStream().map(Mission::getData)
                 .collect(Collectors.toList());
         return new Response<>(missionDataList,OpCode.Success);
+    }
+
+    /**
+     * req 4.9 - watch students solutions
+     * @return all the solutions that wait to be approved
+     */
+    public Response<List<RoomOpenAnswerData>> watchSolutions(String apiKey){
+        Response<Teacher> teacherResponse=checkTeacher(apiKey); //TODO uncomment
+        if(teacherResponse.getReason()!=OpCode.Success){
+            return new Response<>(null,teacherResponse.getReason());
+        }
+        Response<List<RoomOpenAnswersView>> openAnswerResponse = openAnswerRepo.getOpenAnswers("tal"/*teacherResponse.getValue().getAlias()*/);
+        if(openAnswerResponse.getReason() == OpCode.Success) {
+            return new Response<>(convertRoomOpenAnswerViewListToRoomOpenAnswerList(openAnswerResponse.getValue()), OpCode.Success);
+        }
+        return new Response<>(null, openAnswerResponse.getReason());
     }
 }

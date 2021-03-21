@@ -4,6 +4,8 @@ import CrudRepositories.RoomCrudRepository;
 import Data.Data;
 import Data.DataGenerator;
 import DataAPI.RoomType;
+import missions.room.Domain.OpenAnswer;
+import missions.room.Domain.RoomOpenAnswersView;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
@@ -78,6 +80,11 @@ public class RoomCrudRepositoryMock implements RoomCrudRepository {
                 return (ClassroomRoom)dataGenerator.getRoom(Data.Valid_Classroom);
             }
         }
+        return null;
+    }
+
+    @Override
+    public List<RoomOpenAnswersView> findAllByTeacher(String teacherAlias) {
         return null;
     }
 

@@ -73,18 +73,22 @@ public class ManagerRoomStudent extends StudentManager {
      * @return if the answer was accepted successfully
      */
     public Response<Boolean> answerOpenQuestionMission(String apiKey, SolutionData openAnswerData, MultipartFile file){
-        OpCode validity = checkStudentIsMissionManager(apiKey, openAnswerData.getRoomId());
+        OpCode validity = checkStudentIsMissionManager(apiKey, openAnswerData.getRoomId()); //TODO return!!
+        //OpCode validity = OpCode.Success;
+        String roomId = openAnswerData.getRoomId();
         if (validity == OpCode.Success) {
             try {
-                OpenAnswer openAnswer = new OpenAnswer(openAnswerData.getRoomId(), openAnswerData.getMissionId()
+                OpenAnswer openAnswer = new OpenAnswer(openAnswerData.getMissionId()
                                             , openAnswerData.getOpenAnswer(), file);
-                Room room = ram.getRoom(openAnswerData.getRoomId());
+                Response<Room> roomRes = getRoomById(roomId);
+                Room room = roomRes.getValue();
                 if (room != null) {
                     synchronized (room) {
                         updateRoomAndMissionInCharge(room);
                     }
+                    return openAnswerRepo.saveOpenAnswer(openAnswer, room);
                 }
-                return openAnswerRepo.saveOpenAnswer(openAnswer);
+                return new Response<>(false, roomRes.getReason());
             } catch (Exception ex) {
                 return new Response<>(false, OpCode.FAILED_READ_FILE_BYTES);
             }
@@ -517,5 +521,4 @@ public class ManagerRoomStudent extends StudentManager {
         }
         return null;
     }
-
 }

@@ -5,11 +5,18 @@ public class SolutionData {
     private String missionId;
     private String roomId;
     private String openAnswer;
+    private Boolean hasFile;
 
     public SolutionData(String missionId, String roomId, String openAnswer) {
         this.missionId = missionId;
         this.roomId = roomId;
         this.openAnswer = openAnswer;
+    }
+
+    public SolutionData(String missionId, String openAnswer, boolean hasFile) {
+        this.missionId = missionId;
+        this.openAnswer = openAnswer;
+        this.hasFile = hasFile;
     }
 
     public String getMissionId() {
@@ -34,5 +41,13 @@ public class SolutionData {
 
     public void setOpenAnswer(String openAnswer) {
         this.openAnswer = openAnswer;
+    }
+
+    public Boolean getHasFile() {
+        return hasFile;
+    }
+
+    public void setHasFile(Boolean hasFile) {
+        this.hasFile = hasFile;
     }
 }

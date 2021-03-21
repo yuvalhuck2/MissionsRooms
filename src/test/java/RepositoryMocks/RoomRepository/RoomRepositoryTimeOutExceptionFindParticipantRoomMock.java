@@ -3,12 +3,15 @@ package RepositoryMocks.RoomRepository;
 import CrudRepositories.RoomCrudRepository;
 import Data.Data;
 import Data.DataGenerator;
+import missions.room.Domain.OpenAnswer;
+import missions.room.Domain.RoomOpenAnswersView;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
 import missions.room.Domain.Rooms.StudentRoom;
 
 import javax.persistence.LockTimeoutException;
+import java.util.List;
 import java.util.Optional;
 
 public class RoomRepositoryTimeOutExceptionFindParticipantRoomMock implements RoomCrudRepository {
@@ -56,6 +59,11 @@ public class RoomRepositoryTimeOutExceptionFindParticipantRoomMock implements Ro
     @Override
     public ClassroomRoom findClassroomRoomForWriteByAlias(String classroomName) {
         throw new LockTimeoutException();
+    }
+
+    @Override
+    public List<RoomOpenAnswersView> findAllByTeacher(String teacherAlias) {
+        return null;
     }
 
     @Override

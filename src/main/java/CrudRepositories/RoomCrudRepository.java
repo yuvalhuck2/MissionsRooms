@@ -1,5 +1,7 @@
 package CrudRepositories;
 
+import missions.room.Domain.OpenAnswer;
+import missions.room.Domain.RoomOpenAnswersView;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
@@ -10,6 +12,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import javax.persistence.LockModeType;
+import java.util.List;
 
 public interface RoomCrudRepository extends CrudRepository<Room,String> {
 
@@ -33,6 +36,8 @@ public interface RoomCrudRepository extends CrudRepository<Room,String> {
     @Query("select a from ClassroomRoom a where a.participant.className = :classroomName")
     ClassroomRoom findClassroomRoomForWriteByAlias(@Param("classroomName") String classroomName);
 
+    @Query("SELECT r FROM Room r WHERE r.teacher.alias = ?1")
+    List<RoomOpenAnswersView> findAllByTeacher(String teacherAlias);
 
     @Query("select a from StudentRoom a where a.participant.alias = :alias")
     StudentRoom findStudentRoomByAlias(@Param("alias") String alias);
