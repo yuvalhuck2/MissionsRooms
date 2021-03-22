@@ -4,10 +4,7 @@ package missions.room.ManagerRoomStudentTests;
 import CrudRepositories.*;
 import Data.Data;
 import Data.DataGenerator;
-import DataAPI.OpCode;
-import DataAPI.Response;
-import DataAPI.RoomDetailsData;
-import DataAPI.RoomType;
+import DataAPI.*;
 import DomainMocks.MockRam;
 import DomainMocks.PublisherMock;
 import RepositoryMocks.ClassGroupRepository.ClassGroupRepositoryMock;
@@ -25,10 +22,7 @@ import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.User;
 import missions.room.Managers.ManagerRoomStudent;
-import missions.room.Repo.ClassGroupRepo;
-import missions.room.Repo.ClassroomRepo;
-import missions.room.Repo.RoomRepo;
-import missions.room.Repo.StudentRepo;
+import missions.room.Repo.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,8 +34,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 import java.lang.reflect.Field;
@@ -66,6 +63,9 @@ public class ManagerRoomStudentAllStubs {
 
     @Autowired
     protected RoomCrudRepository roomRepo;
+
+    @Autowired
+    protected OpenAnswerRepo openAnswerRepo;
 
     @Autowired
     protected ClassroomRepository classroomRepo;
@@ -117,6 +117,9 @@ public class ManagerRoomStudentAllStubs {
 
     @Mock
     protected RoomRepo mockRoomRepo;
+
+    @Mock
+    protected OpenAnswerRepo mockOpenAnswerRepo;
 
     @Mock
     protected RoomCrudRepository mockRoomCrudRepository;
@@ -188,6 +191,7 @@ public class ManagerRoomStudentAllStubs {
         Room valid2MissionsGroupRoom =dataGenerator.getRoom(Data.VALID_2Mission_Group);
         Room valid2MissionsClassRoom =dataGenerator.getRoom(Data.VALID_2Mission_Class);
         Room valid2StudentsFromDifferentGroups2Missions=dataGenerator.getRoom(Data.Valid_2Students_From_Different_Groups);
+        Room openAnsRoom = dataGenerator.getRoom((Data.VALID_OPEN_ANS));
 
         when(mockRam.getAlias(thirdStudentKey))
                 .thenReturn(user.getAlias());
@@ -208,6 +212,8 @@ public class ManagerRoomStudentAllStubs {
         when(mockRam.getRoom(studentRoom.getRoomId()))
                 .thenReturn(null)
                 .thenReturn(studentRoom);
+        when(mockRam.getRoom(openAnsRoom.getRoomId()))
+                .thenReturn(openAnsRoom);
         when(mockRam.getRoom(groupRoom.getRoomId()))
                 .thenReturn(null)
                 .thenReturn(groupRoom);
@@ -234,6 +240,13 @@ public class ManagerRoomStudentAllStubs {
                 .thenReturn(NOT_IN_CHARGE);
         when(mockRam.disconnectFromRoom(valid2StudentsFromDifferentGroups2Missions.getRoomId(),student.getAlias()))
                 .thenReturn(student2.getAlias());
+        when(mockRam.connectToRoom(openAnsRoom.getRoomId(), student.getAlias()))
+                .thenReturn(IN_CHARGE);
+
+        when(mockRam.getMissionManager(openAnsRoom.getRoomId()))
+                .thenReturn(student.getAlias());
+        when(mockRam.getAlias(INVALID_KEY_OPEN_ANS))
+                .thenReturn("alias");
 
         when(mockStudentRepo.findStudentById(student.getAlias()))
                 .thenReturn(new Response<>(student, OpCode.Success));
@@ -246,6 +259,8 @@ public class ManagerRoomStudentAllStubs {
         when(mockStudentRepo.save(any()))
                 .thenReturn(new Response<>(student,OpCode.Success));
 
+        when(mockOpenAnswerRepo.saveOpenAnswer(any(), any()))
+                .thenReturn(new Response<>(true, Success));
 
         when(mockClassroomRepo.save(any()))
                 .thenReturn(new Response<>(null,OpCode.Success));
@@ -901,6 +916,55 @@ public class ManagerRoomStudentAllStubs {
         assertEquals(response.getReason(), opCode);
         assertTrue(((PublisherMock)mockPublisher).getAllNotifications().isEmpty());
     }
+
+    @Test void testAnswerOpenQuestionWithOutFileSuccess(){
+        SolutionData solutionData = new SolutionData(dataGenerator.getMission(Data.VALID_OPEN_ANS).getMissionId(), dataGenerator.getRoom(Data.VALID_OPEN_ANS).getRoomId(), "ans");
+        Response<Boolean> res = managerRoomStudentWithMock.answerOpenQuestionMission(studentApiKey, solutionData, null);
+        assertEquals(res.getReason(),OpCode.Success);
+        assertTrue(res.getValue());
+    }
+
+    @Test void testAnswerOpenQuestionWithFileSuccess(){
+        byte[] fileContent = "mock file".getBytes();
+        MultipartFile mockFile = new MockMultipartFile("file.txt", fileContent);
+        SolutionData solutionData = new SolutionData(dataGenerator.getMission(Data.VALID_OPEN_ANS).getMissionId(), dataGenerator.getRoom(Data.VALID_OPEN_ANS).getRoomId(), "ans");
+        Response<Boolean> res = managerRoomStudentWithMock.answerOpenQuestionMission(studentApiKey, solutionData, mockFile);
+        assertEquals(res.getReason(),OpCode.Success);
+        assertTrue(res.getValue());
+    }
+
+    @Test
+    void testAnswerOpenQuestionFailInvalidApiKey(){
+        SolutionData solutionData = new SolutionData(dataGenerator.getMission(Data.VALID_OPEN_ANS).getMissionId(), dataGenerator.getRoom(Data.VALID_OPEN_ANS).getRoomId(), "ans");
+        Response<Boolean> res = managerRoomStudentWithMock.answerOpenQuestionMission(INVALID_KEY_OPEN_ANS, solutionData, null);
+        assertEquals(res.getReason(),OpCode.STUDENT_NOT_IN_CHARGE);
+        assertFalse(res.getValue());
+    }
+
+    @Test
+    void testAnswerOpenQuestionFailInvalidMissionId(){
+        SolutionData solutionData = new SolutionData("", dataGenerator.getRoom(Data.VALID_OPEN_ANS).getRoomId(), "ans");
+        Response<Boolean> res = managerRoomStudentWithMock.answerOpenQuestionMission(INVALID_KEY_OPEN_ANS, solutionData, null);
+        assertEquals(res.getReason(),OpCode.STUDENT_NOT_IN_CHARGE);
+        assertFalse(res.getValue());
+    }
+
+    @Test
+    void testAnswerOpenQuestionFailInvalidRoomId(){
+        SolutionData solutionData = new SolutionData(dataGenerator.getMission(Data.VALID_OPEN_ANS).getMissionId(), WRONG_ROOM_ID, "ans");
+        Response<Boolean> res = managerRoomStudentWithMock.answerOpenQuestionMission(studentApiKey, solutionData, null);
+        assertEquals(res.getReason(), INVALID_ROOM_ID);
+        assertFalse(res.getValue());
+    }
+
+    @Test
+    void testAnswerOpenQuestionFailInvalidNoAnswer() {
+        SolutionData solutionData = new SolutionData(dataGenerator.getMission(Data.VALID_OPEN_ANS).getMissionId(), dataGenerator.getRoom(Data.VALID_OPEN_ANS).getRoomId(), null);
+        Response<Boolean> res = managerRoomStudentWithMock.answerOpenQuestionMission(studentApiKey, solutionData, null);
+        assertEquals(res.getReason(), INVALID_ANSWER);
+        assertFalse(res.getValue());
+    }
+
 
     @AfterEach
     void tearDown() {

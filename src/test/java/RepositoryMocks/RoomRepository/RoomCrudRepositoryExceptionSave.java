@@ -2,12 +2,15 @@ package RepositoryMocks.RoomRepository;
 
 import CrudRepositories.RoomCrudRepository;
 import Data.DataGenerator;
+import missions.room.Domain.OpenAnswer;
+import missions.room.Domain.RoomOpenAnswersView;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
 import missions.room.Domain.Rooms.StudentRoom;
 import org.springframework.dao.DataAccessResourceFailureException;
 
+import java.util.List;
 import java.util.Optional;
 
 public class RoomCrudRepositoryExceptionSave implements RoomCrudRepository {
@@ -40,6 +43,11 @@ public class RoomCrudRepositoryExceptionSave implements RoomCrudRepository {
 
     @Override
     public ClassroomRoom findClassroomRoomForWriteByAlias(String classroomName) {
+        return null;
+    }
+
+    @Override
+    public RoomOpenAnswersView findAByTeacherAndId(String teacherAlias, String roomId) {
         return null;
     }
 

@@ -3,13 +3,17 @@ package missions.room.ManagerRoomStudentTests;
 
 import CrudRepositories.RoomCrudRepository;
 import Data.Data;
+import DataAPI.OpCode;
 import DataAPI.Response;
+import DataAPI.SolutionData;
+import Utils.Utils;
 import missions.room.Domain.Classroom;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Users.Student;
 import missions.room.Managers.ManagerRoomStudent;
+import missions.room.Repo.OpenAnswerRepo;
 import missions.room.Repo.RoomRepo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -18,24 +22,29 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.lang.reflect.Field;
 
 import static DataAPI.OpCode.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
-public class ManagerRoomStudentRealRoomRamStudentClassroomClassGroupRepo extends ManagerRoomStudentRealRamRealClassRoomRealRamStudentClassroomClassGroupRepo {
+public class ManagerRoomStudentAllReal extends ManagerRoomStudentRealRamRealClassRoomRealRamStudentClassroomClassGroupRepo {
 
     @Autowired
     private RoomRepo realRoomRepo;
+
+    @Autowired
+    private OpenAnswerRepo realOpenAnswerRepo;
 
     @Autowired
     private RoomCrudRepository realRoomCrudRepository;
@@ -50,6 +59,10 @@ public class ManagerRoomStudentRealRoomRamStudentClassroomClassGroupRepo extends
             Field classroomRepo = ManagerRoomStudent.class.getDeclaredField("roomRepo");
             classroomRepo.setAccessible(true);
             classroomRepo.set(managerRoomStudentWithMock,realRoomRepo);
+
+            Field openAnswerRepo = ManagerRoomStudent.class.getDeclaredField("openAnswerRepo");
+            openAnswerRepo.setAccessible(true);
+            openAnswerRepo.set(managerRoomStudentWithMock,realOpenAnswerRepo);
         } catch (IllegalAccessException | NoSuchFieldException e) {
             fail();
         }
@@ -61,6 +74,7 @@ public class ManagerRoomStudentRealRoomRamStudentClassroomClassGroupRepo extends
         roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.VALID_2MissionStudent));
         roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.VALID_2Mission_Group));
         roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.VALID_2Mission_Class));
+        roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.VALID_OPEN_ANS));
 
 
         Room studentRoom=dataGenerator.getRoom(Data.Valid_Student);
@@ -79,6 +93,7 @@ public class ManagerRoomStudentRealRoomRamStudentClassroomClassGroupRepo extends
         realRoomCrudRepository.save(valid2MissionsGroupRoom);
         realRoomCrudRepository.save(valid2MissionsClassRoom);
         realRoomCrudRepository.save(valid2StudentsFromDifferentGroups2Missions);
+        realRoomCrudRepository.save(dataGenerator.getRoom(Data.VALID_OPEN_ANS));
 
 
         //add the rooms to the ram to connect the students to the room
@@ -270,6 +285,26 @@ public class ManagerRoomStudentRealRoomRamStudentClassroomClassGroupRepo extends
         realRam.disconnectFromRoom(room.getRoomId(),student.getAlias());
         realRam.disconnectFromRoom(room.getRoomId(),student2.getAlias());
         testInvalidAnswerStory(Not_Enough_Connected);
+    }
+
+    @Test
+    @Override
+    void testAnswerOpenQuestionWithFileSuccess() {
+        byte[] fileContent = "mock file".getBytes();
+        String fileName = "file.txt";
+        MultipartFile mockFile = new MockMultipartFile(fileName, fileName,"text/plain", fileContent);
+        SolutionData solutionData = new SolutionData(dataGenerator.getMission(Data.VALID_OPEN_ANS).getMissionId(), dataGenerator.getRoom(Data.VALID_OPEN_ANS).getRoomId(), "ans");
+        Response<Boolean> res = managerRoomStudentWithMock.answerOpenQuestionMission(studentApiKey, solutionData, mockFile);
+        assertEquals(res.getReason(), OpCode.Success);
+        assertTrue(res.getValue());
+        assertTrue(checkOpenAnswerFileExist(dataGenerator.getRoom(Data.VALID_OPEN_ANS).getRoomId(), dataGenerator.getMission(Data.VALID_OPEN_ANS).getMissionId(), fileName));
+    }
+
+    private boolean checkOpenAnswerFileExist(String roomId, String missionId, String fileName) {
+        String rootDir = Utils.getRootDirectory();
+        String filePath = rootDir+"/openAnswer/"+roomId+"/"+missionId+"/"+fileName;
+        File f = new File(filePath);
+        return f.exists();
     }
 
     @Override
