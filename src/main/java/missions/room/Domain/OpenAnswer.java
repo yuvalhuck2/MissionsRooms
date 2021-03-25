@@ -13,16 +13,14 @@ public class OpenAnswer {
 
     @Id
     private String id;
-    private String roomId;
     private String missionId;
     private String openAnswerText;
     private boolean hasFile;
     @Transient
     private MultipartFile file;
 
-    public OpenAnswer(String roomId, String missionId, String openAnswerText, MultipartFile file) {
+    public OpenAnswer(String missionId, String openAnswerText, MultipartFile file) {
         this.id = UniqueStringGenerator.getTimeNameCode("OPEN_ANS");
-        this.roomId = roomId;
         this.missionId = missionId;
         this.openAnswerText = openAnswerText;
         this.file = file;
@@ -31,14 +29,6 @@ public class OpenAnswer {
 
     public OpenAnswer() {
 
-    }
-
-    public String getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
     }
 
     public String getMissionId() {

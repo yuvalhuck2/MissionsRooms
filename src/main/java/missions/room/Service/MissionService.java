@@ -1,7 +1,6 @@
 package missions.room.Service;
 
-import DataAPI.MissionData;
-import DataAPI.Response;
+import DataAPI.*;
 import missions.room.Managers.MissionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,4 +33,12 @@ public class MissionService {
         return missionManager.searchMissions(apiKey);
     }
 
+
+    /**
+     * req 4.9 - watch students solutions
+     * @return all the solutions that wait to be approved
+     */
+    public Response<RoomOpenAnswerData> watchSolutions(String apiKey, String roomId){
+        return missionManager.watchSolutions(apiKey, roomId);
+    }
 }
