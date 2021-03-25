@@ -43,7 +43,7 @@ public class UserAuthenticationManager extends TeacherManager {
     private  VerificationCodeGenerator verificationCodeGenerator;
 
     //save verification codes and string for trace and clean old code
-    private final ConcurrentHashMap<String, PasswordCodeGroupAndTime> aliasToCode;
+    private final static ConcurrentHashMap<String, PasswordCodeGroupAndTime> aliasToCode=new ConcurrentHashMap<>();
 
     //tests constructor
     public UserAuthenticationManager(ClassroomRepository classroomRepository,TeacherCrudRepository teacherCrudRepository,SchoolUserCrudRepository userCrudRepo, MailSender sender) {
@@ -52,7 +52,6 @@ public class UserAuthenticationManager extends TeacherManager {
         this.schoolUserRepo = new SchoolUserRepo(userCrudRepo);
         hashSystem = new HashSystem();
         this.sender = sender;
-        aliasToCode=new ConcurrentHashMap<>();
         verificationCodeGenerator = new VerificationCodeGenerator();
     }
 
@@ -61,14 +60,12 @@ public class UserAuthenticationManager extends TeacherManager {
         super();
         this.userRepo = new UserRepo(userCrudRepo);
         hashSystem = new HashSystem();
-        aliasToCode=new ConcurrentHashMap<>();
         verificationCodeGenerator = new VerificationCodeGenerator();
     }
 
     public UserAuthenticationManager(TeacherCrudRepository teacherCrudRepository) {
         super(teacherCrudRepository);
         hashSystem = new HashSystem();
-        aliasToCode=new ConcurrentHashMap<>();
         verificationCodeGenerator = new VerificationCodeGenerator();
     }
 
@@ -76,7 +73,6 @@ public class UserAuthenticationManager extends TeacherManager {
         super();
         hashSystem=new HashSystem();
         sender=new MailSender();
-        aliasToCode=new ConcurrentHashMap<>();
         verificationCodeGenerator = new VerificationCodeGenerator();
     }
 
@@ -97,7 +93,7 @@ public class UserAuthenticationManager extends TeacherManager {
 
 
     protected Response<List<TeacherData>> updateStudent(RegisterDetailsData details) {
-        Response<SchoolUser> userResponse= schoolUserRepo.findUserForRead(details.getAlias());
+;        Response<SchoolUser> userResponse= schoolUserRepo.findUserForRead(details.getAlias());
         if(userResponse.getReason()!=OpCode.Success){
             return new Response<>(null,userResponse.getReason());
         }
@@ -136,7 +132,7 @@ public class UserAuthenticationManager extends TeacherManager {
         if(!sender.send(Utils.getMailFromAlias(details.getAlias()), verificationCode)){
             return new Response<>(null, OpCode.Mail_Error);
         }
-        this.aliasToCode.put(details.getAlias(),new PasswordCodeGroupAndTime(verificationCode,details.getPassword()));
+        aliasToCode.put(details.getAlias(),new PasswordCodeGroupAndTime(verificationCode,details.getPassword()));
         return new Response<>(teacherDataList,userType);
     }
 

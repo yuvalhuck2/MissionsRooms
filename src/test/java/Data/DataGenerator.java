@@ -402,6 +402,8 @@ public class DataGenerator {
         verificationCodes=new HashMap<Data, String>();
         verificationCodes.put(Data.NULL_CODE,null);
         verificationCodes.put(Data.EMPTY_CODE,"");
+        verificationCodes.put(Data.VALID,"12345");
+        verificationCodes.put(Data.WRONG_CODE,"123453");
     }
 
     private void initRegisterDetailsDatas() {
@@ -460,11 +462,6 @@ public class DataGenerator {
 
     public String getVerificationCode (Data data){
         return verificationCodes.get(data);
-    }
-
-    public void setValidVerificationCode(String code) {
-        verificationCodes.put(Data.VALID,code);
-        verificationCodes.put(Data.WRONG_CODE,code+"3");
     }
 
     public Teacher getTeacher(Data data) {
