@@ -61,6 +61,10 @@ export const AddDeterministicMissionStrings = {
   classroom: 'כיתתית',
 };
 
+export const AddOpenAnswerMissionStrings = {
+  header: 'הוספת משימה עם תשובה פתוחה'
+}
+
 export const AddDeterministicMissionErrors = {
   question_empty: 'יש להזין שאלה',
   answer_empty: 'יש להזין תשובה',
@@ -79,6 +83,7 @@ export const AddStrings = {
 export const ChooseMissionToAddStrings = {
   header: ' יש לבחור סוג משימה להוספה',
   deterministicButton: 'שאלה עם פתרון יחיד',
+  OpenAnswerMissionButton: 'שאלה פתוחה/העלאת קובץ'
 };
 
 export const AddRoomTempalteStrings = {
