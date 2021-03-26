@@ -8,8 +8,11 @@ public class MailSenderTrueMock extends MailSender {
 
     @Override
     public Boolean send(String to, String code) {
-
         return true;
     }
+
+    public MailSenderTrueMock() {
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package missions.room.WatchOpenAnswersTests;
 
+import CrudRepositories.TeacherCrudRepository;
 import Data.Data;
 import DataAPI.Response;
 import missions.room.Domain.Classroom;
@@ -7,6 +8,7 @@ import missions.room.Managers.MissionManager;
 import missions.room.Managers.TeacherManager;
 import missions.room.Repo.ClassroomRepo;
 import missions.room.Repo.TeacherRepo;
+import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
@@ -21,6 +23,9 @@ public class WatchOpenAnswersRealRamTeacherRepo extends WatchOpenAnswersRealRam{
     @Autowired
     private TeacherRepo realTeacherRepo;
 
+    @Autowired
+    private TeacherCrudRepository teacherCrudRepository;
+
     @Override
     protected void initMocks(){
         super.initMocks();
@@ -34,5 +39,10 @@ public class WatchOpenAnswersRealRamTeacherRepo extends WatchOpenAnswersRealRam{
         }
         Response<Classroom> ress = realClassroomRepo.save(dataGenerator.getClassroom(Data.Valid_Classroom));
         realTeacherRepo.save(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM));
+    }
+
+    @AfterEach
+    void tearDown() {
+        teacherCrudRepository.deleteAll();
     }
 }

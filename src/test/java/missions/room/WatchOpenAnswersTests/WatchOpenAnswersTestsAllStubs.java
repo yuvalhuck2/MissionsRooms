@@ -28,6 +28,7 @@ import missions.room.Managers.ManagerRoomStudent;
 import missions.room.Managers.MissionManager;
 import missions.room.Managers.RoomManager;
 import missions.room.Repo.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -168,4 +169,6 @@ public class WatchOpenAnswersTestsAllStubs {
         Response<RoomOpenAnswerData> res =  missionManagerWithMockito.watchSolutions(apiKey,"");
         assertEquals(res.getReason(), OpCode.INVALID_ROOM_ID);
     }
+
+
 }
