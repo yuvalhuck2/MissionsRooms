@@ -23,4 +23,6 @@ export { default as ChangePasswordScreen} from './ChangePasswordScreen'
 export { default as PointsTableScreen} from './PointsTableScreen'
 export {default as ManageUsersScreen} from './ManageUsersScreen'
 export { default as Test} from './Test'
+export {default as AddOpenQuestionMissionScreen} from './AddOpenQuestionMissionScreen'
+export {default as SolveOpenQuestionMissionScreen} from './SolveOpenQuestionMissionScreen'
 

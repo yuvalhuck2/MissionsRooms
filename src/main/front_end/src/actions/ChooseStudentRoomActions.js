@@ -12,6 +12,8 @@ import {
     WAIT_FOR_ROOM_DATA,
     INIT_STORY_MISSION,
     EXIT_ROOM,
+    OPEN_QUESTION_MISSION,
+    INIT_OPEN_QUESTION_MISSION
   } from './types';
  
   import {
@@ -92,6 +94,12 @@ const {
           dispatch({ type: INIT_STORY_MISSION, payload: {roomData, isInCharge} })
           navigation.navigate(NavPaths.storyScreen);
           break;
+      case OPEN_QUESTION_MISSION:
+        dispatch({ type: PASS_TO_SOLVE_MISSIONS});
+        dispatch({ type: INIT_OPEN_QUESTION_MISSION, payload: {roomData, isInCharge} })
+        navigation.navigate(NavPaths.SolveOpenQuestionMission);
+        break;
+
       default:
         console.log(roomData)
         alert("didn't move from room")

@@ -2,6 +2,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import {
+    AddOpenQuestionMissionScreen,
+    SolveOpenQuestionMissionScreen,
     AddDeterministicMissionScreen,
     AddRoomScreen,
     AddRoomTemplateScreen,
@@ -74,6 +76,14 @@ const App = () => {
         <Stack.Screen
           name='AddDeteministicMission'
           component={AddDeterministicMissionScreen}
+        />
+        <Stack.Screen
+          name='AddOpenQuestionMission'
+          component={AddOpenQuestionMissionScreen}
+        />
+        <Stack.Screen
+          name='SolveOpenQuestionMission'
+          component={SolveOpenQuestionMissionScreen}
         />
         <Stack.Screen name='AddMission' component={ChooseMissionToAddScreen} />
         <Stack.Screen

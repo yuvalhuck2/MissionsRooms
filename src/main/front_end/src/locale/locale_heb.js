@@ -45,6 +45,10 @@ export const uploadStringsErrors = {
   already_exist: 'משתמש בשם הנ"ל כבר קיים',
 };
 
+export const openQuestionErrors = {
+  mission_in_charge: 'המשתמש אינו אחראי על המשימה הנוכחית',
+};
+
 export const authStrings = {
   header: 'הכנס קוד אימות',
   enter_code: 'הכנס קוד',
@@ -60,6 +64,10 @@ export const AddDeterministicMissionStrings = {
   group: 'קבוצתית',
   classroom: 'כיתתית',
 };
+
+export const AddOpenAnswerMissionStrings = {
+  header: 'הוספת משימה עם תשובה פתוחה'
+}
 
 export const AddDeterministicMissionErrors = {
   question_empty: 'יש להזין שאלה',
@@ -79,6 +87,7 @@ export const AddStrings = {
 export const ChooseMissionToAddStrings = {
   header: ' יש לבחור סוג משימה להוספה',
   deterministicButton: 'שאלה עם פתרון יחיד',
+  OpenAnswerMissionButton: 'שאלה פתוחה/העלאת קובץ'
 };
 
 export const AddRoomTempalteStrings = {
@@ -178,6 +187,10 @@ export const ChooseRoomStudentErrors = {
 export const SolveDeterministicMissionStrings = {
   enter_answer: 'הכנס/י תשובה',
   send_answer: 'שלח/י תשובה',
+};
+
+export const SolveOpenQuestionMissionErrors = {
+  empty_answer: 'נא למלא תשובה בטקסט או לבחור קובץ להעלאה',
 };
 
 export const StudentStrings = {
