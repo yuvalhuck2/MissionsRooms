@@ -1,21 +1,28 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ActivityIndicator } from 'react-native-paper';
+import { ActivityIndicator, List } from 'react-native-paper';
 import { Checkbox } from 'react-native-paper';
 import { ChooseMissionsTemplateStrings,AddStrings } from '../../locale/locale_heb';
-import { addTemplate,missionsChanged } from '../../actions/AddRoomTemplateActions';
+import { addTemplate,missionsChanged, changeDeterministic,
+  changeTrivia, changeStory, changeOpenQuestion, searchMission } from '../../actions/AddRoomTemplateActions';
 import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
 import Button from '../common/Button';
 import Header from '../common/Header';
-import TextInput from '../common/TextInput';
-import { DETERMINISTIC_NAME } from '../../actions/types';
+import { DETERMINISTIC_NAME, STORY_NAME } from '../../actions/types';
 
 const {
     header,
     deterministic_name,
     question,
+    search,
+    deterministic_label,
+    story_label,
+    open_question_label,
+    trivia_label,
+    choose_type,
+    story_description,
   } = ChooseMissionsTemplateStrings;
   
 const {
@@ -29,6 +36,7 @@ class ChooseMissionsForTemplateForm extends Component{
         this.onButtonPress=this.onButtonPress.bind(this)
         this.renderItem=this.renderItem.bind(this)
         this.getMissionPresentation=this.getMissionPresentation.bind(this)
+        this.onSearchPress=this.onSearchPress.bind(this)
     }
 
     onMissionsChanged(mission,toDelete){
@@ -48,10 +56,17 @@ class ChooseMissionsForTemplateForm extends Component{
         this.props.addTemplate( {name,minimalMissionsToPass,missionsToAdd,type,apiKey,navigation} );
     }
 
+    onSearchPress(){
+      const {notFilteredMission, deterministic, trivia, story, openQuestion} = this.props;
+      this.props.searchMission({notFilteredMission, deterministic, trivia, story, openQuestion})
+    }
+
     getMissionPresentation(mission){
       switch(mission.name){
         case DETERMINISTIC_NAME:
           return deterministic_name+'\n'+question+mission.question[0]
+        case STORY_NAME:
+          return story_description
         default:
       }
     }
@@ -88,10 +103,10 @@ class ChooseMissionsForTemplateForm extends Component{
         }
       }
 
-
       renderItem(mission,toCheck){
           return (
           <Checkbox.Item
+                key = {mission.missionId}
                 label={this.getMissionPresentation(mission)}
                 status={toCheck ? 'checked'  : 'unchecked'}
                 onPress={()=>this.onMissionsChanged(mission,toCheck)}
@@ -122,31 +137,48 @@ class ChooseMissionsForTemplateForm extends Component{
         )
       }
 
-    render(){
+      renderIcon(toCheck){
+        return toCheck ? "check-circle-outline"
+        : "checkbox-blank-circle-outline";
+      }
 
+      renderList(){
+        const {deterministic, story, openQuestion, trivia} = this.props
+        return (
+          <List.Accordion
+            title={choose_type}
+            >
+            <List.Item title={deterministic_label}
+              left={props => <List.Icon {...props} icon={this.renderIcon(deterministic)} />}
+              onPress = {this.props.changeDeterministic}
+              />
+            <List.Item title={trivia_label}
+              left={props => <List.Icon {...props} icon={this.renderIcon(trivia)} />}
+              onPress = {this.props.changeTrivia}/>
+            <List.Item title={story_label}
+              left={props => <List.Icon {...props} icon={this.renderIcon(story)} />}
+              onPress = {this.props.changeStory}/>
+            <List.Item title={open_question_label}
+              left={props => <List.Icon {...props} icon={this.renderIcon(openQuestion)} />}
+              onPress = {this.props.changeOpenQuestion}/>
+          </List.Accordion>
+        )
+      }
+
+    render(){
         return(
         <KeyboardAwareScrollView style={styles.container}>
             <Header>{header}</Header>
+            {this.renderList()}
+            <Button
+              mode='contained'
+              style={styles.button}
+              onPress={this.onSearchPress}
+              >
+              {search}
+            </Button>
             {this.renderChosenCheckBoxItems()}
             {this.renderCheckBoxItems()}
-            {/* <Checkbox.Item
-                label={'personal'}
-                status={presentedMissions.includes('Personal') ? 'checked'  : 'unchecked'}
-                //onPress={()=>this.onTypesChanged('Personal')}
-            />
-
-            <Checkbox.Item
-                label={'group'}
-                status={presentedMissions.includes('Group') ? 'checked'  : 'unchecked'}
-                //onPress={()=>this.onTypesChanged('Group')}
-            />
-
-            <Checkbox.Item
-                label={'classroom'}
-                status={presentedMissions.includes('Class') ? 'checked'  : 'unchecked'}
-                //onPress={()=>this.onTypesChanged('Class')}
-            /> */}
-            
             {this.renderButton()}
             {this.renderError()}
         </KeyboardAwareScrollView>
@@ -162,8 +194,6 @@ const styles = StyleSheet.create({
       width: '100%',
       maxWidth: 340,
       alignSelf: 'center',
-      // alignItems: 'center',
-      // justifyContent: 'center',
     },
     button: {
       marginTop: 24,
@@ -184,11 +214,16 @@ const styles = StyleSheet.create({
   });
 
 const mapStateToProps = (state) => {
-    const { name,minimalMissionsToPass,missionsToAdd,type,presentedMissions,apiKey, loading, errorMessage } = state.addRoomTemplate;
-    return { name,minimalMissionsToPass,missionsToAdd,type,presentedMissions,apiKey, loading, errorMessage };
+    const { deterministic, notFilteredMission, story, openQuestion, trivia, name, minimalMissionsToPass,missionsToAdd,type,presentedMissions,apiKey, loading, errorMessage } = state.addRoomTemplate;
+    return { deterministic, notFilteredMission, story, openQuestion, trivia, name,minimalMissionsToPass,missionsToAdd,type,presentedMissions,apiKey, loading, errorMessage };
   };
   
 export default connect(mapStateToProps, {
     missionsChanged,
     addTemplate,
+    changeDeterministic,
+    changeTrivia,
+    changeStory,
+    changeOpenQuestion,
+    searchMission,
   })(ChooseMissionsForTemplateForm);

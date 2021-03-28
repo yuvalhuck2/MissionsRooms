@@ -116,9 +116,16 @@ export const roomTypes = [
 ];
 
 export const ChooseMissionsTemplateStrings = {
-  header: 'יש לבחור משימות לתבנית',
+  header: 'יש לבחור משימות',
   deterministic_name: 'סוג : שאלת פתרון יחיד',
   question: 'שאלה: ',
+  search:'חיפוש',
+  deterministic_label:'פתרון יחיד',
+  story_label:'סיפור בהמשכים',
+  open_question_label:'שאלה פתוחה/העלאת קובץ',
+  trivia_label:'טריוויה',
+  choose_type:'משימות אותן ארצה לראות',
+  story_description:'סוג: משימת סיפור בהמשכים',
 };
 
 export const TeacherStrings = {
@@ -157,6 +164,7 @@ export const ChooseTempalteStrings = {
   minimal_missions: 'מספר משימות לקבלת בונוס: ',
   missions_presentation: 'משימות: ',
   no_tempaltes: 'אין תבניות מסוג החדר המבוקש',
+  filter_by_name:'חיפוש לפי שם התבנית',
 };
 
 export const ChooseStudentRoomStrings = {

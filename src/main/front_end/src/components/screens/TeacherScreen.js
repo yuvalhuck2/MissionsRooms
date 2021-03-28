@@ -16,7 +16,6 @@ const {
   addMission,
   addTemplate,
   createRoom,
-  closeRoom,
   watch_suggestions,
 } = TeacherStrings;
 
