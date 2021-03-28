@@ -9,9 +9,11 @@ const initialState = {
     loading: false,
     type: '',
     presentedTemplates:[],
+    NotFilteredTemplates:[],
     allTemplates:[],
     errorMessage: '',
     apiKey:'',
+    search:'',
   };
 
   import {
@@ -27,6 +29,8 @@ const initialState = {
     CLEAR_STATE,
     PASS,
     LOGIN_TEACHER,
+    FILTER_TEMPLATES,
+    SEARCH_TEMPLATE_CHANGED,
   } from '../actions/types';
   
   export default (state = initialState, action) => {
@@ -45,9 +49,15 @@ const initialState = {
             return { ...state, allTemplates: action.payload};
         case GET_CLASSROOM:
             return {...state, classroom:action.payload};
+        case FILTER_TEMPLATES:
+            return {...state, presentedTemplates:action.payload};
+        case SEARCH_TEMPLATE_CHANGED:
+            return {...state, search:action.payload};
         case PASS:
             return { ...state, participantKey: action.payload.participant,
-                type: action.payload.roomType, errorMessage: '', presentedTemplates:action.payload.presentedTemplates };
+                type: action.payload.roomType, errorMessage: '',
+                presentedTemplates:action.payload.presentedTemplates,
+                NotFilteredTemplates:action.payload.presentedTemplates };
         case ADD_ROOM:
             return { ...state, loading: true };
         case LOGIN_TEACHER:
