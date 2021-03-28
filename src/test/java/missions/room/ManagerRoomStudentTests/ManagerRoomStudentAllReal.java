@@ -163,39 +163,6 @@ public class ManagerRoomStudentAllReal extends ManagerRoomStudentRealRamRealClas
 
     @Test
     @Override
-    void testAnswerDeterministicSaveRoomThrowsException(){
-        when(mockRoomCrudRepository.save(any()))
-                .thenThrow(new DataRetrievalFailureException(""));
-        try {
-            Field classroomRepo = ManagerRoomStudent.class.getDeclaredField("roomRepo");
-            classroomRepo.setAccessible(true);
-            classroomRepo.set(managerRoomStudentWithMock,new RoomRepo(mockRoomCrudRepository));
-        } catch (IllegalAccessException | NoSuchFieldException e) {
-            fail();
-        }
-        testFailAnswerDeterministic(studentApiKey,
-                dataGenerator.getRoom(Data.VALID_2MissionStudent).getRoomId(),
-                DB_Error);
-    }
-
-    @Test
-    @Override
-    void testAnswerDeterministicDeleteRoomThrowsException(){
-        Mockito.doThrow(new DataRetrievalFailureException("")).when(mockRoomCrudRepository).delete(any());
-        try {
-            Field classroomRepo = ManagerRoomStudent.class.getDeclaredField("roomRepo");
-            classroomRepo.setAccessible(true);
-            classroomRepo.set(managerRoomStudentWithMock,new RoomRepo(mockRoomCrudRepository));
-        } catch (IllegalAccessException | NoSuchFieldException e) {
-            fail();
-        }
-        testFailAnswerDeterministic(studentApiKey,
-                dataGenerator.getRoom(Data.Valid_Student).getRoomId(),
-                DB_Error);
-    }
-
-    @Test
-    @Override
     void testAnswerDeterministicFindRoomThrowsException(){
         setUpFindRoomThrowsException();
         testFailAnswerDeterministic(studentApiKey,

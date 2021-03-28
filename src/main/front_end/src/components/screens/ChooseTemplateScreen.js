@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ActivityIndicator,RadioButton } from 'react-native-paper';
+import { ActivityIndicator,RadioButton, Searchbar } from 'react-native-paper';
 import { ChooseTempalteStrings,AddStrings,ChooseMissionsTemplateStrings } from '../../locale/locale_heb';
-import { templateChanged,addRoom } from '../../actions/AddRoomActions';
+import { templateChanged,addRoom, filterTemplates, searchChanged } from '../../actions/AddRoomActions';
 import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
 import Button from '../common/Button';
 import Header from '../common/Header';
 import TextInput from '../common/TextInput';
-import { DETERMINISTIC_NAME } from '../../actions/types'; 
+import { DETERMINISTIC_NAME, STORY_NAME } from '../../actions/types'; 
 
 const {
     header,
@@ -17,6 +17,7 @@ const {
     minimal_missions,
     missions_presentation,
     no_tempaltes,
+    filter_by_name,
   } = ChooseTempalteStrings;
 
 const {
@@ -26,6 +27,7 @@ const {
 const {
     deterministic_name,
     question,
+    story_description,
   } = ChooseMissionsTemplateStrings;
 
 class ChooseTemplatesForm extends Component{
@@ -33,10 +35,21 @@ class ChooseTemplatesForm extends Component{
         super(... args)
         this.onTemplateChanged=this.onTemplateChanged.bind(this)
         this.onButtonPress=this.onButtonPress.bind(this)
+        this.onFilterTemplates=this.onFilterTemplates.bind(this);
+        this.onSearchChanged=this.onSearchChanged.bind(this);
     }
     
     onTemplateChanged(text){
         this.props.templateChanged(text);
+    }
+
+    onSearchChanged(text){
+      this.props.searchChanged(text)
+    }
+
+    onFilterTemplates(){
+      const {search, NotFilteredTemplates} = this.props;
+      this.props.filterTemplates({search, NotFilteredTemplates})
     }
 
     onButtonPress() {
@@ -85,6 +98,8 @@ class ChooseTemplatesForm extends Component{
         switch(mission.name){
           case DETERMINISTIC_NAME:
             return deterministic_name+'\n\t\t'+question+mission.question[0]
+          case STORY_NAME:
+            return story_description
           default:
               return ""
         }
@@ -96,7 +111,6 @@ class ChooseTemplatesForm extends Component{
           missions_presentation+template.missions.reduce(
              (acc,mis)=> {return acc+'\n\t\t'+this.getMissionPresentation(mis)} 
           ,'')
-        //'\n'+this.getMissionPresentation(template.missions[0])
       }
 
       renderRadioButtons(){
@@ -120,10 +134,18 @@ class ChooseTemplatesForm extends Component{
       }
 
     render(){
-        const {roomTemplate}=this.props;
+        const {roomTemplate, search}=this.props;
         return(
         <KeyboardAwareScrollView style={styles.container}>
             <Header>{header}</Header>
+            <Searchbar
+              label={filter_by_name}
+              value={search}
+              onChangeText={this.onSearchChanged}
+              icon = {"magnify"}
+              onIconPress={this.onFilterTemplates}
+              placeholder={filter_by_name}
+            />
             <RadioButton.Group 
             onValueChange={(value) => this.onTemplateChanged(value)} 
             value={roomTemplate}>
@@ -144,8 +166,6 @@ const styles = StyleSheet.create({
       width: '100%',
       maxWidth: 340,
       alignSelf: 'center',
-      // alignItems: 'center',
-      // justifyContent: 'center',
     },
     button: {
       marginTop: 24,
@@ -166,11 +186,13 @@ const styles = StyleSheet.create({
   });
 
 const mapStateToProps = (state) => {
-    const { roomName,participantKey,roomTemplate,bonus,type,presentedTemplates,apiKey, loading, errorMessage } = state.addRoom;
-    return { roomName,participantKey,roomTemplate,bonus,type,presentedTemplates,apiKey, loading, errorMessage };
+    const { search, NotFilteredTemplates, roomName,participantKey,roomTemplate,bonus,type,presentedTemplates,apiKey, loading, errorMessage } = state.addRoom;
+    return { search, NotFilteredTemplates, roomName,participantKey,roomTemplate,bonus,type,presentedTemplates,apiKey, loading, errorMessage };
   };
   
 export default connect(mapStateToProps, {
     templateChanged,
     addRoom,
+    filterTemplates,
+    searchChanged
   })(ChooseTemplatesForm);

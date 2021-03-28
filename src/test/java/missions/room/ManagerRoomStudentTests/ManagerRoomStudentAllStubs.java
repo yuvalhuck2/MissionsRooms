@@ -185,12 +185,20 @@ public class ManagerRoomStudentAllStubs {
         Student student2 = dataGenerator.getStudent(Data.VALID2);
         User user=dataGenerator.getUser(Data.VALID_STUDENT);
         Room studentRoom=dataGenerator.getRoom(Data.Valid_Student);
+        studentRoom.connect(student.getAlias());
         Room groupRoom=dataGenerator.getRoom(Data.Valid_Group);
+        groupRoom.connect(student.getAlias());
         Room classroomRoom = dataGenerator.getRoom(Data.Valid_Classroom);
+        classroomRoom.connect(student.getAlias());
         Room valid2MissionsStudentRoom =dataGenerator.getRoom(Data.VALID_2MissionStudent);
+        valid2MissionsStudentRoom.connect(student.getAlias());
         Room valid2MissionsGroupRoom =dataGenerator.getRoom(Data.VALID_2Mission_Group);
+        valid2MissionsGroupRoom.connect(student.getAlias());
         Room valid2MissionsClassRoom =dataGenerator.getRoom(Data.VALID_2Mission_Class);
+        valid2MissionsClassRoom.connect(student.getAlias());
         Room valid2StudentsFromDifferentGroups2Missions=dataGenerator.getRoom(Data.Valid_2Students_From_Different_Groups);
+        valid2StudentsFromDifferentGroups2Missions.connect(student.getAlias());
+        valid2StudentsFromDifferentGroups2Missions.connect(student2.getAlias());
         Room openAnsRoom = dataGenerator.getRoom((Data.VALID_OPEN_ANS));
 
         when(mockRam.getAlias(thirdStudentKey))
@@ -405,29 +413,18 @@ public class ManagerRoomStudentAllStubs {
     }
 
     @Test
+    void testAnswerDeterministicStudentNotInCharge(){
+        testFailAnswerDeterministic(valid2StudentApiKey,
+                dataGenerator.getRoom(Data.Valid_2Students_From_Different_Groups).getRoomId(),
+                NOT_IN_CHARGE);
+    }
+
+    @Test
     void testAnswerDeterministicFindRoomThrowsException(){
         when(mockRoomRepo.findRoomById(any()))
                 .thenReturn(new Response<>(null, DB_Error));
         testFailAnswerDeterministic(studentApiKey,
                 dataGenerator.getRoom(Data.VALID_2MissionStudent).getRoomId(),
-                DB_Error);
-    }
-
-    @Test
-    void testAnswerDeterministicSaveRoomThrowsException(){
-        when(mockRoomRepo.save(any()))
-                .thenReturn(new Response<>(null, DB_Error));
-        testFailAnswerDeterministic(studentApiKey,
-                dataGenerator.getRoom(Data.VALID_2MissionStudent).getRoomId(),
-                DB_Error);
-    }
-
-    @Test
-    void testAnswerDeterministicDeleteRoomThrowsException(){
-        when(mockRoomRepo.deleteRoom(any()))
-                .thenReturn(new Response<>(null, DB_Error));
-        testFailAnswerDeterministic(studentApiKey,
-                dataGenerator.getRoom(Data.Valid_Student).getRoomId(),
                 DB_Error);
     }
 
@@ -474,6 +471,15 @@ public class ManagerRoomStudentAllStubs {
     @Test
     void testWatchRoomDataHappyTest(){
         Room room=dataGenerator.getRoom(Data.Valid_2Students_From_Different_Groups);
+        try {
+            Field incharge = Room.class.getDeclaredField("missionIncharge");
+            incharge.setAccessible(true);
+            incharge.set(room,null);
+
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            fail();
+        }
+
         Response<RoomDetailsData> roomDetailsDataResponse=managerRoomStudentWithMock.watchRoomData(studentApiKey,
                 room.getRoomId());
         assertEquals(roomDetailsDataResponse.getReason(), IN_CHARGE);
