@@ -12,8 +12,8 @@ public class OpenAnswerMission extends Mission {
 
     private String question;
 
-    @Transient
-    private SolutionData solution;
+    private final static String missionName="open_question_mission";
+
 
     public OpenAnswerMission(String missionId, Set<RoomType> missionType, String question) {
         super(missionId, missionType);
@@ -31,11 +31,4 @@ public class OpenAnswerMission extends Mission {
         this.question = question;
     }
 
-    public SolutionData getSolution() {
-        return solution;
-    }
-
-    public void setSolution(SolutionData solution) {
-        this.solution = solution;
-    }
 }

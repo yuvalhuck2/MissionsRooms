@@ -3,6 +3,7 @@ import {
   ANSWER_CHANGED,
   DETERMINISTIC,
   LOGIN_TEACHER,
+  OPEN_QUESTION,
   QUESTION_CHANGED,
   TYPES_CHANGED,
   UPDATE_ERROR_MISSION,
@@ -67,6 +68,9 @@ export const navigateToMission = (type, navigation) => {
     switch (type) {
       case DETERMINISTIC:
         navigation.navigate(NavPaths.AddDeterministicMission);
+      case OPEN_QUESTION:
+        navigation.navigate(NavPaths.AddOpenQuestionMission);
+
     }
   };
 };

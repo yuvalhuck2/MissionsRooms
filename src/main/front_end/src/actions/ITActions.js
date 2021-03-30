@@ -116,7 +116,7 @@ export const navigateToAddNewIT = ({ navigation }) => {
   return { type: '' };
 };
 
-const parseUploadCsvResponse = (data, dispatch) => {
+export const parseUploadCsvResponse = (data, dispatch) => {
   const { reason, value } = data;
 
   switch (reason) {
