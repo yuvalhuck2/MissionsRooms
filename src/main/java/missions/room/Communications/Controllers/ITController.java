@@ -31,6 +31,6 @@ public class ITController extends AbsController{
     @PostMapping("/update")
     public Response<?> UpdateUserDetails(@RequestBody String updateUserStr){
         UserProfileData updateUser= json.fromJson(updateUserStr, UserProfileData.class);
-        return itService.UpdateUserDetails(updateUser.getApiKey(),updateUser);
+        return itService.updateUserDetails(updateUser.getApiKey(),updateUser);
     }
 }

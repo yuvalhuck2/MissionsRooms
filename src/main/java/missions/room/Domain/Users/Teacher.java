@@ -46,7 +46,6 @@ public class Teacher extends SchoolUser {
         this.password=password;
     }
 
-
     public GroupType getGroupType() {
         return groupType;
     }

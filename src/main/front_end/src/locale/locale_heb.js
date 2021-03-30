@@ -219,6 +219,7 @@ export const GeneralErrors = {
   user_not_exist:'המשתמש לא קיים',
   empty_details:'לא מולאו פרטים',
   action_succeeded:'הפעולה בוצעה בהצלחה!',
+  classroom_not_exist:'לפי רישומי המערכת, אין לך כיתה',
 };
 
 export const ITStrings = {
