@@ -23,6 +23,11 @@ public class Student extends SchoolUser {
         this.points = points;
     }
 
+    public Student(StudentData profileDetails) {
+        super(profileDetails.getAlias(), profileDetails.getFirstName(), profileDetails.getLastName());
+        points = 0;
+    }
+
     @Override
     public OpCode getOpcode() {
         return OpCode.Student;

@@ -1,15 +1,12 @@
 package missions.room.Managers;
 
-import DataAPI.OpCode;
-import DataAPI.RegisterDetailsData;
-import DataAPI.Response;
-import DataAPI.UserProfileData;
+import DataAPI.*;
 import ExternalSystems.HashSystem;
 import lombok.extern.apachecommons.CommonsLog;
+import missions.room.Domain.Classroom;
 import missions.room.Domain.Ram;
-import missions.room.Domain.Users.IT;
-import missions.room.Domain.Users.SchoolUser;
-import missions.room.Domain.Users.User;
+import missions.room.Domain.Users.*;
+import missions.room.Repo.ClassroomRepo;
 import missions.room.Repo.ITRepo;
 import missions.room.Repo.SchoolUserRepo;
 import missions.room.Repo.UserRepo;
@@ -35,6 +32,9 @@ public class ITManager {
 
     @Autowired
     protected SchoolUserRepo schoolUserRepo;
+
+    @Autowired
+    protected ClassroomRepo classroomRepo;
 
     private Ram ram;
 
@@ -93,6 +93,7 @@ public class ITManager {
 
     private Response<Boolean> saveITInDB( String alias, String password,String myAlias) {
         password= hashSystem.encrypt(password);
+        Response<IT> itResponse;
         synchronized (ADD_USER_LOCK){
             Response<Boolean> userResponse = userRepo.isExistsById(alias);
             if(userResponse.getReason()!= OpCode.Success){
@@ -103,14 +104,15 @@ public class ITManager {
                 log.info("there is user with that name already");
                return new Response<>(false,OpCode.Already_Exist);
             }
-            Response<IT> itResponse= itRepo.save(new IT(alias,password));
-            if(itResponse.getReason()!=OpCode.Success){
-                log.error("connection to db lost");
-                return new Response<>(false,itResponse.getReason());
-            }
-            log.info(myAlias + " added " + alias + " to be new IT successfully");
-            return new Response<>(true,OpCode.Success);
+            itResponse= itRepo.save(new IT(alias,password));
         }
+
+        if(itResponse.getReason()!=OpCode.Success){
+            log.error("connection to db lost");
+            return new Response<>(false,itResponse.getReason());
+        }
+        log.info(myAlias + " added " + alias + " to be new IT successfully");
+        return new Response<>(true,OpCode.Success);
     }
 
 
@@ -169,4 +171,106 @@ public class ITManager {
                 OpCode.Success);
     }
 
+    /**
+     * req 6.9 - add user - student
+     * @param apiKey - authentication object
+     * @param profileDetails - the user new details.
+     * @return if mail updated successfully
+     */
+    @Transactional
+    public Response<Boolean> addStudent(String apiKey, StudentData profileDetails) {
+        Response<Boolean> checkDetails = checkStudentDetails(profileDetails);
+        if(checkDetails.getReason()!=OpCode.Success){
+            return checkDetails;
+        }
+
+        Response<IT> itResponse = checkIT(apiKey);
+        if(itResponse.getReason()!=OpCode.Success){
+            log.error(itResponse.getReason().toString());
+            return new Response<>(false,itResponse.getReason());
+        }
+
+        Response<Classroom> classroomResponse = classroomRepo.findForWrite(profileDetails.getClassroom());
+        if(classroomResponse.getReason()!=OpCode.Success){
+            return new Response<>(false, classroomResponse.getReason());
+        }
+
+        Classroom classroom = classroomResponse.getValue();
+        classroom.addStudent(new Student(profileDetails), profileDetails.getGroupType());
+
+        synchronized (ADD_USER_LOCK){
+            Response<Boolean> isUserExist = userRepo.isExistsById(profileDetails.getAlias());
+            if(isUserExist.getReason()!=OpCode.Success){
+                return new Response<>(false, isUserExist.getReason());
+            }
+            if(isUserExist.getValue()){
+                return new Response<>(false,OpCode.Already_Exist);
+            }
+
+            OpCode saveReason = classroomRepo.save(classroom).getReason();
+            return new Response<>(saveReason==OpCode.Success,saveReason);
+        }
+    }
+
+    /**
+     * req 6.9 - add user - teacher
+     * @param apiKey - authentication object
+     * @param profileDetails - the user new details.
+     * @return if mail updated successfully
+     */
+    public Response<Boolean> addTeacher(String apiKey, TeacherData profileDetails) {
+        Response<Boolean> checkDetails = checkTeacherDetails(profileDetails);
+        if(checkDetails.getReason()!=OpCode.Success){
+            return checkDetails;
+        }
+
+        Response<IT> itResponse = checkIT(apiKey);
+        if(itResponse.getReason()!=OpCode.Success){
+            log.error(itResponse.getReason().toString());
+            return new Response<>(false,itResponse.getReason());
+        }
+
+        Teacher teacher;
+
+        synchronized (ADD_USER_LOCK){
+            Response<Boolean> isUserExist = userRepo.isExistsById(profileDetails.getAlias());
+            if(isUserExist.getReason()!=OpCode.Success){
+                return new Response<>(false, isUserExist.getReason());
+            }
+            if(isUserExist.getValue()){
+                return new Response<>(false,OpCode.Already_Exist);
+            }
+            if(profileDetails.isSupervisor()){
+                teacher = new Supervisor(profileDetails);
+            }
+            else{
+                teacher = new Teacher(profileDetails);
+            }
+            OpCode saveReason = schoolUserRepo.save(teacher).getReason();
+            return new Response<>(saveReason==OpCode.Success,saveReason);
+        }
+    }
+
+    private Response<Boolean> checkStudentDetails(StudentData profileDetails) {
+        if(!Utils.checkString(profileDetails.getClassroom())){
+            return new Response<>(false,OpCode.Wrong_Classroom);
+        }
+        if(profileDetails.getGroupType()==null||profileDetails.getGroupType()==GroupType.BOTH){
+            return new Response<>(false,OpCode.Wrong_Group);
+        }
+        return checkTeacherDetails(new TeacherData(profileDetails));
+    }
+
+    private Response<Boolean> checkTeacherDetails(TeacherData teacherData) {
+        if(!Utils.checkString(teacherData.getAlias())){
+            return new Response<>(false,OpCode.Wrong_Alias);
+        }
+        if(!Utils.checkString(teacherData.getFirstName())){
+            return new Response<>(false,OpCode.Wrong_First_Name);
+        }
+        if(!Utils.checkString(teacherData.getLastName())){
+            return new Response<>(false,OpCode.Wrong_Last_Name);
+        }
+        return new Response<>(true,OpCode.Success);
+    }
 }

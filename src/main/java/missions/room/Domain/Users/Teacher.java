@@ -23,6 +23,10 @@ public class Teacher extends SchoolUser {
         super();
     }
 
+    public Teacher(TeacherData profileDetails) {
+        super(profileDetails.getAlias(), profileDetails.getFirstName(), profileDetails.getLastName());
+    }
+
     @Override
     public OpCode getOpcode() {
         return OpCode.Teacher;
