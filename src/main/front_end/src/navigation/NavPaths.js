@@ -24,3 +24,4 @@ export const changePassword='ChangePassword'
 export const watchPointsTable='PointsTable'
 export const manageUsers = "ManageUsers"
 export const AddOpenQuestionMission = 'AddOpenQuestionMission';
+export const SolveOpenQuestionMission = 'SolveOpenQuestionMission';

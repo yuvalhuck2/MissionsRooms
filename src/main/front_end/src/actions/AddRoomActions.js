@@ -27,12 +27,14 @@ import {
   ADD_ROOM,
   BONUS_CHANGED,
   CLASSROOM,
+  FILTER_TEMPLATES,
   GROUP,
   GROUP_CHANGED,
   LOGIN_TEACHER,
   PASS,
   PERSONAL,
   ROOM_NAME_CHANGED,
+  SEARCH_TEMPLATE_CHANGED,
   STUDENT_CHANGED,
   TEMPLATE_CHANGED,
   UPDATE_ERROR_ROOM,
@@ -271,3 +273,16 @@ const checkAddRoomResponse = (data, dispatch, navigation, apiKey) => {
       return dispatch({ type: UPDATE_ERROR_ROOM, payload: server_error });
   }
 };
+
+export const searchChanged = (search) => {
+  return {
+    type: SEARCH_TEMPLATE_CHANGED,
+    payload: search }
+  }
+
+export const filterTemplates = ({NotFilteredTemplates, search}) => {
+  return {
+    type: FILTER_TEMPLATES,
+    payload: NotFilteredTemplates.filter((template) => template.name.includes(search))
+  }
+}

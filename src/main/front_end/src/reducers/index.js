@@ -15,6 +15,7 @@ import WatchSuggestionsReducer from './WatchSuggestionReducer'
 import ChangePasswordReducer from './ChangePasswordReducer';
 import PointsTableReducer from './PointsTableReducer';
 import ManageUsersReducer from './ManageUsersReducer';
+import SolveOpenQuestion from './SolveOpenQuestionReducer'
 
 export default combineReducers({
   auth: AuthReducer,
@@ -33,4 +34,5 @@ export default combineReducers({
   changePassword: ChangePasswordReducer,
   pointsTable: PointsTableReducer,
   manageUsers: ManageUsersReducer,
+  SolveOpenQuestion: SolveOpenQuestion
 });

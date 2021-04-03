@@ -45,6 +45,10 @@ export const uploadStringsErrors = {
   already_exist: 'משתמש בשם הנ"ל כבר קיים',
 };
 
+export const openQuestionErrors = {
+  mission_in_charge: 'המשתמש אינו אחראי על המשימה הנוכחית',
+};
+
 export const authStrings = {
   header: 'הכנס קוד אימות',
   enter_code: 'הכנס קוד',
@@ -121,9 +125,16 @@ export const roomTypes = [
 ];
 
 export const ChooseMissionsTemplateStrings = {
-  header: 'יש לבחור משימות לתבנית',
+  header: 'יש לבחור משימות',
   deterministic_name: 'סוג : שאלת פתרון יחיד',
   question: 'שאלה: ',
+  search:'חיפוש',
+  deterministic_label:'פתרון יחיד',
+  story_label:'סיפור בהמשכים',
+  open_question_label:'שאלה פתוחה/העלאת קובץ',
+  trivia_label:'טריוויה',
+  choose_type:'משימות אותן ארצה לראות',
+  story_description:'סוג: משימת סיפור בהמשכים',
 };
 
 export const TeacherStrings = {
@@ -162,6 +173,7 @@ export const ChooseTempalteStrings = {
   minimal_missions: 'מספר משימות לקבלת בונוס: ',
   missions_presentation: 'משימות: ',
   no_tempaltes: 'אין תבניות מסוג החדר המבוקש',
+  filter_by_name:'חיפוש לפי שם התבנית',
 };
 
 export const ChooseStudentRoomStrings = {
@@ -183,6 +195,10 @@ export const ChooseRoomStudentErrors = {
 export const SolveDeterministicMissionStrings = {
   enter_answer: 'הכנס/י תשובה',
   send_answer: 'שלח/י תשובה',
+};
+
+export const SolveOpenQuestionMissionErrors = {
+  empty_answer: 'נא למלא תשובה בטקסט או לבחור קובץ להעלאה',
 };
 
 export const StudentStrings = {

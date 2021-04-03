@@ -27,6 +27,13 @@ import {
   TEMPLATE_NAME_CHANGED,
   TYPE_CHANGED,
   UPDATE_ERROR_TEMPLATE,
+  CHANGE_DETERMINISTIC_CHECKBOX,
+  CHANGE_OPEN_QUESTION_CHECKBOX,
+  CHANGE_TRIVIA_CHECKBOX,
+  CHANGE_STORY_CHECKBOX,
+  DETERMINISTIC_NAME,
+  STORY_NAME,
+  FILTER_MISSIONS,
 } from './types';
 
 const {
@@ -194,3 +201,44 @@ const checkAddTemplateResponse = (data, dispatch, navigation, apiKey) => {
       return dispatch({ type: UPDATE_ERROR_TEMPLATE, payload: server_error });
   }
 };
+
+export const changeDeterministic = () => {
+  return {
+    type: CHANGE_DETERMINISTIC_CHECKBOX,
+  };
+}
+
+export const changeTrivia = () =>{
+  return {
+    type: CHANGE_TRIVIA_CHECKBOX,
+  };
+}
+
+export const changeStory = () =>{
+  return {
+    type: CHANGE_STORY_CHECKBOX,
+  };
+}
+
+export const changeOpenQuestion = () =>{
+  return {
+    type: CHANGE_OPEN_QUESTION_CHECKBOX,
+  };
+}
+
+export const searchMission = ({notFilteredMission, deterministic, trivia, story, openQuestion}) =>{
+  let filtered = notFilteredMission.filter((mission)=>{
+    switch(mission.name){
+      case STORY_NAME:
+        return story;
+      case DETERMINISTIC_NAME:
+        return deterministic;
+      default:
+        return false
+    }
+  });
+  return {
+    type: FILTER_MISSIONS,
+    payload: filtered,
+  };
+}

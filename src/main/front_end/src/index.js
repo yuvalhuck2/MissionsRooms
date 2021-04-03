@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import {
     AddOpenQuestionMissionScreen,
+    SolveOpenQuestionMissionScreen,
     AddDeterministicMissionScreen,
     AddRoomScreen,
     AddRoomTemplateScreen,
@@ -19,15 +20,15 @@ import {
     StudentScreen,
     TeacherScreen,
     UploadCsvScreen,
-  AddITScreen,
-  SolveStoryScreen,
-  WatchProfileScreen,
-  WatchMessagesScreen,
-  WatchSuggestionsScreen,
-  ChangePasswordScreen,
-  PointsTableScreen,
-  ManageUsersScreen,
-  Test,
+    AddITScreen,
+    SolveStoryScreen,
+    WatchProfileScreen,
+    WatchMessagesScreen,
+    WatchSuggestionsScreen,
+    ChangePasswordScreen,
+    PointsTableScreen,
+    ManageUsersScreen,
+    Test,
 } from './components/screens';
 
 const Stack = createStackNavigator();
@@ -35,7 +36,7 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='AddMission'>
+      <Stack.Navigator initialRouteName='Register'>
       <Stack.Screen
           name='ManageUsers'
           component={ManageUsersScreen}
@@ -79,6 +80,10 @@ const App = () => {
         <Stack.Screen
           name='AddOpenQuestionMission'
           component={AddOpenQuestionMissionScreen}
+        />
+        <Stack.Screen
+          name='SolveOpenQuestionMission'
+          component={SolveOpenQuestionMissionScreen}
         />
         <Stack.Screen name='AddMission' component={ChooseMissionToAddScreen} />
         <Stack.Screen
