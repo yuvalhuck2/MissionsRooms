@@ -61,9 +61,7 @@ public class StudentData {
         StudentData studentData = (StudentData) o;
         return  Objects.equals(studentData.alias, alias) &&
                 Objects.equals(studentData.firstName,firstName) &&
-                Objects.equals(studentData.lastName,lastName) &&
-                Objects.equals(studentData.groupType,groupType) &&
-                Objects.equals(studentData.classroom,classroom);
+                Objects.equals(studentData.lastName,lastName);
     }
 
     public void setClassroom(Classroom classroom) {

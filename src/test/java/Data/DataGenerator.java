@@ -51,8 +51,8 @@ public class DataGenerator {
         initStudents();
         initSuggestions();
         initGroups();
-        initGroupsDatas();
         initClassrooms();
+        initGroupsDatas();
         initClassroomData();
         initRegisterDetailsDatas();
         initVerificationCodes();
@@ -222,12 +222,24 @@ public class DataGenerator {
     private void initGroupsDatas(){
         classGroupData=new HashMap<Data, GroupData>();
         initGroupDatasFromGroupsMap(Data.Valid_Group);
-        initGroupDatasFromGroupsMap(Data.Empty_Students);
+        classGroupData.put(Data.Empty_Students,classGroupMap.get(Data.Empty_Students).getGroupData(GroupType.BOTH));
 
     }
 
     private void initGroupDatasFromGroupsMap(Data data){
-        classGroupData.put(data,classGroupMap.get(data).getGroupData(GroupType.BOTH));
+        GroupData groupData = classGroupMap.get(data).getGroupData(GroupType.BOTH);
+        List<StudentData> studentDatas = new ArrayList<>();
+        StudentData studentData = groupData.getStudents().get(0);
+        studentData = new StudentData(studentData.getAlias(),
+                studentData.getFirstName(),
+                studentData.getLastName(),
+                GroupType.B,
+                classRoomMap.get(Data.Valid_Classroom).getClassName());
+        studentDatas.add(studentData);
+        classGroupData.put(data,new GroupData(groupData.getName(),
+                groupData.getGroupType(),
+                groupData.getPoints(),
+                studentDatas.stream()));
     }
 
     private void initNewRoomDetails() {

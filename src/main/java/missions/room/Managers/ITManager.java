@@ -196,7 +196,7 @@ public class ITManager {
         }
 
         Classroom classroom = classroomResponse.getValue();
-        classroom.addStudent(new Student(profileDetails), profileDetails.getGroupType());
+        //classroom.addStudent(new Student(profileDetails), profileDetails.getGroupType());
 
         synchronized (ADD_USER_LOCK){
             Response<Boolean> isUserExist = userRepo.isExistsById(profileDetails.getAlias());
@@ -207,6 +207,7 @@ public class ITManager {
                 return new Response<>(false,OpCode.Already_Exist);
             }
 
+            classroom.addStudent(new Student(profileDetails), profileDetails.getGroupType());
             OpCode saveReason = classroomRepo.save(classroom).getReason();
             return new Response<>(saveReason==OpCode.Success,saveReason);
         }
