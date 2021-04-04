@@ -13,39 +13,49 @@ import java.time.LocalDateTime;
 
 public class ChatMessageData {
 
-    private String messageId;
+    private String text;
+    private UserChatData user;
 
-    private String message;
+    private String createdAt;
+    private String _id;
 
-    private LocalDateTime dateTime;
-
-
-    public ChatMessageData(String messageId,  String message,LocalDateTime dateTime) {
-        this.messageId = messageId;
-        this.dateTime=dateTime;
-        this.message = message;
+    public ChatMessageData(String text, UserChatData user, String dateTime, String messageId) {
+        this.text = text;
+        this.user = user;
+        this.createdAt = dateTime;
+        this._id = messageId;
     }
 
-    public ChatMessageData(String messageId,  String message) {
-        this.messageId = messageId;
-        this.message = message;
+    public String getText() {
+        return text;
     }
 
-
-    public String getMessage() {
-        return message;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public UserChatData getUser() {
+        return user;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public void setUser(UserChatData user) {
+        this.user = user;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public String getDateTime() {
+        return createdAt;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.createdAt = dateTime;
+    }
+
+    public String getMessageId() {
+        return _id;
+    }
+
+    public void setMessageId(String messageId) {
+        this._id = messageId;
     }
 }
 

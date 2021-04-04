@@ -249,7 +249,11 @@ public class RoomManager extends TeacherManager {
         if(room.getConnectedUsersAliases().size()>0){
             return new Response<>(false, OpCode.CONNECTED_STUDENTS);
         }
-        //TODO don't close room if someone is connected to it
+        //TODO sync!!! on the room
+        OpCode response=ram.connectToRoom(roomId,ram.getAlias(apiKey));
+        if(response!=OpCode.Teacher){
+            return new Response<>(false,response);
+        }
         return roomRepo.deleteRoom(room);
     }
 

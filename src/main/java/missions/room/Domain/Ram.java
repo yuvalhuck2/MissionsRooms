@@ -6,6 +6,7 @@ import DataAPI.Response;
 import Utils.StringAndTime;
 import missions.room.Domain.Rooms.Room;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,7 +22,14 @@ public class Ram {
     private static final ConcurrentHashMap<String, List<ChatMessageData>> roomToChat=new ConcurrentHashMap<>();
 
     public void addChatMessage(String roomId,ChatMessageData roomMessage){
-        roomToChat.get(roomId).add(roomMessage);
+        if(roomToChat.containsKey(roomId)) {
+            roomToChat.get(roomId).add(roomMessage);
+        }
+        else{
+            List<ChatMessageData> tmp=new ArrayList<>();
+            tmp.add(roomMessage);
+            roomToChat.put(roomId,tmp);
+        }
     }
 
     public void addApi(String api,String alias){

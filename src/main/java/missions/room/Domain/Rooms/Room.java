@@ -273,4 +273,7 @@ public abstract class Room {
         return true;
     }
 
+    public boolean isTeacherConnect() {
+        return isTeacherConnect;
+    }
 }

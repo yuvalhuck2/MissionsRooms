@@ -1,7 +1,7 @@
-import {CLEAR_STATE, ENTER_CHAT_ROOM, LOGIN_TEACHER, UPDATE_CHAT_ROOM} from "../actions/types";
-
+import {CLEAR_STATE, ENTER_CHAT_ROOM, LOGIN_TEACHER, UPDATE_CHAT_ROOM, UPDATE_SEND_CHAT_ROOM} from "../actions/types";
+import {GiftedChat} from 'react-native-gifted-chat';
 const initialState = {
-    messages:[],
+    messagesProps:[],
     name:'',
     errorMessage: '',
     apiKey:'',
@@ -13,10 +13,26 @@ const initialState = {
 export default (state = initialState, action) => {
     switch (action.type) {
         case UPDATE_CHAT_ROOM:
-            let newMessages=this.messages.concat(action.payload)
-            return {...state,messages:newMessages};
+            let copyMsg=this.messagesProps;
+            copyMsg=copyMsg.push(action.payload)
+            return {...state,messages:copyMsg};
         case ENTER_CHAT_ROOM:
-            return {...state,name:action.payload}
+            const {name,apiKey,roomId}=action.payload;
+            return {...state,name:name,apiKey:apiKey,roomId:roomId}
+            /*
+        case UPDATE_SEND_CHAT_ROOM:
+            //alert(action.payload.text);
+            let newMessages1=[]
+            return {...state,messages:GiftedChat.append(this.messages,[{
+                    _id: 2,
+                    text: 'Hello developer',
+                    createdAt: new Date(),
+                    user: {
+                        _id: 2,
+                        name: 'React Native',
+                        avatar: 'https://placeimg.com/140/140/any'
+                    }
+                }])};*/
         case LOGIN_TEACHER:
             return {...state,apiKey: action.payload}
         case CLEAR_STATE:

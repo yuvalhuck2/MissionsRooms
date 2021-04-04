@@ -1,9 +1,7 @@
 package missions.room.Communications.Controllers;
 
 
-import DataAPI.MessageChatDetails;
-import DataAPI.MessageData;
-import DataAPI.Response;
+import DataAPI.*;
 import missions.room.Managers.ChatManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,8 +24,9 @@ public class ChatController extends AbsController {
     }
 
     @PostMapping("/enter")
-    public Response<?> enterChat(@RequestBody String apiKey){
-        return chatManager.enterChat(apiKey);
+    public Response<?> enterChat(@RequestBody String details){
+        EnterToChatData data = json.fromJson(details, EnterToChatData.class);
+        return chatManager.enterChat(data.getApiKey(),data.getRoomId());
     }
 
 }

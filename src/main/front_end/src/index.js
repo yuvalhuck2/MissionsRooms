@@ -27,7 +27,7 @@ import {
   WatchSuggestionsScreen,
   ChangePasswordScreen,
   Test,
-    ChatRoomScreen
+  ChatRoomScreen,
 } from './components/screens';
 import TeacherRoomMenuScreen from "./components/screens/TeacherRoomMenuScreen";
 
@@ -90,7 +90,7 @@ const App = () => {
         <Stack.Screen name ="ChooseTeacherRoomType" component={ChooseTeacherRoomTypeScreen}/>
         <Stack.Screen name ="ChooseClassroomRoom" component={ChooseClassroomRoomScreen}/>
         <Stack.Screen name = "TeacherRoomMenu" component={TeacherRoomMenuScreen}/>
-        <Stack.Screen name = "ChatRoomScreen" component={ChatRoomScreen}/>
+        <Stack.Screen name = "ChatRoom" component={ChatRoomScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

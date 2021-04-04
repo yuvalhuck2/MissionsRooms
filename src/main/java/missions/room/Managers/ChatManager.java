@@ -59,13 +59,17 @@ public class ChatManager {
             publisher.update(ram.getApiKey(alias),notification);
 
         }
+        if(room.isTeacherConnect()) {
+            String apiTeacher = ram.getApiKey(room.getTeacher().getAlias());
+            publisher.update(apiTeacher, notification);
+        }
 
         return new Response<>("",OpCode.Success);
 
 
     }
 
-    public Response<String> enterChat(String apiKey){
+    public Response<String> enterChat(String apiKey,String roomId){
         String alias = ram.getAlias(apiKey);
         if(alias==null){
             return new Response<>(null, OpCode.Wrong_Key);
@@ -73,6 +77,10 @@ public class ChatManager {
         Response<SchoolUser> schoolUserResponse=schoolUserRepo.findUserForRead(alias);
         if(schoolUserResponse.getReason()!=OpCode.Success){
             return new Response<>(null,schoolUserResponse.getReason());
+        }
+        OpCode response=ram.connectToRoom(roomId,ram.getAlias(apiKey));
+        if(response!=OpCode.Teacher){
+            return new Response<>(null,response);
         }
         return new Response<>(schoolUserResponse.getValue().getFirstName()+" "+schoolUserResponse.getValue().getLastName(),OpCode.Success);
     }

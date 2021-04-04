@@ -62,6 +62,7 @@ export const sendMessage = ({navigation,newMessage,roomId,apiKey}) =>
                     data: res.data,
                     dispatch,
                     navigation,
+                    newMessage
                 });
             } else {
                 dispatch({type: UPDATE_ERROR_CHAT_ROOM, payload: server_error});
@@ -73,38 +74,41 @@ export const sendMessage = ({navigation,newMessage,roomId,apiKey}) =>
     }
 };
 
-const checkSendMessageResponse=({data,dispatch,navigation})=>{
+const checkSendMessageResponse=({data,dispatch,navigation,newMessage})=>{
     const { reason, value } = data;
     switch (reason) {
         case Success:
-            return ({ type: UPDATE_SEND_CHAT_ROOM});
+            //alert(newMessage.text)
+            dispatch ({ type: UPDATE_SEND_CHAT_ROOM,payload:newMessage});
         default:
             return dispatch({ type: UPDATE_ERROR_CLOSE_ROOM, payload: server_error });
     }
 };
-
+/*
 
 export const enterChatTeacher = ({navigation,apiKey,roomId})=> {
     return async (dispatch) => {
         dispatch({
             type: ENTER_CHAT_ROOM,
-            payload:"gal",
+            payload:{name:'name',apiKey:apiKey,roomId:roomId},
         });
         navigation.navigate(NavPaths.chatRoom);
     }
-}
+}*/
 
-/*
+
+
 export const enterChatTeacher = ({navigation,apiKey,roomId})=>{
     return async (dispatch)=>{
         dispatch({type:LOGIN_TEACHER,payload:apiKey});
         try{
-            const res=await API.post(APIPaths.enterChat,{apiKey});
+            const res=await API.post(APIPaths.enterChat,{apiKey,roomId});
             if(res){
                 checkEnterChatResponse({
                     data:res.data,
                     dispatch,
                     navigation,
+                    apiKey,roomId
                 })
             } else {
                 dispatch({type:UPDATE_ERROR_CHAT_ROOM,payload:server_error});
@@ -118,7 +122,7 @@ export const enterChatTeacher = ({navigation,apiKey,roomId})=>{
 
 };
 
-const checkEnterChatResponse=({data,dispatch,navigation})=>{
+const checkEnterChatResponse=({data,dispatch,navigation,apiKey,roomId})=>{
     const {reason,value}=data;
     switch(reason){
         case Wrong_Key:
@@ -132,11 +136,11 @@ const checkEnterChatResponse=({data,dispatch,navigation})=>{
                 payload:teacher_not_exists_error,
             });
         case Success:
-            dispatch({ type: ENTER_CHAT_ROOM,payload:value});
+            dispatch({ type: ENTER_CHAT_ROOM,payload:{name:value,apiKey:apiKey,roomId:roomId}});
             return navigation.navigate(NavPaths.chatRoom);
 
     }
-}*/
+}
 
 
 export const closeRoom = ({navigation,apiKey,currentRoom}) => {

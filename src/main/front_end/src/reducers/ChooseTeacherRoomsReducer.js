@@ -13,7 +13,7 @@ import {
     ROOM_CHANGED,
     PASS_TO_ROOM_MENU,
     UPDATE_CLOSE_ROOM,
-    UPDATE_ERROR_CLOSE_ROOM
+    UPDATE_ERROR_CLOSE_ROOM, ENTER_CHAT_ROOM
 } from "../actions/types";
 
 const initialState = {

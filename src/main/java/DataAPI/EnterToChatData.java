@@ -1,13 +1,11 @@
 package DataAPI;
 
-public class MessageChatDetails {
+public class EnterToChatData {
     private String apiKey;
-    private ChatMessageData newMessage;
     private String roomId;
 
-    public MessageChatDetails(String apiKey, ChatMessageData newMessage, String roomId) {
+    public EnterToChatData(String apiKey, String roomId) {
         this.apiKey = apiKey;
-        this.newMessage = newMessage;
         this.roomId = roomId;
     }
 
@@ -17,14 +15,6 @@ public class MessageChatDetails {
 
     public void setApiKey(String apiKey) {
         this.apiKey = apiKey;
-    }
-
-    public ChatMessageData getChatMessageData() {
-        return newMessage;
-    }
-
-    public void setChatMessageData(ChatMessageData chatMessageData) {
-        this.newMessage = chatMessageData;
     }
 
     public String getRoomId() {
