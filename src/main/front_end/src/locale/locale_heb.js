@@ -440,3 +440,8 @@ export const ResetPasswordStrings = {
   enter_alias: 'יש להכניס שם משתמש',
   reset_password_succeeded: 'האיפוס הצליח! סיסמא זמנית מחכה לך במייל',
 }
+
+export const   addSuggestionErrors = {
+  wrong_suggestion: 'יש להזין הצעה תקינה',
+  suggestion_added: 'ההצעה נוספה בהצלחה',
+}

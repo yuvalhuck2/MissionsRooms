@@ -34,6 +34,37 @@ class AddSuggestionForm extends Component {
         this.props.addSuggestion({ apiKey,suggestion, navigation });
     }
 
+    
+
+    renderSpinner() {
+        return <ActivityIndicator animating={true} color={theme.colors.primary} size='large'/>;
+    }
+
+    renderButton(){
+        const {loading} = this.props;
+        return  ( loading ? 
+            this.renderSpinner() :
+            <Button
+                mode='contained'
+                style={styles.button}
+                onPress={this.onButtonPress}>
+                {send_suggestion}
+            </Button>
+        )
+      }
+
+      renderError() {
+        const { errorMessage } = this.props;
+    
+        if (errorMessage && errorMessage !== '') {
+          return (
+            <View>
+              <Text style={styles.errorTextStyle}>{errorMessage}</Text>
+            </View>
+          );
+        }
+      }
+
     render() {
         const { apiKey,suggestion, navigation  } = this.props;
         return (
@@ -43,16 +74,8 @@ class AddSuggestionForm extends Component {
                     label={addSuggestionText}
                     value={suggestion}
                     onChangeText={this.onSuggestionChange}
-                    //placeholder='Enter suggestion'
                 />
-
-                <Button
-                    mode='contained'
-                    style={styles.button}
-                    onPress={this.onButtonPress}
-                >
-                    {send_suggestion}
-                </Button>
+                {this.renderButton()}
 
             </KeyboardAwareScrollView>
         );
@@ -89,8 +112,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    const { suggestion,apiKey } = state.addSuggestion;
-    return { suggestion,apiKey  };
+    const { suggestion, apiKey, loading } = state.addSuggestion;
+    return { suggestion, apiKey, loading  };
 };
 
 export default connect(mapStateToProps,{
