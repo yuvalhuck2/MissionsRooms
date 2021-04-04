@@ -4,8 +4,10 @@ import CrudRepositories.*;
 import Data.Data;
 import Data.DataGenerator;
 import DataAPI.OpCode;
+import DataAPI.PasswordAndTime;
 import DataAPI.Response;
 import ExternalSystemMocks.MailSenderTrueMock;
+import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
 import RepositoryMocks.UserRepository.UserRepositoryMock;
 import com.google.gson.Gson;
@@ -13,13 +15,19 @@ import javafx.util.Pair;
 import missions.room.Domain.Users.IT;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.Teacher;
+import missions.room.Managers.PointsManager;
 import missions.room.Managers.UserAuthenticationManager;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static Data.DataConstants.TEMP_PASSWORD;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -34,20 +42,12 @@ public class LoginManagerTestsAllStubs {
 
     protected DataGenerator dataGenerator;
 
-    @Test
-    void ha(){
-        Gson gson=new Gson();
-        String f=gson.toJson(dataGenerator.getRegisterDetails(Data.VALID));
-        System.out.println();
-    }
-
     @BeforeEach
     void setUp() {
         dataGenerator=new DataGenerator();
     }
 
     void setUpMocks(){
-        MailSender mailSender=new MailSenderTrueMock();
         userRepository =new UserRepositoryMock(dataGenerator);
         loginManager =new UserAuthenticationManager(userRepository);
     }
@@ -65,10 +65,6 @@ public class LoginManagerTestsAllStubs {
         userRepository.delete((Student)dataGenerator.getUser(Data.VALID_STUDENT));
         userRepository.delete((Teacher)dataGenerator.getUser(Data.VALID_TEACHER));
         userRepository.delete((IT)dataGenerator.getUser(Data.VALID_IT));
-    }
-    @AfterEach
-    void tearDown(){
-
     }
 
     /**
@@ -210,5 +206,37 @@ public class LoginManagerTestsAllStubs {
 
     }
 
+    @Test
+    void testLoginResetPasswordName(){
+        loginSetUp();
+        HashSystem hashSystem = new HashSystem();
+        String password = TEMP_PASSWORD;
+        Pair<String,String> details=dataGenerator.getLoginDetails(Data.VALID_STUDENT);
+        try {
+            Field aliasToResetPassword = UserAuthenticationManager.class.getDeclaredField("aliasToResetPassword");
+            aliasToResetPassword.setAccessible(true);
+            ((ConcurrentHashMap<String, PasswordAndTime>)aliasToResetPassword.
+                    get(loginManager)).put(details.getKey(),new PasswordAndTime(hashSystem.encrypt(password)));
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            fail();
+        }
+
+        Response<String> response= loginManager.login(details.getKey(),password);
+        assertNotNull(response.getValue());
+        assertEquals(response.getReason(), OpCode.Student);
+        try {
+            Field aliasToResetPassword = UserAuthenticationManager.class.getDeclaredField("aliasToResetPassword");
+            aliasToResetPassword.setAccessible(true);
+            assertFalse(((ConcurrentHashMap<String, PasswordAndTime>)aliasToResetPassword.
+                    get(loginManager))
+                    .containsKey(details.getKey()));
+            ((ConcurrentHashMap<String, PasswordAndTime>)aliasToResetPassword.
+                    get(loginManager)).clear();
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            fail();
+        }
+
+        loginTearDown();
+    }
 
 }

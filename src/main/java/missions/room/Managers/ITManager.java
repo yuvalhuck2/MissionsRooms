@@ -196,7 +196,6 @@ public class ITManager {
         }
 
         Classroom classroom = classroomResponse.getValue();
-        //classroom.addStudent(new Student(profileDetails), profileDetails.getGroupType());
 
         synchronized (ADD_USER_LOCK){
             Response<Boolean> isUserExist = userRepo.isExistsById(profileDetails.getAlias());

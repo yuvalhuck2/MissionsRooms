@@ -3,6 +3,7 @@ package missions.room.UserAuthenticationTests;
 import CrudRepositories.UserCrudRepository;
 import Data.Data;
 import DataAPI.OpCode;
+import DataAPI.Response;
 import missions.room.Domain.Users.Student;
 import missions.room.Managers.UserAuthenticationManager;
 import missions.room.Repo.UserRepo;
@@ -74,6 +75,14 @@ public class UserAuthenticationTestsRealRamUserRepo extends UserAuthenticationTe
         when(mockUserCrudRepository.save(any())).
                 thenThrow(new RuntimeException());
         testInvalidChangePassword(OpCode.DB_Error);
+    }
+
+    @Test
+    void testResetPasswordUserRepoIsExistThrowsException(){
+        setUpUserRepoThrowsException();
+        when(mockUserCrudRepository.existsById(anyString()))
+                .thenThrow(new RuntimeException());
+        testResetPasswordInvalid(OpCode.DB_Error);
     }
 
     @Override

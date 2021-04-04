@@ -1,11 +1,8 @@
 package missions.room.Service;
 
-import DataAPI.RegisterDetailsData;
-import DataAPI.Response;
-import DataAPI.TeacherData;
+import DataAPI.*;
 import ExternalSystems.MailSender;
 import ExternalSystems.VerificationCodeGenerator;
-import DataAPI.GroupType;
 import missions.room.Managers.UserAuthenticationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +42,15 @@ public class UserAuthenticationService {
      */
     public Response<String> login (String alias, String password){
         return userAuthenticationManager.login(alias,password);
+    }
+
+    /**
+     * req 2.4 - reset password
+     * @param alias - of the user want to reset password
+     * @return if an email was sent with verification code
+     */
+    public Response<Boolean> resetPassword(String alias){
+        return userAuthenticationManager.resetPassword(alias);
     }
 
     /**
