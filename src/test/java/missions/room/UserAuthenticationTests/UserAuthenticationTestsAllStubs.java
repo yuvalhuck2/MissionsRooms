@@ -3,17 +3,8 @@ package missions.room.UserAuthenticationTests;
 import Data.Data;
 import Data.DataGenerator;
 import DataAPI.*;
-import ExternalSystemMocks.MailSenderFalseMock;
-import ExternalSystemMocks.MailSenderTrueMock;
 import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
-import RepositoryMocks.ClassroomRepository.ClassRoomRepositoryExemptionSaveMock;
-import RepositoryMocks.SchoolUserRepositry.SchoolUserRepositoryMock;
-import RepositoryMocks.SchoolUserRepositry.SchoolUserRepositoryMockExceptionFindRead;
-import RepositoryMocks.SchoolUserRepositry.SchoolUserRepositoryMockLockExceptionFindRead;
-import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMockExceptionFindById;
-import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMockExceptionTimeoutFindByIdFor;
-import javassist.bytecode.Opcode;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.Teacher;
@@ -89,6 +80,8 @@ public class UserAuthenticationTestsAllStubs {
 
     protected String teacherAlias;
 
+    protected String studentAlias;
+
     @BeforeEach
     void setUp() {
         dataGenerator=new DataGenerator();
@@ -96,6 +89,7 @@ public class UserAuthenticationTestsAllStubs {
         newPassword= "newPassword";
         code = dataGenerator.getVerificationCode(Data.VALID);
         teacherAlias = dataGenerator.getTeacher(Data.VALID_WITH_GROUP_C).getAlias();
+        studentAlias = dataGenerator.getStudent(Data.VALID).getAlias();
         initMocks();
     }
 
@@ -104,9 +98,9 @@ public class UserAuthenticationTestsAllStubs {
         try {
             Field aliasToCode = UserAuthenticationManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
-            ((ConcurrentHashMap<String, PasswordCodeGroupAndTime>)aliasToCode.
+            ((ConcurrentHashMap<String, PasswordCodeAndTime>)aliasToCode.
                     get(userAuthenticationManager)).put(validDetails.getAlias(),
-                    new PasswordCodeGroupAndTime(code,
+                    new PasswordCodeAndTime(code,
                             new HashSystem().encrypt(validDetails.getPassword())));
         } catch (IllegalAccessException | NoSuchFieldException e) {
             fail();
@@ -155,6 +149,10 @@ public class UserAuthenticationTestsAllStubs {
                 .thenReturn(new Response<>(null, OpCode.Success));
         when(mockUserRepo.save(any()))
                 .thenReturn(new Response<>(student, OpCode.Success));
+        when(mockUserRepo.isExistsById(student.getAlias()))
+                .thenReturn(new Response<>(true, OpCode.Success));
+        when(mockUserRepo.isExistsById(WRONG_USER_NAME))
+                .thenReturn(new Response<>(false, OpCode.Success));
     }
 
     protected void initRam(Student student) {
@@ -406,6 +404,59 @@ public class UserAuthenticationTestsAllStubs {
         assertEquals(changePasswordResponse.getReason(),opCode);
     }
 
+    @Test
+    void testResetPasswordHappyCase(){
+        Response<Boolean> resetPasswordResponse = userAuthenticationManager.resetPassword(studentAlias);
+        assertTrue(resetPasswordResponse.getValue());
+        assertEquals(resetPasswordResponse.getReason(), OpCode.Success);
+        try {
+            Field aliasToResetPassword = UserAuthenticationManager.class.getDeclaredField("aliasToResetPassword");
+            aliasToResetPassword.setAccessible(true);
+            assertTrue(((ConcurrentHashMap<String, PasswordAndTime>)aliasToResetPassword.
+                    get(userAuthenticationManager))
+                    .containsKey(studentAlias));
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void testResetPasswordNotExistUser(){
+        studentAlias = WRONG_USER_NAME;
+        testResetPasswordInvalid(OpCode.Not_Exist);
+    }
+
+    @Test
+    void testResetPasswordUserRepoIsExistThrowsException(){
+        when(mockUserRepo.isExistsById(anyString()))
+                .thenReturn(new Response<>(null, OpCode.DB_Error));
+        testResetPasswordInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    void testResetPasswordMailError(){
+        when(mockMailSender.send(anyString(), anyString()))
+                .thenReturn(false);
+        Response<Boolean> resetPasswordResponse = userAuthenticationManager.resetPassword(studentAlias);
+        assertFalse(resetPasswordResponse.getValue());
+        assertEquals(resetPasswordResponse.getReason(), OpCode.Mail_Error);
+    }
+
+    void testResetPasswordInvalid(OpCode opCode){
+        Response<Boolean> resetPasswordResponse = userAuthenticationManager.resetPassword(studentAlias);
+        assertFalse(resetPasswordResponse.getValue());
+        assertEquals(resetPasswordResponse.getReason(), opCode);
+        try {
+            Field aliasToResetPassword = UserAuthenticationManager.class.getDeclaredField("aliasToResetPassword");
+            aliasToResetPassword.setAccessible(true);
+            assertFalse(((ConcurrentHashMap<String, PasswordAndTime>)aliasToResetPassword.
+                    get(userAuthenticationManager))
+                    .containsKey(studentAlias));
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            fail();
+        }
+    }
+
     @AfterEach
     void tearDown() {
         tearDownMocks();
@@ -416,6 +467,11 @@ public class UserAuthenticationTestsAllStubs {
             Field aliasToCode= UserAuthenticationManager.class.getDeclaredField("aliasToCode");
             aliasToCode.setAccessible(true);
             ((ConcurrentHashMap)aliasToCode.get(userAuthenticationManager)).clear();
+
+            Field aliasToResetPassword = UserAuthenticationManager.class.getDeclaredField("aliasToResetPassword");
+            aliasToResetPassword.setAccessible(true);
+            ((ConcurrentHashMap)aliasToResetPassword.get(userAuthenticationManager)).clear();
+
         } catch (NoSuchFieldException | IllegalAccessException e) {
             fail();
         }

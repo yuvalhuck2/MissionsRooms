@@ -23,6 +23,8 @@ export const loginStrings = {
   login_btn: 'לחץ להתחברות',
   no_user: 'אין ברשותך משתמש? ',
   no_user_sign_up: 'הירשם כאן',
+  forgat_password: 'שכחת סיסמא?',
+  press_here: 'לחץ כאן',
 };
 
 export const uploadStrings = {
@@ -233,6 +235,8 @@ export const GeneralErrors = {
   empty_details:'לא מולאו פרטים',
   action_succeeded:'הפעולה בוצעה בהצלחה!',
   classroom_not_exist:'לפי רישומי המערכת, אין לך כיתה',
+  wrong_alias: 'יש להזין שם משתמש תקין',
+  mail_error: 'יש תקלה עם שליחת המייל, נא נסו שנית',
 };
 
 export const ITStrings = {
@@ -429,3 +433,10 @@ export const addUserErrors = {
   wrong_group: 'הקבוצה שהוזנה לא תקינה',
   user_added: 'המשתמש נוסף בהצלחה!',
 } 
+
+export const ResetPasswordStrings = {
+  header: 'איפוס סיסמא',
+  reset: 'איפוס',
+  enter_alias: 'יש להכניס שם משתמש',
+  reset_password_succeeded: 'האיפוס הצליח! סיסמא זמנית מחכה לך במייל',
+}

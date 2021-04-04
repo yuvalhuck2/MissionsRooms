@@ -148,16 +148,7 @@ public class ServiceAPI {
     /**
      * TODO 3.6.2.7 talk about when the system draw the in charge
      */
-
-
-    /**
-     * req 3.8 - reset password
-     * @param auth - authentication object
-     * @return if an email was sent with verification code
-     */
-    public Response<Boolean> resetPassword(Auth auth){
-        throw new RuntimeException();
-    }
+    
 
     /**
      * req 3.9 - send room message

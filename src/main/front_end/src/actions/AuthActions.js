@@ -311,3 +311,8 @@ export const navigateToLogin = ({ navigation }) => {
   navigation.navigate(NavPaths.loginScreen);
   return { type: CLEAR_STATE };
 };
+
+export const navigateToResetPassword = ({navigation}) => {
+  navigation.navigate(NavPaths.resetPassword);
+  return { type: CLEAR_STATE };
+}

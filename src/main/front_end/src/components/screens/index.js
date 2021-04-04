@@ -26,4 +26,5 @@ export { default as Test} from './Test'
 export { default as AddOpenQuestionMissionScreen} from './AddOpenQuestionMissionScreen'
 export { default as SolveOpenQuestionMissionScreen} from './SolveOpenQuestionMissionScreen'
 export { default as AddUserScreen} from './AddUserScreen'
+export {default as ResetPasswordScreen} from './ResetPasswordScreen'
 

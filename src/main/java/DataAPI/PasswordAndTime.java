@@ -2,19 +2,13 @@ package DataAPI;
 
 import java.time.LocalDateTime;
 
-public class PasswordCodeGroupAndTime {
+public class PasswordAndTime {
     private final String password;
-    private final String code;
     private final LocalDateTime time;
 
-    public PasswordCodeGroupAndTime(String code, String password) {
-        this.code = code;
+    public PasswordAndTime(String password) {
         this.password=password;
         time=LocalDateTime.now();
-    }
-
-    public String getCode() {
-        return code;
     }
 
     public LocalDateTime getTime() {
@@ -24,5 +18,4 @@ public class PasswordCodeGroupAndTime {
     public String getPassword() {
         return password;
     }
-
 }

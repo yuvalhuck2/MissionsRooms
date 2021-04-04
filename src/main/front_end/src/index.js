@@ -29,6 +29,7 @@ import {
     PointsTableScreen,
     ManageUsersScreen,
     AddUserScreen,
+    ResetPasswordScreen,
     Test,
 } from './components/screens';
 
@@ -38,6 +39,10 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Register'>
+      <Stack.Screen
+          name='ResetPassword'
+          component={ResetPasswordScreen}
+        />
       <Stack.Screen
           name='AddUser'
           component={AddUserScreen}
