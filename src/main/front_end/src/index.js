@@ -28,6 +28,7 @@ import {
     ChangePasswordScreen,
     PointsTableScreen,
     ManageUsersScreen,
+    AddUserScreen,
     Test,
 } from './components/screens';
 
@@ -37,6 +38,10 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Register'>
+      <Stack.Screen
+          name='AddUser'
+          component={AddUserScreen}
+        />
       <Stack.Screen
           name='ManageUsers'
           component={ManageUsersScreen}

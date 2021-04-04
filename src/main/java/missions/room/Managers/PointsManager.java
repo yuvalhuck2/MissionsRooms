@@ -67,8 +67,9 @@ public class PointsManager extends TeacherManager  {
                 return recordTable.getSupervisorData();
             }
 
-            return recordTable.getData(teacher.getClassroom());
-
+            if(teacher.getClassroom()!=null) {
+                return recordTable.getData(teacher.getClassroom());
+            }
         }
         return recordTable.getData();
     }

@@ -232,6 +232,7 @@ export const GeneralErrors = {
   user_not_exist:'המשתמש לא קיים',
   empty_details:'לא מולאו פרטים',
   action_succeeded:'הפעולה בוצעה בהצלחה!',
+  classroom_not_exist:'לפי רישומי המערכת, אין לך כיתה',
 };
 
 export const ITStrings = {
@@ -239,6 +240,8 @@ export const ITStrings = {
   main_screen: 'התנתק/י',
   addNewIT: 'הוספת מנהל טכני',
   manageUsers:'ניהול משתמשים',
+  add_teacher: 'הוספת מורה',
+  add_student: 'הוספת תלמיד',
 };
 
 export const addMissionErrors = {
@@ -398,3 +401,31 @@ export const ManageUsersStrings = {
   press_user_for_details:'לחצו על משתמש על מנת לערוך את נתוניו או למחוק אותו',
   transfer:'העברת קבוצה',
 };
+
+export const Grades = {
+  yud: 'י',
+  yudAlef:'יא',
+  yudBeit:'יב',
+}
+
+export const AddUserStrings = {
+  student_header: 'הוספת סטודנט',
+  teacher_header: 'הוספת מורה',
+  enter_class_number: 'מספר כיתה',
+  choose_grade: 'בחירת שכבה',
+  enter_first_name: 'שם פרטי',
+  enter_alias: 'קידומת מייל',
+  enter_last_name: 'שם משפחה',
+  choose_group: 'בחירת קבוצה',
+  superviosr_label: 'מנהל מפקח',
+}
+
+export const addUserErrors = {
+  already_exist: 'משתמש עם קידומת מייל זהה, קיים במערכת',
+  wrong_alias: 'יש להזין קידמות מייל תקינה',
+  wrong_first_name: 'יש להזין שם פרטי תקין',
+  wrong_last_name: 'יש להזין שם משפחה תקין',
+  wrong_class: 'הכיתה שהוזנה אינה קיימת במערכת',
+  wrong_group: 'הקבוצה שהוזנה לא תקינה',
+  user_added: 'המשתמש נוסף בהצלחה!',
+} 

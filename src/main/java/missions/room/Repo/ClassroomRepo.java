@@ -8,6 +8,7 @@ import missions.room.Domain.Classroom;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,22 @@ public class ClassroomRepo {
         catch (Exception e){
             log.error("failed to find all classrooms",e);
             return new Response<>(new ArrayList<>(),OpCode.DB_Error);
+        }
+    }
+
+    @Transactional
+    public Response<Classroom> findForWrite(String classroom) {
+        try {
+            Classroom myClassroom = classRoomRepository.findClassroomForWrite(classroom);
+            if(myClassroom == null){
+                log.info("classroom " + classroom + " is not exist");
+                return new Response<>(null,OpCode.Not_Exist_Classroom);
+            }
+            return new Response<>(myClassroom, OpCode.Success);
+        }
+        catch (Exception e){
+            log.error("error to find classroom " + classroom,e);
+            return new Response<>(null,OpCode.DB_Error);
         }
     }
 }
