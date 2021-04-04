@@ -246,15 +246,18 @@ public class RoomManager extends TeacherManager {
             return new Response<>(false,roomResponse.getReason());
         }
         Room room=roomResponse.getValue();
-        if(room.getConnectedUsersAliases().size()>0){
-            return new Response<>(false, OpCode.CONNECTED_STUDENTS);
+        Response<Boolean> responseDeleteRoom;
+        synchronized (room) {
+            if (room.getConnectedUsersAliases().size() > 0) {
+                return new Response<>(false, OpCode.CONNECTED_STUDENTS);
+            }
+            OpCode response=ram.connectToRoom(roomId,ram.getAlias(apiKey));
+            if(response!=OpCode.Teacher){
+                return new Response<>(false,response);
+            }
+            responseDeleteRoom=roomRepo.deleteRoom(room);
         }
-        //TODO sync!!! on the room
-        OpCode response=ram.connectToRoom(roomId,ram.getAlias(apiKey));
-        if(response!=OpCode.Teacher){
-            return new Response<>(false,response);
-        }
-        return roomRepo.deleteRoom(room);
+        return responseDeleteRoom;
     }
 
     public Response<ClassRoomData> getClassRoomData(String apiKey){

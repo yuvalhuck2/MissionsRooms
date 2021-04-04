@@ -56,10 +56,11 @@ public class ChatManager {
         }
         NonPersistenceNotification<ChatMessageData> notification = new NonPersistenceNotification<>(OpCode.Update_Chat, message);
         for(String alias:room.getConnectedUsersAliases()){
-            publisher.update(ram.getApiKey(alias),notification);
-
+            if(!ram.getApiKey(alias).equals(apiKey)) {
+                publisher.update(ram.getApiKey(alias), notification);
+            }
         }
-        if(room.isTeacherConnect()) {
+        if(room.isTeacherConnect()&&!ram.getApiKey(room.getTeacher().getAlias()).equals(apiKey)) {
             String apiTeacher = ram.getApiKey(room.getTeacher().getAlias());
             publisher.update(apiTeacher, notification);
         }

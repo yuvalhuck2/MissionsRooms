@@ -13,9 +13,9 @@ const initialState = {
 export default (state = initialState, action) => {
     switch (action.type) {
         case UPDATE_CHAT_ROOM:
-            let copyMsg=this.messagesProps;
-            copyMsg=copyMsg.push(action.payload)
-            return {...state,messages:copyMsg};
+            //let copyMsg=this.messagesProps;
+            //copyMsg=copyMsg.push(action.payload)
+            return {...state,messages:this.messagesProps.push(action.payload)};
         case ENTER_CHAT_ROOM:
             const {name,apiKey,roomId}=action.payload;
             return {...state,name:name,apiKey:apiKey,roomId:roomId}
