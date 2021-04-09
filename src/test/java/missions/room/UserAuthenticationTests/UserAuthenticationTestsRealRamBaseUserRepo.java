@@ -3,7 +3,6 @@ package missions.room.UserAuthenticationTests;
 import CrudRepositories.UserCrudRepository;
 import Data.Data;
 import DataAPI.OpCode;
-import DataAPI.Response;
 import missions.room.Domain.Users.Student;
 import missions.room.Managers.UserAuthenticationManager;
 import missions.room.Repo.UserRepo;
@@ -22,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
-public class UserAuthenticationTestsRealRamUserRepo extends UserAuthenticationTestRealRam{
+public class UserAuthenticationTestsRealRamBaseUserRepo extends BaseUserAuthenticationTestRealRam {
 
     @Autowired
     private UserRepo realUserRepo;

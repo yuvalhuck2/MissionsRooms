@@ -6,7 +6,7 @@ import DataAPI.UserProfileData;
 import javax.persistence.Entity;
 
 @Entity
-public class IT extends User {
+public class IT extends BaseUser {
 
     public IT() {
         super();

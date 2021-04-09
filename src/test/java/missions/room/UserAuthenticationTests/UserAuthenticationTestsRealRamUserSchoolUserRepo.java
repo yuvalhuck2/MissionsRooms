@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class UserAuthenticationTestsRealRamUserSchoolUserRepo extends UserAuthenticationTestsRealRamUserRepo {
+public class UserAuthenticationTestsRealRamUserSchoolUserRepo extends UserAuthenticationTestsRealRamBaseUserRepo {
 
     @Autowired
     protected SchoolUserRepo realSchoolUserRepo;

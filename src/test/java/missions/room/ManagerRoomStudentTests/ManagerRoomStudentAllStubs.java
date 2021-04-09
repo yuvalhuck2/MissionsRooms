@@ -20,7 +20,7 @@ import missions.room.Domain.Notifications.Notification;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Users.Student;
-import missions.room.Domain.Users.User;
+import missions.room.Domain.Users.BaseUser;
 import missions.room.Managers.ManagerRoomStudent;
 import missions.room.Repo.*;
 import org.junit.jupiter.api.AfterEach;
@@ -183,7 +183,7 @@ public class ManagerRoomStudentAllStubs {
         closeable = MockitoAnnotations.openMocks(this);
         Student student = dataGenerator.getStudent(Data.VALID);
         Student student2 = dataGenerator.getStudent(Data.VALID2);
-        User user=dataGenerator.getUser(Data.VALID_STUDENT);
+        BaseUser baseUser =dataGenerator.getUser(Data.VALID_STUDENT);
         Room studentRoom=dataGenerator.getRoom(Data.Valid_Student);
         studentRoom.connect(student.getAlias());
         Room groupRoom=dataGenerator.getRoom(Data.Valid_Group);
@@ -202,7 +202,7 @@ public class ManagerRoomStudentAllStubs {
         Room openAnsRoom = dataGenerator.getRoom((Data.VALID_OPEN_ANS));
 
         when(mockRam.getAlias(thirdStudentKey))
-                .thenReturn(user.getAlias());
+                .thenReturn(baseUser.getAlias());
         when(mockRam.getAlias(studentApiKey))
                 .thenReturn(student.getAlias());
         when(mockRam.getApiKey(student.getAlias()))
@@ -258,8 +258,8 @@ public class ManagerRoomStudentAllStubs {
 
         when(mockStudentRepo.findStudentById(student.getAlias()))
                 .thenReturn(new Response<>(student, OpCode.Success));
-        when(mockStudentRepo.findStudentById(user.getAlias()))
-                .thenReturn(new Response<>((Student) user, OpCode.Success));
+        when(mockStudentRepo.findStudentById(baseUser.getAlias()))
+                .thenReturn(new Response<>((Student) baseUser, OpCode.Success));
         when(mockStudentRepo.findStudentById(student2.getAlias()))
                 .thenReturn(new Response<>(student2, OpCode.Success));
         when(mockStudentRepo.findStudentById(WRONG_USER_NAME))

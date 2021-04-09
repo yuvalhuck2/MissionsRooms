@@ -29,7 +29,7 @@ public class DataGenerator {
     private HashMap<Data, Teacher> teachers;
     private HashMap<Data, Mission> missions;
     private HashMap<Data, Pair<String,String>> loginDatas;
-    private HashMap<Data, User> users;
+    private HashMap<Data, BaseUser> users;
     private final HashSystem hashSystem= new HashSystem();;
     private HashMap<Data, RoomTemplate> roomTemplates;
     private HashMap<Data, RoomTemplateDetailsData> roomTemplatesDatas;
@@ -162,18 +162,18 @@ public class DataGenerator {
 
 
     private void initUsers(){
-        users=new HashMap<Data, User>();
-        User validStudent=new Student("ExistAliasStudent","Gal","Haviv");
+        users=new HashMap<Data, BaseUser>();
+        BaseUser validStudent=new Student("ExistAliasStudent","Gal","Haviv");
         validStudent.setPassword(hashSystem.encrypt("1234"));
         users.put(Data.VALID_STUDENT,validStudent);
 
-        User validTeacher=new Teacher("ExistAliasTeacher","Tal","Cohen",hashSystem.encrypt("1234"));
+        BaseUser validTeacher=new Teacher("ExistAliasTeacher","Tal","Cohen",hashSystem.encrypt("1234"));
         users.put(Data.VALID_TEACHER,validTeacher);
 
-        User validIT=new IT("ExistAliasIT",hashSystem.encrypt("1234"));
+        BaseUser validIT=new IT("ExistAliasIT",hashSystem.encrypt("1234"));
         users.put(Data.VALID_IT,validIT);
 
-        User validIT2=new IT("ExistAliasIT2",hashSystem.encrypt("1234"));
+        BaseUser validIT2=new IT("ExistAliasIT2",hashSystem.encrypt("1234"));
         users.put(Data.VALID_IT2,validIT2);
 
 
@@ -553,7 +553,7 @@ public class DataGenerator {
         return loginDatas.get(data);
     }
 
-    public User getUser(Data data){
+    public BaseUser getUser(Data data){
         return users.get(data);
     }
 

@@ -10,7 +10,7 @@ import java.util.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class User {
+public abstract class BaseUser {
 
     @Id
     protected String alias;
@@ -22,17 +22,17 @@ public abstract class User {
     @JoinColumn(name="dest",referencedColumnName = "alias")
     private Map<String, Message> messages;
 
-    public User(){
+    public BaseUser(){
         messages=new HashMap<>();
     }
 
-    public User(String alias, String password) {
+    public BaseUser(String alias, String password) {
         this.alias = alias;
         this.password = password;
         messages=new HashMap<>();
     }
 
-    public User(String alias){
+    public BaseUser(String alias){
         this.alias=alias;
         messages=new HashMap<>();
     }
@@ -55,9 +55,9 @@ public abstract class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return  Objects.equals(user.alias, alias) &&
-                Objects.equals(user.password,password);
+        BaseUser baseUser = (BaseUser) o;
+        return  Objects.equals(baseUser.alias, alias) &&
+                Objects.equals(baseUser.password,password);
     }
 
     public void addMessage(Message message) {
