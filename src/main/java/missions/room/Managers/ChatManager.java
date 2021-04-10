@@ -40,6 +40,10 @@ public class ChatManager {
     }
 
     public Response<String> sendMessage(String apiKey, ChatMessageData message, String  roomId){
+        String alias1 = ram.getAlias(apiKey);
+        if(alias1==null){
+            return new Response<>(null, OpCode.Wrong_Key);
+        }
         ram.addChatMessage(roomId,message);
         Room room;
         if(ram.isRoomExist(roomId)){

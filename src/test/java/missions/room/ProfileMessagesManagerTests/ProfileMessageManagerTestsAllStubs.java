@@ -57,6 +57,7 @@ public class ProfileMessageManagerTestsAllStubs {
     @Mock
     protected UserRepo mockUserRepo;
 
+
     private AutoCloseable closeable;
 
     private String message;

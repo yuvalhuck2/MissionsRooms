@@ -134,6 +134,9 @@ public class DataGenerator {
                 ,classGroupMap.get(Data.Valid_Group));
         classRoomMap.put(Data.Valid_2Students_From_Different_Groups,
                 valid2StudentsFromDifferentGroups);
+
+
+
     }
 
     private void initClassroomData() {
@@ -203,6 +206,8 @@ public class DataGenerator {
         roomsMap.put(Data.VALID_2MissionStudent,new StudentRoom("roomId5","name",students.get(Data.VALID),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.VALID_2MissionStudent),3));
         roomsMap.put(Data.VALID_2Mission_Group,new GroupRoom("roomIdGroup","name",classGroupMap.get(Data.Valid_Group),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.VALID_2Mission_Group),3));
         roomsMap.put(Data.VALID_2Mission_Class,new ClassroomRoom("roomIdClass","name",classRoomMap.get(Data.Valid_Classroom),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.VALID_2Mission_Class),3));
+
+
 
         roomsMap.get(Data.Valid_Group).connect(alias);
         roomsMap.get(Data.Valid_Classroom).connect(alias);
@@ -349,6 +354,9 @@ public class DataGenerator {
         teachers.put(Data.WRONG_NAME,new Teacher("Wrong","Avi","Ron","1234"));
         teachers.put(Data.Valid_2Students_From_Different_Groups,new Teacher("2StudentsTeacher","name","L name",
                 classRoomMap.get(Data.Valid_2Students_From_Different_Groups),GroupType.BOTH,"1234"));
+        teachers.put(Data.VALID_WITHOUT_CLASSROOM,new Teacher("TeacherWithoutClassroom","Avi","Ron","1234"));
+        
+
     }
 
     private void initVerificationCodes() {

@@ -241,6 +241,10 @@ public class RoomManager extends TeacherManager {
         if(checkTeacher.getReason()!=OpCode.Success){
             return new Response<>(false,checkTeacher.getReason());
         }
+        if(checkTeacher.getValue().getClassroom()==null){
+            return new Response<>(false,OpCode.Teacher_Classroom_Is_Null);
+        }
+
         Response<Room> roomResponse=roomRepo.findRoomById(roomId);
         if(roomResponse.getReason()!=OpCode.Success){
             return new Response<>(false,roomResponse.getReason());
@@ -251,13 +255,57 @@ public class RoomManager extends TeacherManager {
             if (room.getConnectedUsersAliases().size() > 0) {
                 return new Response<>(false, OpCode.CONNECTED_STUDENTS);
             }
+            Response<Boolean> belongsToTeacher=checkRoomBelongToTeacher(room.getRoomId(),checkTeacher.getValue());
+            if(belongsToTeacher.getReason()!=OpCode.Success){
+                return belongsToTeacher;
+            }
+            /*
             OpCode response=ram.connectToRoom(roomId,ram.getAlias(apiKey));
             if(response!=OpCode.Teacher){
                 return new Response<>(false,response);
-            }
+            }*/
             responseDeleteRoom=roomRepo.deleteRoom(room);
         }
         return responseDeleteRoom;
+    }
+
+    public Response<Boolean> checkRoomBelongToTeacher(String roomId,Teacher teacher){
+        Response<ClassroomRoom> responseClass = roomRepo.findClassroomRoomByAlias(teacher.getClassroom().getClassName());
+        List<RoomDetailsData>  classroomResponse;
+        if (responseClass.getReason() == OpCode.Success&&responseClass.getValue()!=null) {
+            Response<Room> responseRoomClass = getRoomsFromRoomClass(responseClass.getValue());
+            if (responseRoomClass.getReason() != OpCode.Success) {
+                return new Response<>(false, responseRoomClass.getReason());
+            }
+            List<Room> temp=new ArrayList<>();
+            temp.add(responseRoomClass.getValue());
+            classroomResponse=getRoomDetailFromRoom(temp).getValue();
+        }
+        else  if (responseClass.getReason() == OpCode.Success&&responseClass.getValue()==null) {
+            classroomResponse=new ArrayList<>();
+        }
+        else return new Response<>(null,responseClass.getReason());
+        List<RoomDetailsData> classGroupResponse=getClassGroupRooms(teacher).getValue();
+        List<RoomDetailsData> studentsResponse=getStudentsRoom(teacher).getValue();
+
+
+        for(RoomDetailsData roomDetailsData:classroomResponse){
+            if(roomDetailsData.getRoomId().equals(roomId)){
+                return new Response<>(true,OpCode.Success);
+            }
+        }
+        for(RoomDetailsData roomDetailsData:classGroupResponse){
+            if(roomDetailsData.getRoomId().equals(roomId)){
+                return new Response<>(true,OpCode.Success);
+            }
+        }
+        for(RoomDetailsData roomDetailsData:studentsResponse){
+            if(roomDetailsData.getRoomId().equals(roomId)){
+                return new Response<>(true,OpCode.Success);
+            }
+        }
+        return new Response<>(false,OpCode.NOT_BELONGS_TO_TEACHER);
+
     }
 
     public Response<ClassRoomData> getClassRoomData(String apiKey){
