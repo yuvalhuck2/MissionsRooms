@@ -2,12 +2,14 @@ package missions.room.Domain.Rooms;
 
 import DataAPI.*;
 import Utils.Utils;
+import missions.room.Domain.OpenAnswer;
 import missions.room.Domain.missions.Mission;
 import missions.room.Domain.RoomMessage;
 import missions.room.Domain.RoomTemplate;
 import missions.room.Domain.TriviaQuestion;
 import missions.room.Domain.Users.Teacher;
 import missions.room.Domain.missions.*;
+import org.assertj.core.util.VisibleForTesting;
 
 import javax.persistence.*;
 import java.util.*;
@@ -47,6 +49,10 @@ public abstract class Room {
     @JoinColumn(name="roomId",referencedColumnName = "roomId")
     protected List<RoomMessage> roomMessages;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "roomId", referencedColumnName = "roomId")
+    protected List<OpenAnswer> openAnswers;
+
     @OneToOne
     protected Teacher teacher;
 
@@ -77,6 +83,7 @@ public abstract class Room {
         studentWereChosenForStory=new HashSet<>();
         waitingForStory=false;
         this.isTeacherConnect=false;
+        openAnswers = new ArrayList<>();
     }
 
     public String drawMissionInCharge() {
@@ -163,7 +170,7 @@ public abstract class Room {
 
     //TODO implement after doing openRoomMission
     private boolean allOpenQuestionsApproved() {
-        return true;
+        return openAnswers.isEmpty();
     }
 
     public RoomDetailsData getData() {
@@ -174,41 +181,6 @@ public abstract class Room {
         MissionData missionData = mission.getData();
         return new RoomDetailsData(roomId,name,missionData,roomTemplate.getType(),waitingForStory);
     }
-
-
-//    //TODO refactor to the mission object to return it's own data
-//    private MissionData getMissionData(Mission mission) {
-//        MissionData md = new MissionData(mission.getMissionId(), mission.getMissionTypes());
-//        List<String> questList = new ArrayList<>();
-//        List<String> answerList = new ArrayList<>();
-//        if (mission instanceof KnownAnswerMission) {
-//            md.setName("Known answer mission");
-//            questList.add(((KnownAnswerMission) mission).getQuestion());
-//            md.setQuestion(questList);
-//            answerList.add(((KnownAnswerMission) mission).getRealAnswer());
-//            md.setAnswers(answerList);
-//        }
-//        if (mission instanceof OpenAnswerMission) {
-//            md.setName("Open Answer Mission");
-//            questList.add(((OpenAnswerMission) mission).getQuestion());
-//        }
-//        if (mission instanceof StoryMission) {
-//            md.setName("Story Mission");
-//        }
-//        if (mission instanceof TriviaMission) {
-//            md.setName("Trivia Mission");
-//            md.setTimeForAns(((TriviaMission) mission).getSecondsForAnswer());
-//            for (Map.Entry<String, TriviaQuestion> entry : ((TriviaMission) mission).getQuestions().entrySet()) {
-//                questList.add(entry.getValue().getQuestion());
-//            }
-//            md.setQuestion(questList);
-//        }
-//        if (mission instanceof TrueLieMission) {
-//            md.setName("True False Mission");
-//            md.setTimeForAns(((TrueLieMission) mission).getAnswerTimeForStudent());
-//        }
-//        return md;
-//    }
 
     public Set<String> getConnectedUsersAliases(){
         return connectedStudents;
@@ -276,4 +248,21 @@ public abstract class Room {
     public boolean isTeacherConnect() {
         return isTeacherConnect;
     }
+
+    public void addOpenAnswer(OpenAnswer openAnswer) {
+        openAnswers.add(openAnswer);
+    }
+
+    public boolean isMissionExists(String missionId) {
+        return roomTemplate.getMission(missionId) != null;
+    }
+
+    public boolean containsMission(String missionId) {
+        return roomTemplate.getMission(missionId) != null;
+    }
+
+    public boolean isMissionInCharge(String alias) {
+        return alias.equals(missionIncharge);
+    }
+
 }

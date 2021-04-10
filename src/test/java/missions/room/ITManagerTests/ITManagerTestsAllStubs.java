@@ -2,14 +2,16 @@ package missions.room.ITManagerTests;
 
 import Data.Data;
 import Data.DataGenerator;
-import DataAPI.OpCode;
-import DataAPI.RegisterDetailsData;
-import DataAPI.Response;
+import DataAPI.*;
 import ExternalSystems.HashSystem;
+import missions.room.Domain.Classroom;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Users.IT;
+import missions.room.Domain.Users.SchoolUser;
 import missions.room.Managers.ITManager;
+import missions.room.Repo.ClassroomRepo;
 import missions.room.Repo.ITRepo;
+import missions.room.Repo.SchoolUserRepo;
 import missions.room.Repo.UserRepo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,11 +49,23 @@ public class ITManagerTestsAllStubs {
     protected UserRepo mockUserRepo;
 
     @Mock
+    protected SchoolUserRepo mockSchoolUserRepo;
+
+    @Mock
     protected ITRepo mockITRepo;
+
+    @Mock
+    protected ClassroomRepo mockClassroomRepo;
 
     protected DataGenerator dataGenerator;
 
     protected String ITApiKey;
+
+    protected UserProfileData userProfileData;
+
+    protected TeacherData teacherData;
+
+    protected StudentData studentData;
 
     private AutoCloseable closeable;
 
@@ -59,6 +73,9 @@ public class ITManagerTestsAllStubs {
     void setUp() {
         dataGenerator=new DataGenerator();
         ITApiKey=IT_API_KEY;
+        userProfileData = dataGenerator.getProfileData(Data.VALID);
+        teacherData = dataGenerator.getTeacherData(Data.VALID);
+        studentData = dataGenerator.getStudentData(Data.VALID_STUDENT);
         initMocks();
     }
 
@@ -70,10 +87,36 @@ public class ITManagerTestsAllStubs {
         IT it2 = (IT) dataGenerator.getUser(Data.VALID_IT2);
         String itAlias2 = it2.getAlias();
 
+        SchoolUser schoolUser = dataGenerator.getStudent(Data.VALID);
+
         initRam(itAlias);
         initUserRepo(it, itAlias2);
+        initSchoolUserRepo(schoolUser);
         initITRepo(it, itAlias, it2);
+        initClassroomRepo();
         initHashSystem();
+    }
+
+    protected void initClassroomRepo() {
+        Classroom classroom = dataGenerator.getClassroom(Data.Valid_Classroom);
+        when(mockClassroomRepo.findForWrite(classroom.getClassName()))
+                .thenReturn(new Response<>(classroom, OpCode.Success));
+        when(mockClassroomRepo.findForWrite(dataGenerator.
+                getStudentData(Data.NOT_EXIST_CLASSROOM)
+                .getClassroom()))
+                .thenReturn(new Response<>(null, OpCode.Not_Exist_Classroom));
+        when(mockClassroomRepo.save(classroom))
+                .thenReturn(new Response<>(classroom, OpCode.Success));
+
+    }
+
+    protected void initSchoolUserRepo(SchoolUser schoolUser) {
+        when(mockSchoolUserRepo.findUserForWrite(schoolUser.getAlias()))
+                .thenReturn(new Response<>(schoolUser,OpCode.Success));
+        when(mockSchoolUserRepo.findUserForWrite(WRONG_USER_NAME))
+                .thenReturn(new Response<>(null,OpCode.Success));
+        when(mockSchoolUserRepo.save(any()))
+                .thenReturn(new Response<>(schoolUser,OpCode.Success));
     }
 
     private void initHashSystem() {
@@ -101,6 +144,10 @@ public class ITManagerTestsAllStubs {
                 .thenReturn(new Response<>(false, OpCode.Success));
         when(mockUserRepo.isExistsById(it.getAlias()))
                 .thenReturn(new Response<>(true, OpCode.Success));
+        when(mockUserRepo.isExistsById(teacherData.getAlias()))
+                .thenReturn(new Response<>(false, OpCode.Success));
+        when(mockUserRepo.isExistsById(studentData.getAlias()))
+                .thenReturn(new Response<>(false, OpCode.Success));
     }
 
     protected void initRam(String itAlias) {
@@ -181,6 +228,258 @@ public class ITManagerTestsAllStubs {
         Response<Boolean> response = itManager.addNewIT(ITApiKey,registerDetailsData);
         assertFalse(response.getValue());
         assertEquals(response.getReason(),opCode);
+    }
+
+    @Test
+    void updateUserDetailsHappyTest(){
+        Response<Boolean> updateUserDetailsResponse = itManager.updateUserDetails(ITApiKey,dataGenerator.getProfileData(Data.VALID));
+        assertTrue(updateUserDetailsResponse.getValue());
+        assertEquals(updateUserDetailsResponse.getReason(),OpCode.Success);
+    }
+
+    @Test
+    void updateUserDetailsHappyTestNullFirstName(){
+        Response<Boolean> updateUserDetailsResponse = itManager.updateUserDetails(ITApiKey,dataGenerator.getProfileData(Data.NULL_NAME));
+        assertTrue(updateUserDetailsResponse.getValue());
+        assertEquals(updateUserDetailsResponse.getReason(),OpCode.Success);
+    }
+
+    @Test
+    void updateUserDetailsHappyTestNullLastName(){
+        Response<Boolean> updateUserDetailsResponse = itManager.updateUserDetails(ITApiKey,dataGenerator.getProfileData(Data.NULL_LAST_NAME));
+        assertTrue(updateUserDetailsResponse.getValue());
+        assertEquals(updateUserDetailsResponse.getReason(),OpCode.Success);
+    }
+
+    @Test
+    void updateUserDetailsHappyTestNullFirstAndLastName(){
+        userProfileData=dataGenerator.getProfileData(Data.NULL);
+        updateUserDetailsInvalidTest(OpCode.Wrong_Details);
+    }
+
+    @Test
+    void updateUserDetailsWrongKey(){
+        ITApiKey = INVALID_KEY;
+        updateUserDetailsInvalidTest(OpCode.Wrong_Key);
+    }
+
+    @Test
+    void updateUserDetailsNotExistAlias(){
+        ITApiKey = NULL_USER_KEY;
+        updateUserDetailsInvalidTest(OpCode.Not_Exist);
+    }
+
+    @Test
+    void updateUserDetailsTRepoFindByIdThrowsException(){
+        when(mockITRepo.findITById(anyString()))
+                .thenReturn(new Response<>(null,OpCode.DB_Error));
+        updateUserDetailsInvalidTest(OpCode.DB_Error);
+    }
+
+    @Test
+    void updateUserDetailsNotExistTargetUserAlias(){
+        userProfileData= dataGenerator.getProfileData(Data.NULL_ALIAS);
+        updateUserDetailsInvalidTest(OpCode.Not_Exist);
+    }
+
+    @Test
+    void updateUserDetailsSchoolUserRepoFindForWriteThrowsException(){
+        when(mockSchoolUserRepo.findUserForWrite(anyString()))
+                .thenReturn(new Response<>(null,OpCode.DB_Error));
+        updateUserDetailsInvalidTest(OpCode.DB_Error);
+    }
+
+    @Test
+    void updateUserDetailsSchoolUserRepoSaveThrowsException(){
+        when(mockSchoolUserRepo.save(any()))
+                .thenReturn(new Response<>(null,OpCode.DB_Error));
+        updateUserDetailsInvalidTest(OpCode.DB_Error);
+    }
+
+    protected void updateUserDetailsInvalidTest(OpCode opCode){
+        Response<Boolean> updateUserDetailsResponse = itManager.updateUserDetails(ITApiKey,userProfileData);
+        assertFalse(updateUserDetailsResponse.getValue());
+        assertEquals(updateUserDetailsResponse.getReason(), opCode);
+    }
+
+    @Test
+    void testAddTeacherHappyCase(){
+        Response<Boolean> addTeacherResponse = itManager.addTeacher(ITApiKey,teacherData);
+        assertTrue(addTeacherResponse.getValue());
+        assertEquals(addTeacherResponse.getReason(), OpCode.Success);
+    }
+
+    @Test
+    void testAddSupervisorHappyCase(){
+        teacherData = dataGenerator.getTeacherData(Data.Supervisor);
+        Response<Boolean> addTeacherResponse = itManager.addTeacher(ITApiKey,teacherData);
+        assertTrue(addTeacherResponse.getValue());
+        assertEquals(addTeacherResponse.getReason(), OpCode.Success);
+    }
+
+    @Test
+    void testAddTeacherWrongKey(){
+        ITApiKey = INVALID_KEY;
+        testAddTeacherInvalid(OpCode.Wrong_Key);
+    }
+
+    @Test
+    void testAddTeacherNotExistAlias(){
+        ITApiKey = NULL_USER_KEY;
+        testAddTeacherInvalid(OpCode.Not_Exist);
+    }
+
+    @Test
+    void testAddTeacherRepoFindByIdThrowsException(){
+        when(mockITRepo.findITById(anyString()))
+                .thenReturn(new Response<>(null,OpCode.DB_Error));
+        testAddTeacherInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    void testAddTeacherNullAlias(){
+        teacherData= dataGenerator.getTeacherData(Data.NULL_ALIAS);
+        testAddTeacherInvalid(OpCode.Wrong_Alias);
+    }
+
+    @Test
+    void testAddTeacherNullFName(){
+        teacherData= dataGenerator.getTeacherData(Data.NULL_NAME);
+        testAddTeacherInvalid(OpCode.Wrong_First_Name);
+    }
+
+    @Test
+    void testAddTeacherNullLName(){
+        teacherData= dataGenerator.getTeacherData(Data.NULL_LAST_NAME);
+        testAddTeacherInvalid(OpCode.Wrong_Last_Name);
+    }
+
+    @Test
+    void testAddTeacherAlreadyExistUser(){
+        teacherData= dataGenerator.getTeacherData(Data.EXIST_IT);
+        testAddTeacherInvalid(OpCode.Already_Exist);
+    }
+
+    @Test
+    void testAddTeacherUserRepoIsExistsByIdThrowsException(){
+        when(mockUserRepo.isExistsById(anyString()))
+                .thenReturn(new Response<>(null,OpCode.DB_Error));
+        testAddTeacherInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    void testAddTeacherSchoolRepoSaveThrowsException(){
+        when(mockSchoolUserRepo.save(any()))
+                .thenReturn(new Response<>(null,OpCode.DB_Error));
+        testAddTeacherInvalid(OpCode.DB_Error);
+    }
+
+
+    protected void testAddTeacherInvalid(OpCode opCode){
+        Response<Boolean> addTeacherResponse = itManager.addTeacher(ITApiKey,teacherData);
+        assertFalse(addTeacherResponse.getValue());
+        assertEquals(addTeacherResponse.getReason(), opCode);
+    }
+
+    @Test
+    void testAddStudentHappyCase(){
+        Response<Boolean> addStudentResponse = itManager.addStudent(ITApiKey,studentData);
+        assertTrue(addStudentResponse.getValue());
+        assertEquals(addStudentResponse.getReason(), OpCode.Success);
+    }
+
+    @Test
+    void testAddStudentWrongKey(){
+        ITApiKey = INVALID_KEY;
+        testAddStudentInvalid(OpCode.Wrong_Key);
+    }
+
+    @Test
+    void testAddStudentNotExistAlias(){
+        ITApiKey = NULL_USER_KEY;
+        testAddStudentInvalid(OpCode.Not_Exist);
+    }
+
+    @Test
+    void testAddStudentRepoFindByIdThrowsException(){
+        when(mockITRepo.findITById(anyString()))
+                .thenReturn(new Response<>(null,OpCode.DB_Error));
+        testAddStudentInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    void testAddStudentNullAlias(){
+        studentData= dataGenerator.getStudentData(Data.NULL_ALIAS);
+        testAddStudentInvalid(OpCode.Wrong_Alias);
+    }
+
+    @Test
+    void testAddStudentNullFName(){
+        studentData= dataGenerator.getStudentData(Data.NULL_NAME);
+        testAddStudentInvalid(OpCode.Wrong_First_Name);
+    }
+
+    @Test
+    void testAddStudentNullLName(){
+        studentData= dataGenerator.getStudentData(Data.NULL_LAST_NAME);
+        testAddStudentInvalid(OpCode.Wrong_Last_Name);
+    }
+
+    @Test
+    void testAddStudentNullGroup(){
+        studentData= dataGenerator.getStudentData(Data.NOT_EXIST_CLASSGROUP);
+        testAddStudentInvalid(OpCode.Wrong_Group);
+    }
+
+    @Test
+    void testAddStudentBothGroup(){
+        studentData= dataGenerator.getStudentData(Data.BOTH_GROUP);
+        testAddStudentInvalid(OpCode.Wrong_Group);
+    }
+
+    @Test
+    void testAddStudentNullClassroom(){
+        studentData= dataGenerator.getStudentData(Data.NULL_CLASSROOM);
+        testAddStudentInvalid(OpCode.Wrong_Classroom);
+    }
+
+    @Test
+    void testAddStudentNotExistClassroom(){
+        studentData= dataGenerator.getStudentData(Data.NOT_EXIST_CLASSROOM);
+        testAddStudentInvalid(OpCode.Not_Exist_Classroom);
+    }
+
+    @Test
+    void testAddStudentClassroomRepoFindForWriteClassroomThrowsException(){
+        when(mockClassroomRepo.findForWrite(anyString()))
+                .thenReturn(new Response<>(null,OpCode.DB_Error));
+        testAddStudentInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    void testAddStudentClassroomRepoSaveThrowsException(){
+        when(mockClassroomRepo.save(any()))
+                .thenReturn(new Response<>(null,OpCode.DB_Error));
+        testAddStudentInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    void testAddStudentAlreadyExistUser(){
+        studentData= dataGenerator.getStudentData(Data.EXIST_IT);
+        testAddStudentInvalid(OpCode.Already_Exist);
+    }
+
+    @Test
+    void testAddStudentUserRepoIsExistsByIdThrowsException(){
+        when(mockUserRepo.isExistsById(anyString()))
+                .thenReturn(new Response<>(null,OpCode.DB_Error));
+        testAddStudentInvalid(OpCode.DB_Error);
+    }
+
+    protected void testAddStudentInvalid(OpCode opCode){
+        Response<Boolean> addStudentResponse = itManager.addStudent(ITApiKey,studentData);
+        assertFalse(addStudentResponse.getValue());
+        assertEquals(addStudentResponse.getReason(), opCode);
     }
 
     @AfterEach

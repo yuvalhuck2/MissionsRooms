@@ -3,7 +3,6 @@ package missions.room.Repo;
 import CrudRepositories.StudentCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
-import missions.room.Domain.Users.SchoolUser;
 import missions.room.Domain.Users.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ public class StudentRepo {
     @Transactional
     public Response<Student> findStudentForWrite(String alias){
         try {
-            return new Response<Student>(studentCrudRepository.findUserForWrite(alias), OpCode.Success);
+            return new Response<>(studentCrudRepository.findUserForWrite(alias), OpCode.Success);
         }
         catch(LockTimeoutException e){
             return new Response<>(null,OpCode.TimeOut);
@@ -72,7 +71,7 @@ public class StudentRepo {
         }
     }
 
-    public Response<SchoolUser> save(Student student){
+    public Response<Student> save(Student student){
         try {
             return new Response<>(studentCrudRepository.save(student), OpCode.Success);
         }

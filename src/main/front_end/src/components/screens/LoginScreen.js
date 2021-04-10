@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ActivityIndicator } from 'react-native-paper';
 import { connect } from 'react-redux';
-import { emailChanged, loginUser, passwordChanged, navigateToRegister } from '../../actions';
+import { emailChanged, loginUser, passwordChanged, navigateToRegister, navigateToResetPassword } from '../../actions';
 import { theme } from '../../core/theme';
 import { loginStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
@@ -17,6 +17,8 @@ const {
   login_btn,
   no_user,
   no_user_sign_up,
+  forgat_password,
+  press_here,
 } = loginStrings;
 
 class LoginForm extends Component {
@@ -26,6 +28,7 @@ class LoginForm extends Component {
     this.onPasswordChange = this.onPasswordChange.bind(this);
     this.onButtonPress = this.onButtonPress.bind(this);
     this.navigateToRegister = this.navigateToRegister.bind(this);
+    this.navigateToResetPassword = this.navigateToResetPassword.bind(this);
   }
 
   onEmailChange(text) {
@@ -44,6 +47,11 @@ class LoginForm extends Component {
   navigateToRegister(){
     const {navigation} = this.props
     this.props.navigateToRegister({navigation})
+  }
+
+  navigateToResetPassword(){
+    const {navigation} = this.props
+    this.props.navigateToResetPassword({navigation})
   }
 
   renderSpinner() {
@@ -97,6 +105,19 @@ class LoginForm extends Component {
     );
   }
 
+  renderResetPasswordLabel() {
+    const { loading } = this.props;
+
+    return loading ? null : (
+      <View style={styles.row}>
+        <Text style={styles.label}>{forgat_password}</Text>
+        <TouchableOpacity onPress={this.navigateToResetPassword}>
+          <Text style={styles.link}>{press_here}</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   render() {
     const { email, password } = this.props;
 
@@ -121,6 +142,7 @@ class LoginForm extends Component {
         {this.renderButton()}
         {this.renderError()}
         {this.renderRegisterLabel()}
+        {this.renderResetPasswordLabel()}
       </KeyboardAwareScrollView>
     );
   }
@@ -133,8 +155,6 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 340,
     alignSelf: 'center',
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   button: {
     marginTop: 24,
@@ -164,4 +184,5 @@ export default connect(mapStateToProps, {
   passwordChanged,
   loginUser,
   navigateToRegister,
+  navigateToResetPassword,
 })(LoginForm);

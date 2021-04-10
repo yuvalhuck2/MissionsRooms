@@ -4,3 +4,11 @@ export const baseURL = "http://10.100.102.5:8080"
 export default axios.create({
     baseURL: baseURL,
   });
+
+  // THIS IS FOR CHECKING DNS ADDRESS WHEN RUNNING EXPO ON PHYSICAL DEVICE
+//    import Constants from 'expo-constants'
+// const { manifest } = Constants;
+
+// const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080`;
+
+// alert(uri);

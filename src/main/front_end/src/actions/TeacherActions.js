@@ -14,7 +14,7 @@ import API from '../api/API';
 import * as APIPaths from '../api/APIPaths';
 import { GeneralErrors } from '../locale/locale_heb';
 import * as NavPaths from '../navigation/NavPaths';
-import { Not_Exist, Success, Wrong_Key } from './OpCodeTypes';
+import { Not_Exist, Success, Wrong_Key, Supervisor } from './OpCodeTypes';
 import {closeSocket} from '../handler/WebSocketHandler'
 import { Teacher_Classroom_Is_Null,DB_Error,Not_Exist_Room } from './OpCodeTypes';
 import {Student_Not_Exist_In_Class, Student_Not_Exist_In_Group, Wrong_Mission} from "./types";
@@ -22,6 +22,8 @@ import {Student_Not_Exist_In_Class, Student_Not_Exist_In_Group, Wrong_Mission} f
 const {
   server_error,
   wrong_key_error,
+  teacher_not_exists_error,
+  classroom_not_exist,
   teacher_not_exists_error, not_exist_room_error,teacher_classroom_is_null_error,db_error
 } = GeneralErrors;
 
@@ -148,11 +150,16 @@ const checkGetClassroomResponse = (data, dispatch, navigation) => {
   const { reason, value } = data;
   switch (reason) {
     case Wrong_Key:
-      return dispatch({ type: UPDATE_ERROR_TEMPLATE, wrong_key_error });
+      return dispatch({ type: UPDATE_ERROR_TEMPLATE, payload: wrong_key_error });
     case Not_Exist:
       return dispatch({
         type: UPDATE_ERROR_TEMPLATE,
         teacher_not_exists_error,
+      });
+    case Supervisor:
+      return dispatch({
+        type: UPDATE_ERROR_TEMPLATE,
+        payload: classroom_not_exist,
       });
     case Success:
       dispatch({ type: GET_CLASSROOM, payload: value });
@@ -166,11 +173,11 @@ const checkSearchTemplatesResponse = (data, dispatch) => {
   const { reason, value } = data;
   switch (reason) {
     case Wrong_Key:
-      return dispatch({ type: UPDATE_ERROR_TEMPLATE, wrong_key_error });
+      return dispatch({ type: UPDATE_ERROR_TEMPLATE, payload: wrong_key_error });
     case Not_Exist:
       return dispatch({
         type: UPDATE_ERROR_TEMPLATE,
-        teacher_not_exists_error,
+        payload: teacher_not_exists_error,
       });
     case Success:
       return dispatch({ type: GET_TEMPLATES, payload: value });

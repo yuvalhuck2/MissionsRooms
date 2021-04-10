@@ -65,6 +65,7 @@ public class ClassroomTestsAllStubs {
     void getClassroomDataHappyTest(){
         ClassRoomData expected=dataGenerator.getClassroomData(Data.Valid_Classroom);
         ClassRoomData actual=classroom.getClassroomData(GroupType.BOTH);
+        expected.getGroups().get(0).getStudents().get(0).setClassroom(dataGenerator.getClassroom(Data.Valid_Classroom));
         assertEquals(expected,actual);
     }
 

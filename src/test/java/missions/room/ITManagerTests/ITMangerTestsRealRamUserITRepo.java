@@ -37,6 +37,19 @@ public class ITMangerTestsRealRamUserITRepo extends ITMangerRealRamUserRepo {
     @Mock
     private ITCrudRepository mockItCrudRepository;
 
+    private void setUpITRepoFindByIdThrowsException(){
+        when(mockItCrudRepository.findById(anyString()))
+                .thenThrow(new RuntimeException());
+        try {
+            Field itRepo = ITManager.class.getDeclaredField("itRepo");
+            itRepo.setAccessible(true);
+            itRepo.set(itManager,new ITRepo(mockItCrudRepository));
+
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            fail();
+        }
+    }
+
     @Override
     protected void initITRepo(IT it, String itAlias, IT it2) {
         try {
@@ -81,6 +94,21 @@ public class ITMangerTestsRealRamUserITRepo extends ITMangerRealRamUserRepo {
     @Test
     @Override
     void addNewITITRepoFindByIdThrowsException(){
+        setUpITRepoFindByIdThrowsException();
+        addNewITInvalid(OpCode.DB_Error,dataGenerator.getRegisterDetails(Data.VALID_IT2));
+    }
+
+    @Override
+    protected void addNewITInvalid(OpCode opCode, RegisterDetailsData registerDetailsData) {
+        super.addNewITInvalid(opCode, registerDetailsData);
+        IT it2= (IT) dataGenerator.getUser(Data.VALID_IT2);
+        Optional<IT> itOptional= itCrudRepository.findById(it2.getAlias());
+        assertFalse(itOptional.isPresent());
+    }
+
+    @Test
+    @Override
+    void updateUserDetailsTRepoFindByIdThrowsException(){
         when(mockItCrudRepository.findById(anyString()))
                 .thenThrow(new RuntimeException());
         try {
@@ -91,14 +119,18 @@ public class ITMangerTestsRealRamUserITRepo extends ITMangerRealRamUserRepo {
         } catch (IllegalAccessException | NoSuchFieldException e) {
             fail();
         }
-        addNewITInvalid(OpCode.DB_Error,dataGenerator.getRegisterDetails(Data.VALID_IT2));
+        updateUserDetailsInvalidTest(OpCode.DB_Error);
     }
 
-    @Override
-    protected void addNewITInvalid(OpCode opCode, RegisterDetailsData registerDetailsData) {
-        super.addNewITInvalid(opCode, registerDetailsData);
-        IT it2= (IT) dataGenerator.getUser(Data.VALID_IT2);
-        Optional<IT> itOptional= itCrudRepository.findById(it2.getAlias());
-        assertFalse(itOptional.isPresent());
+    @Test
+    void testAddStudentRepoFindByIdThrowsException(){
+        setUpITRepoFindByIdThrowsException();
+        testAddStudentInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    void testAddTeacherRepoFindByIdThrowsException(){
+        setUpITRepoFindByIdThrowsException();
+        testAddTeacherInvalid(OpCode.DB_Error);
     }
 }

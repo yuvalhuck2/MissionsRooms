@@ -1,19 +1,23 @@
 import { combineReducers } from 'redux';
-import addITReducer from './addITReducer';
-import addMissionReducer from './addMissionReducer';
+import addITReducer from './AddITReducer';
+import addMissionReducer from './AddMissionReducer';
 import addRoomReducer from './AddRoomReducer';
-import addRoomTemplateReducer from './addRoomTemlateReducer';
+import addRoomTemplateReducer from './AddRoomTemlateReducer';
 import AuthReducer from './AuthReducer';
 import ChooseStudentRoom from './ChooseStudentRoomReducer';
 import ITReducer from './ITReducer';
-import AddSuggestionReducer from './AddSuggestionReducer';
 import SolveDeterministic from './SolveDeterministicReducer'
-import chooseTeacherRoomsReducer from './ChooseTeacherRoomsReducer'
+import AddSuggestionReducer from './AddSuggestionReducer';
 import SolveStory from './SolveStoryReducer'
 import WatchProfileReducer from './WatchProfileReducer'
 import WatchMessagesReducer from './WatchMessagesReducer'
 import WatchSuggestionsReducer from './WatchSuggestionReducer'
 import ChangePasswordReducer from './ChangePasswordReducer';
+import PointsTableReducer from './PointsTableReducer';
+import ManageUsersReducer from './ManageUsersReducer';
+import SolveOpenQuestion from './SolveOpenQuestionReducer'
+import AddUser from './AddUserReducer'
+import ResetPasswordReducer from './ResetPasswordReducer'
 import ChatRoomReducer from './ChatRoomReducer';
 
 export default combineReducers({
@@ -33,5 +37,9 @@ export default combineReducers({
   changePassword: ChangePasswordReducer,
   ChooseTeacherRoomType: chooseTeacherRoomsReducer,
   ChatRoom: ChatRoomReducer,
+  pointsTable: PointsTableReducer,
+  manageUsers: ManageUsersReducer,
+  SolveOpenQuestion: SolveOpenQuestion,
+  addUser: AddUser,
+  resetPassword: ResetPasswordReducer,
 });
-

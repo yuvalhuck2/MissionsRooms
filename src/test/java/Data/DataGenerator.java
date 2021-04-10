@@ -15,6 +15,7 @@ import missions.room.Domain.Users.*;
 import missions.room.Domain.missions.KnownAnswerMission;
 import DomainMocks.TeacherMock;
 import missions.room.Domain.missions.Mission;
+import missions.room.Domain.missions.OpenAnswerMission;
 import missions.room.Domain.missions.StoryMission;
 
 import java.util.*;
@@ -42,14 +43,16 @@ public class DataGenerator {
     private HashMap<Data, String> triviaSubjectHashMap;
     private HashMap<Data, TriviaQuestionData> triviaQuestionHashMap;
     private HashMap<Data, MessageData> messageDataMap;
+    private HashMap<Data,HashSet<PointsData>> pointsDataSets;
+    private HashMap<Data,UserProfileData> userProfileDataMap;
+    private HashMap<Data, TeacherData> teacherDatas;
 
     public DataGenerator() {
         initStudents();
-        initStudentDataDatas();
         initSuggestions();
         initGroups();
-        initGroupsDatas();
         initClassrooms();
+        initGroupsDatas();
         initClassroomData();
         initRegisterDetailsDatas();
         initVerificationCodes();
@@ -61,8 +64,67 @@ public class DataGenerator {
         initNewRoomDetails();
         initLoginDatas();
         initUsers();
+        initStudentDataDatas();
         initTriviaData();
         initMessagesData();
+        initPointsDataSet();
+        initUserProfileDataMap();
+        initTeacherDatas();
+    }
+
+    private void initTeacherDatas() {
+        teacherDatas = new HashMap<Data, TeacherData>();
+        Teacher valid = teachers.get(Data.VALID_WITH_PASSWORD);
+        teacherDatas.put(Data.VALID, new TeacherData(valid.getAlias(),valid.getFirstName(),valid.getLastName()));
+        teacherDatas.put(Data.Supervisor, new TeacherData(valid.getAlias(),valid.getFirstName(),valid.getLastName(),true));
+        teacherDatas.put(Data.NULL_ALIAS, new TeacherData(null,valid.getFirstName(),valid.getLastName()));
+        teacherDatas.put(Data.NULL_NAME, new TeacherData(valid.getAlias(),null,valid.getLastName()));
+        teacherDatas.put(Data.NULL_LAST_NAME, new TeacherData(valid.getAlias(),valid.getFirstName(),null));
+        teacherDatas.put(Data.EXIST_IT, new TeacherData(users.get(Data.VALID_IT).getAlias(),valid.getFirstName(),
+                valid.getLastName()));
+    }
+
+    private void initUserProfileDataMap() {
+        userProfileDataMap = new HashMap<Data, UserProfileData>();
+        String alias = students.get(Data.VALID).getAlias();
+        String fName= "first";
+        String lName = "last";
+        userProfileDataMap.put(Data.VALID,new UserProfileData(alias,lName,fName));
+        userProfileDataMap.put(Data.NULL_LAST_NAME,new UserProfileData(alias,null,fName));
+        userProfileDataMap.put(Data.NULL_NAME,new UserProfileData(alias,lName,null));
+        userProfileDataMap.put(Data.NULL,new UserProfileData(alias,null,null));
+        userProfileDataMap.put(Data.NULL_ALIAS,new UserProfileData(DataConstants.WRONG_USER_NAME,lName,fName));
+    }
+
+    private void initPointsDataSet() {
+        pointsDataSets = new HashMap<Data, HashSet<PointsData>>();
+        HashSet<PointsData> hashSet = new HashSet<>();
+        HashSet<PointsData> groupHashSet = new HashSet<>();
+        Student student =students.get(Data.VALID);
+        hashSet.add(new PointsData(student.getAlias(),student.getPoints()));
+        student =students.get(Data.VALID2);
+        hashSet.add(new PointsData(student.getAlias(),student.getPoints()));
+
+        pointsDataSets.put(Data.Valid_Student,hashSet);
+        hashSet = new HashSet<>();
+        Classroom classroom = classRoomMap.get(Data.Valid_Classroom);
+        hashSet.add(new PointsData(classroom.getClassHebrewName(),classroom.getPoints()));
+        groupHashSet.add(new PointsData(classroom.getClassHebrewName()+" A",classroom.getPoints()));
+        groupHashSet.add(new PointsData(classroom.getClassHebrewName()+" B",classroom.getPoints()));
+        classroom = classRoomMap.get(Data.Valid_2Students_From_Different_Groups);
+        hashSet.add(new PointsData(classroom.getClassHebrewName(),classroom.getPoints()));
+        groupHashSet.add(new PointsData(classroom.getClassHebrewName()+" A",classroom.getPoints()));
+
+        pointsDataSets.put(Data.Valid_Classroom,hashSet);
+        pointsDataSets.put(Data.Valid_Group,groupHashSet);
+
+        hashSet = new HashSet<>();
+        student =students.get(Data.VALID);
+        hashSet.add(new PointsData(student.getAlias(),student.getPoints(), true));
+        student =students.get(Data.VALID2);
+        hashSet.add(new PointsData(student.getAlias(),student.getPoints()));
+
+        pointsDataSets.put(Data.VALID_TEACHER,hashSet);
     }
 
     private void initMessagesData() {
@@ -123,13 +185,13 @@ public class DataGenerator {
 
     private void initClassrooms() {
         classRoomMap=new HashMap<Data, Classroom>();
-        Classroom valid=new Classroom("class",classGroupMap.get(Data.Empty_Students),classGroupMap.get(Data.Valid_Group));
+        Classroom valid=new Classroom("2=4",classGroupMap.get(Data.Empty_Students),classGroupMap.get(Data.Valid_Group));
         classRoomMap.put(Data.Valid_Classroom,valid);
         List<ClassGroup> groups=new ArrayList<>();
         groups.add(classGroupMap.get(Data.Empty_Students));
         groups.add(classGroupMap.get(Data.VALID_WITH_GROUP_C));
-        classRoomMap.put(Data.VALID_WITH_GROUP_C,new Classroom("class",groups));
-        Classroom valid2StudentsFromDifferentGroups=new Classroom("class2"
+        classRoomMap.put(Data.VALID_WITH_GROUP_C,new Classroom("1=3",groups));
+        Classroom valid2StudentsFromDifferentGroups=new Classroom("0=2"
                 ,classGroupMap.get(Data.Valid_Group2)
                 ,classGroupMap.get(Data.Valid_Group));
         classRoomMap.put(Data.Valid_2Students_From_Different_Groups,
@@ -163,12 +225,24 @@ public class DataGenerator {
     private void initGroupsDatas(){
         classGroupData=new HashMap<Data, GroupData>();
         initGroupDatasFromGroupsMap(Data.Valid_Group);
-        initGroupDatasFromGroupsMap(Data.Empty_Students);
+        classGroupData.put(Data.Empty_Students,classGroupMap.get(Data.Empty_Students).getGroupData(GroupType.BOTH));
 
     }
 
     private void initGroupDatasFromGroupsMap(Data data){
-        classGroupData.put(data,classGroupMap.get(data).getGroupData(GroupType.BOTH));
+        GroupData groupData = classGroupMap.get(data).getGroupData(GroupType.BOTH);
+        List<StudentData> studentDatas = new ArrayList<>();
+        StudentData studentData = groupData.getStudents().get(0);
+        studentData = new StudentData(studentData.getAlias(),
+                studentData.getFirstName(),
+                studentData.getLastName(),
+                GroupType.B,
+                classRoomMap.get(Data.Valid_Classroom).getClassName());
+        studentDatas.add(studentData);
+        classGroupData.put(data,new GroupData(groupData.getName(),
+                groupData.getGroupType(),
+                groupData.getPoints(),
+                studentDatas.stream()));
     }
 
     private void initNewRoomDetails() {
@@ -207,8 +281,11 @@ public class DataGenerator {
         roomsMap.put(Data.VALID_2Mission_Group,new GroupRoom("roomIdGroup","name",classGroupMap.get(Data.Valid_Group),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.VALID_2Mission_Group),3));
         roomsMap.put(Data.VALID_2Mission_Class,new ClassroomRoom("roomIdClass","name",classRoomMap.get(Data.Valid_Classroom),teachers.get(Data.VALID_WITH_CLASSROOM),roomTemplates.get(Data.VALID_2Mission_Class),3));
 
+        Room openAnsRoom = new StudentRoom("rid1", "name", students.get(Data.VALID), teachers.get(Data.VALID_WITH_CLASSROOM), roomTemplates.get(Data.VALID_OPEN_ANS),3);
+        openAnsRoom.addOpenAnswer(new OpenAnswer("open1", "answer", null));
+        roomsMap.put(Data.VALID_OPEN_ANS, openAnsRoom);
 
-
+        roomsMap.get(Data.VALID_OPEN_ANS).connect(alias);
         roomsMap.get(Data.Valid_Group).connect(alias);
         roomsMap.get(Data.Valid_Classroom).connect(alias);
         roomsMap.get(Data.VALID_2MissionStudent).connect(alias);
@@ -244,6 +321,7 @@ public class DataGenerator {
         List<String> missions2NonPersonal=new ArrayList<>();
         missions2NonPersonal.add(getMission(Data.Valid_Deterministic_All_Types).getMissionId());
         missions2NonPersonal.add(getMission(Data.Valid_Deterministic_All_Types_2).getMissionId());
+        List<String> missionsOpenAns =  new ArrayList<String>(){{add(getMission(Data.VALID_OPEN_ANS).getMissionId());}};
         roomTemplatesDatas.put(Data.VALID,new RoomTemplateDetailsData(missions,"name",1,RoomType.Personal));
         roomTemplatesDatas.put(Data.VALID_2MissionStudent,new RoomTemplateDetailsData(missions2,"name",1,RoomType.Personal));
         roomTemplatesDatas.put(Data.VALID_2Mission_Group,new RoomTemplateDetailsData(missions2NonPersonal,"name",1,RoomType.Group));
@@ -258,6 +336,7 @@ public class DataGenerator {
         roomTemplatesDatas.put(Data.NULL_LIST,new RoomTemplateDetailsData(null,"name",1,RoomType.Personal));
         roomTemplatesDatas.put(Data.EMPTY_LIST,new RoomTemplateDetailsData(new ArrayList<>(),"name",0,RoomType.Personal));
         roomTemplatesDatas.put(Data.TYPE_NOT_MATCH,new RoomTemplateDetailsData(missions,"name",1,RoomType.Group));
+        roomTemplatesDatas.put(Data.VALID_OPEN_ANS, new RoomTemplateDetailsData("tid1",missionsOpenAns, "name", 1, RoomType.Personal));
         List<String> missionsWithNull=new ArrayList<>();
         missionsWithNull.add("not exist");
         roomTemplatesDatas.put(Data.WRONG_ID,new RoomTemplateDetailsData(missionsWithNull,"name",1,RoomType.Personal));
@@ -279,6 +358,8 @@ public class DataGenerator {
         List<Mission> missionsMapAllTypes=new ArrayList<>();
         missionsMapAllTypes.add(getMission(Data.Valid_Deterministic_All_Types));
 
+        List<Mission> missionMapOpenAns = new ArrayList<Mission>(){{add(getMission(Data.VALID_OPEN_ANS));}};
+
         RoomTemplateDetailsData templateDetailsDataGroup=getRoomTemplateData(Data.Valid_Group);
         templateDetailsDataGroup.setId("group");
 
@@ -288,7 +369,7 @@ public class DataGenerator {
         roomTemplates.put(Data.VALID,new RoomTemplate(templateDetailsData,missionsMap));
         roomTemplates.put(Data.Valid_Group,new RoomTemplate(templateDetailsDataGroup,missionsMapAllTypes));
         roomTemplates.put(Data.Valid_Classroom,new RoomTemplate(templateDetailsDataClass,missionsMapAllTypes));
-
+        roomTemplates.put(Data.VALID_OPEN_ANS, new RoomTemplate(getRoomTemplateData(Data.VALID_OPEN_ANS), missionMapOpenAns));
 
         List<Mission> missionsMap2Missions=new ArrayList<>();
         missionsMap2Missions.add(getMission(Data.Valid_Deterministic));
@@ -340,6 +421,7 @@ public class DataGenerator {
         missions.put(Data.EMPTY_ANSWER_DETERMINISTIC,new KnownAnswerMission("ddd",types,"question",""));
         missions.put(Data.VALID_STORY,new StoryMission("story",types,""));
         missions.put(Data.VALID_STORY2,new StoryMission("story2",types,""));
+        missions.put(Data.VALID_OPEN_ANS, new OpenAnswerMission("open1", types, "question"));
     }
 
     private void initTeacher() {
@@ -355,7 +437,7 @@ public class DataGenerator {
         teachers.put(Data.Valid_2Students_From_Different_Groups,new Teacher("2StudentsTeacher","name","L name",
                 classRoomMap.get(Data.Valid_2Students_From_Different_Groups),GroupType.BOTH,"1234"));
         teachers.put(Data.VALID_WITHOUT_CLASSROOM,new Teacher("TeacherWithoutClassroom","Avi","Ron","1234"));
-        
+
 
     }
 
@@ -363,6 +445,8 @@ public class DataGenerator {
         verificationCodes=new HashMap<Data, String>();
         verificationCodes.put(Data.NULL_CODE,null);
         verificationCodes.put(Data.EMPTY_CODE,"");
+        verificationCodes.put(Data.VALID,"12345");
+        verificationCodes.put(Data.WRONG_CODE,"123453");
     }
 
     private void initRegisterDetailsDatas() {
@@ -381,17 +465,57 @@ public class DataGenerator {
 
     private void initStudents() {
         students=new HashMap<Data, Student>();
-        students.put(Data.VALID,new Student("NoAlasIsExistWithThatName","Yuval","Sabag"));
+        students.put(Data.VALID,new Student("NoAlasIsExistWithThatName","Yuval","Sabag",4));
         students.put(Data.VALID2,new Student("valid2Alias","Tal","Cohen"));
     }
 
     private void initStudentDataDatas(){
         studentDatas=new HashMap<Data, StudentData>();
         initSingleStudentData(Data.VALID);
+        studentDatas.put(Data.VALID_STUDENT,new StudentData("newAlias", "newFirstName",
+                "newLastName", GroupType.A,
+                classRoomMap.get(Data.Valid_Classroom)
+                        .getClassName()));
+        studentDatas.put(Data.NULL_ALIAS, new StudentData(null, "newFirstName",
+                "newLastName", GroupType.A,
+                classRoomMap.get(Data.Valid_Classroom)
+                        .getClassName()));
+        studentDatas.put(Data.NULL_NAME, new StudentData("newAlias", null,
+                "newLastName", GroupType.A,
+                classRoomMap.get(Data.Valid_Classroom)
+                        .getClassName()));
+        studentDatas.put(Data.NULL_LAST_NAME, new StudentData("newAlias", "newFirstName",
+                null, GroupType.A,
+                classRoomMap.get(Data.Valid_Classroom)
+                        .getClassName()));
+        studentDatas.put(Data.NOT_EXIST_CLASSGROUP, new StudentData("newAlias", "newFirstName",
+                "newLastName", null,
+                classRoomMap.get(Data.Valid_Classroom)
+                        .getClassName()));
+        studentDatas.put(Data.BOTH_GROUP, new StudentData("newAlias", "newFirstName",
+                "newLastName", GroupType.BOTH,
+                classRoomMap.get(Data.Valid_Classroom)
+                        .getClassName()));
+        studentDatas.put(Data.NULL_CLASSROOM, new StudentData("newAlias", "newFirstName",
+                "newLastName", GroupType.A,
+                null));
+        studentDatas.put(Data.NOT_EXIST_CLASSROOM, new StudentData("newAlias", "newFirstName",
+                "newLastName", GroupType.A,
+                "notExist"));
+        studentDatas.put(Data.EXIST_IT, new StudentData(users.get(Data.VALID_IT).getAlias(), "newFirstName",
+                "newLastName", GroupType.A,
+                classRoomMap.get(Data.Valid_Classroom)
+                        .getClassName()));
     }
 
     private void initSingleStudentData(Data data){
-        studentDatas.put(data,students.get(data).getStudentData());
+        StudentData studentData = students.get(data).getStudentData();
+        studentData.setClassroom(classRoomMap.get(Data.Valid_Classroom));
+        studentDatas.put(data,studentData);
+        studentDatas.put(Data.VALID_STUDENT,new StudentData("newAlias", "newFirstName",
+                "newLastName", GroupType.A,
+                classRoomMap.get(Data.Valid_Classroom)
+                        .getClassName()));
     }
 
 
@@ -421,11 +545,6 @@ public class DataGenerator {
 
     public String getVerificationCode (Data data){
         return verificationCodes.get(data);
-    }
-
-    public void setValidVerificationCode(String code) {
-        verificationCodes.put(Data.VALID,code);
-        verificationCodes.put(Data.WRONG_CODE,code+"3");
     }
 
     public Teacher getTeacher(Data data) {
@@ -493,4 +612,14 @@ public class DataGenerator {
     }
 
     public MessageData getMessageData(Data data){ return messageDataMap.get(data); }
+
+    public HashSet<PointsData> getPointsHasSet(Data data){ return pointsDataSets.get(data); }
+
+    public UserProfileData getProfileData(Data data) {
+        return userProfileDataMap.get(data);
+    }
+
+    public TeacherData getTeacherData(Data data) {
+        return teacherDatas.get(data);
+    }
 }

@@ -2,6 +2,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import {
+    AddOpenQuestionMissionScreen,
+    SolveOpenQuestionMissionScreen,
     AddDeterministicMissionScreen,
     AddRoomScreen,
     AddRoomTemplateScreen,
@@ -18,15 +20,19 @@ import {
     StudentScreen,
     TeacherScreen,
     UploadCsvScreen,
+    AddITScreen,
+    SolveStoryScreen,
+    WatchProfileScreen,
+    WatchMessagesScreen,
+    WatchSuggestionsScreen,
+    ChangePasswordScreen,
+    PointsTableScreen,
+    ManageUsersScreen,
+    AddUserScreen,
+    ResetPasswordScreen,
+    Test,
     ChooseTeacherRoomTypeScreen,
     ChooseClassroomRoomScreen,
-  AddITScreen,
-  SolveStoryScreen,
-  WatchProfileScreen,
-  WatchMessagesScreen,
-  WatchSuggestionsScreen,
-  ChangePasswordScreen,
-  Test,
   ChatRoomScreen,
 } from './components/screens';
 import TeacherRoomMenuScreen from "./components/screens/TeacherRoomMenuScreen";
@@ -37,6 +43,22 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Register'>
+      <Stack.Screen
+          name='ResetPassword'
+          component={ResetPasswordScreen}
+        />
+      <Stack.Screen
+          name='AddUser'
+          component={AddUserScreen}
+        />
+      <Stack.Screen
+          name='ManageUsers'
+          component={ManageUsersScreen}
+        />
+      <Stack.Screen
+          name='PointsTable'
+          component={PointsTableScreen}
+        />
       <Stack.Screen
           name='ChangePassword'
           component={ChangePasswordScreen}
@@ -68,6 +90,14 @@ const App = () => {
         <Stack.Screen
           name='AddDeteministicMission'
           component={AddDeterministicMissionScreen}
+        />
+        <Stack.Screen
+          name='AddOpenQuestionMission'
+          component={AddOpenQuestionMissionScreen}
+        />
+        <Stack.Screen
+          name='SolveOpenQuestionMission'
+          component={SolveOpenQuestionMissionScreen}
         />
         <Stack.Screen name='AddMission' component={ChooseMissionToAddScreen} />
         <Stack.Screen

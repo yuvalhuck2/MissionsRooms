@@ -94,6 +94,9 @@ public class RoomManager extends TeacherManager {
         if(roomDetails.getBonus()<0){
             return new Response<>(null,OpCode.Wrong_Bonus);
         }
+        if(teacher.getClassroom()==null){
+            return new Response<>(null,OpCode.Supervisor);
+        }
         roomDetails.setRoomId(UniqueStringGenerator.getTimeNameCode("room"));
         return saveRoomByType(roomDetails,teacher);
     }

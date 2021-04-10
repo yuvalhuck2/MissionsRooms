@@ -13,22 +13,29 @@ import {
   UPDATE_ALL_USER_PROFILES,
   UPDATE_ERROR_WATCH_MESSAGES,
   UPDATE_ALL_MESSAGES,
+  RESET_POINTS_TABLE,
+  UPDATE_ERROR_POINTS_TABLE,
+  INIT_POINTS_TABLE,
+  UPDATE_ERROR_ADD_SUGGESTION,
 } from '../actions/types';
 import API from '../api/API';
 import * as APIPaths from '../api/APIPaths';
-import { GeneralErrors, passToMyRoomsErrors } from '../locale/locale_heb';
+import { GeneralErrors, passToMyRoomsErrors, addSuggestionErrors } from '../locale/locale_heb';
 import * as NavPaths from '../navigation/NavPaths';
-import { Success, Wrong_Key,Not_Exist } from './OpCodeTypes';
+import { Success, Wrong_Key,Not_Exist, Wrong_Suggestion} from './OpCodeTypes';
 
-const { server_error } = GeneralErrors;
+const { server_error, wrong_key_error, } = GeneralErrors;
 
 const {
   student_not_exist_in_class_error,
   student_not_exist_in_group_error,
   wrong_mission_error,
-  wrong_key_error,
-    Wrong_Suggestion,wrong_key
 } = passToMyRoomsErrors;
+
+const {
+  wrong_suggestion,
+  suggestion_added,
+} = addSuggestionErrors;
 
 export const passToMyRooms = ({ navigation, apiKey, rooms }) => {
   return async (dispatch) => {
@@ -192,11 +199,11 @@ export const addSuggestion = ({navigation, apiKey,suggestion})=>{
               navigation,
           })
       } else{
-        dispatch({type:UPDATE_ERROR,payload:server_error});
+        dispatch({type:UPDATE_ERROR_ADD_SUGGESTION,payload:server_error});
       }
     }catch (e) {
       console.log(e);
-        return dispatch({type:UPDATE_ERROR,payload:server_error});
+        return dispatch({type:UPDATE_ERROR_ADD_SUGGESTION,payload:server_error});
 
     }
   };
@@ -210,27 +217,28 @@ const checkAddSuggestionResponse = ({
   const { reason, value } = data;
   switch (reason) {
     case Wrong_Key:
-      return dispatch({ type: UPDATE_ERROR, payload: wrong_key });
+      return dispatch({ type: UPDATE_ERROR_ADD_SUGGESTION, payload: wrong_key });
     case Student_Not_Exist_In_Class:
       return dispatch({
-        type: UPDATE_ERROR,
+        type: UPDATE_ERROR_ADD_SUGGESTION,
         payload: student_not_exist_in_class_error,
       });
     case Student_Not_Exist_In_Group:
       return dispatch({
-        type: UPDATE_ERROR,
+        type: UPDATE_ERROR_ADD_SUGGESTION,
         payload: student_not_exist_in_group_error,
       });
     case Wrong_Suggestion:
       return dispatch({
-        type: UPDATE_ERROR,
-        payload: Wrong_Suggestion,
+        type: UPDATE_ERROR_ADD_SUGGESTION,
+        payload: wrong_suggestion,
       });
     case Success:
+      alert(suggestion_added)
       navigation.navigate(NavPaths.studentMainScreen);
       return dispatch({ type: ADD_SUGGESTION, payload: value });
     default:
-      return dispatch({ type: UPDATE_ERROR, payload: server_error });
+      return dispatch({ type: UPDATE_ERROR_ADD_SUGGESTION, payload: server_error });
   }
 };
 
@@ -240,3 +248,41 @@ export const suggestionChange = (text) => {
         payload: text,
     };
 };
+
+export const passToWatchPointsTable = ({navigation,apiKey, isStudent}) => {
+  return async (dispatch)=> {
+    dispatch({ type: RESET_POINTS_TABLE, payload: apiKey });
+    try {
+      const res = await API.post(APIPaths.watchPointsTable, { apiKey });
+      if (res) {
+        checkWatchPointsTableResponse({
+          data: res.data,
+          dispatch,
+          navigation,
+          isStudent,
+        });
+      } else {
+        dispatch({ type: UPDATE_ERROR_POINTS_TABLE, payload: server_error });
+      }
+    } catch (err) {
+      console.log(err);
+      return dispatch({ type: UPDATE_ERROR_POINTS_TABLE, payload: server_error });
+    }
+  };
+}
+
+const checkWatchPointsTableResponse = ({data, dispatch, navigation,isStudent}) => {
+  const { reason, value } = data;
+  switch (reason) {
+    case Not_Exist:
+      return dispatch({
+        type: UPDATE_ERROR_POINTS_TABLE,
+        payload: wrong_key_error,
+      });
+    case Success:
+      dispatch({ type: INIT_POINTS_TABLE, payload: {... value, isStudent} });
+      return navigation.navigate(NavPaths.watchPointsTable);
+    default:
+      return dispatch({ type: UPDATE_ERROR_POINTS_TABLE, payload: server_error });
+  }
+}

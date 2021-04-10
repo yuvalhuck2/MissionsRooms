@@ -2,6 +2,8 @@ package missions.room.Domain;
 
 import DataAPI.GroupData;
 import DataAPI.GroupType;
+import DataAPI.PointsData;
+import DataAPI.RecordTableData;
 import missions.room.Domain.Users.Student;
 
 import javax.persistence.*;
@@ -75,6 +77,7 @@ public class ClassGroup {
         if (checkGroup(groupType)){
             return new GroupData(this.groupName,
                     this.groupType,
+                    this.points,
                     students.values().parallelStream().map(Student::getStudentData));
         }
         else{
@@ -99,5 +102,15 @@ public class ClassGroup {
 
     public int getPoints() {
         return points;
+    }
+
+    public void getGroupPoints(RecordTable recordTableData, String className) {
+        if(groupType != GroupType.C){
+            recordTableData.addGroupData(new PointsData(className,groupType,points));
+            for (Student student :
+                    students.values()) {
+                recordTableData.addStudentData(new PointsData(student.getAlias(),student.getPoints()));
+            }
+        }
     }
 }

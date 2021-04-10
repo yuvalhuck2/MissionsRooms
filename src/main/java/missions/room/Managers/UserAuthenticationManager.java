@@ -43,7 +43,9 @@ public class UserAuthenticationManager extends TeacherManager {
     private  VerificationCodeGenerator verificationCodeGenerator;
 
     //save verification codes and string for trace and clean old code
-    private final ConcurrentHashMap<String, PasswordCodeGroupAndTime> aliasToCode;
+    private final static ConcurrentHashMap<String, PasswordCodeAndTime> aliasToCode=new ConcurrentHashMap<>();
+
+    private final static ConcurrentHashMap<String, PasswordAndTime> aliasToResetPassword=new ConcurrentHashMap<>();
 
     //tests constructor
     public UserAuthenticationManager(ClassroomRepository classroomRepository,TeacherCrudRepository teacherCrudRepository,SchoolUserCrudRepository userCrudRepo, MailSender sender) {
@@ -52,7 +54,6 @@ public class UserAuthenticationManager extends TeacherManager {
         this.schoolUserRepo = new SchoolUserRepo(userCrudRepo);
         hashSystem = new HashSystem();
         this.sender = sender;
-        aliasToCode=new ConcurrentHashMap<>();
         verificationCodeGenerator = new VerificationCodeGenerator();
     }
 
@@ -61,14 +62,12 @@ public class UserAuthenticationManager extends TeacherManager {
         super();
         this.userRepo = new UserRepo(userCrudRepo);
         hashSystem = new HashSystem();
-        aliasToCode=new ConcurrentHashMap<>();
         verificationCodeGenerator = new VerificationCodeGenerator();
     }
 
     public UserAuthenticationManager(TeacherCrudRepository teacherCrudRepository) {
         super(teacherCrudRepository);
         hashSystem = new HashSystem();
-        aliasToCode=new ConcurrentHashMap<>();
         verificationCodeGenerator = new VerificationCodeGenerator();
     }
 
@@ -76,7 +75,6 @@ public class UserAuthenticationManager extends TeacherManager {
         super();
         hashSystem=new HashSystem();
         sender=new MailSender();
-        aliasToCode=new ConcurrentHashMap<>();
         verificationCodeGenerator = new VerificationCodeGenerator();
     }
 
@@ -136,7 +134,7 @@ public class UserAuthenticationManager extends TeacherManager {
         if(!sender.send(Utils.getMailFromAlias(details.getAlias()), verificationCode)){
             return new Response<>(null, OpCode.Mail_Error);
         }
-        this.aliasToCode.put(details.getAlias(),new PasswordCodeGroupAndTime(verificationCode,details.getPassword()));
+        aliasToCode.put(details.getAlias(),new PasswordCodeAndTime(verificationCode,details.getPassword()));
         return new Response<>(teacherDataList,userType);
     }
 
@@ -174,31 +172,31 @@ public class UserAuthenticationManager extends TeacherManager {
             return new Response<>(false,OpCode.Wrong_Code);
         }
 
-        PasswordCodeGroupAndTime passwordCodeGroupAndTime =aliasToCode.get(alias);
-        if(passwordCodeGroupAndTime ==null) {
+        PasswordCodeAndTime passwordCodeAndTime =aliasToCode.get(alias);
+        if(passwordCodeAndTime ==null) {
             return new Response<>(false, OpCode.Not_Registered);
         }
-        if(!code.equals(passwordCodeGroupAndTime.getCode())){
+        if(!code.equals(passwordCodeAndTime.getCode())){
             return new Response<>(false,OpCode.Code_Not_Match);
         }
         if(groupType==null){
             return new Response<>(false,OpCode.Wrong_Type);
         }
 
-        return checkPasswordAndPersist(alias, passwordCodeGroupAndTime,teacherAlias,groupType);
+        return checkPasswordAndPersist(alias, passwordCodeAndTime,teacherAlias,groupType);
 
     }
 
     /**
      *
      * @param studentAlias - studentAlias of user
-     * @param passwordCodeGroupAndTime - the password and the code match for tat studentAlias
+     * @param passwordCodeAndTime - the password and the code match for tat studentAlias
      * @param teacherAlias
      * @return if the student was saved
      */
     // annotation means that the write lock will be taken until save function
     @Transactional
-    protected Response<Boolean> checkPasswordAndPersist(String studentAlias, PasswordCodeGroupAndTime passwordCodeGroupAndTime, String teacherAlias,GroupType groupType) {
+    protected Response<Boolean> checkPasswordAndPersist(String studentAlias, PasswordCodeAndTime passwordCodeAndTime, String teacherAlias, GroupType groupType) {
         Response<Teacher> teacherResponse=checkTeacherForRead(teacherAlias);
         if(teacherResponse.getReason()!=OpCode.Success){
             return new Response<>(false,teacherResponse.getReason());
@@ -220,7 +218,7 @@ public class UserAuthenticationManager extends TeacherManager {
             aliasToCode.remove(schoolUser.getAlias());
             return new Response<>(false,OpCode.Already_Exist);
         }
-        schoolUser.setPassword(passwordCodeGroupAndTime.getPassword());
+        schoolUser.setPassword(passwordCodeAndTime.getPassword());
         //move from group
         Response userResponse;
         if(groupType!=GroupType.C) {//student
@@ -265,13 +263,24 @@ public class UserAuthenticationManager extends TeacherManager {
             return new Response<>(null, OpCode.Not_Exist);
         }
         String api= UniqueStringGenerator.getUniqueCode(alias);
-        if(hashSystem.encrypt(password).equals(user.getPassword())){
-            this.ram.addApi(api,alias);
-            return new Response<>(api,user.getOpcode());
+        String encryptedPassword = hashSystem.encrypt(password);
+        PasswordAndTime passwordAndTime = aliasToResetPassword.get(alias);
+        if(encryptedPassword.equals(user.getPassword())){
+            return addToRamAndGetResponse(alias, user.getOpcode(), api);
+        }
+        else if(passwordAndTime != null &&
+                encryptedPassword.equals(passwordAndTime.getPassword())){
+            aliasToResetPassword.remove(alias);
+            return addToRamAndGetResponse(alias, user.getOpcode(), api);
         }
         else{
             return new Response<>(null,OpCode.Wrong_Password);
         }
+    }
+
+    private Response<String> addToRamAndGetResponse(String alias, OpCode userRole, String api) {
+        this.ram.addApi(api,alias);
+        return new Response<>(api, userRole);
     }
 
     /**
@@ -321,5 +330,29 @@ public class UserAuthenticationManager extends TeacherManager {
 
     public void closeWebSocket(String apiKey) {
         ram.removeApiKey(apiKey);
+    }
+
+    /**
+     * req 2.4 - reset password
+     * @param alias - authentication object
+     * @return if an email was sent with the temp password
+     */
+    public Response<Boolean> resetPassword(String alias) {
+        Response<Boolean> userExistResponse = userRepo.isExistsById(alias);
+        if(userExistResponse.getReason() != OpCode.Success){
+            return new Response<>(false, userExistResponse.getReason());
+        }
+
+        if(!userExistResponse.getValue()){
+            return new Response<>(false, OpCode.Not_Exist);
+        }
+
+        String newPassword = verificationCodeGenerator.getNext()+verificationCodeGenerator.getNext();
+        aliasToResetPassword.put(alias, new PasswordAndTime(hashSystem.encrypt(newPassword)));
+        if(!sender.send(Utils.getMailFromAlias(alias), newPassword)){
+            return new Response<>(false, OpCode.Mail_Error);
+        }
+
+        return new Response<>(true, OpCode.Success);
     }
 }

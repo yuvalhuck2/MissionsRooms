@@ -17,6 +17,14 @@ public class RoomTemplateDetailsData {
         this.type = type;
     }
 
+    public RoomTemplateDetailsData(String id, List<String> missions, String name, int minimalMissionsToPass, RoomType type) {
+        this.id = id;
+        this.missions = missions;
+        this.name = name;
+        this.minimalMissionsToPass = minimalMissionsToPass;
+        this.type = type;
+    }
+
     public List<String> getMissions() {
         return missions;
     }

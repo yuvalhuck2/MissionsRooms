@@ -52,8 +52,11 @@ public class ManagerRoomStudentRealRam extends ManagerRoomStudentAllStubs{
                 dataGenerator.getStudent(Data.VALID2)
                         .getAlias());
         realRam.addAlias(valid2StudentApiKey);
+        realRam.addApi(INVALID_KEY_OPEN_ANS,"alias");
+        realRam.addAlias(INVALID_KEY_OPEN_ANS);
         Room roomValid2StudentsFromDifferentGroups=dataGenerator.getRoom(Data.Valid_2Students_From_Different_Groups);
         realRam.addRoom(roomValid2StudentsFromDifferentGroups);
+        realRam.addRoom(dataGenerator.getRoom(Data.VALID_OPEN_ANS));
     }
 
 

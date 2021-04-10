@@ -7,15 +7,17 @@ import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
 import Button from '../common/Button';
 import Header from '../common/Header';
-import {DETERMINISTIC} from '../../actions/types'
+import {DETERMINISTIC, OPEN_QUESTION} from '../../actions/types'
 
 const {
     header,
     deterministicButton,
+    OpenAnswerMissionButton
   } = ChooseMissionToAddStrings;
 
 const buttons =[
-    {name: deterministicButton, type: DETERMINISTIC}
+    {name: deterministicButton, type: DETERMINISTIC},
+    {name: OpenAnswerMissionButton , type: OPEN_QUESTION}
 ]
 
 class ChooseMissiontoAddForm extends Component{

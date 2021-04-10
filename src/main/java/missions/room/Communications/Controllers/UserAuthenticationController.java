@@ -53,4 +53,11 @@ public class UserAuthenticationController extends AbsController{
         return changePassword;
     }
 
+    @PostMapping("/password/reset")
+    public Response<?> resetPassword(@RequestBody String aliasStr){
+        RegisterDetailsData resetPasswordData= json.fromJson(aliasStr,RegisterDetailsData.class);
+        Response<Boolean> resetPassword=authenticationService.resetPassword(resetPasswordData.getAlias());
+        return resetPassword;
+    }
+
 }

@@ -18,6 +18,16 @@ public class Student extends SchoolUser {
         super();
     }
 
+    public Student(String alias, String firstName, String lastName, int points) {
+        super(alias, firstName, lastName);
+        this.points = points;
+    }
+
+    public Student(StudentData profileDetails) {
+        super(profileDetails.getAlias(), profileDetails.getFirstName(), profileDetails.getLastName());
+        points = 0;
+    }
+
     @Override
     public OpCode getOpcode() {
         return OpCode.Student;
@@ -38,11 +48,15 @@ public class Student extends SchoolUser {
     }
 
     public StudentData getStudentData() {
-        return new StudentData(alias,firstName,lastName);
+        return new StudentData(alias,firstName,lastName, points);
     }
 
     @Override
     public UserProfileData getProfileData() {
         return new UserProfileData(firstName,lastName,alias,OpCode.Student,points);
+    }
+
+    public void deducePoints(int pointsToDeduce) {
+        this.points-=pointsToDeduce;
     }
 }

@@ -44,17 +44,6 @@ public class ServiceAPI {
 //        throw new RuntimeException();
 //    }
 
-
-    /**
-     * req 3.1 - watch rank Table details
-     * @param auth - authentication object
-     * @param tableType - personal, group or class
-     * @return the record table
-     */
-    public Response<RecordTableData> watchTable (Auth auth, RoomType tableType){
-        throw new RuntimeException();
-    }
-
     /**
      * req 3.2
      * TODO talk about delete profile
@@ -159,16 +148,7 @@ public class ServiceAPI {
     /**
      * TODO 3.6.2.7 talk about when the system draw the in charge
      */
-
-
-    /**
-     * req 3.8 - reset password
-     * @param auth - authentication object
-     * @return if an email was sent with verification code
-     */
-    public Response<Boolean> resetPassword(Auth auth){
-        throw new RuntimeException();
-    }
+    
 
     /**
      * req 3.9 - send room message
@@ -279,17 +259,6 @@ public class ServiceAPI {
         throw new RuntimeException();
     }
 
-
-    /**
-     * req 4.13 - deduce points to a student
-     * @param auth - authentication object
-     * @param studentMail - the identifier of the student need to deduce points to.
-     * @param pointsToDeduce - the amount of points to deduce the user
-     * @return if the points were deducted successfully
-     */
-    public Response<Boolean> deducePoints(Auth auth,String studentMail, int pointsToDeduce){
-        throw new RuntimeException();
-    }
 
 
 //    /**

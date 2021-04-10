@@ -1,16 +1,10 @@
 package missions.room.Communications.Controllers;
 
-import DataAPI.ApiKey;
-import DataAPI.CreateMissionData;
-import DataAPI.MissionData;
-import DataAPI.Response;
+import DataAPI.*;
 import com.google.gson.Gson;
 import missions.room.Service.MissionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,6 +31,12 @@ public class MissionController extends AbsController {
         ApiKey data = json.fromJson(apiKey, ApiKey.class);
         Response<List<MissionData>> response = missionService.searchMissions(data.getApiKey());
         return response;
+    }
+
+    @GetMapping("/unApprovedAnswers")
+    public Response<?> getUnApproveAnswers(@RequestParam String apiKey, @RequestParam(name = "roomId") String roomId) {
+        Response<RoomOpenAnswerData> res = missionService.watchSolutions(apiKey, roomId);
+        return res;
     }
 
 }

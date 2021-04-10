@@ -1,8 +1,10 @@
 import * as DocumentPicker from 'expo-document-picker';
 import { Platform } from 'react-native';
 import { baseURL } from '../api/API';
-import { uploadStrings, uploadStringsErrors } from '../locale/locale_heb';
+import { GeneralErrors, uploadStrings, uploadStringsErrors } from '../locale/locale_heb';
 import * as NavPaths from '../navigation/NavPaths';
+import * as APIPaths from '../api/APIPaths';
+import API from '../api/API';
 import {
   Failed_To_Read_Bytes,
   Not_Exist,
@@ -14,9 +16,17 @@ import {
 import {
   PICKED_FILE,
   RESET_FILES,
+  RESET_MANAGE_USERS,
   UPDATE_ERROR,
+  UPDATE_ERROR_MANAGE_USERS,
   UPLOAD_CSV_SUCCESS,
+  UPDATE_ALL_USER_PROFILES_MANAGE_USERS,
+  IS_STUDENT_USER_CHANGED,
 } from './types';
+
+const {
+  wrong_key_error,
+} = GeneralErrors;
 
 const {
   file_number_error,
@@ -107,7 +117,7 @@ export const navigateToAddNewIT = ({ navigation }) => {
   return { type: '' };
 };
 
-const parseUploadCsvResponse = (data, dispatch) => {
+export const parseUploadCsvResponse = (data, dispatch) => {
   const { reason, value } = data;
 
   switch (reason) {
@@ -127,3 +137,51 @@ const parseUploadCsvResponse = (data, dispatch) => {
       return dispatch({ type: UPDATE_ERROR, payload: server_error });
   }
 };
+
+export const passToManageUsers = ({navigation,apiKey}) => {
+  return async (dispatch)=> {
+    dispatch({ type: RESET_MANAGE_USERS, payload: apiKey });
+    try {
+      const res = await API.post(APIPaths.getAllSchoolUsers, { apiKey });
+      if (res) {
+        checkManageUsersResponse({
+          data: res.data,
+          dispatch,
+          navigation,
+        });
+      } else {
+        dispatch({ type: UPDATE_ERROR_MANAGE_USERS, payload: server_error });
+      }
+    } catch (err) {
+      console.log(err);
+      return dispatch({ type: UPDATE_ERROR_MANAGE_USERS, payload: server_error });
+    }
+  };
+}
+
+const checkManageUsersResponse = ({data, dispatch, navigation}) => {
+  const { reason, value } = data;
+  switch (reason) {
+    case Not_Exist:
+      return dispatch({
+        type: UPDATE_ERROR_MANAGE_USERS,
+        payload: wrong_key_error,
+      });
+    case Success:
+      dispatch({ type: UPDATE_ALL_USER_PROFILES_MANAGE_USERS, payload: value });
+      return navigation.navigate(NavPaths.manageUsers);
+    default:
+      return dispatch({ type: UPDATE_ERROR_MANAGE_USERS, payload: server_error });
+  }
+}
+
+export const passToAddStudent = ({ navigation }) => {
+  navigation.navigate(NavPaths.addUser);
+  return { type: IS_STUDENT_USER_CHANGED , payload: true };
+
+} 
+
+export const passToAddTeacher = ({ navigation }) => {
+  navigation.navigate(NavPaths.addUser);
+  return { type: IS_STUDENT_USER_CHANGED , payload: false };
+}

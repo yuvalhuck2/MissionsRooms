@@ -25,3 +25,11 @@ export { default as ChooseTeacherRoomTypeScreen } from './ChooseTeacherRoomTypeS
 export {default as ChooseClassroomRoomScreen} from './ChooseTeacherRoomScreen'
 export {default as ChatRoomScreen} from './ChatRoomScreen'
 //export {default as ChoosePersonalRoomScreen} from './ChoosePersonalRoomScreen'
+export { default as PointsTableScreen} from './PointsTableScreen'
+export { default as ManageUsersScreen} from './ManageUsersScreen'
+export { default as Test} from './Test'
+export { default as AddOpenQuestionMissionScreen} from './AddOpenQuestionMissionScreen'
+export { default as SolveOpenQuestionMissionScreen} from './SolveOpenQuestionMissionScreen'
+export { default as AddUserScreen} from './AddUserScreen'
+export {default as ResetPasswordScreen} from './ResetPasswordScreen'
+

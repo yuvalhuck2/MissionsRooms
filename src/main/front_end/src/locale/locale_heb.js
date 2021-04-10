@@ -23,6 +23,8 @@ export const loginStrings = {
   login_btn: 'לחץ להתחברות',
   no_user: 'אין ברשותך משתמש? ',
   no_user_sign_up: 'הירשם כאן',
+  forgat_password: 'שכחת סיסמא?',
+  press_here: 'לחץ כאן',
 };
 
 export const uploadStrings = {
@@ -45,6 +47,10 @@ export const uploadStringsErrors = {
   already_exist: 'משתמש בשם הנ"ל כבר קיים',
 };
 
+export const openQuestionErrors = {
+  mission_in_charge: 'המשתמש אינו אחראי על המשימה הנוכחית',
+};
+
 export const authStrings = {
   header: 'הכנס קוד אימות',
   enter_code: 'הכנס קוד',
@@ -60,6 +66,10 @@ export const AddDeterministicMissionStrings = {
   group: 'קבוצתית',
   classroom: 'כיתתית',
 };
+
+export const AddOpenAnswerMissionStrings = {
+  header: 'הוספת משימה עם תשובה פתוחה'
+}
 
 export const AddDeterministicMissionErrors = {
   question_empty: 'יש להזין שאלה',
@@ -79,6 +89,7 @@ export const AddStrings = {
 export const ChooseMissionToAddStrings = {
   header: ' יש לבחור סוג משימה להוספה',
   deterministicButton: 'שאלה עם פתרון יחיד',
+  OpenAnswerMissionButton: 'שאלה פתוחה/העלאת קובץ'
 };
 
 export const AddRoomTempalteStrings = {
@@ -116,9 +127,16 @@ export const roomTypes = [
 ];
 
 export const ChooseMissionsTemplateStrings = {
-  header: 'יש לבחור משימות לתבנית',
+  header: 'יש לבחור משימות',
   deterministic_name: 'סוג : שאלת פתרון יחיד',
   question: 'שאלה: ',
+  search:'חיפוש',
+  deterministic_label:'פתרון יחיד',
+  story_label:'סיפור בהמשכים',
+  open_question_label:'שאלה פתוחה/העלאת קובץ',
+  trivia_label:'טריוויה',
+  choose_type:'משימות אותן ארצה לראות',
+  story_description:'סוג: משימת סיפור בהמשכים',
 };
 
 export const TeacherStrings = {
@@ -163,6 +181,7 @@ export const ChooseTempalteStrings = {
   minimal_missions: 'מספר משימות לקבלת בונוס: ',
   missions_presentation: 'משימות: ',
   no_tempaltes: 'אין תבניות מסוג החדר המבוקש',
+  filter_by_name:'חיפוש לפי שם התבנית',
 };
 
 export const ChooseStudentRoomStrings = {
@@ -209,6 +228,10 @@ export const SolveDeterministicMissionStrings = {
   send_answer: 'שלח/י תשובה',
 };
 
+export const SolveOpenQuestionMissionErrors = {
+  empty_answer: 'נא למלא תשובה בטקסט או לבחור קובץ להעלאה',
+};
+
 export const StudentStrings = {
   watchMyRoom: 'החדרים שלי',
   addSuggestion:'הוספת הצעה',
@@ -238,12 +261,20 @@ export const GeneralErrors = {
   student_not_exist: 'סטודנט לא קיים',
   room_error:'יש תקלה עם החדר, מומלץ לנסות להתחבר אליו שנית',
   user_not_exist:'המשתמש לא קיים',
+  empty_details:'לא מולאו פרטים',
+  action_succeeded:'הפעולה בוצעה בהצלחה!',
+  classroom_not_exist:'לפי רישומי המערכת, אין לך כיתה',
+  wrong_alias: 'יש להזין שם משתמש תקין',
+  mail_error: 'יש תקלה עם שליחת המייל, נא נסו שנית',
 };
 
 export const ITStrings = {
   uploadCSV: 'העלאת קבצים',
   main_screen: 'התנתק/י',
   addNewIT: 'הוספת מנהל טכני',
+  manageUsers:'ניהול משתמשים',
+  add_teacher: 'הוספת מורה',
+  add_student: 'הוספת תלמיד',
 };
 
 export const addMissionErrors = {
@@ -369,5 +400,77 @@ export const AllUsersStrings = {
   main_screen: 'התנתק/י',
   watchProfiles:'חיפוש פרופיל',
   watch_messages:'ההודעות שלי',
-  changePassword:'שינוי סיסמא'
+  changePassword:'שינוי סיסמא',
+  watchPointsTable:'טבלת הנקודות',
+}
+
+export const PointsTableStrings = {
+  header:'טבלת השיאים',
+  classroom:'כיתתי',
+  group:'קבוצתי',
+  personal:'אישי',
+  down_points:'הורדת נקודות',
+  points_label:'נקודות',
+  rank:'מקום',
+  alias:'כינוי',
+  down_points_label:'הזנת מספר נקודות אשר ברצונך להוריד',
+  minus:'מינוס '
+}
+
+export const PointsTableErrors = {
+  negative_points:'ניתן להוריד כמות נקודות חיובית בלבד',
+  permission_problem:'אין לך הרשאה להוריד נקודות לאישות זו',
+  points_reduced:'הנקודות הורדו בהצלחה, הטבלה לא מתעדכנת מיידית',
+}
+
+export const ManageUsersStrings = {
+  edit_details:'עריכה',
+  delete_user:'מחיקה',
+  enter_last_name:'יש להכניס שם משפחה חדש',
+  enter_first_name:'יש להכניס שם פרטי חדש',
+  enable_edit_first_name:'עריכת שם פרטי',
+  enable_edit_last_name:'עריכת שם משפחה',
+  manage_users:'ניהול משתמשים',
+  press_user_for_details:'לחצו על משתמש על מנת לערוך את נתוניו או למחוק אותו',
+  transfer:'העברת קבוצה',
+};
+
+export const Grades = {
+  yud: 'י',
+  yudAlef:'יא',
+  yudBeit:'יב',
+}
+
+export const AddUserStrings = {
+  student_header: 'הוספת סטודנט',
+  teacher_header: 'הוספת מורה',
+  enter_class_number: 'מספר כיתה',
+  choose_grade: 'בחירת שכבה',
+  enter_first_name: 'שם פרטי',
+  enter_alias: 'קידומת מייל',
+  enter_last_name: 'שם משפחה',
+  choose_group: 'בחירת קבוצה',
+  superviosr_label: 'מנהל מפקח',
+}
+
+export const addUserErrors = {
+  already_exist: 'משתמש עם קידומת מייל זהה, קיים במערכת',
+  wrong_alias: 'יש להזין קידמות מייל תקינה',
+  wrong_first_name: 'יש להזין שם פרטי תקין',
+  wrong_last_name: 'יש להזין שם משפחה תקין',
+  wrong_class: 'הכיתה שהוזנה אינה קיימת במערכת',
+  wrong_group: 'הקבוצה שהוזנה לא תקינה',
+  user_added: 'המשתמש נוסף בהצלחה!',
+} 
+
+export const ResetPasswordStrings = {
+  header: 'איפוס סיסמא',
+  reset: 'איפוס',
+  enter_alias: 'יש להכניס שם משתמש',
+  reset_password_succeeded: 'האיפוס הצליח! סיסמא זמנית מחכה לך במייל',
+}
+
+export const   addSuggestionErrors = {
+  wrong_suggestion: 'יש להזין הצעה תקינה',
+  suggestion_added: 'ההצעה נוספה בהצלחה',
 }
