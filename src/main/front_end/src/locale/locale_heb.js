@@ -36,6 +36,13 @@ export const uploadStrings = {
   success: 'מערכת אותחלה בהצלחה',
 };
 
+export const watchOpenSolution = {
+  download_btn: 'הורד קובץ',
+  header: 'פתרון משימה',
+  question_title: 'שאלה:',
+  answer_title: 'תשובה:'
+};
+
 export const uploadStringsErrors = {
   file_number_error: 'מספר הקבצים צריך להיות 4',
   server_not_responding: 'השרת לא מגיב',
@@ -432,7 +439,7 @@ export const addUserErrors = {
   wrong_class: 'הכיתה שהוזנה אינה קיימת במערכת',
   wrong_group: 'הקבוצה שהוזנה לא תקינה',
   user_added: 'המשתמש נוסף בהצלחה!',
-} 
+}
 
 export const ResetPasswordStrings = {
   header: 'איפוס סיסמא',
@@ -445,3 +452,8 @@ export const   addSuggestionErrors = {
   wrong_suggestion: 'יש להזין הצעה תקינה',
   suggestion_added: 'ההצעה נוספה בהצלחה',
 }
+
+export const WatchAllOpenQuestionMissions = {
+  mission_title: 'משימה מספר ',
+  title:'משימות עם תשובה פתוחה בחדר: '
+};

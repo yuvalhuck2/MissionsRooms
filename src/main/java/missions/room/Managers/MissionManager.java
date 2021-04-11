@@ -5,6 +5,7 @@ import CrudRepositories.TeacherCrudRepository;
 import DataAPI.*;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.InterfaceAdapter;
+import Utils.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import missions.room.Domain.OpenAnswer;
@@ -17,9 +18,13 @@ import missions.room.Domain.Users.Teacher;
 import missions.room.Domain.missions.OpenAnswerMission;
 import missions.room.Repo.MissionRepo;
 import missions.room.Repo.OpenAnswerRepo;
+import missions.room.Repo.RoomRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,6 +40,9 @@ public class MissionManager extends TeacherManager {
 
     @Autowired
     private OpenAnswerRepo openAnswerRepo;
+
+    @Autowired
+    private RoomRepo roomRepo;
 
     public MissionManager() {
         super();
@@ -153,7 +161,7 @@ public class MissionManager extends TeacherManager {
      * @return all the solutions that wait to be approved
      */
     public Response<RoomOpenAnswerData> watchSolutions(String apiKey, String roomId){
-        Response<Teacher> teacherResponse = checkTeacher(apiKey); //TODO uncomment
+        Response<Teacher> teacherResponse = checkTeacher(apiKey);
         if(teacherResponse.getReason()!= OpCode.Success){
             return new Response<>(null,teacherResponse.getReason());
         }
@@ -162,5 +170,58 @@ public class MissionManager extends TeacherManager {
             return new Response<>(convertRoomOpenAnswerViewToSolutionData(openAnswerResponse.getValue()), OpCode.Success);
         }
         return new Response<>(null, openAnswerResponse.getReason());
+    }
+
+    private Response<Room> getRoomById(String roomId) {
+        Room room = ram.getRoom(roomId);
+        if (room==null) {
+            Response<Room> response = roomRepo.findRoomById(roomId);
+            if (response.getReason() == OpCode.Success) {
+                if (response.getValue() == null) {
+                    return new Response<>(null, OpCode.Not_Exist_Room);
+                }
+                ram.addRoom(response.getValue());
+                room = ram.getRoom(roomId);
+            } else {
+                return response;
+            }
+        }
+        return new Response<>(room, OpCode.Success);
+    }
+
+    public Response<File> getMissionOpenAnswerFile(String apiKey, String roomId, String missionId) {
+        Response<Teacher> teacherResponse = checkTeacher(apiKey);
+        if(teacherResponse.getReason() != OpCode.Success){
+            return new Response<>(null,teacherResponse.getReason());
+        }
+
+        Response<Room> roomResponse = getRoomById(roomId);
+        if (roomResponse.getReason() != OpCode.Success) {
+            return new Response<>(null, roomResponse.getReason());
+        }
+
+        if (!roomResponse.getValue().isMissionExists(missionId)) {
+            return new Response<>(null, OpCode.MISSION_NOT_IN_ROOM);
+        }
+
+        return getOpenAnswerFile(roomId, missionId);
+    }
+
+    private Response<File> getOpenAnswerFile(String roomId, String missionId) {
+        try {
+            String rootPath = Utils.getRootDirectory();
+            Path folderPath = FileSystems.getDefault().getPath(rootPath,"openAnswer", roomId, missionId);
+            File folder = folderPath.toFile();
+            if (folder.listFiles().length > 0) {
+                File file = folderPath.toFile().listFiles()[0];
+                return new Response<>(file, OpCode.Success);
+            }
+            else {
+                return  new Response<>(null, OpCode.NO_OPEN_ANSWER_FILE);
+            }
+        } catch (Exception e) { //TODO add log
+            return new Response<>(null, OpCode.FILE_SYS_ERROR);
+        }
+
     }
 }
