@@ -1,8 +1,9 @@
 import {Dimensions, StyleSheet, Text, View} from "react-native";
 import {theme} from "../../core/theme";
 import {connect} from 'react-redux';
-import {suggestionChange, addSuggestion} from "../../actions";
-import {AddSuggestionStrings} from "../../locale/locale_heb";
+import { changeAlias,resetPassword } from "../../actions/ResetPasswordActions";
+import {ResetPasswordStrings} from "../../locale/locale_heb";
+import { Appbar, ActivityIndicator } from 'react-native-paper';
 import {Component} from "react";
 import Button from "../common/Button";
 import React from "react";
@@ -10,47 +11,37 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import Header from "../common/Header";
 import TextInput from "../common/TextInput";
 
-
 const {
     header,
-    addSuggestionText,
-    send_suggestion,
-} = AddSuggestionStrings;
+    reset,
+    enter_alias,
+} = ResetPasswordStrings;
 
 
-class AddSuggestionForm extends Component {
+class ResetPasswordForm extends Component {
     constructor(...args) {
         super(...args);
-        this.onSuggestionChange=this.onSuggestionChange.bind(this);
+        this.onAliasChanged=this.onAliasChanged.bind(this);
         this.onButtonPress=this.onButtonPress.bind(this);
     }
 
-    onSuggestionChange(text) {
-        this.props.suggestionChange(text);
+    onAliasChanged(text) {
+        this.props.changeAlias(text);
     }
 
     onButtonPress() {
-        const { apiKey,suggestion, navigation } = this.props;
-        this.props.addSuggestion({ apiKey,suggestion, navigation });
+        const { alias, navigation } = this.props;
+        this.props.resetPassword({alias, navigation });
     }
-
-    
 
     renderSpinner() {
-        return <ActivityIndicator animating={true} color={theme.colors.primary} size='large'/>;
-    }
-
-    renderButton(){
-        const {loading} = this.props;
-        return  ( loading ? 
-            this.renderSpinner() :
-            <Button
-                mode='contained'
-                style={styles.button}
-                onPress={this.onButtonPress}>
-                {send_suggestion}
-            </Button>
-        )
+        return (
+          <ActivityIndicator
+            animating={true}
+            color={theme.colors.primary}
+            size='large'
+          />
+        );
       }
 
       renderError() {
@@ -64,19 +55,38 @@ class AddSuggestionForm extends Component {
           );
         }
       }
+    
+      renderButton(){
+        const {loading} = this.props
+    
+        return loading ? (
+          this.renderSpinner()
+        ) : (
+            <Button
+                mode='contained'
+                style={styles.button}
+                onPress={this.onButtonPress}>
+                {reset}
+            </Button>
+        )
+      }
 
     render() {
-        const { apiKey,suggestion, navigation  } = this.props;
+        const { alias, navigation } = this.props;
         return (
             <KeyboardAwareScrollView style={styles.container}>
+                <Appbar.Header styles={styles.bottom}>
+                    <Appbar.BackAction onPress={() => {navigation.goBack()}} />
+                </Appbar.Header>
                 <Header>{header}</Header>
                 <TextInput
-                    label={addSuggestionText}
-                    value={suggestion}
-                    onChangeText={this.onSuggestionChange}
+                    label={enter_alias}
+                    value={alias}
+                    onChangeText={this.onAliasChanged}
+                    placeholder= {enter_alias}
                 />
                 {this.renderButton()}
-
+                {this.renderError()}
             </KeyboardAwareScrollView>
         );
     }
@@ -90,8 +100,6 @@ const styles = StyleSheet.create({
         width: '100%',
         maxWidth: 340,
         alignSelf: 'center',
-        // alignItems: 'center',
-        // justifyContent: 'center',
     },
     button: {
         marginTop: 24,
@@ -112,11 +120,11 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    const { suggestion, apiKey, loading } = state.addSuggestion;
-    return { suggestion, apiKey, loading  };
+    const { alias, loading, errorMessage} = state.resetPassword;
+    return { alias, loading, errorMessage};
 };
 
 export default connect(mapStateToProps,{
-    suggestionChange,
-    addSuggestion,
-})(AddSuggestionForm);
+    changeAlias,
+    resetPassword,
+})(ResetPasswordForm);

@@ -3,16 +3,17 @@ import { StyleSheet, Text, Dimensions, View } from 'react-native';
 import { connect } from 'react-redux';
 import Button from '../common/Button';
 import { Icon } from 'react-native-elements'
-import  { navigateToUploadCSV, navigateToAddNewIT,passToWatchProfiles,
-  passToWatchMessages, passToManageUsers } from '../../actions'
+import  { navigateToUploadCSV, navigateToAddNewIT,passToWatchProfiles, logout,
+  passToWatchMessages, passToManageUsers, passToAddStudent, passToAddTeacher } from '../../actions'
 import { ITStrings, AllUsersStrings  } from '../../locale/locale_heb';
-import {logout} from '../../actions'
 import * as NavPaths from '../../navigation/NavPaths'
 
 const {
   uploadCSV,
   addNewIT,
   manageUsers,
+  add_teacher,
+  add_student,
 } = ITStrings
 
 const {
@@ -63,8 +64,8 @@ class ITForm extends Component {
             <Text style={{color:"white"}}>{manageUsers}</Text>
           </Button> 
           <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}
-            onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
-            <Text style={{color:"white"}}>{watchProfiles}</Text>
+            onPress={()=>this.props.passToAddStudent({navigation})}>
+            <Text style={{color:"white"}}>{add_student}</Text>
           </Button> 
           <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}
             onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
@@ -80,8 +81,8 @@ class ITForm extends Component {
             <Text style={{color:"white"}}>{uploadCSV}</Text> 
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
-            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
-            <Text style={{color:"white"}}>{watch_messages}</Text> 
+            onPress={()=>this.props.passToAddTeacher({navigation})}>
+            <Text style={{color:"white"}}>{add_teacher}</Text> 
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
             onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
@@ -158,4 +159,6 @@ export default connect(mapStateToProps, {
   passToWatchProfiles,
   passToWatchMessages,
   passToManageUsers,
+  passToAddStudent,
+  passToAddTeacher,
 })(ITForm);

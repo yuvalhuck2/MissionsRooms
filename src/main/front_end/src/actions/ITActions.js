@@ -21,6 +21,7 @@ import {
   UPDATE_ERROR_MANAGE_USERS,
   UPLOAD_CSV_SUCCESS,
   UPDATE_ALL_USER_PROFILES_MANAGE_USERS,
+  IS_STUDENT_USER_CHANGED,
 } from './types';
 
 const {
@@ -172,4 +173,15 @@ const checkManageUsersResponse = ({data, dispatch, navigation}) => {
     default:
       return dispatch({ type: UPDATE_ERROR_MANAGE_USERS, payload: server_error });
   }
+}
+
+export const passToAddStudent = ({ navigation }) => {
+  navigation.navigate(NavPaths.addUser);
+  return { type: IS_STUDENT_USER_CHANGED , payload: true };
+
+} 
+
+export const passToAddTeacher = ({ navigation }) => {
+  navigation.navigate(NavPaths.addUser);
+  return { type: IS_STUDENT_USER_CHANGED , payload: false };
 }

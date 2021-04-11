@@ -71,4 +71,9 @@ public class ClassRoomRepositoryExemptionSaveMock implements ClassroomRepository
     public Classroom findClassroomByStudent(String student) {
         return null;
     }
+
+    @Override
+    public Classroom findClassroomForWrite(String className) {
+        return null;
+    }
 }

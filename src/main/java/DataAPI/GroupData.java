@@ -39,4 +39,8 @@ public class GroupData {
                 Objects.equals(groupData.name,name) &&
                 Objects.equals(groupData.students,students);
     }
+
+    public int getPoints() {
+        return points;
+    }
 }

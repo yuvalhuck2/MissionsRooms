@@ -35,7 +35,7 @@ public class ITService {
      * @param profileDetails - the user new details.
      * @return if mail updated successfully
      */
-    public Response<Boolean> UpdateUserDetails(String apiKey, UserProfileData profileDetails){
+    public Response<Boolean> updateUserDetails(String apiKey, UserProfileData profileDetails){
         return itManager.updateUserDetails(apiKey,profileDetails);
     }
 
@@ -44,5 +44,25 @@ public class ITService {
      */
     public Response<List<UserProfileData>> getAllUsersSchoolProfiles() {
         return itManager.getAllUsersSchoolProfiles();
+    }
+
+    /**
+     * req 6.9 - add user - student
+     * @param apiKey - authentication object
+     * @param profileDetails - the user new details.
+     * @return if mail updated successfully
+     */
+    public Response<Boolean> addStudent(String apiKey, StudentData profileDetails){
+        return itManager.addStudent(apiKey,profileDetails);
+    }
+
+    /**
+     * req 6.9 - add user - teacher
+     * @param apiKey - authentication object
+     * @param profileDetails - the user new details.
+     * @return if mail updated successfully
+     */
+    public Response<Boolean> addTeacher(String apiKey, TeacherData profileDetails){
+        return itManager.addTeacher(apiKey,profileDetails);
     }
 }

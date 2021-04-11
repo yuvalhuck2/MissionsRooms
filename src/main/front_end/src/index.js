@@ -30,6 +30,8 @@ import {
   ChangePasswordScreen,
   PointsTableScreen,
   ManageUsersScreen,
+    AddUserScreen,
+    ResetPasswordScreen,
   Test,
 } from './components/screens';
 
@@ -38,8 +40,16 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='WatchAllOpenQuestionMissionsScreen'>
-        <Stack.Screen
+      <Stack.Navigator initialRouteName='Register'>
+      <Stack.Screen
+          name='ResetPassword'
+          component={ResetPasswordScreen}
+        />
+      <Stack.Screen
+          name='AddUser'
+          component={AddUserScreen}
+        />
+      <Stack.Screen
           name='ManageUsers'
           component={ManageUsersScreen}
         />
