@@ -37,6 +37,19 @@ public class ITMangerTestsRealRamUserITRepo extends ITMangerRealRamUserRepo {
     @Mock
     private ITCrudRepository mockItCrudRepository;
 
+    private void setUpITRepoFindByIdThrowsException(){
+        when(mockItCrudRepository.findById(anyString()))
+                .thenThrow(new RuntimeException());
+        try {
+            Field itRepo = ITManager.class.getDeclaredField("itRepo");
+            itRepo.setAccessible(true);
+            itRepo.set(itManager,new ITRepo(mockItCrudRepository));
+
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            fail();
+        }
+    }
+
     @Override
     protected void initITRepo(IT it, String itAlias, IT it2) {
         try {
@@ -81,16 +94,7 @@ public class ITMangerTestsRealRamUserITRepo extends ITMangerRealRamUserRepo {
     @Test
     @Override
     void addNewITITRepoFindByIdThrowsException(){
-        when(mockItCrudRepository.findById(anyString()))
-                .thenThrow(new RuntimeException());
-        try {
-            Field itRepo = ITManager.class.getDeclaredField("itRepo");
-            itRepo.setAccessible(true);
-            itRepo.set(itManager,new ITRepo(mockItCrudRepository));
-
-        } catch (IllegalAccessException | NoSuchFieldException e) {
-            fail();
-        }
+        setUpITRepoFindByIdThrowsException();
         addNewITInvalid(OpCode.DB_Error,dataGenerator.getRegisterDetails(Data.VALID_IT2));
     }
 
@@ -116,5 +120,17 @@ public class ITMangerTestsRealRamUserITRepo extends ITMangerRealRamUserRepo {
             fail();
         }
         updateUserDetailsInvalidTest(OpCode.DB_Error);
+    }
+
+    @Test
+    void testAddStudentRepoFindByIdThrowsException(){
+        setUpITRepoFindByIdThrowsException();
+        testAddStudentInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    void testAddTeacherRepoFindByIdThrowsException(){
+        setUpITRepoFindByIdThrowsException();
+        testAddTeacherInvalid(OpCode.DB_Error);
     }
 }

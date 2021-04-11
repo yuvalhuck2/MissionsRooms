@@ -3,8 +3,11 @@ package missions.room.ITManagerTests;
 import CrudRepositories.SchoolUserCrudRepository;
 import Data.Data;
 import DataAPI.OpCode;
+import DataAPI.Response;
+import DataAPI.TeacherData;
 import missions.room.Domain.Users.IT;
 import missions.room.Domain.Users.SchoolUser;
+import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.ITManager;
 import missions.room.Repo.SchoolUserRepo;
 import org.junit.jupiter.api.AfterEach;
@@ -17,8 +20,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.lang.reflect.Field;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -33,6 +35,9 @@ public class ITManagerTestRealRamUserITSchoolUserRepo extends ITMangerTestsRealR
 
     @Mock
     private SchoolUserCrudRepository mockSchoolUserRepository;
+
+    @Autowired
+    private SchoolUserCrudRepository schoolUserRepository;
 
     @Override
     protected void initSchoolUserRepo(SchoolUser schoolUser) {
@@ -102,5 +107,35 @@ public class ITManagerTestRealRamUserITSchoolUserRepo extends ITMangerTestsRealR
         SchoolUser student = realSchoolUserRepo.findUserForRead(userProfileData.getAlias()).getValue();
         assertEquals(student.getFirstName(),userProfileData.getFirstName());
         assertEquals(student.getLastName(),dataGenerator.getStudent(Data.VALID).getLastName());
+    }
+
+    @Test
+    @Override
+    void testAddTeacherSchoolRepoSaveThrowsException(){
+        setUpMockUserRepo();
+        when(mockSchoolUserRepository.save(any()))
+                .thenThrow(new RuntimeException());
+        testAddTeacherInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    @Override
+    void testAddTeacherHappyCase() {
+        super.testAddTeacherHappyCase();
+        TeacherData teacherData = dataGenerator.getTeacherData(Data.VALID);
+        Teacher teacher = (Teacher) schoolUserRepository.findById(teacherData.getAlias()).get();
+        assertEquals(teacher.getFirstName(),teacherData.getFirstName());
+        assertEquals(teacher.getLastName(),teacherData.getLastName());
+    }
+
+    @Test
+    @Override
+    void testAddSupervisorHappyCase() {
+        super.testAddSupervisorHappyCase();
+        TeacherData teacherData = dataGenerator.getTeacherData(Data.Supervisor);
+        Teacher supervisor = (Teacher) schoolUserRepository.findById(teacherData.getAlias()).get();
+        assertEquals(supervisor.getFirstName(),teacherData.getFirstName());
+        assertEquals(supervisor.getLastName(),teacherData.getLastName());
+        assertTrue(supervisor.isSupervisor());
     }
 }

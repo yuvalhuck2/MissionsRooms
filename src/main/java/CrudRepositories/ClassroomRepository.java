@@ -1,8 +1,13 @@
 package CrudRepositories;
 
 import missions.room.Domain.Classroom;
+import missions.room.Domain.Users.Student;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+
+import javax.persistence.LockModeType;
 
 public interface ClassroomRepository extends CrudRepository<Classroom, String> {
 
@@ -11,4 +16,8 @@ public interface ClassroomRepository extends CrudRepository<Classroom, String> {
             "join g.students s " +
             "where s.alias= :student")
     Classroom findClassroomByStudent(String student);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select a from Classroom a where a.className = :className")
+    Classroom findClassroomForWrite(@Param("className") String className);
 }

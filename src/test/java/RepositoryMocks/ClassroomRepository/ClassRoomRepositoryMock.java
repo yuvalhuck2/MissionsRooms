@@ -75,4 +75,9 @@ public class ClassRoomRepositoryMock implements ClassroomRepository {
 
         return dataGenerator.getClassroom(Data.Valid_Classroom);
     }
+
+    @Override
+    public Classroom findClassroomForWrite(String className) {
+        return null;
+    }
 }

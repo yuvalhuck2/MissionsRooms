@@ -22,6 +22,7 @@ import {
   Wrong_Key,
   Wrong_Name,
   Wrong_Type,
+  Supervisor,
 } from './OpCodeTypes';
 import {
   ADD_ROOM,
@@ -54,6 +55,7 @@ const {
   server_error,
   wrong_key_error,
   teacher_not_exists_error,
+  classroom_not_exist,
 } = GeneralErrors;
 
 const {
@@ -264,7 +266,11 @@ const checkAddRoomResponse = (data, dispatch, navigation, apiKey) => {
         type: UPDATE_ERROR_ROOM,
         payload: already_exist_class_add_room_error,
       });
-
+    case Supervisor:
+      return dispatch({
+        type: UPDATE_ERROR_ROOM,
+        payload: classroom_not_exist,
+      });
     case Success:
       navigation.navigate(NavPaths.teacherMainScreen);
       alert(room_added);

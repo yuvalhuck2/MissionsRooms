@@ -2,6 +2,7 @@ package missions.room.Domain.Users;
 
 import DataAPI.GroupType;
 import DataAPI.OpCode;
+import DataAPI.TeacherData;
 import missions.room.Domain.Classroom;
 
 import javax.persistence.Entity;
@@ -15,6 +16,10 @@ public class Supervisor extends Teacher {
 
     public Supervisor(String alias, String firstName, String lastName, Classroom classroom, GroupType groupType) {
         super(alias, firstName, lastName,classroom,groupType);
+    }
+
+    public Supervisor(TeacherData profileDetails) {
+        super(profileDetails);
     }
 
     @Override
