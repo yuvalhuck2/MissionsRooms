@@ -25,4 +25,6 @@ export {default as ManageUsersScreen} from './ManageUsersScreen'
 export { default as Test} from './Test'
 export {default as AddOpenQuestionMissionScreen} from './AddOpenQuestionMissionScreen'
 export {default as SolveOpenQuestionMissionScreen} from './SolveOpenQuestionMissionScreen'
+export {default as WatchOpenAnswerSolutionScreen} from './WatchOpenAnswerSolutionScreen'
+export {default as WatchAllOpenQuestionMissionsScreen} from './WatchAllOpenQuestionMissionsScreen'
 

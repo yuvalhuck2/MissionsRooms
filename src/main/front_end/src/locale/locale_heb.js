@@ -34,6 +34,13 @@ export const uploadStrings = {
   success: 'מערכת אותחלה בהצלחה',
 };
 
+export const watchOpenSolution = {
+  download_btn: 'הורד קובץ',
+  header: 'פתרון משימה',
+  question_title: 'שאלה:',
+  answer_title: 'תשובה:'
+};
+
 export const uploadStringsErrors = {
   file_number_error: 'מספר הקבצים צריך להיות 4',
   server_not_responding: 'השרת לא מגיב',
@@ -397,4 +404,9 @@ export const ManageUsersStrings = {
   manage_users:'ניהול משתמשים',
   press_user_for_details:'לחצו על משתמש על מנת לערוך את נתוניו או למחוק אותו',
   transfer:'העברת קבוצה',
+};
+
+export const WatchAllOpenQuestionMissions = {
+  mission_title: 'משימה מספר ',
+  title:'משימות עם תשובה פתוחה בחדר: '
 };
