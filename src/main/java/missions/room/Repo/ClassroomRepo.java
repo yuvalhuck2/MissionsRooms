@@ -3,6 +3,7 @@ package missions.room.Repo;
 import CrudRepositories.ClassroomRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
+import javassist.bytecode.Opcode;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Domain.Classroom;
 import org.assertj.core.util.Lists;
@@ -82,6 +83,26 @@ public class ClassroomRepo {
         catch (Exception e){
             log.error("error to find classroom " + classroom,e);
             return new Response<>(null,OpCode.DB_Error);
+        }
+    }
+
+    public Response<Boolean> delete(Classroom classroom) {
+        try{
+            classRoomRepository.delete(classroom);
+            return new Response<>(true, OpCode.Success);
+        }
+        catch (Exception e){
+            log.error("error to delete classroom " + classroom, e);
+            return new Response<>(false, OpCode.DB_Error);
+        }
+    }
+
+    public Response<List<String>> getAllClassroomNames() {
+        try {
+            return new Response<List<String>>(Lists.newArrayList(classRoomRepository.getAllNames()), OpCode.Success);
+        }
+        catch (Exception e){
+            return new Response<>(new ArrayList<>(), OpCode.DB_Error);
         }
     }
 }

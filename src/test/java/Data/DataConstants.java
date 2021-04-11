@@ -18,4 +18,5 @@ public class DataConstants {
     public static final String THIRD_VALID_STUDENT_APIKEY="third apiKey";
     public static final String INVALID_KEY_OPEN_ANS = "invalid_openAns";
     public static final String TEMP_PASSWORD = "temp_password";
+    public static final String NOT_EXIST_CLASSROOM = "not exsit classroom";
 }

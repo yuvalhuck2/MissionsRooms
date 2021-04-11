@@ -18,6 +18,7 @@ import ManageUsersReducer from './ManageUsersReducer';
 import SolveOpenQuestion from './SolveOpenQuestionReducer'
 import AddUser from './AddUserReducer'
 import ResetPasswordReducer from './ResetPasswordReducer'
+import CloseClassroomReducer from './CloseClassroomReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -39,4 +40,5 @@ export default combineReducers({
   SolveOpenQuestion: SolveOpenQuestion,
   addUser: AddUser,
   resetPassword: ResetPasswordReducer,
+  closeClassroom: CloseClassroomReducer,
 });

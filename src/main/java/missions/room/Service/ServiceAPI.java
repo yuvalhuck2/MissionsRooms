@@ -347,15 +347,7 @@ public class ServiceAPI {
         throw new RuntimeException();
     }
 
-    /**
-     * req 6.7 - close classroom
-     * @param auth - authentication object
-     * @param classroom - tha identifier of the classroom need to close
-     * @return if classroom closed successfully
-     */
-    public Response<Boolean> CloseClassroom(Auth auth,String classroom){
-        throw new RuntimeException();
-    }
+
 
     /**
      * req 6.8 - transfer teacher classroom
