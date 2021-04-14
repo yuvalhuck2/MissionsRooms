@@ -287,6 +287,7 @@ const connectToWebSocketFromLogin = (apiKey,dispatch, navigation) => {
         dispatch({ type: FINISH_MISSION, payload: apiKey });
         navigation.navigate(NavPaths.studentMainScreen);
         dispatch({type:STUDENT_DIALOG, payload:has_unapproveds_solutions})
+        break;
       case Update_Room:
         dispatch({ type: FINISH_MISSION, payload: apiKey });
         moveToMission(value,dispatch,navigation,false);

@@ -41,6 +41,6 @@ export default combineReducers({
   SolveOpenQuestion: SolveOpenQuestion,
   addUser: AddUser,
   resetPassword: ResetPasswordReducer,
-  WatchOpenAnswer: WatchOpenAnswerReducer
+  WatchOpenAnswer: WatchOpenAnswerReducer,
   closeClassroom: CloseClassroomReducer,
 });
