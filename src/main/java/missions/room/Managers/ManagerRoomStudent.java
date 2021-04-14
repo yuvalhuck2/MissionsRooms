@@ -163,14 +163,18 @@ public class ManagerRoomStudent extends StudentManager {
         OpCode reason;
         String nextInCharge=null;
         NonPersistenceNotification<RoomDetailsData> notification;
-        if (room.isLastMission()) {
+        if (room.toCloseRoom()) {
             reason = roomRepo.deleteRoom(room).getReason();
             if (reason != OpCode.Success) {
                 log.error(String.format("Failed to delete room: {0}. function: updateRoomAndMissionInCharge", room.getRoomId()));
             }
             ram.deleteRoom(room.getRoomId());
             notification = new NonPersistenceNotification<>(OpCode.Finish_Missions_In_Room, null);
-        } else {
+        }
+        else if(room.isLastMission()){
+            notification = new NonPersistenceNotification<>(OpCode.Has_Unapproved_Solutions, null);
+        }
+        else{
             room.increaseCurrentMission();
             reason = roomRepo.save(room).getReason();
             if (reason != OpCode.Success) {

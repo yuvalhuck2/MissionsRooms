@@ -293,6 +293,7 @@ export const passToMyRoomsErrors = {
 
 export const webSocketMessages = {
   final: '\nהחדר הסתיים',
+  has_unapproveds_solutions:'החדר הסתיים, אך יש פתרונות שעדיין לא אושרו',
 }
 
 export const addITStrings = {
