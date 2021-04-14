@@ -51,6 +51,7 @@ import {
   CHANGE_IN_CHARGE,
   FINISH_STORY_MISSION,
   CHANGE_STORY_IN_CHARGE,
+  Has_Unapproved_Solutions,
 } from './types';
 
 const {
@@ -75,6 +76,7 @@ const {
 
 const {
   final,
+  has_unapproveds_solutions,
 } = webSocketMessages;
 
 // THIS IS FOR CHECKING DNS ADDRESS WHEN RUNNING EXPO ON PHYSICAL DEVICE
@@ -280,6 +282,11 @@ const connectToWebSocketFromLogin = (apiKey,dispatch, navigation) => {
         dispatch({ type: FINISH_MISSION, payload: apiKey });
         navigation.navigate(NavPaths.studentMainScreen);
         dispatch({type:STUDENT_DIALOG, payload:final})
+        break;
+      case Has_Unapproved_Solutions:
+        dispatch({ type: FINISH_MISSION, payload: apiKey });
+        navigation.navigate(NavPaths.studentMainScreen);
+        dispatch({type:STUDENT_DIALOG, payload:has_unapproveds_solutions})
         break;
       case Update_Room:
         dispatch({ type: FINISH_MISSION, payload: apiKey });
