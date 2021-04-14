@@ -32,7 +32,8 @@ import {
   ManageUsersScreen,
     AddUserScreen,
     ResetPasswordScreen,
-  Test,
+    CloseClassroomScreen,
+    Test,
 } from './components/screens';
 
 const Stack = createStackNavigator();
@@ -41,6 +42,10 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Register'>
+      <Stack.Screen
+        name = 'CloseClassroom'
+        component={CloseClassroomScreen}
+      />
       <Stack.Screen
           name='ResetPassword'
           component={ResetPasswordScreen}

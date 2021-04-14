@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController // This means that this class is a Controller
 @RequestMapping(path="/it")
 public class ITController extends AbsController{
@@ -42,5 +44,11 @@ public class ITController extends AbsController{
     public Response<?> addNewTeacher(@RequestBody String teacherDetailsData){
         TeacherData teacherData= json.fromJson(teacherDetailsData, TeacherData.class);
         return itService.addTeacher(teacherData.getApiKey(), teacherData);
+    }
+
+    @PostMapping("/classroom/close")
+    public Response<?> closeClassroom(@RequestBody String classRoomDataString){
+        ClassRoomData classRoomData = json.fromJson(classRoomDataString, ClassRoomData.class);
+        return itService.closeClassroom(classRoomData.getApiKey(), classRoomData.getName());
     }
 }

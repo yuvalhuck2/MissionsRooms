@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class ClassRoomData {
+    private String apiKey;
     private String name;
     private List<GroupData> groups;
     private int points;
@@ -24,6 +25,10 @@ public class ClassRoomData {
 
     public int getPoints() {
         return points;
+    }
+
+    public String getApiKey() {
+        return apiKey;
     }
 
     @Override

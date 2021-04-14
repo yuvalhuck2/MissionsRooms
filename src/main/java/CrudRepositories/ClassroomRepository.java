@@ -20,4 +20,7 @@ public interface ClassroomRepository extends CrudRepository<Classroom, String> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select a from Classroom a where a.className = :className")
     Classroom findClassroomForWrite(@Param("className") String className);
+
+    @Query("select className from Classroom")
+    Iterable<String> getAllNames();
 }

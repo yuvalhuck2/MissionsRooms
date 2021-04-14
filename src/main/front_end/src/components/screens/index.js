@@ -28,5 +28,6 @@ export {default as SolveOpenQuestionMissionScreen} from './SolveOpenQuestionMiss
 export {default as WatchOpenAnswerSolutionScreen} from './WatchOpenAnswerSolutionScreen'
 export {default as WatchAllOpenQuestionMissionsScreen} from './WatchAllOpenQuestionMissionsScreen'
 export { default as AddUserScreen} from './AddUserScreen'
-export {default as ResetPasswordScreen} from './ResetPasswordScreen'
+export { default as ResetPasswordScreen} from './ResetPasswordScreen'
+export { default as CloseClassroomScreen} from './CloseClassroomScreen'
 

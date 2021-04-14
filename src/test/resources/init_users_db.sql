@@ -4,10 +4,10 @@ INSERT INTO USER (alias, password) VALUES
 ('tal', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec');
 
 INSERT INTO Classroom (class_name,points) VALUES
-('0=4',21);
+('0=4',21), ('1=3',2);
 
 INSERT INTO Class_group (group_name, group_type,classroom,points) VALUES
-('A',0,'0=4',20);
+('A',0,'0=4',20), ('B',0,'1=3',20), ('A2',1,'1=3',20);
 
 INSERT INTO SCHOOL_USER (first_name, last_name, alias) VALUES
 ('niv', 'shir', 'niv'), ('roy', 'levi', 'roy4'), ('tal', 'cohen', 'tal');

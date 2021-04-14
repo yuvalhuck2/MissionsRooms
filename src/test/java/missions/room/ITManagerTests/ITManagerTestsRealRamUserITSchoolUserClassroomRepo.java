@@ -3,15 +3,19 @@ package missions.room.ITManagerTests;
 import CrudRepositories.ClassroomRepository;
 import Data.Data;
 import DataAPI.OpCode;
+import DataAPI.Response;
+import missions.room.Domain.Classroom;
 import missions.room.Managers.ITManager;
 import missions.room.Repo.ClassroomRepo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
 
+import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -40,8 +44,9 @@ public class ITManagerTestsRealRamUserITSchoolUserClassroomRepo extends ITManage
     }
 
     @Override
-    protected void initClassroomRepo() {
+    protected void initClassroomRepo(Classroom empty) {
         classroomRepository.save(dataGenerator.getClassroom(Data.Valid_Classroom));
+        classroomRepository.save(empty);
         try {
             Field classroomRepo = ITManager.class.getDeclaredField("classroomRepo");
             classroomRepo.setAccessible(true);
@@ -70,6 +75,39 @@ public class ITManagerTestsRealRamUserITSchoolUserClassroomRepo extends ITManage
         when(mockClassroomRepository.save(any()))
                 .thenThrow(new RuntimeException());
         testAddStudentInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    void testCloseClassroomClassroomRepoFindForWriteClassroomThrowsException(){
+        setUpClassroomRepoMock();
+        when(mockClassroomRepository.findClassroomForWrite(anyString()))
+                .thenThrow(new RuntimeException());
+        testCloseClassroomInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    @Override
+    void testCloseClassroomHappyCase(){
+        super.testCloseClassroomHappyCase();
+        assertFalse(classroomRepository.existsById(classroomName));
+    }
+
+    @Test
+    void testCloseClassroomClassroomRepoDeleteClassroomThrowsException(){
+        setUpClassroomRepoMock();
+        when(mockClassroomRepository.findClassroomForWrite(anyString()))
+                .thenReturn(dataGenerator.getClassroom(Data.Empty_Students));
+        Mockito.doThrow(new RuntimeException())
+                .when(mockClassroomRepository).delete(any());
+        testCloseClassroomInvalid(OpCode.DB_Error);
+    }
+
+    @Override
+    protected void testCloseClassroomInvalid(OpCode opCode) {
+        super.testCloseClassroomInvalid(opCode);
+        assertTrue(classroomRepository.existsById(dataGenerator
+                .getClassroom(Data.Empty_Students)
+                .getClassName()));
     }
 
     @Override

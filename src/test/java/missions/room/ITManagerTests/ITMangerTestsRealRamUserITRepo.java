@@ -129,8 +129,16 @@ public class ITMangerTestsRealRamUserITRepo extends ITMangerRealRamUserRepo {
     }
 
     @Test
+    @Override
+    void testCloseClassroomITRepoFindByIdThrowsException(){
+        setUpITRepoFindByIdThrowsException();
+        testCloseClassroomInvalid(OpCode.DB_Error);
+    }
+
+    @Test
     void testAddTeacherRepoFindByIdThrowsException(){
         setUpITRepoFindByIdThrowsException();
         testAddTeacherInvalid(OpCode.DB_Error);
     }
+
 }
