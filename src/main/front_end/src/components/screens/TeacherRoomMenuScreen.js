@@ -65,31 +65,31 @@ class TeacherRoomMenuForm extends Component{
         const {navigation,apiKey ,roomsType,currentRoom}=this.props;
         console.log(currentRoom);
         //if(currentRoom!=''){
-            let progress = currentRoom.currentMissionNumber / currentRoom.numberOfMissions;
-            return (
-                <View style={styles.container}>
-                    <Card>
-                        <Card.Content>
-                            <Title>{currentRoom.name}</Title>
-                            <Paragraph>{this.getProgressPresentation(currentRoom)}</Paragraph>
-                            <ProgressBar progress={progress} color={theme.colors.primary}/>
-                            <Paragraph>{this.getMissionPresentation(currentRoom.currentMission)}</Paragraph>
+        let progress = currentRoom.currentMissionNumber / currentRoom.numberOfMissions;
+        return (
+            <View style={styles.container}>
+                <Card>
+                    <Card.Content>
+                        <Title>{currentRoom.name}</Title>
+                        <Paragraph>{this.getProgressPresentation(currentRoom)}</Paragraph>
+                        <ProgressBar progress={progress} color={theme.colors.primary}/>
+                        <Paragraph>{this.getMissionPresentation(currentRoom.currentMission)}</Paragraph>
 
-                        </Card.Content>
-                    </Card>
-                    <View style={{flex: 1}}>
-                        <Menu.Item icon="chat" onPress={() => this.props.enterChatTeacher({
-                            navigation,
-                            apiKey,
-                            roomId: currentRoom.roomId
-                        })} title={chat}/>
-                        <Menu.Item icon="answer" onPress={() => {
-                        }} title={approve_answer}/>
-                        <Menu.Item icon="close" onPress={() => this.props.closeRoom({navigation, apiKey, currentRoom})}
-                                   title={close_room}/>
-                    </View>
+                    </Card.Content>
+                </Card>
+                <View style={{flex: 1}}>
+                    <Menu.Item icon="chat" onPress={() => this.props.enterChatTeacher({
+                        navigation,
+                        apiKey,
+                        roomId: currentRoom.roomId
+                    })} title={chat}/>
+                    <Menu.Item icon="answer" onPress={() => {
+                    }} title={approve_answer}/>
+                    <Menu.Item icon="close" onPress={() => this.props.closeRoom({navigation, apiKey, currentRoom})}
+                               title={close_room}/>
                 </View>
-            );
+            </View>
+        );
 
     }
         /*

@@ -10,7 +10,8 @@ public class RoomDetailsData {
     private MissionData currentMission;
     private RoomType roomType;
     private boolean waitingForStory;
-
+    private int currentMissionNumber;
+    private int numberOfMissions;
     public RoomDetailsData(String roomId, String name, MissionData currentMission, RoomType roomType, boolean waitingForStory){
         this.roomId=roomId;
         this.name=name;
@@ -53,6 +54,22 @@ public class RoomDetailsData {
 
     public boolean isWaitingForStory() {
         return waitingForStory;
+    }
+
+    public int getCurrentMissionNumber() {
+        return currentMissionNumber;
+    }
+
+    public void setCurrentMissionNumber(int currentMissionNumber) {
+        this.currentMissionNumber = currentMissionNumber;
+    }
+
+    public int getNumberOfMissions() {
+        return numberOfMissions;
+    }
+
+    public void setNumberOfMissions(int numberOfMissions) {
+        this.numberOfMissions = numberOfMissions;
     }
 
     @Override

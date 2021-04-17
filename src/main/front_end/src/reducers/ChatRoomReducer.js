@@ -1,4 +1,11 @@
-import {CLEAR_STATE, ENTER_CHAT_ROOM, LOGIN_TEACHER, UPDATE_CHAT_ROOM, UPDATE_SEND_CHAT_ROOM} from "../actions/types";
+import {
+    CLEAR_STATE,
+    ENTER_CHAT_ROOM,
+    LOGIN_TEACHER,
+    PASS_TO_ROOMS,
+    UPDATE_CHAT_ROOM,
+    UPDATE_SEND_CHAT_ROOM
+} from "../actions/types";
 import {GiftedChat} from 'react-native-gifted-chat';
 const initialState = {
     messagesProps:[],
@@ -19,6 +26,9 @@ export default (state = initialState, action) => {
         case ENTER_CHAT_ROOM:
             const {name,apiKey,roomId}=action.payload;
             return {...state,name:name,apiKey:apiKey,roomId:roomId}
+
+
+
             /*
         case UPDATE_SEND_CHAT_ROOM:
             //alert(action.payload.text);
@@ -34,7 +44,7 @@ export default (state = initialState, action) => {
                     }
                 }])};*/
         case LOGIN_TEACHER:
-            return {...state,apiKey: action.payload}
+            return {...initialState,apiKey: action.payload, errorMessage:''}
         case CLEAR_STATE:
             return initialState;
         default:

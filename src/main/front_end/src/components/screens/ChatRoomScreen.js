@@ -157,8 +157,8 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state) => {
-    const { roomId, errorMessage , apiKey,name,messages,typing} = state.ChatRoom;
-    return { roomId, errorMessage , apiKey,name,messages,typing};
+    const { roomId, errorMessage , apiKey,name,messagesProps,typing} = state.ChatRoom;
+    return { roomId, errorMessage , apiKey,name,messagesProps,typing};
 };
 
 export default connect(mapStateToProps, {

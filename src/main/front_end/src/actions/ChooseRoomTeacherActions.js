@@ -54,7 +54,7 @@ export const passToRoomMenu = ({currentRoom,navigation,apiKey})=> {
 export const sendMessage = ({navigation,newMessage,roomId,apiKey}) =>
 {
     return async (dispatch)=>{
-        dispatch({type:LOGIN_TEACHER,payload:apiKey});
+        //dispatch({type:LOGIN_TEACHER,payload:apiKey});
         try {
             const res = await API.post(APIPaths.sendChatMessage, {apiKey, newMessage, roomId});
             if (res) {
@@ -100,7 +100,7 @@ export const enterChatTeacher = ({navigation,apiKey,roomId})=> {
 
 export const enterChatTeacher = ({navigation,apiKey,roomId})=>{
     return async (dispatch)=>{
-        dispatch({type:LOGIN_TEACHER,payload:apiKey});
+        //dispatch({type:LOGIN_TEACHER,payload:apiKey});
         try{
             const res=await API.post(APIPaths.enterChat,{apiKey,roomId});
             if(res){
@@ -108,7 +108,8 @@ export const enterChatTeacher = ({navigation,apiKey,roomId})=>{
                     data:res.data,
                     dispatch,
                     navigation,
-                    apiKey,roomId
+                    apiKey,
+                    roomId,
                 })
             } else {
                 dispatch({type:UPDATE_ERROR_CHAT_ROOM,payload:server_error});

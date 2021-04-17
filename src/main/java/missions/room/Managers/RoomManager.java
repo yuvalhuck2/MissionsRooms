@@ -247,21 +247,28 @@ public class RoomManager extends TeacherManager {
         if(checkTeacher.getValue().getClassroom()==null){
             return new Response<>(false,OpCode.Teacher_Classroom_Is_Null);
         }
-
-        Response<Room> roomResponse=roomRepo.findRoomById(roomId);
-        if(roomResponse.getReason()!=OpCode.Success){
-            return new Response<>(false,roomResponse.getReason());
+        Room room;
+        if(ram.isRoomExist(roomId)){
+            room=ram.getRoom(roomId);
         }
-        Room room=roomResponse.getValue();
+        else {
+            Response<Room> roomResponse = roomRepo.findRoomById(roomId);
+            if (roomResponse.getReason() != OpCode.Success) {
+                return new Response<>(false, roomResponse.getReason());
+            }
+            room=roomResponse.getValue();
+        }
+
         Response<Boolean> responseDeleteRoom;
         synchronized (room) {
-            if (room.getConnectedUsersAliases().size() > 0) {
-                return new Response<>(false, OpCode.CONNECTED_STUDENTS);
-            }
             Response<Boolean> belongsToTeacher=checkRoomBelongToTeacher(room.getRoomId(),checkTeacher.getValue());
             if(belongsToTeacher.getReason()!=OpCode.Success){
                 return belongsToTeacher;
             }
+            if (room.getConnectedUsersAliases().size() > 0) {
+                return new Response<>(false, OpCode.CONNECTED_STUDENTS);
+            }
+
             /*
             OpCode response=ram.connectToRoom(roomId,ram.getAlias(apiKey));
             if(response!=OpCode.Teacher){
@@ -523,6 +530,8 @@ public class RoomManager extends TeacherManager {
         List<RoomDetailsData> roomDetailsDataList = new ArrayList<>();
         for (Room room : rooms) {
             RoomDetailsData roomDetailsData= room.getData();
+            roomDetailsData.setCurrentMissionNumber(room.getCurrentMissionIndex());
+            roomDetailsData.setNumberOfMissions(room.getRoomTemplate().getMissions().size());
             if(roomDetailsData!=null) {
                 roomDetailsDataList.add(roomDetailsData);
             }

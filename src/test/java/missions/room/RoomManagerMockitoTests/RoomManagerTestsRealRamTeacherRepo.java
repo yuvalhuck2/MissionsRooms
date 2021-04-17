@@ -42,10 +42,10 @@ public class RoomManagerTestsRealRamTeacherRepo extends RoomManagerTestsRealRam 
 
 
         classroomRepository.save(dataGenerator.getClassroom(Data.Valid_Classroom));
-        //classroomRepository.save(dataGenerator.getClassroom(Data.Valid_2Students_From_Different_Groups));
+        classroomRepository.save(dataGenerator.getClassroom(Data.Valid_Without_Students));
         teacherCrudRepository.save(teacher);
         teacherCrudRepository.save(dataGenerator.getTeacher(Data.VALID_WITHOUT_CLASSROOM));
-        //teacherCrudRepository.save(dataGenerator.getTeacher(Data.Valid_2Students_From_Different_Groups));
+        teacherCrudRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM2));
 
         try {
             Field teacherRepo = TeacherManager.class.getDeclaredField("teacherRepo");

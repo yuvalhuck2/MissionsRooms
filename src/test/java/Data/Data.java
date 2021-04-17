@@ -1,7 +1,7 @@
 package Data;
 
 public enum Data {
-    VALID,VALID_WITH_CLASSROOM2,
+    VALID,VALID_WITH_CLASSROOM2,Valid_Without_Students,
     INVALID,
     ADMIN,
     NULL,

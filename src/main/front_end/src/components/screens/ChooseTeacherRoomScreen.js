@@ -39,8 +39,8 @@ class ChooseClassroomRoomForm extends Component{
     renderButton=({apiKey,presentRooms})=>{
         //const{apiKey,presentRooms}=this.props;
         console.log(presentRooms);
-        if(presentRooms!=''){
-            if (presentRooms.roomDetailsDataList.length>0){
+        if(presentRooms!=='') {
+            if (presentRooms.roomDetailsDataList.length > 0) {
                 return (
                     <Button
                         mode='contained'
@@ -50,8 +50,7 @@ class ChooseClassroomRoomForm extends Component{
                         {solve}
                     </Button>
                 )
-            }
-            else{
+            } else {
                 return (
                     <View>
                         <Text style={styles.errorTextStyle}>{no_rooms}</Text>
@@ -59,6 +58,7 @@ class ChooseClassroomRoomForm extends Component{
                 )
             }
         }
+
         else{
             return (
                 <View>
@@ -92,7 +92,7 @@ class ChooseClassroomRoomForm extends Component{
     renderRadioButtons=({presentRooms})=>{
         //const {presentRooms}=this.props;
         let lst=[];
-        if(presentRooms!='') {
+        if(presentRooms !== '') {
             if (presentRooms.roomDetailsDataList.length > 0) {
                 presentRooms.roomDetailsDataList.map((room) => {
                     lst.push(

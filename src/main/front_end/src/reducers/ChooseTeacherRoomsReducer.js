@@ -35,11 +35,12 @@ export default (state = initialState, action) => {
         case ROOM_CHANGED:
             return { ...state, currentRoom:action.payload};
         case GET_TEACHER_ROOMS_TYPE:
-            return {...state, roomsType:action.payload,currentRoom:undefined,};
+            return {...state, roomsType:action.payload};
         case LOGIN_TEACHER:
             return { ...initialState, apiKey: action.payload, errorMessage:'' };
         case PASS_TO_ROOMS:
             return {...state,presentRooms:action.payload};
+
             /*
         case UPDATE_CLOSE_ROOM:
             //presentRooms.filter((room)=>room.roomId!=currentRoom.roomId);

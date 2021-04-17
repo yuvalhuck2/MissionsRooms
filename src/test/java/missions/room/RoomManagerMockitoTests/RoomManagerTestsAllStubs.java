@@ -108,6 +108,8 @@ public class RoomManagerTestsAllStubs {
                 .thenReturn(null);
         when(mockRam.getAlias(VALID2_TEACHER_APIKEY))
                 .thenReturn(dataGenerator.getTeacher(Data.VALID_WITHOUT_CLASSROOM).getAlias());
+        when(mockRam.getAlias(VALID3_TEACHER_APIKEY))
+                .thenReturn(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM2).getAlias());
     }
 
     protected void initTeacherRepo( Teacher teacher) {
@@ -120,6 +122,8 @@ public class RoomManagerTestsAllStubs {
                 .thenReturn(new Response<>(dataGenerator.getTeacher(Data.VALID_WITHOUT_CLASSROOM), OpCode.Success));
         when(teacherRepoMock.findTeacherById(WRONG_USER_NAME))
                 .thenReturn(new Response<>(null,OpCode.Success));
+        when(teacherRepoMock.findTeacherById(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM2).getAlias()))
+                .thenReturn(new Response<>(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM2),OpCode.Success));
 
 
 
@@ -141,17 +145,21 @@ public class RoomManagerTestsAllStubs {
                 .thenReturn(new Response<>(null,OpCode.Success));
         when(roomRepoMock.findGroupRoomByAlias("g2"))
                 .thenReturn(new Response<>(null,OpCode.Success));
+        when(roomRepoMock.findGroupRoomByAlias("g11"))
+                .thenReturn(new Response<>(null,OpCode.Success));
+        when(roomRepoMock.findGroupRoomByAlias("g22"))
+                .thenReturn(new Response<>(null,OpCode.Success));
         when(roomRepoMock.findStudentRoomByAlias(student.getAlias()))
                 .thenReturn(new Response<>((StudentRoom)room,OpCode.Success));
-        when(roomRepoMock.findRoomById(dataGenerator.getRoom(Data.Valid_2Students_From_Different_Groups).getRoomId()))
-                .thenReturn(new Response<>(dataGenerator.getRoom(Data.Valid_2Students_From_Different_Groups),OpCode.Success));
-
+        when(roomRepoMock.findClassroomRoomByAlias(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM2).getClassroom().getClassName()))
+                .thenReturn(new Response<>(null,OpCode.Success));
 
     }
 
 
     @Test
     protected void testCloseRoomConnectedStudents(){
+
         Response<Boolean> response=roomManager.closeRoom(teacherApi,room.getRoomId());
         assertFalse(response.getValue());
         assertEquals(response.getReason(),OpCode.CONNECTED_STUDENTS);
@@ -162,7 +170,6 @@ public class RoomManagerTestsAllStubs {
         for(String connected:room.getConnectedUsersAliases()){
             room.disconnect(connected);
         }
-
         Response<Boolean> response=roomManager.closeRoom(teacherApi,room.getRoomId());
         assertTrue(response.getValue());
         assertEquals(response.getReason(),OpCode.Success);
@@ -184,10 +191,8 @@ public class RoomManagerTestsAllStubs {
 
     @Test
     protected void testCloseRoomNotBelongToTeacher(){
-        for(String connected:room.getConnectedUsersAliases()){
-            room.disconnect(connected);
-        }
-        Response<Boolean> response=roomManager.closeRoom(VALID2_TEACHER_APIKEY,room.getRoomId());
+
+        Response<Boolean> response=roomManager.closeRoom(VALID3_TEACHER_APIKEY,room.getRoomId());
         assertFalse(response.getValue());
         assertEquals(response.getReason(),OpCode.NOT_BELONGS_TO_TEACHER);
     }

@@ -24,7 +24,7 @@ const {
   wrong_key_error,
   teacher_not_exists_error,
   classroom_not_exist,
-  teacher_not_exists_error, not_exist_room_error,teacher_classroom_is_null_error,db_error
+   not_exist_room_error,teacher_classroom_is_null_error,db_error
 } = GeneralErrors;
 
 export const passToAddTemplate = ({ navigation, apiKey }) => {

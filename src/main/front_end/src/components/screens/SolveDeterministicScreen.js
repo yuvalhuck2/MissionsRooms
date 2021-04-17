@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ActivityIndicator,Appbar  } from 'react-native-paper';
+import { ActivityIndicator,Appbar ,IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { answerChanged, sendDeterministicAnswer } from '../../actions/SolveDeterministicActions';
 import {handleBack} from '../../actions/ChooseStudentRoomActions';
@@ -64,6 +64,16 @@ class SolveDeterministicForm extends Component {
     )
   }
 
+  renderChatButton(){
+    return <IconButton
+      icon="chat"
+      size={30}
+      style={styles.chatButton}
+      color={theme.colors.primary}
+      onPress={()=>console.log("pressed")}/>//this.props.enterChatStudent}/>
+
+  }
+
   renderError() {
     const { errorMessage } = this.props;
 
@@ -101,6 +111,7 @@ class SolveDeterministicForm extends Component {
         {this.renderTextBox()}
         {this.renderButton()}
         {this.renderError()}
+        {this.renderChatButton()}
       </KeyboardAwareScrollView>
     );
   }
@@ -132,6 +143,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: theme.colors.error,
   },
+  chatButton:{
+      //alignSelf: 'flex-end',
+      position: 'absolute',
+      top:550,
+      right:0,
+  },
 });
 
 const mapStateToProps = (state) => {
@@ -143,4 +160,5 @@ export default connect(mapStateToProps, {
   answerChanged,
   sendDeterministicAnswer,
   handleBack,
+    //enterChatStudent,
 })(SolveDeterministicForm);
