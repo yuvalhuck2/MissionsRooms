@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     backgroundColor: backgroundColor
   },
   button: {width: DeviceWidth*0.5,
-     height: DeviceWidth*0.33,
+     height: DeviceWidth*0.3,
      borderStyle: 'solid',
      borderWidth: 1,
      borderColor: 'black',

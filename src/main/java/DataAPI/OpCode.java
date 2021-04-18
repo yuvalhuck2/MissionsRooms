@@ -42,8 +42,9 @@ public enum OpCode implements Serializable {
     Trivia_Subject_Already_Exists, Invalid_Trivia_Subject, Invalid_Trivia_Question, SUBJECT_DOESNT_EXIST,
     INVALID_ROOM_ID, STUDENT_NOT_IN_CHARGE, FAILED_READ_FILE_BYTES, STORY_FINISH, Wrong_Sentence, Message_Not_Exist,
     FAILED_TO_SAVE_FILE,Teacher_Classroom_Is_Null,CONNECTED_STUDENTS,Update_Chat,NOT_BELONGS_TO_TEACHER,
-     MISSION_NOT_IN_ROOM, INVALID_ANSWER, Negative_Points, Wrong_Details, Wrong_Group;
-
+     MISSION_NOT_IN_ROOM, INVALID_ANSWER, Negative_Points, Wrong_Details, Wrong_Group,
+    Has_Students,
+    NO_OPEN_ANSWER_FILE, FILE_SYS_ERROR, Has_Unapproved_Solutions;
 
 
 }

@@ -2,34 +2,37 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import {
-    AddOpenQuestionMissionScreen,
-    SolveOpenQuestionMissionScreen,
-    AddDeterministicMissionScreen,
-    AddRoomScreen,
-    AddRoomTemplateScreen,
-    AddSuggestionScreen,
-    AuthScreen,
-    ChooseMissionsForTemplateScreen,
-    ChooseMissionToAddScreen,
-    ChooseStudentRoomScreen,
-    ChooseTemplateScreen,
-    ITScreen,
-    LoginScreen,
-    RegisterScreen,
-    SolveDeterministicScreen,
-    StudentScreen,
-    TeacherScreen,
-    UploadCsvScreen,
-    AddITScreen,
-    SolveStoryScreen,
-    WatchProfileScreen,
-    WatchMessagesScreen,
-    WatchSuggestionsScreen,
-    ChangePasswordScreen,
-    PointsTableScreen,
-    ManageUsersScreen,
+  WatchAllOpenQuestionMissionsScreen,
+  WatchOpenAnswerSolutionScreen,
+  AddOpenQuestionMissionScreen,
+  SolveOpenQuestionMissionScreen,
+  AddDeterministicMissionScreen,
+  AddRoomScreen,
+  AddRoomTemplateScreen,
+  AddSuggestionScreen,
+  AuthScreen,
+  ChooseMissionsForTemplateScreen,
+  ChooseMissionToAddScreen,
+  ChooseStudentRoomScreen,
+  ChooseTemplateScreen,
+  ITScreen,
+  LoginScreen,
+  RegisterScreen,
+  SolveDeterministicScreen,
+  StudentScreen,
+  TeacherScreen,
+  UploadCsvScreen,
+  AddITScreen,
+  SolveStoryScreen,
+  WatchProfileScreen,
+  WatchMessagesScreen,
+  WatchSuggestionsScreen,
+  ChangePasswordScreen,
+  PointsTableScreen,
+  ManageUsersScreen,
     AddUserScreen,
     ResetPasswordScreen,
+    CloseClassroomScreen,
     Test,
     ChooseTeacherRoomTypeScreen,
     ChooseClassroomRoomScreen,
@@ -44,6 +47,10 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Register'>
       <Stack.Screen
+        name = 'CloseClassroom'
+        component={CloseClassroomScreen}
+      />
+      <Stack.Screen
           name='ResetPassword'
           component={ResetPasswordScreen}
         />
@@ -55,19 +62,19 @@ const App = () => {
           name='ManageUsers'
           component={ManageUsersScreen}
         />
-      <Stack.Screen
+        <Stack.Screen
           name='PointsTable'
           component={PointsTableScreen}
         />
-      <Stack.Screen
+        <Stack.Screen
           name='ChangePassword'
           component={ChangePasswordScreen}
         />
-      <Stack.Screen
+        <Stack.Screen
           name='Test'
           component={Test}
         />
-      <Stack.Screen
+        <Stack.Screen
           name='AddIT'
           component={AddITScreen}
         />
@@ -94,6 +101,14 @@ const App = () => {
         <Stack.Screen
           name='AddOpenQuestionMission'
           component={AddOpenQuestionMissionScreen}
+        />
+        <Stack.Screen
+          name='WatchOpenAnswerSolutionScreen'
+          component={WatchOpenAnswerSolutionScreen}
+        />
+        <Stack.Screen
+          name='WatchAllOpenQuestionMissionsScreen'
+          component={WatchAllOpenQuestionMissionsScreen}
         />
         <Stack.Screen
           name='SolveOpenQuestionMission'

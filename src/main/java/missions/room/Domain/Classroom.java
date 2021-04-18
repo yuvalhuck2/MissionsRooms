@@ -1,6 +1,7 @@
 package missions.room.Domain;
 
 import DataAPI.*;
+import Utils.Utils;
 import missions.room.Domain.Users.SchoolUser;
 import missions.room.Domain.Users.Student;
 import org.hibernate.annotations.OnDelete;
@@ -71,22 +72,8 @@ public class Classroom{
     }
 
     public String getClassHebrewName(){
-        String[] classStrings = className.split("=");
-        return getClassNameByNumber(classStrings[0])+classStrings[1];
+        return Utils.getClassHebrewName(className);
     }
-
-    private String getClassNameByNumber(String classString) {
-        if(classString.equals("0")){
-            return YUD;
-        }
-        if(classString.equals("1")){
-            return YUD_ALEF;
-        }
-        return YUD_BET;
-
-    }
-
-    ;
 
     public boolean addStudent(SchoolUser schoolUser, GroupType groupType) {
         for(ClassGroup classGroup: classGroups){
@@ -161,14 +148,16 @@ public class Classroom{
         return aliases;
     }
 
-
-    public RecordTable getClassroomPointsData(RecordTable recordTableData) {
+    public void getClassroomPointsData(RecordTable recordTableData) {
         recordTableData.addClassroomData(new PointsData(getClassHebrewName(),points));
         for (ClassGroup group :
                 classGroups) {
             group.getGroupPoints(recordTableData,getClassHebrewName());
         }
-        return recordTableData;
 
+    }
+
+    public boolean hasStudents() {
+        return classGroups.parallelStream().anyMatch(ClassGroup::hasStudents);
     }
 }

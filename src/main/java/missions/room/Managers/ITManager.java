@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -213,6 +214,35 @@ public class ITManager {
     }
 
     /**
+     * req 6.7 - close classroom
+     * @param apiKey - authentication object
+     * @param classroomName - tha identifier of the classroom need to close
+     * @return if classroom closed successfully
+     */
+    @Transactional
+    public Response<Boolean> closeClassroom(String apiKey, String classroomName) {
+        log.info("close classroom "+ classroomName);
+        Response<IT> itResponse = checkIT(apiKey);
+        if(itResponse.getReason()!=OpCode.Success){
+            log.error(itResponse.getReason().toString());
+            return new Response<>(false,itResponse.getReason());
+        }
+
+        Response<Classroom> classroomResponse = classroomRepo.findForWrite(classroomName);
+        if(classroomResponse.getReason()!=OpCode.Success){
+            return new Response<>(false, classroomResponse.getReason());
+        }
+
+        Classroom classroom = classroomResponse.getValue();
+        if(classroom.hasStudents()){
+            log.info("classroom has students");
+            return new Response<>(false, OpCode.Has_Students);
+        }
+
+        return classroomRepo.delete(classroom);
+    }
+
+    /**
      * req 6.9 - add user - teacher
      * @param apiKey - authentication object
      * @param profileDetails - the user new details.
@@ -273,4 +303,5 @@ public class ITManager {
         }
         return new Response<>(true,OpCode.Success);
     }
+
 }

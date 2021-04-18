@@ -31,3 +31,6 @@ export const SolveOpenQuestionMission = 'SolveOpenQuestionMission';
 export const addUser = "AddUser"
 export const resetPassword = "ResetPassword"
 export const chatRoom='ChatRoom'
+export const closeClassroom = "CloseClassroom"
+export const WatchOpenAnswerSolutionScreen = 'WatchOpenAnswerSolutionScreen';
+export const WatchAllOpenQuestionMissionsScreen = 'WatchAllOpenQuestionMissionsScreen';

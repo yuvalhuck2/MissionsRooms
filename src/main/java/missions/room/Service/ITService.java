@@ -47,6 +47,16 @@ public class ITService {
     }
 
     /**
+     * req 6.7 - close classroom
+     * @param apiKey - authentication object
+     * @param classroomName - tha identifier of the classroom need to close
+     * @return if classroom closed successfully
+     */
+    public Response<Boolean> closeClassroom(String apiKey,String classroomName){
+        return itManager.closeClassroom(apiKey, classroomName);
+    }
+
+    /**
      * req 6.9 - add user - student
      * @param apiKey - authentication object
      * @param profileDetails - the user new details.

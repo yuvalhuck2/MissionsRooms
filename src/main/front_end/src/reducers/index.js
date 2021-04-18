@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import addITReducer from './addITReducer';
-import addMissionReducer from './addMissionReducer';
+import addITReducer from './AddITReducer';
+import addMissionReducer from './AddMissionReducer';
 import addRoomReducer from './AddRoomReducer';
-import addRoomTemplateReducer from './addRoomTemlateReducer';
+import addRoomTemplateReducer from './AddRoomTemlateReducer';
 import AuthReducer from './AuthReducer';
 import ChooseStudentRoom from './ChooseStudentRoomReducer';
 import ITReducer from './ITReducer';
@@ -20,6 +20,8 @@ import AddUser from './AddUserReducer'
 import ResetPasswordReducer from './ResetPasswordReducer'
 import ChatRoomReducer from './ChatRoomReducer';
 import ChooseTeacherRoomsReducer from './ChooseTeacherRoomsReducer';
+import WatchOpenAnswerReducer from './WatchOpenAnswerReducer'
+import CloseClassroomReducer from './CloseClassroomReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -43,4 +45,6 @@ export default combineReducers({
   SolveOpenQuestion: SolveOpenQuestion,
   addUser: AddUser,
   resetPassword: ResetPasswordReducer,
+  WatchOpenAnswer: WatchOpenAnswerReducer,
+  closeClassroom: CloseClassroomReducer,
 });

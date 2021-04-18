@@ -76,8 +76,6 @@ class TeacherForm extends Component {
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]}
             onPress={()=>this.props.passToWatchProfiles({navigation,apiKey,isStudent: false})}>
-            <Text style={{color:"white"}}>{watchProfiles}</Text>  
-            onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
             <Text style={{color:"white"}}>{watchProfiles}</Text>
           </Button>
         </View>
@@ -98,6 +96,10 @@ class TeacherForm extends Component {
             onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
             <Text style={{color:"white"}}>{watch_messages}</Text>
           </Button>
+            <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
+                    onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
+                <Text style={{color:"white"}}>{watch_messages}</Text>
+            </Button>
           <Button onPress={this.onLogout} style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]}>
           <Text style={{color:"white"}}>{main_screen}</Text> 
             <Icon name='exit-to-app' />
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
     backgroundColor: backgroundColor
   },
   button: {width: DeviceWidth*0.5,
-     height: DeviceWidth*0.28,
+     height: DeviceWidth*0.25,
      borderStyle: 'solid',
      borderWidth: 1,
      borderColor: 'black',

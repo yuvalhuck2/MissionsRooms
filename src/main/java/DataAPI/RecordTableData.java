@@ -1,11 +1,7 @@
 package DataAPI;
 
-import java.time.LocalDateTime;
-
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
-//TODO not implemented
 public class RecordTableData {
 
     private List<PointsData> studentsPointsData;

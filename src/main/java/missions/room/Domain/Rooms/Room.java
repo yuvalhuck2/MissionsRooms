@@ -31,6 +31,7 @@ public abstract class Room {
 
     protected int countCorrectAnswer;
 
+    @Transient
     protected boolean isTeacherConnect;
 
     @Transient
@@ -164,7 +165,7 @@ public abstract class Room {
         return currentMission>=roomTemplate.getMissions().size()-1;
     }
 
-    protected boolean toCloseRoom(){
+    public boolean toCloseRoom(){
         return isLastMission()&&allOpenQuestionsApproved();
     }
 
