@@ -10,7 +10,10 @@ import javassist.bytecode.Opcode;
 import lombok.extern.apachecommons.CommonsLog;
 import javafx.util.Pair;
 import lombok.extern.apachecommons.CommonsLog;
+import missions.room.Communications.Publisher.Publisher;
+import missions.room.Communications.Publisher.SinglePublisher;
 import missions.room.Domain.*;
+import missions.room.Domain.Notifications.NonPersistenceNotification;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
 import missions.room.Domain.Rooms.Room;
@@ -38,6 +41,11 @@ public class RoomManager extends TeacherManager {
     @Autowired
     private RoomTemplateRepo roomTemplateRepo;
 
+    private static Publisher publisher;
+
+    public static void initPublisher(){
+        publisher= SinglePublisher.getInstance();
+    }
     public RoomManager() {
         super();
     }
@@ -46,7 +54,7 @@ public class RoomManager extends TeacherManager {
         super(ram, teacherCrudRepository);
         this.roomRepo = new RoomRepo(roomCrudRepository);
         this.roomTemplateRepo=new RoomTemplateRepo(roomTemplateCrudRepository);
-
+        publisher=SinglePublisher.getInstance();
     }
 
     /**
@@ -498,22 +506,6 @@ public class RoomManager extends TeacherManager {
         return new Response<>(response.getValue(), OpCode.Success);
     }
 
-    private Response<Room> getRoomById(String roomId) {
-        Room room = ram.getRoom(roomId);
-        if (room==null) {
-            Response<Room> response = roomRepo.findRoomById(roomId);
-            if (response.getReason() == OpCode.Success) {
-                if (response.getValue() == null) {
-                    return new Response<>(null, OpCode.Not_Exist_Room);
-                }
-                ram.addRoom(response.getValue());
-                room = ram.getRoom(roomId);
-            } else {
-                return response;
-            }
-        }
-        return new Response<>(room, OpCode.Success);
-    }
 
     private Response<List<RoomDetailsData>> getRoomDetailFromRoom(List<Room> rooms) {
         List<RoomDetailsData> roomDetailsDataList = new ArrayList<>();
