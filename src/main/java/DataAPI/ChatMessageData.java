@@ -50,12 +50,9 @@ public class ChatMessageData {
         this.createdAt = dateTime;
     }
 
-    public String getMessageId() {
+    public String get_id() {
         return _id;
     }
 
-    public void setMessageId(String messageId) {
-        this._id = messageId;
-    }
 }
 
