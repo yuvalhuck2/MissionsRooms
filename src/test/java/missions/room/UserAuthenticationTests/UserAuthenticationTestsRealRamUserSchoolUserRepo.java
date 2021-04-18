@@ -8,6 +8,7 @@ import DataAPI.OpCode;
 import DataAPI.RegisterDetailsData;
 import DataAPI.Response;
 import DataAPI.TeacherData;
+import missions.room.Domain.Users.SchoolUser;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.UserAuthenticationManager;
@@ -41,8 +42,7 @@ public class UserAuthenticationTestsRealRamUserSchoolUserRepo extends UserAuthen
     @Autowired
     protected TeacherCrudRepository teacherCrudRepository;
 
-    @Autowired
-    protected ClassroomRepository classroomRepository;
+
 
     @Mock
     private SchoolUserCrudRepository mockSchoolUserCrudRepository;
@@ -50,7 +50,7 @@ public class UserAuthenticationTestsRealRamUserSchoolUserRepo extends UserAuthen
     @Override
     protected void initSchoolUserRepo(Student student) {
         Teacher teacher=dataGenerator.getTeacher(Data.VALID_WITH_GROUP_C);
-        classroomRepository.save(teacher.getClassroom());
+        //classroomRepository.save(teacher.getClassroom());
         teacherCrudRepository.save(teacher);
         try {
             Field userRepo = UserAuthenticationManager.class.getDeclaredField("schoolUserRepo");
@@ -84,7 +84,7 @@ public class UserAuthenticationTestsRealRamUserSchoolUserRepo extends UserAuthen
     void testRegisterInvalidAlreadyRegisteredStudent(){
         Student student = dataGenerator.getStudent(Data.VALID);
         student.setPassword("pass");
-        realSchoolUserRepo.save(student);
+        Response<SchoolUser> res=realSchoolUserRepo.save(student);
         RegisterDetailsData detailsData=dataGenerator.getRegisterDetails(Data.VALID);
         Response<List<TeacherData>> response= userAuthenticationManager.register(detailsData);
         assertNull(response.getValue());
@@ -95,7 +95,7 @@ public class UserAuthenticationTestsRealRamUserSchoolUserRepo extends UserAuthen
     @AfterEach
     void tearDown() {
         teacherCrudRepository.deleteAll();
-        classroomRepository.deleteAll();
+        //classroomRepository.deleteAll();
         super.tearDown();
     }
 }

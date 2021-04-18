@@ -294,7 +294,7 @@ public class RoomManager extends TeacherManager {
         else  if (responseClass.getReason() == OpCode.Success&&responseClass.getValue()==null) {
             classroomResponse=new ArrayList<>();
         }
-        else return new Response<>(null,responseClass.getReason());
+        else return new Response<>(false,responseClass.getReason());
         List<RoomDetailsData> classGroupResponse=getClassGroupRooms(teacher).getValue();
         List<RoomDetailsData> studentsResponse=getStudentsRoom(teacher).getValue();
 

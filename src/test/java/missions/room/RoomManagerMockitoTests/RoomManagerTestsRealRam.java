@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 @Service
 public class RoomManagerTestsRealRam extends RoomManagerTestsAllStubs{
 
-    private Ram realRam;
+    protected Ram realRam;
 
     @Override
     protected void initRam(String alias){
@@ -41,6 +41,16 @@ public class RoomManagerTestsRealRam extends RoomManagerTestsAllStubs{
 
 
 
+    }
+
+    @Override
+    @Test
+    protected void testCloseRoomConnectedStudents(){
+        realRam.deleteRoom(room.getRoomId());
+        realRam.addRoom(dataGenerator.getRoom(Data.Valid_Student));
+        Response<Boolean> response=roomManager.closeRoom(teacherApi,room.getRoomId());
+        assertFalse(response.getValue());
+        assertEquals(response.getReason(),OpCode.CONNECTED_STUDENTS);
     }
 
     @Override
