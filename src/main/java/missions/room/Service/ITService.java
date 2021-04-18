@@ -75,4 +75,8 @@ public class ITService {
     public Response<Boolean> addTeacher(String apiKey, TeacherData profileDetails){
         return itManager.addTeacher(apiKey,profileDetails);
     }
+
+    public Response<Boolean> deleteUser(String apiKey,String alias){
+        return itManager.deleteUser(apiKey,alias);
+    }
 }

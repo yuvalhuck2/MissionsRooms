@@ -67,6 +67,48 @@ public class ITManager {
         return new Response<>(it,OpCode.Success);
     }
 
+
+    @Transactional
+    public Response<Boolean> deleteUser(String apiKey,String alias){
+        Response<IT> itResponse = checkIT(apiKey);
+        if(itResponse.getReason()!=OpCode.Success){
+            log.error(itResponse.getReason().toString());
+            return new Response<>(false,itResponse.getReason());
+        }
+
+        Response<User> userResponse=userRepo.findUserForWrite(alias);
+
+        if(userResponse.getReason()!=OpCode.Success){
+            return new Response<>(false,userResponse.getReason());
+        }
+        User user=userResponse.getValue();
+        synchronized (user){
+            if(user instanceof Teacher){
+                if(((Teacher)user).getClassroom()!=null){
+                    return new Response<>(false,OpCode.TEACHER_HAS_CLASSROOM);
+                }
+                else{
+                    //TODO send notification to teacher
+                    return userRepo.delete(user);
+                }
+            }
+            else if(user instanceof IT){
+                //TODO send notification to teacher
+                return userRepo.delete(user);
+            }
+            else if(user instanceof Student){
+                Response<Classroom> classroomResponse=classroomRepo.findClassroomByStudent(user.getAlias());
+                if(classroomResponse.getReason()!=OpCode.Success){
+                    return new Response<>(false,classroomResponse.getReason());
+                }
+                //TODO bring all student rooms
+
+            }
+        }
+
+        return null;
+    }
+
     /**
      * req 6.4 - adding new IT to the system
      * @param apiKey - authentication object
