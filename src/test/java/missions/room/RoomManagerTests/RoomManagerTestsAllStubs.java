@@ -5,6 +5,7 @@ import Data.Data;
 import Data.DataGenerator;
 import DataAPI.ClassRoomData;
 import DataAPI.OpCode;
+import DataAPI.OpenAnswerResponseMessages;
 import DataAPI.Response;
 import DomainMocks.MockRam;
 import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
@@ -17,9 +18,17 @@ import RepositoryMocks.RoomTemplateRepository.RoomTemplateCrudRepositoryMock;
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMockExceptionFindById;
 import RepositoryMocks.ClassroomRepository.ClassRoomRepositoryMock;
+import missions.room.Communications.Publisher.Publisher;
+import missions.room.Communications.Publisher.SinglePublisher;
+import missions.room.Domain.Notifications.Notification;
+import missions.room.Domain.OpenAnswer;
 import missions.room.Domain.Ram;
+import missions.room.Domain.Rooms.Room;
+import missions.room.Domain.Rooms.StudentRoom;
 import missions.room.Domain.Users.Teacher;
+import missions.room.Managers.ManagerRoomStudent;
 import missions.room.Managers.RoomManager;
+import missions.room.Repo.RoomRepo;
 import missions.room.Repo.TeacherRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +41,8 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Field;
 
 import static Data.DataConstants.*;
 import static org.junit.Assert.*;
@@ -67,6 +78,13 @@ public class RoomManagerTestsAllStubs {
 
     protected Ram ram;
 
+    protected Room openAnsRoom;
+
+    protected Room openAnsRoomMultiple;
+
+    protected String studentApiKey;
+
+    protected final String invalidSuffix = "$";
 
     /**
      * working with mockitos
@@ -84,6 +102,9 @@ public class RoomManagerTestsAllStubs {
     @Mock
     protected TeacherCrudRepository mockTeacherCrudRepository;
 
+    @Mock
+    protected RoomRepo mockRoomRepo;
+
     private AutoCloseable closeable;
 
     /**
@@ -92,8 +113,9 @@ public class RoomManagerTestsAllStubs {
 
     @BeforeEach
     void setUp() {
-        dataGenerator=new DataGenerator();
+        dataGenerator = new DataGenerator();
         apiKey="key";
+        studentApiKey = "studentKey";
         initMocks();
     }
 
@@ -101,6 +123,9 @@ public class RoomManagerTestsAllStubs {
         closeable= MockitoAnnotations.openMocks(this);
         Teacher teacher=dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM);
         String teacherAlias=dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getAlias();
+        this.openAnsRoom = dataGenerator.getRoom(Data.VALID_OPEN_ANS);
+        this.openAnsRoomMultiple = dataGenerator.getRoom(Data.VALID_OPEN_ANS2);
+
         when(mockRam.getAlias(apiKey))
                 .thenReturn(teacherAlias);
         when(mockRam.getAlias(INVALID_KEY))
@@ -109,6 +134,24 @@ public class RoomManagerTestsAllStubs {
                 .thenReturn(WRONG_TEACHER_NAME);
         when(mockTeacherRepo.findTeacherById(teacherAlias))
                 .thenReturn(new Response<>(teacher,OpCode.Success));
+        when(mockRoomRepo.findRoomById(this.openAnsRoom.getRoomId()))
+                .thenReturn(new Response<Room>(this.openAnsRoom, OpCode.Success));
+        when(mockRoomRepo.findRoomById(this.openAnsRoomMultiple.getRoomId()))
+                .thenReturn(new Response<Room>(this.openAnsRoomMultiple, OpCode.Success));
+        when(mockRam.getRoom(this.openAnsRoom.getRoomId()))
+                .thenReturn(this.openAnsRoom);
+        when(mockRam.getRoom(this.openAnsRoomMultiple.getRoomId()))
+                .thenReturn(this.openAnsRoomMultiple);
+        when(mockRoomRepo.deleteRoom(this.openAnsRoomMultiple))
+                .thenReturn(new Response<>(true, OpCode.Success));
+        when(mockRam.getApiKey(dataGenerator.getStudent(Data.VALID).getAlias()))
+                .thenReturn(studentApiKey);
+        when(mockRoomRepo.save(this.openAnsRoomMultiple))
+                .thenReturn(new Response<>(this.openAnsRoomMultiple, OpCode.Success));
+        when(mockRoomRepo.deleteRoom(this.openAnsRoom))
+                .thenReturn(new Response<>(true, OpCode.Success));
+        when(mockRoomRepo.findRoomById(this.openAnsRoom.getRoomId() + invalidSuffix))
+                .thenReturn(new Response<>(null, OpCode.Not_Exist_Room));
     }
 
     void setUpMocks(){
@@ -119,6 +162,11 @@ public class RoomManagerTestsAllStubs {
         roomCrudRepository=new RoomCrudRepositoryMock(dataGenerator);
         ram=new MockRam(dataGenerator);
         roomManger=new RoomManager(ram,teacherCrudRepository,roomCrudRepository,roomTemplateCrudRepository);
+
+
+//        openAnsRoom.addOpenAnswer(new OpenAnswer("open1", "answer", null));
+//        openAnsRoomMultiple.addOpenAnswer(new OpenAnswer("open1", "answer", null));
+//        openAnsRoomMultiple.addOpenAnswer(new OpenAnswer("open2", "answer", null));
     }
 
     void setUpAddRoom(){
@@ -327,7 +375,61 @@ public class RoomManagerTestsAllStubs {
         tearDown();
     }
 
+    @Test
+    void testResponseStudentSolutionSuccessRejectLastMission() {
+        testResponseStudentSolution(apiKey, this.openAnsRoom, false, Data.VALID_OPEN_ANS, OpenAnswerResponseMessages.rejectCloseMessage);
+    }
 
+    @Test
+    void testResponseStudentSolutionSuccessApproveLastMission() {
+        testResponseStudentSolution(apiKey, this.openAnsRoom, true, Data.VALID_OPEN_ANS, OpenAnswerResponseMessages.approveCloseMessage);
+    }
+
+    @Test
+    void testResponseStudentSolutionSuccessRejectNotLastMission() {
+        testResponseStudentSolution(apiKey, this.openAnsRoomMultiple, false, Data.VALID_OPEN_ANS, OpenAnswerResponseMessages.rejectOpenMessage);
+    }
+
+    @Test
+    void testResponseStudentSolutionSuccessApproveNotLastMission() {
+        testResponseStudentSolution(apiKey, this.openAnsRoomMultiple, true, Data.VALID_OPEN_ANS, OpenAnswerResponseMessages.approveOpenMessage);
+    }
+
+    @Test
+    void testResponseStudentSolutionFailInvalidApiKey(){
+        setUpAddRoom();
+        Response<String> response = roomMangerWithMockito.responseStudentSolution(apiKey + invalidSuffix, openAnsRoom.getRoomId(), dataGenerator.getMission(Data.VALID_OPEN_ANS).getMissionId(), true);
+        assertEquals(response.getReason(), OpCode.Wrong_Key);
+        assertEquals(null, response.getValue());
+        tearDown();
+    }
+
+    @Test
+    void testResponseStudentSolutionFailInvalidRoomId(){
+        setUpAddRoom();
+        Response<String> response = roomMangerWithMockito.responseStudentSolution(apiKey, openAnsRoom.getRoomId() + invalidSuffix, dataGenerator.getMission(Data.VALID_OPEN_ANS).getMissionId(), true);
+        assertEquals(response.getReason(), OpCode.Not_Exist_Room);
+        assertEquals(null, response.getValue());
+        tearDown();
+    }
+
+    @Test
+    void testResponseStudentSolutionFailInvalidMissionId() {
+        setUpAddRoom();
+        Response<String> response = roomMangerWithMockito.responseStudentSolution(apiKey, openAnsRoom.getRoomId(), dataGenerator.getMission(Data.VALID_OPEN_ANS).getMissionId() + invalidSuffix, true);
+        assertEquals(response.getReason(), OpCode.MISSION_NOT_IN_ROOM);
+        assertEquals(null, response.getValue());
+        tearDown();
+    }
+
+
+    protected void testResponseStudentSolution(String apiKey, Room room, boolean approve, Data missionData, String message) {
+        setUpAddRoom();
+        Response<String> response = roomMangerWithMockito.responseStudentSolution(apiKey, room.getRoomId(), dataGenerator.getMission(missionData).getMissionId(), approve);
+        assertEquals(response.getReason(), OpCode.Success);
+        assertEquals(String.format(message, room.getName()), response.getValue());
+        tearDown();
+    }
 
     protected void testGetClassRoomDataInvalid(OpCode opcode){
         Response <ClassRoomData> actual=roomMangerWithMockito.getClassRoomData(apiKey);
@@ -341,6 +443,7 @@ public class RoomManagerTestsAllStubs {
         assertFalse(response.getValue());
         assertEquals(response.getReason(), opcode);
     }
+
 
     protected void tearDown() {
         roomCrudRepository.deleteAll();

@@ -5,6 +5,7 @@ import DataAPI.OpCode;
 import DataAPI.Response;
 import DataAPI.UserProfileData;
 import ExternalSystems.UniqueStringGenerator;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Domain.Message;
 import missions.room.Domain.Ram;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static Utils.Utils.checkString;
@@ -56,11 +58,23 @@ public class ProfileMessagesManager {
         if(!APIResponse.getValue()){
             return new Response<>(false,OpCode.Not_Exist);
         }
-        Response<User> userResponse=userRepo.findUserForWrite(alias);
+        return sendInboxMessage(userAlias, alias, message);
+    }
+
+    public void sendMultipleMessages(Set<String> aliases, String senderApiKey, String message) {
+        String sender = ram.getAlias(senderApiKey);
+        sender = sender == null ? "system" : sender;
+        for (String alias : aliases) {
+            sendInboxMessage(sender, alias, message);
+        }
+    }
+
+    private Response<Boolean> sendInboxMessage(String sender, String receiver, String message) {
+        Response<User> userResponse=userRepo.findUserForWrite(receiver);
         if(userResponse.getReason()!=OpCode.Success) {
             log.warn(String.format("There was a problem from kind %s when trying to find user %s",
                     userResponse.getReason(),
-                    alias));
+                    receiver));
             return new Response<>(false,userResponse.getReason());
         }
 
@@ -70,7 +84,7 @@ public class ProfileMessagesManager {
         }
         user.addMessage(new Message(UniqueStringGenerator.getTimeNameCode("ms"),
                 message,
-                userAlias));
+                sender));
         Response<User> saveUser= userRepo.save(user);
 
         return new Response<>(saveUser.getReason()==OpCode.Success,

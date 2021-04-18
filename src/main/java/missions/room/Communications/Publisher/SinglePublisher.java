@@ -1,6 +1,7 @@
 package missions.room.Communications.Publisher;
 
 import missions.room.Managers.ManagerRoomStudent;
+import missions.room.Managers.RoomManager;
 
 public class SinglePublisher {
 

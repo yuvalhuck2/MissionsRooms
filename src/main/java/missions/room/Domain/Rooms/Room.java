@@ -166,7 +166,7 @@ public abstract class Room {
     }
 
     //TODO implement after doing openRoomMission
-    private boolean allOpenQuestionsApproved() {
+    public boolean allOpenQuestionsApproved() {
         return openAnswers.isEmpty();
     }
 
@@ -234,6 +234,7 @@ public abstract class Room {
     }
 
     public void addOpenAnswer(OpenAnswer openAnswer) {
+        resolveMission(openAnswer.getMissionId()); // run over current answer
         openAnswers.add(openAnswer);
     }
 
@@ -249,4 +250,9 @@ public abstract class Room {
         return alias.equals(missionIncharge);
     }
 
+    public boolean resolveMission(String misId) {
+        return openAnswers.removeIf(ans -> ans.getMissionId().equals(misId));
+    }
+
+    public abstract Set<String> getStudentsAlias();
 }

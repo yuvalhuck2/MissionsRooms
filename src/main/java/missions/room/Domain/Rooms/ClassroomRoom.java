@@ -7,6 +7,8 @@ import missions.room.Domain.Users.Teacher;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class ClassroomRoom extends Room {
@@ -35,6 +37,11 @@ public class ClassroomRoom extends Room {
     @Override
     protected int getParticipantsSize() {
         return participant.getStudentsAlias().size();
+    }
+
+    @Override
+    public Set<String> getStudentsAlias() {
+        return new HashSet<>(participant.getStudentsAlias());
     }
 
     public ClassroomRoom(String roomId, String roomName, Classroom participant, Teacher teacher, RoomTemplate roomTemplate, int bonus) {
