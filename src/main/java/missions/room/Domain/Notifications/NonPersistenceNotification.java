@@ -27,4 +27,6 @@ public class NonPersistenceNotification<T> extends Notification<T> {
     public String getAdditionalData() {
         return additionalData;
     }
+
+
 }

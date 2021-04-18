@@ -3,6 +3,7 @@ package missions.room.RoomManagerTests;
 import Data.Data;
 import DataAPI.OpCode;
 import Data.DataGenerator;
+import DataAPI.Response;
 import RepositoryMocks.ClassroomRepository.ClassRoomRepositoryMock;
 import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
 import RepositoryMocks.RoomRepository.RoomCrudRepositoryMock;
@@ -11,6 +12,7 @@ import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
 import missions.room.Domain.Ram;
 import missions.room.Managers.RoomManager;
 import missions.room.Managers.TeacherManager;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,9 +20,12 @@ import java.lang.reflect.Field;
 
 import static Data.DataConstants.*;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.when;
 
 
 public class RoomMangerTestsRealRam extends RoomManagerTestsAllStubs{
+
+    protected Ram realRealRam;
 
     @Override
     @BeforeEach
@@ -32,6 +37,7 @@ public class RoomMangerTestsRealRam extends RoomManagerTestsAllStubs{
     @Override
     protected void initMocks() {
         Ram realRam=new Ram();
+        this.realRealRam = realRam;
         super.initMocks();
         try {
             Field managerRam = TeacherManager.class.getDeclaredField("ram");
@@ -42,15 +48,23 @@ public class RoomMangerTestsRealRam extends RoomManagerTestsAllStubs{
             fail();
         }
         realRam.addApi(NULL_TEACHER_KEY,WRONG_TEACHER_NAME);
+        realRam.addApi(studentApiKey, dataGenerator.getStudent(Data.VALID).getAlias());
+        realRam.addAlias(studentApiKey);
+        realRam.addApi(apiKey,dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD).getAlias());
     }
-    void setUpMocks(){
-        missionCrudRepository=new MissionCrudRepositoryMock(dataGenerator);
-        teacherCrudRepository=new TeacherCrudRepositoryMock(dataGenerator);
-        roomTemplateCrudRepository=new RoomTemplateCrudRepositoryMock(dataGenerator);
-        classroomRepository=new ClassRoomRepositoryMock(dataGenerator);
-        roomCrudRepository=new RoomCrudRepositoryMock(dataGenerator);
-        ram=new Ram();
-        roomManger=new RoomManager(ram,teacherCrudRepository,roomCrudRepository,roomTemplateCrudRepository);
+//    void setUpMocks(){
+//        missionCrudRepository=new MissionCrudRepositoryMock(dataGenerator);
+//        teacherCrudRepository=new TeacherCrudRepositoryMock(dataGenerator);
+//        roomTemplateCrudRepository=new RoomTemplateCrudRepositoryMock(dataGenerator);
+//        classroomRepository=new ClassRoomRepositoryMock(dataGenerator);
+//        roomCrudRepository=new RoomCrudRepositoryMock(dataGenerator);
+//        ram=new Ram();
+//        roomManger=new RoomManager(ram,teacherCrudRepository,roomCrudRepository,roomTemplateCrudRepository);
+//    }
+
+    @AfterEach
+    void cleanRam() {
+        this.realRealRam.clearRam();
     }
 
     @Override

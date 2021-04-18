@@ -44,7 +44,11 @@ public enum OpCode implements Serializable {
     FAILED_TO_SAVE_FILE,Teacher_Classroom_Is_Null,CONNECTED_STUDENTS,Update_Chat,NOT_BELONGS_TO_TEACHER,
      MISSION_NOT_IN_ROOM, INVALID_ANSWER, Negative_Points, Wrong_Details, Wrong_Group,
     Has_Students,
-    NO_OPEN_ANSWER_FILE, FILE_SYS_ERROR, Has_Unapproved_Solutions;
+    NO_OPEN_ANSWER_FILE, FILE_SYS_ERROR, Has_Unapproved_Solutions,
+    MISSION_NOT_IN_OPEN_ANS,
+    APPROVED_CLOSE, APPROVED_OPEN, REJECT_CLOSE, REJECT_OPEN,
+    ROOM_CLOSED, ROOM_SAVED;
+
 
 
 }
