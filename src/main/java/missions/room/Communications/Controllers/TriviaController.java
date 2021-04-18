@@ -1,6 +1,7 @@
 package missions.room.Communications.Controllers;
 
 import DataAPI.Response;
+import DataAPI.TriviaQuestionData;
 import missions.room.Service.TriviaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,14 +11,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 //can be moved later to TeacherController
 @RestController
-public class TriviaController {
+public class TriviaController extends AbsController {
 
     @Autowired
     private TriviaService triviaService;
 
     @PostMapping("/addTriviaSubject")
-    public Response<Boolean> addTriviaSubject(@RequestBody String subjectName, @RequestParam String token){
-        return triviaService.createTriviaSubject(token, subjectName);
+    public Response<Boolean> addTriviaSubject(@RequestBody String subjectName, @RequestParam String apiKey){
+        return triviaService.createTriviaSubject(apiKey, subjectName);
+    }
+
+    @PostMapping("/deleteTriviaSubject")
+    public Response<Boolean> deleteTriviaSubject(@RequestBody String subjectName, @RequestParam String apiKey){
+        return triviaService.deleteTriviaSubject(apiKey, subjectName);
+    }
+
+    @PostMapping("/addTriviaQuestion")
+    public Response<Boolean> addTriviaQuestion(@RequestBody String triviaQuestionStr, @RequestParam String apiKey){
+        TriviaQuestionData triviaQuestionData = json.fromJson(triviaQuestionStr, TriviaQuestionData.class);
+        return triviaService.addTriviaQuestion(apiKey, triviaQuestionData);
+    }
+
+    @PostMapping("/deleteTriviaQuestion")
+    public Response<Boolean> deleteTriviaQuestion(@RequestBody String triviaQuestionStr, @RequestParam String apiKey){
+        TriviaQuestionData triviaQuestionData = json.fromJson(triviaQuestionStr, TriviaQuestionData.class);
+        return triviaService.deleteTriviaQuestion(apiKey, triviaQuestionData);
+    }
+
+    @PostMapping("/getTriviaQuestions")
+    public Response<?> getTriviaQuestions(@RequestParam String apiKey){
+        return triviaService.getTriviaQuestions(apiKey);
     }
 
 }

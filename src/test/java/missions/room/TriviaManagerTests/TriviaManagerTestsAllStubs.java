@@ -6,6 +6,7 @@ import DataAPI.OpCode;
 import DataAPI.Response;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Suggestion;
+import missions.room.Domain.TriviaSubject;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.TriviaManager;
@@ -29,12 +30,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Collections;
 import Data.DataGenerator;
 import static Data.DataConstants.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.not;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.junit.Assert.*;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -89,6 +90,8 @@ public class TriviaManagerTestsAllStubs {
                 .thenReturn(new Response<>(null, OpCode.Not_Exist));
         when(mockTriviaRepo.addTriviaSubject(any()))
                 .thenReturn(OpCode.Success);
+        when(mockTriviaRepo.deleteTriviaSubject(any()))
+                .thenReturn(OpCode.Success);
         when(mockTriviaRepo.addTriviaQuestion(any()))
                 .thenReturn(OpCode.Success);
         when(mockTriviaRepo.isSubjectExist(any())).thenReturn(true);
@@ -103,6 +106,24 @@ public class TriviaManagerTestsAllStubs {
         Response<Boolean> res = triviaManager.createTriviaSubject(teacherApiKey, dataGenerator.getTriviaSubject(Data.VALID3));
         assertTrue(res.getValue());
         assertEquals(res.getReason(), OpCode.Success);
+    }
+
+    @Test
+    public void deleteTriviaSubjectFailInvalidUser(){
+        addTriviaSubject(dataGenerator.getTriviaSubject(Data.VALID));
+        Response<Boolean> res = triviaManager.deleteTriviaSubject(studentApiKey, dataGenerator.getTriviaSubject(Data.VALID));
+        assertFalse(res.getValue());
+        assertEquals(res.getReason(), OpCode.Not_Exist);
+    }
+
+
+    @Test
+    public void deleteTriviaSubjectSuccess(){
+        addTriviaSubjectSuccess();
+        String triviaSubjectToDelete = dataGenerator.getTriviaSubject(Data.VALID3);
+        Response<Boolean> isDeleted = triviaManager.deleteTriviaSubject(teacherApiKey, triviaSubjectToDelete);
+        assertTrue(isDeleted.getValue());
+        assertEquals(isDeleted.getReason(), OpCode.Success);
     }
 
     @Test
@@ -132,6 +153,13 @@ public class TriviaManagerTestsAllStubs {
     @Test
     public void addTriviaSubjectInvalidSubject(){
         Response<Boolean> res = triviaManager.createTriviaSubject(teacherApiKey, dataGenerator.getTriviaSubject(Data.INVALID));
+        assertFalse(res.getValue());
+        assertEquals(res.getReason(), OpCode.Invalid_Trivia_Subject);
+    }
+
+    @Test
+    public void deleteTriviaSubjectInvalidSubject(){
+        Response<Boolean> res = triviaManager.deleteTriviaSubject(teacherApiKey, dataGenerator.getTriviaSubject(Data.INVALID));
         assertFalse(res.getValue());
         assertEquals(res.getReason(), OpCode.Invalid_Trivia_Subject);
     }

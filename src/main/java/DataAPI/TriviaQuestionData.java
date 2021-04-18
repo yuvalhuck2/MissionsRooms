@@ -1,6 +1,7 @@
 package DataAPI;
 
 import java.util.List;
+import java.util.Objects;
 
 public class TriviaQuestionData {
     private String question;
@@ -29,5 +30,18 @@ public class TriviaQuestionData {
 
     public String getSubject() {
         return subject;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TriviaQuestionData that = (TriviaQuestionData) o;
+        return Objects.equals(question, that.question) && Objects.equals(wrongAnswers, that.wrongAnswers) && Objects.equals(correctAnswer, that.correctAnswer) && Objects.equals(subject, that.subject);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(question, wrongAnswers, correctAnswer, subject);
     }
 }

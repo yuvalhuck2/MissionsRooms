@@ -3,6 +3,7 @@ package missions.room.TriviaManagerTests;
 import Data.Data;
 import DataAPI.OpCode;
 import DataAPI.Response;
+import DataAPI.TriviaQuestionData;
 import missions.room.Domain.TriviaQuestion;
 import missions.room.Managers.SuggestionManager;
 import missions.room.Managers.TriviaManager;
@@ -13,8 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class TriviaManagerTestsAllReal extends TriviaManagerTestsRealRamTeacher{
@@ -37,10 +37,18 @@ public class TriviaManagerTestsAllReal extends TriviaManagerTestsRealRamTeacher{
 
     @Test
     public void addTriviaQuestionFailSubjectDoesntExist(){
-        Response<Boolean> res = triviaManager.addTriviaQuestion((teacherApiKey), dataGenerator.getTriviaQuestion(Data.VALID2));
+        Response<Boolean> res = triviaManager.addTriviaQuestion(teacherApiKey, dataGenerator.getTriviaQuestion(Data.VALID2));
         assertFalse(res.getValue());
         assertEquals(res.getReason(), OpCode.SUBJECT_DOESNT_EXIST);
     }
+
+    @Test
+    public void deleteTriviaQuestionFailSubjectDoesntExist(){
+        Response<Boolean> res = triviaManager.deleteTriviaQuestion(teacherApiKey, dataGenerator.getTriviaQuestion(Data.VALID2));
+        assertFalse(res.getValue());
+        assertEquals(res.getReason(), OpCode.SUBJECT_DOESNT_EXIST);
+    }
+
 
     @Test
     public void addTriviaSubjectFailSubjectAlreadyExist(){
@@ -51,10 +59,23 @@ public class TriviaManagerTestsAllReal extends TriviaManagerTestsRealRamTeacher{
     }
 
     @Test
-    public void getAllQuestionInSubjectSuccess(){
+    public void getAllQuestionInSubjectNotExistSubjectSuccess(){
         addTriviaQuestionSuccess();
         Response<List<TriviaQuestion>> res = triviaManager.GetAllQuestionsBySubject(teacherApiKey, dataGenerator.getTriviaSubject(Data.VALID3));
         assertEquals(0, res.getValue().size());
+    }
 
+    @Test
+    public void getAllQuestionInSubjectExistSubjectSuccess(){
+        addTriviaQuestionSuccess();
+        Response<List<TriviaQuestion>> res = triviaManager.GetAllQuestionsBySubject(teacherApiKey, dataGenerator.getTriviaSubject(Data.VALID));
+        assertTrue(res.getValue().size() > 0);
+    }
+
+    @Test
+    public void getAllQuestionsSuccess(){
+        addTriviaQuestionSuccess();
+        Response<List<TriviaQuestionData>> res = triviaManager.getTriviaQuestions(teacherApiKey);
+        assertEquals(res.getValue().get(0), dataGenerator.getTriviaQuestion(Data.VALID));
     }
 }

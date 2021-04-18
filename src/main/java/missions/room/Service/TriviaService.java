@@ -18,8 +18,11 @@ public class TriviaService {
      * @return if the subject was added successfully
      */
     public Response<Boolean> createTriviaSubject(String apiKey, String subject){
-
         return triviaManager.createTriviaSubject(apiKey, subject);
+    }
+
+    public Response<Boolean> deleteTriviaSubject(String apiKey, String subject) {
+        return triviaManager.deleteTriviaSubject(apiKey, subject);
     }
 
 
@@ -32,5 +35,13 @@ public class TriviaService {
     public Response<Boolean> addTriviaQuestion(String apiKey, TriviaQuestionData question){
 
         return triviaManager.addTriviaQuestion(apiKey, question);
+    }
+
+    public Response<Boolean> deleteTriviaQuestion(String apiKey, TriviaQuestionData question){
+        return triviaManager.deleteTriviaQuestion(apiKey, question);
+    }
+
+    public Response<?> getTriviaQuestions(String apiKey) {
+        return triviaManager.getTriviaQuestions(apiKey);
     }
 }

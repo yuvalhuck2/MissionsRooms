@@ -6,6 +6,7 @@ import DataAPI.OpCode;
 import DataAPI.Response;
 import missions.room.Domain.TriviaQuestion;
 import missions.room.Domain.TriviaSubject;
+import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +23,25 @@ public class TriviaRepo {
 
     public OpCode addTriviaSubject(TriviaSubject triviaSubject) {
         try{
-            boolean isSubjectExist = triviaSubjectRepository.existsById(triviaSubject.getName());
+            boolean isSubjectExist = isSubjectExist(triviaSubject.getName());
             if(isSubjectExist){
                 return OpCode.Trivia_Subject_Already_Exists;
             }
             triviaSubjectRepository.save(triviaSubject);
             return OpCode.Success;
         } catch (Exception e){
+            return OpCode.DB_Error;
+        }
+    }
+
+    public OpCode deleteTriviaSubject(TriviaSubject triviaSubject) {
+        try{
+            boolean isSubjectExist = isSubjectExist(triviaSubject.getName());
+            if(!isSubjectExist)
+                return OpCode.Trivia_Subject_Not_Exists;
+            triviaSubjectRepository.delete(triviaSubject);
+            return OpCode.Success;
+        }catch(Exception e){
             return OpCode.DB_Error;
         }
     }
@@ -46,12 +59,30 @@ public class TriviaRepo {
         }
     }
 
+    public OpCode deleteTriviaQuestion(TriviaQuestion triviaQuestion) {
+        try{
+            triviaQuestionRepository.delete(triviaQuestion);
+            return OpCode.Success;
+        }catch(Exception e){
+            return OpCode.DB_Error;
+        }
+    }
+
     public Response<List<TriviaQuestion>> getAllQuestionsBySubject(String subjectName) {
         try{
             List<TriviaQuestion> questions = triviaQuestionRepository.findBySubjectName(subjectName);
             return new Response<>(questions, OpCode.Success);
         } catch(Exception e) {
-            return new Response(null, OpCode.DB_Error);
+            return new Response<>(null, OpCode.DB_Error);
+        }
+    }
+
+    public Response<List<TriviaQuestion>> getTriviaQuestions() {
+        try{
+            List<TriviaQuestion> questions = Lists.newArrayList(triviaQuestionRepository.findAll());
+            return new Response<>(questions, OpCode.Success);
+        } catch(Exception e) {
+            return new Response<>(null, OpCode.DB_Error);
         }
     }
 }
