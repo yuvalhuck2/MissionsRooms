@@ -31,8 +31,10 @@ public class UserAuthenticationTestsRealRamUserSchoolUserTeacherRepo extends Use
 
     @Override
     protected void initTeacherRepo(Teacher teacher, String alias) {
+
         try {
             Field userRepo = TeacherManager.class.getDeclaredField("teacherRepo");
+
             userRepo.setAccessible(true);
             userRepo.set(userAuthenticationManager,realTeacherRepo);
 

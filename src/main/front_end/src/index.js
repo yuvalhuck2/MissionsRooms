@@ -34,7 +34,11 @@ import {
     ResetPasswordScreen,
     CloseClassroomScreen,
     Test,
+    ChooseTeacherRoomTypeScreen,
+    ChooseClassroomRoomScreen,
+  ChatRoomScreen,
 } from './components/screens';
+import TeacherRoomMenuScreen from "./components/screens/TeacherRoomMenuScreen";
 
 const Stack = createStackNavigator();
 
@@ -123,11 +127,15 @@ const App = () => {
         <Stack.Screen name='Student' component={StudentScreen} />
         <Stack.Screen name='AddRoom' component={AddRoomScreen} />
         <Stack.Screen name='IT' component={ITScreen} />
-        <Stack.Screen name="UploadCsv" component={UploadCsvScreen} />
-        <Stack.Screen name="WatchProfile" component={WatchProfileScreen} />
-        <Stack.Screen name="WatchMessages" component={WatchMessagesScreen} />
-        <Stack.Screen name="AddSuggestion" component={AddSuggestionScreen} />
-        <Stack.Screen name="WatchSuggestions" component={WatchSuggestionsScreen} />
+        <Stack.Screen name="UploadCsv" component={UploadCsvScreen}/>
+        <Stack.Screen name="WatchProfile" component={WatchProfileScreen}/>
+        <Stack.Screen name="WatchMessages" component={WatchMessagesScreen}/>
+        <Stack.Screen name="AddSuggestion" component={AddSuggestionScreen}/>
+        <Stack.Screen name="WatchSuggestions" component={WatchSuggestionsScreen}/>
+        <Stack.Screen name ="ChooseTeacherRoomType" component={ChooseTeacherRoomTypeScreen}/>
+        <Stack.Screen name ="ChooseClassroomRoom" component={ChooseClassroomRoomScreen}/>
+        <Stack.Screen name = "TeacherRoomMenu" component={TeacherRoomMenuScreen}/>
+        <Stack.Screen name = "ChatRoom" component={ChatRoomScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

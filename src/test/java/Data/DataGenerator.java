@@ -200,6 +200,10 @@ public class DataGenerator {
                 valid2StudentsFromDifferentGroups);
         Classroom empty = new Classroom("0=5", classGroupMap.get(Data.Empty_Students), classGroupMap.get(Data.Empty_Students2));
         classRoomMap.put(Data.Empty_Students, empty);
+
+        classRoomMap.put(Data.Valid_Without_Students,new Classroom("0=1",
+                new ClassGroup("g11",GroupType.A,new HashMap<>()),new ClassGroup("g22",GroupType.B,new HashMap<>())));
+
     }
 
     private void initClassroomData() {
@@ -438,6 +442,9 @@ public class DataGenerator {
         teachers.put(Data.WRONG_NAME,new Teacher("Wrong","Avi","Ron","1234"));
         teachers.put(Data.Valid_2Students_From_Different_Groups,new Teacher("2StudentsTeacher","name","L name",
                 classRoomMap.get(Data.Valid_2Students_From_Different_Groups),GroupType.BOTH,"1234"));
+        teachers.put(Data.VALID_WITHOUT_CLASSROOM,new Teacher("TeacherWithoutClassroom","Avi","Ron","1234"));
+
+        teachers.put(Data.VALID_WITH_CLASSROOM2,new Teacher("withClassRoom","Gal","Ron",classRoomMap.get(Data.Valid_Without_Students),GroupType.A,"1111"));
     }
 
     private void initVerificationCodes() {

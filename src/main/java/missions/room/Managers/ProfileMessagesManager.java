@@ -48,9 +48,9 @@ public class ProfileMessagesManager {
         String userAlias=ram.getAlias(apiKey);
         Response<Boolean> APIResponse=userRepo.isExistsById(userAlias);
         if(APIResponse.getReason()!=OpCode.Success){
-            log.warn(String.format("There was a problem from kind %s when trying to find user %s",
+            /*log.warn(String.format("There was a problem from kind %s when trying to find user %s",
                     APIResponse.getReason(),
-                    userAlias));
+                    userAlias));*/
             return new Response<>(false,APIResponse.getReason());
         }
         if(!APIResponse.getValue()){
@@ -58,9 +58,9 @@ public class ProfileMessagesManager {
         }
         Response<User> userResponse=userRepo.findUserForWrite(alias);
         if(userResponse.getReason()!=OpCode.Success) {
-            log.warn(String.format("There was a problem from kind %s when trying to find user %s",
+            /*log.warn(String.format("There was a problem from kind %s when trying to find user %s",
                     userResponse.getReason(),
-                    alias));
+                    alias));*/
             return new Response<>(false,userResponse.getReason());
         }
 
@@ -87,9 +87,9 @@ public class ProfileMessagesManager {
         String userAlias=ram.getAlias(apiKey);
         Response<User> userResponse=userRepo.findUser(userAlias);
         if(userResponse.getReason()!=OpCode.Success) {
-            log.warn(String.format("There was a problem from kind %s when trying to find user %s",
+            /*log.warn(String.format("There was a problem from kind %s when trying to find user %s",
                     userResponse.getReason(),
-                    userAlias));
+                    userAlias));*/
             return new Response<>(null,userResponse.getReason());
         }
 
@@ -114,9 +114,9 @@ public class ProfileMessagesManager {
         String userAlias=ram.getAlias(apiKey);
         Response<User> userResponse=userRepo.findUserForWrite(userAlias);
         if(userResponse.getReason()!=OpCode.Success) {
-            log.warn(String.format("There was a problem from kind %s when trying to find user %s",
+            /*log.warn(String.format("There was a problem from kind %s when trying to find user %s",
                     userResponse.getReason(),
-                    userAlias));
+                    userAlias));*/
             return new Response<>(false,userResponse.getReason());
         }
 
@@ -136,7 +136,7 @@ public class ProfileMessagesManager {
     private Response<List<UserProfileData>> getAllUsersProfiles() {
         Response<List<User>> users= userRepo.findAllUsers();
         if(users.getReason()!=OpCode.Success){
-            log.error("Function getAllUsersProfiles: connection to the DB lost");
+            //log.error("Function getAllUsersProfiles: connection to the DB lost");
         }
         return new Response<>(users.getValue()
                 .stream()
@@ -154,9 +154,9 @@ public class ProfileMessagesManager {
         String userAlias=ram.getAlias(apiKey);
         Response<Boolean> APIResponse=userRepo.isExistsById(userAlias);
         if(APIResponse.getReason()!=OpCode.Success){
-            log.warn(String.format("There was a problem from kind %s when trying to find user %s",
+            /*log.warn(String.format("There was a problem from kind %s when trying to find user %s",
                     APIResponse.getReason(),
-                    userAlias));
+                    userAlias));*/
             return new Response<>(null,APIResponse.getReason());
         }
         if(!APIResponse.getValue()){

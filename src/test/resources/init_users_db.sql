@@ -19,14 +19,16 @@ INSERT INTO TEACHER (alias,group_type, classroom_class_name) VALUES
 ('tal', 0,'0=4');
 
 INSERT INTO MISSION(mission_id,points) VALUES
-('mid1',2), ('mid2',2),('story1',2),('story2',4),('open_mission_id',3);
+('mid1',2), ('mid2',2),('story1',2),('story2',4),('open1',1),('open_mission_id',3);
 
 INSERT INTO MISSION_MISSION_TYPES(mission_mission_id,mission_types) VALUES
 ('mid1',0), ('mid2',2),('mid1',1),('mid1',2),
 ('story1',0),('story1',1),('story1',2),
 ('story2',0),('story2',1),('story2',2),
-('open_mission_id',0),('open_mission_id',1),('open_mission_id',2);
+('open_mission_id',0),('open_mission_id',1),('open_mission_id',2),
+('open1',0);
 
+INSERT INTO OPEN_ANSWER_MISSION(question,mission_id) VALUES ('WHATS MY NAME','open1');
 INSERT INTO KNOWN_ANSWER_MISSION(question,real_answer,mission_id) VALUES
 ('שאלה','תשובה','mid1'),('שאלה2','תשובה2','mid2');
 
@@ -48,9 +50,10 @@ INSERT INTO ROOM(room_id,bonus,count_correct_answer
 ,current_mission,name,room_template_room_template_id,teacher_alias) VALUES
 ('rid1',1,0,0,'אישי של ניב','tid1','tal'),('rid2',1,0,0,'קבוצתי של איי','tid2','tal'),
 -- ('rid3',1,0,0,'כיתתי של קלאס','tid3','tal')
-('rid4',1,0,1,'אישי של רוי','tid_open','tal'),
-('rid_story',1,0,0,'סיפור כיתתי','tid_story','tal');
-                                                                           ;
+-- ,('rid4',1,0,0,'אישי של רוי','tid1','tal')
+('rid_story',1,0,0,'סיפור כיתתי','tid_story','tal'),('rid_open',1,0,0,'open','tid_open','tal'),
+('rid4',1,0,1,'אישי של רוי','tid_open','tal');
+
 
 INSERT INTO STUDENT_ROOM(room_id,participant_alias) values
 ('rid1','niv'),('rid4','roy4');

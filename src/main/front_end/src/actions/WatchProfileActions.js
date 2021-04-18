@@ -33,28 +33,28 @@ export const searchChanged= (text) => {
         type: SEARCH_CHANGED,
         payload: text,
     };
-} 
+} ;
 
 export const filterUsers = (search, users) =>{
     return {
         type: USERS_CHANGED,
         payload: users.filter((user)=> user.alias.includes(search))
     }
-}
+};
 
 export const changeDialog = (alias) =>{
     return {
         type: PROFILE_CHANGED,
         payload: alias,
     }
-}
+};
 
 export const messageChanged = (text) => {
     return {
         type: MESSAGE_CHANGED,
         payload: text,
     }
-} 
+} ;
 
 export const sendMessage = ({apiKey, message, profile}) =>{
     return async (dispatch)=>{
@@ -73,7 +73,7 @@ export const sendMessage = ({apiKey, message, profile}) =>{
             return dispatch({ type: UPDATE_ERROR_WATCH_PROFILE, payload: server_error });
         }
     } 
-}
+};
 
 const checkSendMessageResponse = (data, dispatch) => {
     const {reason} = data
@@ -88,7 +88,7 @@ const checkSendMessageResponse = (data, dispatch) => {
       default:
         return dispatch({ type: UPDATE_ERROR_WATCH_PROFILE, payload: server_error });
     }
-}
+};
 
 export const handleBack = ({navigation,apiKey}) =>{
     navigation.goBack()
@@ -96,4 +96,4 @@ export const handleBack = ({navigation,apiKey}) =>{
         type: RESET_WATCH_PROFILE,
         payload: apiKey
     }
-}
+};

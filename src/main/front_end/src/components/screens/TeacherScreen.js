@@ -9,14 +9,16 @@ import Header from '../common/Header';
 import TextInput from '../common/TextInput';
 import { Icon } from 'react-native-elements'
 import * as NavPaths from '../../navigation/NavPaths'
-import {passToAddTemplate,passToAddRoom,logout, passToWatchProfiles,
-  passToWatchMessages,passToWatchSuggestions, passToWatchPointsTable} from '../../actions'
+import {passToWatchPointsTable,passToAddTemplate,passToAddRoom,logout, passToWatchProfiles, passToWatchMessages,passToWatchSuggestions,passToRooms} from '../../actions'
+
 
 const {
   addMission,
   addTemplate,
   createRoom,
   watch_suggestions,
+  closeRoom,
+    WatchRooms,
 } = TeacherStrings;
 
 
@@ -26,7 +28,7 @@ const {
   watch_messages,
   main_screen,
   watchPointsTable,
-} = AllUsersStrings
+} = AllUsersStrings;
 
 
 const DeviceWidth  = Dimensions.get('window').width;
@@ -52,7 +54,7 @@ class TeacherForm extends Component {
 
 
   render() {
-    const { navigation,apiKey } = this.props;
+    const { navigation,apiKey ,roomsType} = this.props;
     return (
       <View style={styles.container}>
         <View>
@@ -64,17 +66,17 @@ class TeacherForm extends Component {
           <Text style={{color:"white"}}>{addTemplate}</Text> 
           </Button>
           <Button onPress={()=>this.props.passToWatchSuggestions({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
-          <Text style={{color:"white"}}>{watch_suggestions}</Text> 
+          <Text style={{color:"white"}}>{watch_suggestions}</Text>
           </Button>
           <Button onPress={()=>navigation.navigate(NavPaths.changePassword)} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
-          <Text style={{color:"white"}}>{changePassword}</Text> 
+          <Text style={{color:"white"}}>{changePassword}</Text>
           </Button>
           <Button onPress={()=>this.props.passToWatchPointsTable({navigation,apiKey})} style={[styles.button, styles.bottom_button_marg, styles.left_button_border]} >
-          <Text style={{color:"white"}}>{watchPointsTable}</Text> 
+          <Text style={{color:"white"}}>{watchPointsTable}</Text>
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]}
             onPress={()=>this.props.passToWatchProfiles({navigation,apiKey,isStudent: false})}>
-            <Text style={{color:"white"}}>{watchProfiles}</Text>  
+            <Text style={{color:"white"}}>{watchProfiles}</Text>
           </Button>
         </View>
         <View>
@@ -82,22 +84,22 @@ class TeacherForm extends Component {
             <Text style={{color:"white"}}>{createRoom}</Text> 
             <Icon name='create' />
           </Button>
-          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
-            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
-            <Text style={{color:"white"}}>{watch_messages}</Text> 
+          <Button onPress={()=>this.props.passToRooms({navigation,apiKey,roomsType})} style={[styles.button, styles.bottom_button_marg, styles.right_button_border]} >
+             <Text style={{color:"white"}}>{WatchRooms}</Text>
+            {/* <Icon name='delete' /> */}
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
             onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
-            <Text style={{color:"white"}}>{watch_messages}</Text> 
+            <Text style={{color:"white"}}>{watch_messages}</Text>
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
             onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
-            <Text style={{color:"white"}}>{watch_messages}</Text> 
+            <Text style={{color:"white"}}>{watch_messages}</Text>
           </Button>
-          <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
-            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
-            <Text style={{color:"white"}}>{watch_messages}</Text> 
-          </Button>
+            <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
+                    onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
+                <Text style={{color:"white"}}>{watch_messages}</Text>
+            </Button>
           <Button onPress={this.onLogout} style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]}>
           <Text style={{color:"white"}}>{main_screen}</Text> 
             <Icon name='exit-to-app' />
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
     backgroundColor: backgroundColor
   },
   button: {width: DeviceWidth*0.5,
-     height: DeviceWidth*0.28,
+     height: DeviceWidth*0.25,
      borderStyle: 'solid',
      borderWidth: 1,
      borderColor: 'black',
@@ -166,5 +168,6 @@ logout,
 passToWatchProfiles,
 passToWatchMessages,
 passToWatchSuggestions,
+passToRooms,
 passToWatchPointsTable,
 })(TeacherForm);

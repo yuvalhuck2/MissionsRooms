@@ -28,6 +28,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Collections;
 import Data.DataGenerator;
+import org.springframework.test.context.TestPropertySource;
+
 import static Data.DataConstants.*;
 import static org.hamcrest.CoreMatchers.not;
 import static org.mockito.ArgumentMatchers.eq;
@@ -39,6 +41,7 @@ import static org.junit.Assert.*;
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
+@TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
 public class TriviaManagerTestsAllStubs {
 
     protected DataGenerator dataGenerator;

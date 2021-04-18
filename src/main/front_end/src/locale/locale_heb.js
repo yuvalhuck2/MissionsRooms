@@ -153,6 +153,7 @@ export const TeacherStrings = {
   closeRoom: 'סגירת חדר',
   main_screen: 'התנתק/י',
   watch_suggestions:'צפייה בהצעות',
+  WatchRooms:'צפיה בחדרים',
 };
 
 export const AddRoomStrings = {
@@ -176,6 +177,11 @@ export const AddRoomErrors = {
   room_added: 'החדר נוסף בהצלחה',
 };
 
+export const CloseRoom ={
+    room_closed:'החדר נמחק בהצלחה',
+    connected_students:'המחיקה נכשלה: ישנם תלמידים מחוברים לחדר',
+}
+
 export const ChooseTempalteStrings = {
   header: 'יש לבחור תבנית לחדר',
   template_name: 'שם התבנית: ',
@@ -193,6 +199,29 @@ export const ChooseStudentRoomStrings = {
   solve: 'כניסה',
   no_rooms: 'אין לך חדרים פעילים',
 };
+
+
+export const ChooseTeacherRoomStrings = {
+    header: 'בחירת חדר',
+    room_name: 'שם החדר: ',
+    solve: 'כניסה',
+    no_rooms: 'אין לך חדרים פעילים',
+};
+
+export const ChooseTeacherRoomTypeStrings={
+  classroom: 'חדרים כיתתיים',
+  group: 'חדרים קבוצתיים',
+  personal:'חדרים אישיים',
+  header:'בחירת סוג חדר',
+}
+
+export const TeacherRoomMenuStrings={
+    chat: 'כניסה לצאט',
+    approve_answer: 'אישור תשובות',
+    close_room:'סגירת החדר',
+    mission:'משימה',
+    of:'מתוך',
+}
 
 export const ChooseRoomStudentErrors = {
   room_empty: 'יש לבחור חדר',
@@ -367,7 +396,7 @@ export const WatchSuggestionsStrings = {
   watch_suggestions:'צפייה בהצעות',
   exit:'יציאה',
   suggestion_deleted:'ההודעה נמחקה בהצלחה',
-} 
+}
 
 export const ChangePasswordStrings = {
   header:'שינוי סיסמא',

@@ -45,7 +45,7 @@ public class OpenAnswerRepo {
             }
             file.transferTo(filePath.toAbsolutePath());
         } catch (Exception e) {
-            log.error(String.format("Error while saving file. stack trace: {0}", e.getStackTrace()));
+            //log.error(String.format("Error while saving file. stack trace: {0}", e.getStackTrace()));
             return false;
         }
         return true;
