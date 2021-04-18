@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
+import java.util.List;
+
 @Service
 public class RoomService {
 
@@ -68,6 +70,36 @@ public class RoomService {
         messagesManager.sendMultipleMessages(aliasesRes.getValue(), apiKey, message);
         return new Response<>(true, OpCode.Success);
     }
+
+
+
+    /**
+     * watch rooms details
+     * @param apiKey
+     * @return rooms details by type
+     */
+    public Response<List<RoomsDataByRoomType>> watchMyClassroomRooms (String apiKey){
+        return roomManager.watchMyClassroomRooms(apiKey);
+    }
+
+    /**
+     * disconnect from room
+     * @param apiKey - authentication object
+     * @return the mission details of the given room
+     */
+    public void disconnectFromRoom (String apiKey,String roomId){
+        roomManager.disconnectFromRoom(apiKey,roomId);
+    }
+
+    /**
+     * disconnect from all of my rooms
+     * @param apiKey - authentication object
+     */
+    public void disconnectFromRooms(String apiKey) {
+
+        roomManager.disconnectFromAllRooms(apiKey);
+    }
+
 
 
 }

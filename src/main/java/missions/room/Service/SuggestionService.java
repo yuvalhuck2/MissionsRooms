@@ -1,6 +1,5 @@
 package missions.room.Service;
 
-import DataAPI.Auth;
 import DataAPI.Response;
 import DataAPI.SuggestionData;
 import missions.room.Domain.Suggestion;

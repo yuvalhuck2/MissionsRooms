@@ -163,18 +163,23 @@ public class ManagerRoomStudent extends StudentManager {
         OpCode reason;
         String nextInCharge=null;
         NonPersistenceNotification<RoomDetailsData> notification;
-        if (room.isLastMission()) {
+        if (room.toCloseRoom()) {
             reason = roomRepo.deleteRoom(room).getReason();
             if (reason != OpCode.Success) {
-                log.error(String.format("Failed to delete room: {0}. function: updateRoomAndMissionInCharge", room.getRoomId()));
+                //log.error(String.format("Failed to delete room: {0}. function: updateRoomAndMissionInCharge", room.getRoomId()));
             }
             ram.deleteRoom(room.getRoomId());
             notification = new NonPersistenceNotification<>(OpCode.Finish_Missions_In_Room, null);
-        } else {
+        }
+        else if(room.isLastMission()){
+            ram.deleteRoom(room.getRoomId());
+            notification = new NonPersistenceNotification<>(OpCode.Has_Unapproved_Solutions, null);
+        }
+        else{
             room.increaseCurrentMission();
             reason = roomRepo.save(room).getReason();
             if (reason != OpCode.Success) {
-                log.error(String.format("Failed to save room: {0}. function: updateRoomAndMissionInCharge", room.getRoomId()));
+                //log.error(String.format("Failed to save room: {0}. function: updateRoomAndMissionInCharge", room.getRoomId()));
             }
             //roll mission in charge
             notification = new NonPersistenceNotification<>(OpCode.Update_Room, room.getData());
@@ -246,7 +251,9 @@ public class ManagerRoomStudent extends StudentManager {
         }
 
         OpCode opCode=ram.connectToRoom(roomId,student.getAlias());
-        return new Response<>(room.getData(),opCode);
+        RoomDetailsData roomDetailsData=room.getData();
+        roomDetailsData.setStudentName(student.getFirstName()+" "+student.getLastName());
+        return new Response<>(roomDetailsData,opCode);
     }
 
     /**

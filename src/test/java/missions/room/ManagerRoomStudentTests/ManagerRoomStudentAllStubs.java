@@ -17,6 +17,7 @@ import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
 import missions.room.Communications.Publisher.Publisher;
 import missions.room.Domain.Notifications.NonPersistenceNotification;
 import missions.room.Domain.Notifications.Notification;
+import missions.room.Domain.OpenAnswer;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Users.Student;
@@ -394,6 +395,18 @@ public class ManagerRoomStudentAllStubs {
         assertEquals(notification.getReason(),OpCode.Update_Room);
         RoomDetailsData detailsData= (RoomDetailsData) notification.getValue();
         checkEqualsWithRoomData(Data.VALID_2MissionStudent,detailsData);
+    }
+
+    @Test
+    void testAnswerDeterministicHasUnapprovedOpenQuestionSolution(){
+        Room room =dataGenerator.getRoom(Data.Valid_Student);
+        room.addOpenAnswer(new OpenAnswer());
+        Response<Boolean> response = managerRoomStudentWithMock.answerDeterministicQuestion(studentApiKey,room.getRoomId(),false);
+        assertEquals(response.getReason(),OpCode.Success);
+        assertEquals(true,response.getValue());
+        Notification notification=((PublisherMock)mockPublisher).getNotifications(studentApiKey).get(0);
+        assertEquals(notification.getReason(), Has_Unapproved_Solutions);
+        assertNull(notification.getValue());
     }
 
     @Test

@@ -8,6 +8,7 @@ import DataAPI.Response;
 import missions.room.Domain.OpenAnswer;
 import missions.room.Domain.RoomOpenAnswersView;
 import missions.room.Domain.Rooms.Room;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,9 +40,12 @@ public class OpenAnswerRepo {
             if (!folder.exists()){
                 folder.mkdirs();
             }
+            else if(folder.listFiles().length > 0) {
+                FileUtils.cleanDirectory(folder);
+            }
             file.transferTo(filePath.toAbsolutePath());
         } catch (Exception e) {
-            log.error(String.format("Error while saving file. stack trace: {0}", e.getStackTrace()));
+            //log.error(String.format("Error while saving file. stack trace: {0}", e.getStackTrace()));
             return false;
         }
         return true;

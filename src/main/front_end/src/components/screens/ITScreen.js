@@ -14,6 +14,7 @@ const {
   manageUsers,
   add_teacher,
   add_student,
+  close_classroom,
 } = ITStrings
 
 const {
@@ -85,8 +86,8 @@ class ITForm extends Component {
             <Text style={{color:"white"}}>{add_teacher}</Text> 
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
-            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
-            <Text style={{color:"white"}}>{watch_messages}</Text> 
+            onPress={()=>navigation.navigate(NavPaths.closeClassroom)}>
+            <Text style={{color:"white"}}>{close_classroom}</Text> 
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
             onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>

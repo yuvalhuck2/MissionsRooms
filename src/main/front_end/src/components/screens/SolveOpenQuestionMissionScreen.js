@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ActivityIndicator, Appbar } from 'react-native-paper';
+import {ActivityIndicator, Appbar, IconButton} from 'react-native-paper';
 import { connect } from 'react-redux';
 import { answerChanged } from '../../actions/SolveDeterministicActions';
 import { sendOpenQuestionAnswer, onPickFile } from '../../actions/SolveOpenQuestionActions'
-import { handleBack } from '../../actions/ChooseStudentRoomActions';
+import {enterChatStudent, handleBack} from '../../actions/ChooseStudentRoomActions';
 import { theme } from '../../core/theme';
 import { SolveDeterministicMissionStrings, uploadStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
@@ -31,6 +31,7 @@ class SolveOpenQuestionMissionForm extends Component {
         this.onBackPress = this.onBackPress.bind(this);
         this.onPickFile = this.onPickFile.bind(this)
         this.onRestart = this.onRestart.bind(this)
+        this.onChatButtonPress=this.onChatButtonPress.bind(this);
     }
 
     onAnswerChanged(text) {
@@ -46,6 +47,12 @@ class SolveOpenQuestionMissionForm extends Component {
         const { navigation, apiKey, roomId, mission } = this.props;
         this.props.handleBack({ navigation, apiKey, roomId, missionId: mission.missionId });
     }
+
+    onChatButtonPress() {
+        const {navigation} = this.props;
+        this.props.enterChatStudent({navigation});
+    }
+
 
     onRestart() {
         this.props.onRestart()
@@ -108,6 +115,17 @@ class SolveOpenQuestionMissionForm extends Component {
         }
     }
 
+    renderChatButton(){
+
+        return <IconButton
+            icon="chat"
+            size={30}
+            style={styles.chatButton}
+            color={theme.colors.primary}
+            onPress={this.onChatButtonPress}/>//this.props.enterChatStudent}/>
+
+    }
+
     renderPickFile() {
         const { fileText, isInCharge } = this.props;
         if (isInCharge) {
@@ -147,6 +165,7 @@ class SolveOpenQuestionMissionForm extends Component {
                 {this.renderTextBox()}
                 {this.renderPickFile()}
                 {this.renderButton()}
+                {this.renderChatButton()}
             </KeyboardAwareScrollView>
         );
     }
@@ -190,7 +209,13 @@ const styles = StyleSheet.create({
     },
     files_label: {
         width: DeviceWidth,
-    }
+    },
+    chatButton:{
+        //alignSelf: 'flex-end',
+        position: 'absolute',
+        top:550,
+        right:0,
+    },
 });
 
 const mapStateToProps = (state) => {
@@ -204,4 +229,5 @@ export default connect(mapStateToProps, {
     answerChanged,
     sendOpenQuestionAnswer,
     handleBack,
+    enterChatStudent,
 })(SolveOpenQuestionMissionForm);

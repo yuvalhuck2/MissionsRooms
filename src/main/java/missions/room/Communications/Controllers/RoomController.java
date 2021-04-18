@@ -44,4 +44,11 @@ public class RoomController extends AbsController{
         ResolveMissionData missionResolutionData = json.fromJson(resolveMissionData, ResolveMissionData.class);
         return  roomService.responseStudentSolution(missionResolutionData.getApiKey(), missionResolutionData.getRoomId(), missionResolutionData.getMissionId(), missionResolutionData.isApprove());
     }
+    @PostMapping("/view")
+    public Response<?> watchRoomDetails(@RequestBody String apiKeyObject) {
+        ApiKey data = json.fromJson(apiKeyObject, ApiKey.class);
+        Response<List<RoomsDataByRoomType>> response = roomService.watchMyClassroomRooms(data.getApiKey());
+        return response;
+    }
+
 }

@@ -20,6 +20,8 @@ import missions.room.Domain.missions.StoryMission;
 
 import java.util.*;
 
+import static Data.DataConstants.NOT_EXIST_CLASSROOM;
+
 public class DataGenerator {
 
     private HashMap<Data, Student> students;
@@ -196,6 +198,12 @@ public class DataGenerator {
                 ,classGroupMap.get(Data.Valid_Group));
         classRoomMap.put(Data.Valid_2Students_From_Different_Groups,
                 valid2StudentsFromDifferentGroups);
+        Classroom empty = new Classroom("0=5", classGroupMap.get(Data.Empty_Students), classGroupMap.get(Data.Empty_Students2));
+        classRoomMap.put(Data.Empty_Students, empty);
+
+        classRoomMap.put(Data.Valid_Without_Students,new Classroom("0=1",
+                new ClassGroup("g11",GroupType.A,new HashMap<>()),new ClassGroup("g22",GroupType.B,new HashMap<>())));
+
     }
 
     private void initClassroomData() {
@@ -212,7 +220,8 @@ public class DataGenerator {
         HashMap<String,Student> studentHashMap=new HashMap<>();
         studentHashMap.put(students.get(Data.VALID).getAlias(),students.get(Data.VALID));
         classGroupMap.put(Data.Valid_Group,new ClassGroup("g2",GroupType.B,studentHashMap));
-        classGroupMap.put(Data.Empty_Students,new ClassGroup("g1",GroupType.A,new HashMap<>()));
+        classGroupMap.put(Data.Empty_Students, new ClassGroup("g1",GroupType.A,new HashMap<>()));
+        classGroupMap.put(Data.Empty_Students2, new ClassGroup("g6",GroupType.B,new HashMap<>()));
         classGroupMap.put(Data.VALID_WITH_GROUP_C,new ClassGroup("g3",GroupType.C,studentHashMap));
         HashMap<String,Student> student2HashMap=new HashMap<>();
         student2HashMap.put(students.get(Data.VALID2).getAlias(),students.get(Data.VALID2));
@@ -444,6 +453,9 @@ public class DataGenerator {
         teachers.put(Data.WRONG_NAME,new Teacher("Wrong","Avi","Ron","1234"));
         teachers.put(Data.Valid_2Students_From_Different_Groups,new Teacher("2StudentsTeacher","name","L name",
                 classRoomMap.get(Data.Valid_2Students_From_Different_Groups),GroupType.BOTH,"1234"));
+        teachers.put(Data.VALID_WITHOUT_CLASSROOM,new Teacher("TeacherWithoutClassroom","Avi","Ron","1234"));
+
+        teachers.put(Data.VALID_WITH_CLASSROOM2,new Teacher("withClassRoom","Gal","Ron",classRoomMap.get(Data.Valid_Without_Students),GroupType.A,"1111"));
     }
 
     private void initVerificationCodes() {
@@ -506,7 +518,7 @@ public class DataGenerator {
                 null));
         studentDatas.put(Data.NOT_EXIST_CLASSROOM, new StudentData("newAlias", "newFirstName",
                 "newLastName", GroupType.A,
-                "notExist"));
+                NOT_EXIST_CLASSROOM));
         studentDatas.put(Data.EXIST_IT, new StudentData(users.get(Data.VALID_IT).getAlias(), "newFirstName",
                 "newLastName", GroupType.A,
                 classRoomMap.get(Data.Valid_Classroom)

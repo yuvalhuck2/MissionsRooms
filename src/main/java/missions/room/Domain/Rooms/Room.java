@@ -32,6 +32,9 @@ public abstract class Room {
     protected int countCorrectAnswer;
 
     @Transient
+    protected boolean isTeacherConnect;
+
+    @Transient
     protected Set<String>  studentWereChosen;
 
     @Transient
@@ -80,6 +83,7 @@ public abstract class Room {
         connectedStudents=new HashSet<>();
         studentWereChosenForStory=new HashSet<>();
         waitingForStory=false;
+        this.isTeacherConnect=false;
         openAnswers = new ArrayList<>();
     }
 
@@ -161,7 +165,7 @@ public abstract class Room {
         return currentMission>=roomTemplate.getMissions().size()-1;
     }
 
-    protected boolean toCloseRoom(){
+    public boolean toCloseRoom(){
         return isLastMission()&&allOpenQuestionsApproved();
     }
 
@@ -192,14 +196,23 @@ public abstract class Room {
             }
             return OpCode.NOT_IN_CHARGE;
         }
+        else if(teacher.getAlias().equals(alias)){
+            isTeacherConnect=true;
+            return OpCode.Teacher;
+        }
         return OpCode.NOT_BELONGS_TO_ROOM;
     }
 
     public abstract boolean isBelongToRoom(String alias);
 
     public Response<String> disconnect(String alias) {
-        connectedStudents.remove(alias);
-        if(connectedStudents.isEmpty()){
+        if(teacher.getAlias().equals(alias)){
+            isTeacherConnect=false;
+        }
+        else {
+            connectedStudents.remove(alias);
+        }
+        if(connectedStudents.isEmpty()&&!isTeacherConnect){
             return new Response<>(null, OpCode.Delete);
         }
         else if(missionIncharge.equals(alias)){
@@ -231,6 +244,10 @@ public abstract class Room {
         studentWereChosenForStory.clear();
         waitingForStory=false;
         return true;
+    }
+
+    public boolean isTeacherConnect() {
+        return isTeacherConnect;
     }
 
     public void addOpenAnswer(OpenAnswer openAnswer) {

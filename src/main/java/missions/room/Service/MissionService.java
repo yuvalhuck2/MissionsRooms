@@ -5,6 +5,7 @@ import missions.room.Managers.MissionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 
 @Service
@@ -40,5 +41,9 @@ public class MissionService {
      */
     public Response<RoomOpenAnswerData> watchSolutions(String apiKey, String roomId){
         return missionManager.watchSolutions(apiKey, roomId);
+    }
+
+    public Response<File> getMissionOpenAnswerFile(String apiKey, String roomId, String missionId) {
+        return missionManager.getMissionOpenAnswerFile(apiKey, roomId, missionId);
     }
 }

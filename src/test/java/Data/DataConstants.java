@@ -11,6 +11,7 @@ public class DataConstants {
     public static final String WRONG_USER_NAME ="wrong_name";
     public static final String NULL_USER_KEY ="null_user";
     public static final String VALID_TEACHER_APIKEY = "valid_teacher_key";
+    public static final String VALID2_TEACHER_APIKEY = "valid2_teacher_key";
     public static final String WRONG_ROOM_ID = "wrong_room_id";
     public static final String IT_API_KEY="it_api_key";
     public static final String SENTENCE="sentence";
@@ -18,4 +19,6 @@ public class DataConstants {
     public static final String THIRD_VALID_STUDENT_APIKEY="third apiKey";
     public static final String INVALID_KEY_OPEN_ANS = "invalid_openAns";
     public static final String TEMP_PASSWORD = "temp_password";
+    public static final String VALID3_TEACHER_APIKEY="valid3_teacher_apikey";
+    public static final String NOT_EXIST_CLASSROOM = "not exsit classroom";
 }

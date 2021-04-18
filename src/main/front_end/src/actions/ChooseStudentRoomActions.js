@@ -13,8 +13,8 @@ import {
     INIT_STORY_MISSION,
     EXIT_ROOM,
     OPEN_QUESTION_MISSION,
-    INIT_OPEN_QUESTION_MISSION
-  } from './types';
+    INIT_OPEN_QUESTION_MISSION, ENTER_CHAT_ROOM_STUDENT
+} from './types';
  
   import {
     Wrong_Key,
@@ -59,7 +59,7 @@ const {
           console.log(err);
           return dispatch({ type: UPDATE_ERROR_CHOOSE_ROOM, payload: server_error });
         }
-      } 
+      }
     }
   };
 
@@ -119,3 +119,11 @@ const {
       }
     }
   }
+export const enterChatStudent = ({navigation})=> {
+    return async (dispatch) => {
+        dispatch({
+            type: ENTER_CHAT_ROOM_STUDENT,
+        });
+        navigation.navigate(NavPaths.chatRoom);
+    }
+}

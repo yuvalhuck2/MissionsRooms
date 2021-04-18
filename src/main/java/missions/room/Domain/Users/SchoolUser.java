@@ -15,6 +15,12 @@ public abstract class SchoolUser extends User {
 
     protected String lastName;
 
+/*
+    @OneToMany(cascade = CascadeType.ALL)
+    @MapKeyColumn(name = "id")
+    @JoinColumn(name="dest",referencedColumnName = "alias")
+    protected Map<String, Message> messages;*/
+
     public SchoolUser() {
         super();
     }

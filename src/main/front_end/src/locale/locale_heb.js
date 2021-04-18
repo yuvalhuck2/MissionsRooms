@@ -36,6 +36,13 @@ export const uploadStrings = {
   success: 'מערכת אותחלה בהצלחה',
 };
 
+export const watchOpenSolution = {
+  download_btn: 'הורד קובץ',
+  header: 'פתרון משימה',
+  question_title: 'שאלה:',
+  answer_title: 'תשובה:'
+};
+
 export const uploadStringsErrors = {
   file_number_error: 'מספר הקבצים צריך להיות 4',
   server_not_responding: 'השרת לא מגיב',
@@ -146,6 +153,7 @@ export const TeacherStrings = {
   closeRoom: 'סגירת חדר',
   main_screen: 'התנתק/י',
   watch_suggestions:'צפייה בהצעות',
+  WatchRooms:'צפיה בחדרים',
 };
 
 export const AddRoomStrings = {
@@ -169,6 +177,11 @@ export const AddRoomErrors = {
   room_added: 'החדר נוסף בהצלחה',
 };
 
+export const CloseRoom ={
+    room_closed:'החדר נמחק בהצלחה',
+    connected_students:'המחיקה נכשלה: ישנם תלמידים מחוברים לחדר',
+}
+
 export const ChooseTempalteStrings = {
   header: 'יש לבחור תבנית לחדר',
   template_name: 'שם התבנית: ',
@@ -186,6 +199,29 @@ export const ChooseStudentRoomStrings = {
   solve: 'כניסה',
   no_rooms: 'אין לך חדרים פעילים',
 };
+
+
+export const ChooseTeacherRoomStrings = {
+    header: 'בחירת חדר',
+    room_name: 'שם החדר: ',
+    solve: 'כניסה',
+    no_rooms: 'אין לך חדרים פעילים',
+};
+
+export const ChooseTeacherRoomTypeStrings={
+  classroom: 'חדרים כיתתיים',
+  group: 'חדרים קבוצתיים',
+  personal:'חדרים אישיים',
+  header:'בחירת סוג חדר',
+}
+
+export const TeacherRoomMenuStrings={
+    chat: 'כניסה לצאט',
+    approve_answer: 'אישור תשובות',
+    close_room:'סגירת החדר',
+    mission:'משימה',
+    of:'מתוך',
+}
 
 export const ChooseRoomStudentErrors = {
   room_empty: 'יש לבחור חדר',
@@ -246,6 +282,7 @@ export const ITStrings = {
   manageUsers:'ניהול משתמשים',
   add_teacher: 'הוספת מורה',
   add_student: 'הוספת תלמיד',
+  close_classroom: 'סגירת כיתה',
 };
 
 export const addMissionErrors = {
@@ -285,6 +322,7 @@ export const passToMyRoomsErrors = {
 
 export const webSocketMessages = {
   final: '\nהחדר הסתיים',
+  has_unapproveds_solutions:'החדר הסתיים, אך יש פתרונות שעדיין לא אושרו',
 }
 
 export const addITStrings = {
@@ -358,7 +396,7 @@ export const WatchSuggestionsStrings = {
   watch_suggestions:'צפייה בהצעות',
   exit:'יציאה',
   suggestion_deleted:'ההודעה נמחקה בהצלחה',
-} 
+}
 
 export const ChangePasswordStrings = {
   header:'שינוי סיסמא',
@@ -432,7 +470,7 @@ export const addUserErrors = {
   wrong_class: 'הכיתה שהוזנה אינה קיימת במערכת',
   wrong_group: 'הקבוצה שהוזנה לא תקינה',
   user_added: 'המשתמש נוסף בהצלחה!',
-} 
+}
 
 export const ResetPasswordStrings = {
   header: 'איפוס סיסמא',
@@ -441,7 +479,25 @@ export const ResetPasswordStrings = {
   reset_password_succeeded: 'האיפוס הצליח! סיסמא זמנית מחכה לך במייל',
 }
 
-export const   addSuggestionErrors = {
+export const addSuggestionErrors = {
   wrong_suggestion: 'יש להזין הצעה תקינה',
   suggestion_added: 'ההצעה נוספה בהצלחה',
 }
+
+export const CloseClassroomStrings = {
+  enter_class_number: 'מספר כיתה',
+  choose_grade: 'בחירת שכבה',
+  closeButton: 'סגירה',
+  header: 'סגירת כיתה',
+}
+
+export const CloseClassroomErrors = {
+  wrong_class: 'הכיתה שהוזנה אינה קיימת במערכת',
+  classroom_not_empty: 'לא ניתן לסגור כיתה אשר יש בה תלמידים',
+  classroom_closed: 'הכיתה נסגרה בהצלחה!',
+}
+
+export const WatchAllOpenQuestionMissions = {
+  mission_title: 'משימה מספר ',
+  title:'משימות עם תשובה פתוחה בחדר: '
+};

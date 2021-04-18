@@ -69,6 +69,8 @@ public class ITManagerTestsAllStubs {
 
     private AutoCloseable closeable;
 
+    protected String classroomName;
+
     @BeforeEach
     void setUp() {
         dataGenerator=new DataGenerator();
@@ -89,24 +91,31 @@ public class ITManagerTestsAllStubs {
 
         SchoolUser schoolUser = dataGenerator.getStudent(Data.VALID);
 
+        Classroom empty = dataGenerator.getClassroom(Data.Empty_Students);
+        classroomName = empty.getClassName();
+
         initRam(itAlias);
         initUserRepo(it, itAlias2);
         initSchoolUserRepo(schoolUser);
         initITRepo(it, itAlias, it2);
-        initClassroomRepo();
+        initClassroomRepo(empty);
         initHashSystem();
     }
 
-    protected void initClassroomRepo() {
+    protected void initClassroomRepo(Classroom empty) {
         Classroom classroom = dataGenerator.getClassroom(Data.Valid_Classroom);
         when(mockClassroomRepo.findForWrite(classroom.getClassName()))
                 .thenReturn(new Response<>(classroom, OpCode.Success));
+        when(mockClassroomRepo.findForWrite(classroomName))
+                .thenReturn(new Response<>(empty, OpCode.Success));
         when(mockClassroomRepo.findForWrite(dataGenerator.
                 getStudentData(Data.NOT_EXIST_CLASSROOM)
                 .getClassroom()))
                 .thenReturn(new Response<>(null, OpCode.Not_Exist_Classroom));
         when(mockClassroomRepo.save(classroom))
                 .thenReturn(new Response<>(classroom, OpCode.Success));
+        when(mockClassroomRepo.delete(any()))
+                .thenReturn(new Response<>(true, OpCode.Success));
 
     }
 
@@ -477,9 +486,69 @@ public class ITManagerTestsAllStubs {
     }
 
     protected void testAddStudentInvalid(OpCode opCode){
-        Response<Boolean> addStudentResponse = itManager.addStudent(ITApiKey,studentData);
+        Response<Boolean> addStudentResponse = itManager.addStudent(ITApiKey, studentData);
         assertFalse(addStudentResponse.getValue());
         assertEquals(addStudentResponse.getReason(), opCode);
+    }
+
+    @Test
+    void testCloseClassroomHappyCase(){
+        Response<Boolean> closeClassroomResponse = itManager.closeClassroom(ITApiKey, classroomName);
+        assertTrue(closeClassroomResponse.getValue());
+        assertEquals(closeClassroomResponse.getReason(), OpCode.Success);
+    }
+
+    @Test
+    void testCloseClassroomWrongKey(){
+        ITApiKey = INVALID_KEY;
+        testCloseClassroomInvalid(OpCode.Wrong_Key);
+    }
+
+    @Test
+    void testCloseClassroomNotExistAlias(){
+        ITApiKey = NULL_USER_KEY;
+        testCloseClassroomInvalid(OpCode.Not_Exist);
+    }
+
+    @Test
+    void testCloseClassroomITRepoFindByIdThrowsException(){
+        when(mockITRepo.findITById(anyString()))
+                .thenReturn(new Response<>(null,OpCode.DB_Error));
+        testCloseClassroomInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    void testCloseClassroomNotExistClassroom(){
+        classroomName = NOT_EXIST_CLASSROOM;
+        testCloseClassroomInvalid(OpCode.Not_Exist_Classroom);
+    }
+
+    @Test
+    void testCloseClassroomClassroomRepoFindForWriteClassroomThrowsException(){
+        when(mockClassroomRepo.findForWrite(anyString()))
+                .thenReturn(new Response<>(null,OpCode.DB_Error));
+        testCloseClassroomInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    void testCloseClassroomNotEmptyFromStudents(){
+        classroomName = dataGenerator
+                .getClassroom(Data.Valid_Classroom)
+                .getClassName();
+        testCloseClassroomInvalid(OpCode.Has_Students);
+    }
+
+    @Test
+    void testCloseClassroomClassroomRepoDeleteClassroomThrowsException(){
+        when(mockClassroomRepo.delete(any()))
+                .thenReturn(new Response<>(false,OpCode.DB_Error));
+        testCloseClassroomInvalid(OpCode.DB_Error);
+    }
+
+    protected void testCloseClassroomInvalid(OpCode opCode){
+        Response<Boolean> closeClassroomResponse = itManager.closeClassroom(ITApiKey, classroomName);
+        assertFalse(closeClassroomResponse.getValue());
+        assertEquals(closeClassroomResponse.getReason(), opCode);
     }
 
     @AfterEach

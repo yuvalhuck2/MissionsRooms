@@ -1,11 +1,22 @@
 package missions.room.Communications.Controllers;
 
 import DataAPI.*;
+import Utils.Utils;
 import com.google.gson.Gson;
 import missions.room.Service.MissionService;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.List;
 
 @RestController // This means that this class is a Controller
@@ -39,4 +50,27 @@ public class MissionController extends AbsController {
         return res;
     }
 
+    @GetMapping("/downloadFile")
+    public  ResponseEntity<?> downloadOpenAnswerFile(@RequestParam String apiKey, @RequestParam(name = "roomId") String roomId, @RequestParam(name = "missionId") String missionId) {
+        Response<File> fileRes = missionService.getMissionOpenAnswerFile(apiKey, roomId, missionId);
+        String rootPath = Utils.getRootDirectory();
+        Path folderPath = FileSystems.getDefault().getPath(rootPath,"openAnswer", roomId, missionId);
+        File f = folderPath.toFile().listFiles()[0]; //TODO add defense
+        try {
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(f));
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", f.getName()));
+            headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+            headers.add("Pragma", "no-cache");
+            headers.add("Expires", "0");
+            ResponseEntity<Object> responseEntity = ResponseEntity.ok().headers(headers).contentLength(f.length())
+                    .contentType(MediaType.parseMediaType("application/txt")).body(resource);
+            return  responseEntity;
+        } catch (FileNotFoundException e) { //TODO add log
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
 }

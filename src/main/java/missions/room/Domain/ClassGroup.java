@@ -114,4 +114,8 @@ public class ClassGroup {
             }
         }
     }
+
+    public boolean hasStudents() {
+        return !students.isEmpty();
+    }
 }

@@ -12,6 +12,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
+
+    private static final String YUD = "י ";
+    private static final String YUD_ALEF = "יא ";
+    private static final String YUD_BET = "יב ";
+
     //TODO update leoback suffix
     final static String LEOBAECK_SUFFIX="@leobaeck.net";
     // TODO delete when testing is done
@@ -108,5 +113,21 @@ public class Utils {
         Path currentRelativePath = Paths.get("").toAbsolutePath();
         String rootDirectory = currentRelativePath.getRoot().toString();
         return rootDirectory;
+    }
+
+    public static String getClassHebrewName(String className){
+        String[] classStrings = className.split("=");
+        return getClassNameByNumber(classStrings[0])+classStrings[1];
+    }
+
+    private static String getClassNameByNumber(String classString) {
+        if(classString.equals("0")){
+            return YUD;
+        }
+        if(classString.equals("1")){
+            return YUD_ALEF;
+        }
+        return YUD_BET;
+
     }
 }

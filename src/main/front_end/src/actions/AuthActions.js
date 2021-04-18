@@ -29,6 +29,7 @@ import {
   IN_CHARGE,
   STORY_FINISH,
   STORY_IN_CHARGE,
+    Update_Chat,
 } from './OpCodeTypes';
 import {
   CLEAR_STATE,
@@ -51,6 +52,8 @@ import {
   CHANGE_IN_CHARGE,
   FINISH_STORY_MISSION,
   CHANGE_STORY_IN_CHARGE,
+    UPDATE_CHAT_ROOM,
+  Has_Unapproved_Solutions,
 } from './types';
 
 const {
@@ -75,6 +78,7 @@ const {
 
 const {
   final,
+  has_unapproveds_solutions,
 } = webSocketMessages;
 
 // THIS IS FOR CHECKING DNS ADDRESS WHEN RUNNING EXPO ON PHYSICAL DEVICE
@@ -281,6 +285,11 @@ const connectToWebSocketFromLogin = (apiKey,dispatch, navigation) => {
         navigation.navigate(NavPaths.studentMainScreen);
         dispatch({type:STUDENT_DIALOG, payload:final})
         break;
+      case Has_Unapproved_Solutions:
+        dispatch({ type: FINISH_MISSION, payload: apiKey });
+        navigation.navigate(NavPaths.studentMainScreen);
+        dispatch({type:STUDENT_DIALOG, payload:has_unapproveds_solutions})
+        break;
       case Update_Room:
         dispatch({ type: FINISH_MISSION, payload: apiKey });
         moveToMission(value,dispatch,navigation,false);
@@ -293,6 +302,9 @@ const connectToWebSocketFromLogin = (apiKey,dispatch, navigation) => {
         break;
       case STORY_FINISH:
         dispatch({ type: FINISH_STORY_MISSION, payload: additionalData});
+        break;
+      case Update_Chat:
+        dispatch({type:UPDATE_CHAT_ROOM,payload:value});
         break;
       default:
         console.log("No match case in web socket for"+reason)

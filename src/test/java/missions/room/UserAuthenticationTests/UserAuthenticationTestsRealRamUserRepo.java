@@ -1,5 +1,6 @@
 package missions.room.UserAuthenticationTests;
 
+import CrudRepositories.ClassroomRepository;
 import CrudRepositories.UserCrudRepository;
 import Data.Data;
 import DataAPI.OpCode;
@@ -30,12 +31,16 @@ public class UserAuthenticationTestsRealRamUserRepo extends UserAuthenticationTe
     @Autowired
     private UserCrudRepository userCrudRepository;
 
+    @Autowired
+    protected ClassroomRepository classroomRepository;
+
     @Mock
     private UserCrudRepository mockUserCrudRepository;
 
     @Override
     protected void initUserRepo(Student student) {
-        userCrudRepository.save(student);
+        //userCrudRepository.save(student);
+        classroomRepository.save(dataGenerator.getClassroom(Data.VALID_WITH_GROUP_C));
         try {
             Field userRepo = UserAuthenticationManager.class.getDeclaredField("userRepo");
             userRepo.setAccessible(true);
@@ -87,6 +92,8 @@ public class UserAuthenticationTestsRealRamUserRepo extends UserAuthenticationTe
 
     @Override
     protected void tearDownMocks() {
+
+        classroomRepository.deleteAll();
         userCrudRepository.deleteAll();
         super.tearDownMocks();
     }
