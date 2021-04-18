@@ -172,6 +172,7 @@ public class ManagerRoomStudent extends StudentManager {
             notification = new NonPersistenceNotification<>(OpCode.Finish_Missions_In_Room, null);
         }
         else if(room.isLastMission()){
+            ram.deleteRoom(room.getRoomId());
             notification = new NonPersistenceNotification<>(OpCode.Has_Unapproved_Solutions, null);
         }
         else{
