@@ -297,7 +297,6 @@ const connectToWebSocketFromLogin = (apiKey,dispatch, navigation) => {
         dispatch({ type: FINISH_STORY_MISSION, payload: additionalData});
         break;
       case Update_Chat:
-        //alert("fff");
         dispatch({type:UPDATE_CHAT_ROOM,payload:value});
         break;
       default:

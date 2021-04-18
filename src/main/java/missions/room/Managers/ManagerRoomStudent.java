@@ -246,7 +246,9 @@ public class ManagerRoomStudent extends StudentManager {
         }
 
         OpCode opCode=ram.connectToRoom(roomId,student.getAlias());
-        return new Response<>(room.getData(),opCode);
+        RoomDetailsData roomDetailsData=room.getData();
+        roomDetailsData.setStudentName(student.getFirstName()+" "+student.getLastName());
+        return new Response<>(roomDetailsData,opCode);
     }
 
     /**

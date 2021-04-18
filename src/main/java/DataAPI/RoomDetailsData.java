@@ -12,12 +12,21 @@ public class RoomDetailsData {
     private boolean waitingForStory;
     private int currentMissionNumber;
     private int numberOfMissions;
+    private String studentName;
     public RoomDetailsData(String roomId, String name, MissionData currentMission, RoomType roomType, boolean waitingForStory){
         this.roomId=roomId;
         this.name=name;
         this.currentMission=currentMission;
         this.roomType=roomType;
         this.waitingForStory=waitingForStory;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 
     public String getRoomId() {

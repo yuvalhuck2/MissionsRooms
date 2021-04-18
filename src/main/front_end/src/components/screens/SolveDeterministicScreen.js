@@ -4,7 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { ActivityIndicator,Appbar ,IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { answerChanged, sendDeterministicAnswer } from '../../actions/SolveDeterministicActions';
-import {handleBack} from '../../actions/ChooseStudentRoomActions';
+import {handleBack,enterChatStudent} from '../../actions/ChooseStudentRoomActions';
 import { theme } from '../../core/theme';
 import { SolveDeterministicMissionStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
@@ -22,6 +22,7 @@ class SolveDeterministicForm extends Component {
     this.onAnswerChanged = this.onAnswerChanged.bind(this);
     this.onButtonPress = this.onButtonPress.bind(this);
     this.onBackPress = this.onBackPress.bind(this);
+    this.onChatButtonPress=this.onChatButtonPress.bind(this);
   }
 
   onAnswerChanged(text) {
@@ -32,6 +33,12 @@ class SolveDeterministicForm extends Component {
     const {roomId,mission,tries,apiKey, navigation,currentAnswer } = this.props;
     this.props.sendDeterministicAnswer({roomId,mission,tries,apiKey, navigation,currentAnswer });
   }
+
+  onChatButtonPress() {
+      const {navigation} = this.props;
+      this.props.enterChatStudent({navigation});
+  }
+
 
   onBackPress(){
     const {navigation,apiKey,roomId,mission} =this.props;
@@ -65,12 +72,13 @@ class SolveDeterministicForm extends Component {
   }
 
   renderChatButton(){
+
     return <IconButton
       icon="chat"
       size={30}
       style={styles.chatButton}
       color={theme.colors.primary}
-      onPress={()=>console.log("pressed")}/>//this.props.enterChatStudent}/>
+      onPress={this.onChatButtonPress}/>//this.props.enterChatStudent}/>
 
   }
 
@@ -160,5 +168,5 @@ export default connect(mapStateToProps, {
   answerChanged,
   sendDeterministicAnswer,
   handleBack,
-    //enterChatStudent,
+  enterChatStudent,
 })(SolveDeterministicForm);

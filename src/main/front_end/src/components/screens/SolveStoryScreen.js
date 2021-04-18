@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ActivityIndicator,Appbar  } from 'react-native-paper';
+import {ActivityIndicator, Appbar, IconButton} from 'react-native-paper';
 import { connect } from 'react-redux';
 import { sentenceChanged, sendStoryAnswer, sendFinishStory } from '../../actions/SolveStoryActions';
-import {handleBack} from '../../actions/ChooseStudentRoomActions';
+import {enterChatStudent, handleBack} from '../../actions/ChooseStudentRoomActions';
 import { theme } from '../../core/theme';
 import { SolveStoryMissionStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
@@ -25,6 +25,7 @@ class SolveStoryFrom extends Component {
     this.onButtonPress = this.onButtonPress.bind(this);
     this.onBackPress = this.onBackPress.bind(this);
     this.onFinishButtonPress=this.onFinishButtonPress.bind(this);
+    this.onChatButtonPress=this.onChatButtonPress.bind(this);
   }
 
   onAnswerChanged(text) {
@@ -46,7 +47,13 @@ class SolveStoryFrom extends Component {
     this.props.sendFinishStory({apiKey, roomId})
   }
 
-  renderSpinner() {
+    onChatButtonPress() {
+        const {navigation} = this.props;
+        this.props.enterChatStudent({navigation});
+    }
+
+
+    renderSpinner() {
     return (
       <ActivityIndicator
         animating={true}
@@ -55,6 +62,17 @@ class SolveStoryFrom extends Component {
       />
     );
   }
+
+    renderChatButton(){
+
+        return <IconButton
+            icon="chat"
+            size={30}
+            style={styles.chatButton}
+            color={theme.colors.primary}
+            onPress={this.onChatButtonPress}/>//this.props.enterChatStudent}/>
+
+    }
 
   renderButton(){
     const {loading, isInCharge} = this.props
@@ -122,7 +140,9 @@ class SolveStoryFrom extends Component {
         {this.renderTextBox()}
         {this.renderButton()}
         {this.renderFinishButton()}
+          {this.renderChatButton()}
         {this.renderError()}
+
       </KeyboardAwareScrollView>
     );
   }
@@ -154,6 +174,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: theme.colors.error,
   },
+    chatButton:{
+        //alignSelf: 'flex-end',
+        position: 'absolute',
+        top:550,
+        right:0,
+    },
 });
 
 const mapStateToProps = (state) => {
@@ -166,4 +192,5 @@ export default connect(mapStateToProps, {
   sendStoryAnswer,
   sendFinishStory,
   handleBack,
+    enterChatStudent,
 })(SolveStoryFrom);

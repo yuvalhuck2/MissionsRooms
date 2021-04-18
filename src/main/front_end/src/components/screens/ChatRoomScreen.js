@@ -8,43 +8,43 @@ import { Component } from 'react';
 import { useState, useCallback, useEffect } from 'react'
 
 class ChatRoomForm extends Component {
-    state = {
-        messages: [],
-        messageCount:1,
-    };
+
     constructor(...args) {
         super(...args);
+        this.state = {
+            messages: [],
+            messageCount:0,
+        };
 
     }
 
     componentWillMount() {
-        this.setState({
-            messages: [
-                {
-                    _id: 1,
-                    text: 'Hello developer',
-                    createdAt: new Date(),
-                    user: {
-                        _id: 2,
-                        name: 'React Native',
-                        avatar: 'https://facebook.github.io/react/img/logo_og.png',
-                    },
-                },
-            ],
-        });
+
+
+
     }
 
-    UNSAFE_componentWillReceiveProps(a,b){
+    componentDidUpdate(prevProps) {
+
         const {messagesProps}= this.props;
-        let messages = messagesProps;
-        let newMessagesLength = messages.length
 
-        let newMessages = messages.slice(this.state.messageCount)
 
-        this.setState((prevState)=>({
-            messages:GiftedChat.append(prevState.messages,newMessages),
-            messageCount:newMessagesLength,
-        }));
+        if(prevProps.messagesProps.length!==messagesProps.length) {
+            //alert(messagesProps.length+" "+this.state.messages.length)
+
+            let messages = messagesProps;
+            let newMessagesLength = messages.length
+
+            let newMessages = messages.slice(this.state.messageCount)
+
+
+
+
+            this.setState((prevState) => ({
+                messages: GiftedChat.append(prevState.messages, newMessages),
+                messageCount: newMessagesLength,
+            }));
+        }
     }
 
     onSend(messages = []) {
@@ -82,59 +82,6 @@ class ChatRoomForm extends Component {
         );
     }
 }
-    //return(
-    /*
-    <GiftedChat
-        messages={messages}
-        onSend={(message)=>this.props.sendMessage(message)}
-        user={{name:name}}
-        />*/
-    /*
-    <View style={styles.container}>
-        <FlatList
-                  data={messages}
-                 renderItem={this.renderItem}
-                  inverted
-        />
-        <KeyboardAvoidingView behavior="padding">
-        <View style={styles.footer}>
-            <TextInput
-                value={typing}
-                onChangeText={text => this.setState({typing:text})}
-                style={styles.input}
-                underlineColorAndroid="transparent"
-                placeholder="Type something nice"
-            />
-            <TouchableOpacity onPress={this.sendMessage.bind(this)}>
-                <Text style={styles.send}>Send</Text>
-            </TouchableOpacity>
-        </View>
-        </KeyboardAvoidingView>
-
-
-    </View>*/
-    //    );
-//};
-
-/*
-    renderItem({item}) {
-        return (
-            <View style={styles.row}>
-                <Text style={styles.sender}>{item.sender}</Text>
-                <Text style={styles.message}>{item.message}</Text>
-            </View>
-        );
-    }*/
-/*
-    componentDidMount() {
-        const {roomId,message,messages}=this.props;
-        this.props.loadMessages();
-        GiftedChat.append(messages,message);
-
-    }
-    componentWillUnmount() {
-        this.props.closeChat();
-    }*/
 
 const styles = StyleSheet.create({
     container: {
