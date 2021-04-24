@@ -30,8 +30,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-
-public class UserAuthenticationTestsRealRamUserSchoolUserRepo extends UserAuthenticationTestsRealRamUserRepo {
+public class UserAuthenticationTestsRealRamUserSchoolUserRepo extends UserAuthenticationTestsRealRamBaseUserRepo {
 
     @Autowired
     protected SchoolUserRepo realSchoolUserRepo;
@@ -50,7 +49,7 @@ public class UserAuthenticationTestsRealRamUserSchoolUserRepo extends UserAuthen
     @Override
     protected void initSchoolUserRepo(Student student) {
         Teacher teacher=dataGenerator.getTeacher(Data.VALID_WITH_GROUP_C);
-        //classroomRepository.save(teacher.getClassroom());
+        classroomRepository.save(teacher.getClassroom());
         teacherCrudRepository.save(teacher);
         try {
             Field userRepo = UserAuthenticationManager.class.getDeclaredField("schoolUserRepo");
@@ -95,7 +94,7 @@ public class UserAuthenticationTestsRealRamUserSchoolUserRepo extends UserAuthen
     @AfterEach
     void tearDown() {
         teacherCrudRepository.deleteAll();
-        //classroomRepository.deleteAll();
+        classroomRepository.deleteAll();
         super.tearDown();
     }
 }

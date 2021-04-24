@@ -3,7 +3,7 @@ package missions.room.Repo;
 import CrudRepositories.UserCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
-import missions.room.Domain.Users.User;
+import missions.room.Domain.Users.BaseUser;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class UserRepo {
     }
 
     @Transactional
-    public Response<User> findUserForWrite(String alias){
+    public Response<BaseUser> findUserForWrite(String alias){
         try {
             return new Response<>(userCrudRepository.findUserForWrite(alias), OpCode.Success);
         }
@@ -38,7 +38,7 @@ public class UserRepo {
     }
 
     @Transactional
-    public Response<User> findUserForRead(String alias){
+    public Response<BaseUser> findUserForRead(String alias){
         try {
             return new Response<>(userCrudRepository.findUserForRead(alias), OpCode.Success);
         }
@@ -59,18 +59,18 @@ public class UserRepo {
         }
     }
 
-    public Response<User> save(User user){
+    public Response<BaseUser> save(BaseUser baseUser){
         try {
-            return new Response<>(userCrudRepository.save(user), OpCode.Success);
+            return new Response<>(userCrudRepository.save(baseUser), OpCode.Success);
         }
         catch (Exception e){
             return new Response<>(null,OpCode.DB_Error);
         }
     }
 
-    public Response<User> findUser(String alias) {
+    public Response<BaseUser> findUser(String alias) {
         try {
-            Optional<User> user=userCrudRepository.findById(alias);
+            Optional<BaseUser> user=userCrudRepository.findById(alias);
             return user.map(value -> new Response<>(value, OpCode.Success)).
                     orElseGet(() -> new Response<>(null, OpCode.Not_Exist));
         }
@@ -79,10 +79,10 @@ public class UserRepo {
         }
     }
 
-    public Response<List<User>> findAllUsers() {
+    public Response<List<BaseUser>> findAllUsers() {
         try{
-            List<User> users = Lists.newArrayList(userCrudRepository.findAll());
-            return new Response<>(users,OpCode.Success);
+            List<BaseUser> userLIES = Lists.newArrayList(userCrudRepository.findAll());
+            return new Response<>(userLIES,OpCode.Success);
         }
         catch (Exception e){
             return new Response<>(new ArrayList<>(),OpCode.DB_Error);
