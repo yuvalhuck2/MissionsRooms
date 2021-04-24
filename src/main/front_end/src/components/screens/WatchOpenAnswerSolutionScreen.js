@@ -30,7 +30,7 @@ class WatchOpenAnswerForm extends Component {
 
     onDownloadFile() {
         const { apiKey, roomId, missionId, fileName } = this.props;
-        this.props.downloadFile(apiKey, roomId, missionId, fileName);
+        /*this.props.*/downloadFile(apiKey, roomId, missionId, fileName);
     }
 
     onApprove() {
@@ -213,4 +213,4 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps,
-    { downloadFile, responseAns })(WatchOpenAnswerForm);
+    { responseAns })(WatchOpenAnswerForm);

@@ -19,12 +19,9 @@ const {
 } = GeneralErrors;
 
 export const downloadFile = async (apiKey, roomId, missionId, fileName) => {
-    console.log("download");
     console.log( apiKey + roomId + missionId + fileName )
-    alert(FileSystem.documentDirectory);
-    uri = "http://" + baseURL + "/mission/downloadFile?missionId=" + missionId + "&apiKey=" + apiKey + "&roomId=" + roomId;
+    uri =  baseURL + "/mission/downloadFile?missionId=" + missionId + "&apiKey=" + apiKey + "&roomId=" + roomId;
     const downloadedFile = await FileSystem.downloadAsync(uri, FileSystem.documentDirectory + fileName);
-    alert(downloadedFile.headers);
     const imageFileExts = ['jpg', 'png', 'gif', 'heic', 'webp', 'bmp'];
 
     if (Platform.OS == 'ios' && imageFileExts.every(x => !downloadedFile.uri.endsWith(x))) {
