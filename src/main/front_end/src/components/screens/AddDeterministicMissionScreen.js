@@ -11,6 +11,10 @@ import Button from '../common/Button';
 import Header from '../common/Header';
 import TextInput from '../common/TextInput';
 
+import {
+  DETERMINISTIC,
+} from '../../actions/types';
+
 const {
     header,
     enter_question,
@@ -54,7 +58,7 @@ class AddDeterministicMissionForm extends Component{
 
     onButtonPress() {
         const {apiKey,question,realAnswer,missionTypes,navigation} = this.props;
-        this.props.addMission( {apiKey,question,realAnswer,missionTypes,navigation} );
+        this.props.addMission( {apiKey, question, navigation, missionTypes, className: DETERMINISTIC, realAnswer} );
     }
 
     renderSpinner() {

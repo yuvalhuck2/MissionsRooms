@@ -115,18 +115,19 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   //const { search, message, profile, allUsers, presentedUsers, apiKey, errorMessage, loading } = state.WatchProfile;
   //return { search, message, profile, allUsers, presentedUsers, apiKey, errorMessage, loading };
-  openAnswers = [
-    {
-      "missionId": "open1",
-      "roomId": null,
-      "openAnswer": "answerrrr",
-      "hasFile": true,
-      "missionQuestion": "שאלה"
-    }
-  ];
-  roomName = "ss";
-  roomId = "rid1";
-  return { openAnswers, roomName, roomId};
+  return { apiKey, roomId, roomName, openAnswers} = state.WatchAllOpenQuestionMissions;
+  // openAnswers = [
+  //   {
+  //     "missionId": "open1",
+  //     "roomId": null,
+  //     "openAnswer": "answerrrr",
+  //     "hasFile": true,
+  //     "missionQuestion": "שאלה"
+  //   }
+  // ];
+  // roomName = "ss";
+  // roomId = "rid1";
+  // return { openAnswers, roomName, roomId};
 };
 
 export default connect(mapStateToProps, {
