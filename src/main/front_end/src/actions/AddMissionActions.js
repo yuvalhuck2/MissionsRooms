@@ -78,14 +78,15 @@ export const navigateToMission = (type, navigation) => {
 export const addMission = ({
   apiKey,
   question,
-  realAnswer,
-  missionTypes,
   navigation,
+  missionTypes,
+  className,
+  realAnswer = undefined,
 }) => {
   return async (dispatch) => {
     if (question.trim() === '') {
       dispatch({ type: UPDATE_ERROR_MISSION, payload: question_empty });
-    } else if (realAnswer.trim() === '') {
+    } else if ( realAnswer != undefined && realAnswer.trim() === '') {
       dispatch({ type: UPDATE_ERROR_MISSION, payload: answer_empty });
     } else if (missionTypes.length == 0) {
       dispatch({ type: UPDATE_ERROR_MISSION, payload: types_empty });
@@ -93,8 +94,42 @@ export const addMission = ({
       try {
         dispatch({ type: ADD_MISSON });
         missionData = JSON.stringify({
-          CLASSNAME: DETERMINISTIC,
+          CLASSNAME: className,
           DATA: { question, realAnswer, missionTypes },
+        });
+        const res = await API.post(APIPaths.addMission, {
+          apiKey,
+          missionData,
+        });
+        res
+          ? checkAddMissionResponse(res.data, dispatch, navigation, apiKey)
+          : dispatch({ type: UPDATE_ERROR_MISSION, payload: server_error });
+      } catch (err) {
+        console.log(err);
+        dispatch({ type: UPDATE_ERROR_MISSION, payload: server_error });
+      }
+    }
+  };
+};
+
+
+export const addOpenMission = ({
+  apiKey,
+  question,
+  missionTypes,
+  navigation,
+}) => {
+  return async (dispatch) => {
+    if (question.trim() === '') {
+      dispatch({ type: UPDATE_ERROR_MISSION, payload: question_empty });
+    } else if (missionTypes.length == 0) {
+      dispatch({ type: UPDATE_ERROR_MISSION, payload: types_empty });
+    } else {
+      try {
+        dispatch({ type: ADD_MISSON });
+        missionData = JSON.stringify({
+          CLASSNAME: OPEN_QUESTION,
+          DATA: { question, missionTypes },
         });
         const res = await API.post(APIPaths.addMission, {
           apiKey,

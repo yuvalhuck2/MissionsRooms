@@ -291,7 +291,13 @@ public class DataGenerator {
         openAnsRoom.addOpenAnswer(new OpenAnswer("open1", "answer", null));
         roomsMap.put(Data.VALID_OPEN_ANS, openAnsRoom);
 
+        Room openAnsRoomMultipleMissions = new StudentRoom("rid2", "name", students.get(Data.VALID), teachers.get(Data.VALID_WITH_CLASSROOM), roomTemplates.get(Data.VALID_OPEN_ANS),3);
+        openAnsRoomMultipleMissions.addOpenAnswer(new OpenAnswer("open1", "answer", null));
+        openAnsRoomMultipleMissions.addOpenAnswer(new OpenAnswer("open2", "answer", null));
+        roomsMap.put(Data.VALID_OPEN_ANS2, openAnsRoomMultipleMissions);
+
         roomsMap.get(Data.VALID_OPEN_ANS).connect(alias);
+        roomsMap.get(Data.VALID_OPEN_ANS2).connect(alias);
         roomsMap.get(Data.Valid_Group).connect(alias);
         roomsMap.get(Data.Valid_Classroom).connect(alias);
         roomsMap.get(Data.VALID_2MissionStudent).connect(alias);
@@ -328,6 +334,7 @@ public class DataGenerator {
         missions2NonPersonal.add(getMission(Data.Valid_Deterministic_All_Types).getMissionId());
         missions2NonPersonal.add(getMission(Data.Valid_Deterministic_All_Types_2).getMissionId());
         List<String> missionsOpenAns =  new ArrayList<String>(){{add(getMission(Data.VALID_OPEN_ANS).getMissionId());}};
+        List<String> missionsOpenAnsMultiple =  new ArrayList<String>(){{add(getMission(Data.VALID_OPEN_ANS).getMissionId());add(getMission(Data.VALID_OPEN_ANS2).getMissionId());}};
         roomTemplatesDatas.put(Data.VALID,new RoomTemplateDetailsData(missions,"name",1,RoomType.Personal));
         roomTemplatesDatas.put(Data.VALID_2MissionStudent,new RoomTemplateDetailsData(missions2,"name",1,RoomType.Personal));
         roomTemplatesDatas.put(Data.VALID_2Mission_Group,new RoomTemplateDetailsData(missions2NonPersonal,"name",1,RoomType.Group));
@@ -343,6 +350,7 @@ public class DataGenerator {
         roomTemplatesDatas.put(Data.EMPTY_LIST,new RoomTemplateDetailsData(new ArrayList<>(),"name",0,RoomType.Personal));
         roomTemplatesDatas.put(Data.TYPE_NOT_MATCH,new RoomTemplateDetailsData(missions,"name",1,RoomType.Group));
         roomTemplatesDatas.put(Data.VALID_OPEN_ANS, new RoomTemplateDetailsData("tid1",missionsOpenAns, "name", 1, RoomType.Personal));
+        roomTemplatesDatas.put(Data.VALID_OPEN_ANS2, new RoomTemplateDetailsData("tid2", missionsOpenAnsMultiple, "name", 2, RoomType.Personal));
         List<String> missionsWithNull=new ArrayList<>();
         missionsWithNull.add("not exist");
         roomTemplatesDatas.put(Data.WRONG_ID,new RoomTemplateDetailsData(missionsWithNull,"name",1,RoomType.Personal));
@@ -365,6 +373,7 @@ public class DataGenerator {
         missionsMapAllTypes.add(getMission(Data.Valid_Deterministic_All_Types));
 
         List<Mission> missionMapOpenAns = new ArrayList<Mission>(){{add(getMission(Data.VALID_OPEN_ANS));}};
+        List<Mission> missionsOpenAnsMultiple =  new ArrayList<Mission>(){{add(getMission(Data.VALID_OPEN_ANS));add(getMission(Data.VALID_OPEN_ANS2));}};
 
         RoomTemplateDetailsData templateDetailsDataGroup=getRoomTemplateData(Data.Valid_Group);
         templateDetailsDataGroup.setId("group");
@@ -376,6 +385,7 @@ public class DataGenerator {
         roomTemplates.put(Data.Valid_Group,new RoomTemplate(templateDetailsDataGroup,missionsMapAllTypes));
         roomTemplates.put(Data.Valid_Classroom,new RoomTemplate(templateDetailsDataClass,missionsMapAllTypes));
         roomTemplates.put(Data.VALID_OPEN_ANS, new RoomTemplate(getRoomTemplateData(Data.VALID_OPEN_ANS), missionMapOpenAns));
+        roomTemplates.put(Data.VALID_OPEN_ANS2, new RoomTemplate(getRoomTemplateData(Data.VALID_OPEN_ANS2), missionsOpenAnsMultiple));
 
         List<Mission> missionsMap2Missions=new ArrayList<>();
         missionsMap2Missions.add(getMission(Data.Valid_Deterministic));
@@ -428,6 +438,7 @@ public class DataGenerator {
         missions.put(Data.VALID_STORY,new StoryMission("story",types,""));
         missions.put(Data.VALID_STORY2,new StoryMission("story2",types,""));
         missions.put(Data.VALID_OPEN_ANS, new OpenAnswerMission("open1", types, "question"));
+        missions.put(Data.VALID_OPEN_ANS2, new OpenAnswerMission("open2", types, "question"));
     }
 
     private void initTeacher() {

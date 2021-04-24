@@ -10,7 +10,7 @@ import Button from '../common/Button';
 import Header from '../common/Header';
 import { Menu ,Card, Title, Paragraph} from 'react-native-paper';
 import {DETERMINISTIC_NAME} from "../../actions/types";
-import {closeRoom,enterChatTeacher} from '../../actions/ChooseRoomTeacherActions'
+import {closeRoom,enterChatTeacher,approveAnswer} from '../../actions/ChooseRoomTeacherActions'
 
 const {
     chat,
@@ -85,8 +85,8 @@ class TeacherRoomMenuForm extends Component{
                         apiKey,
                         roomId: currentRoom.roomId
                     })} title={chat}/>
-                    <Menu.Item icon="answer" onPress={() => {
-                    }} title={approve_answer}/>
+                    <Menu.Item icon="answer" onPress={() => this.props.approveAnswer({navigation, apiKey, roomId:currentRoom.roomId,roomName:currentRoom.name})
+                    } title={approve_answer}/>
                     <Menu.Item icon="close" onPress={() =>Alert.alert(sure,"",[
                         {text:yes,onPress:()=>this.props.closeRoom({navigation, apiKey, currentRoom})},
                         {text:no,onPress:()=>{}}
@@ -137,4 +137,5 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
     closeRoom,
     enterChatTeacher,
+    approveAnswer,
 })(TeacherRoomMenuForm);

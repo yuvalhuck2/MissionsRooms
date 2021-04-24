@@ -46,7 +46,6 @@ public class RoomManager extends TeacherManager {
     public static void initPublisher(){
         publisher= SinglePublisher.getInstance();
     }
-
     public RoomManager() {
         super();
     }
@@ -55,9 +54,7 @@ public class RoomManager extends TeacherManager {
         super(ram, teacherCrudRepository);
         this.roomRepo = new RoomRepo(roomCrudRepository);
         this.roomTemplateRepo=new RoomTemplateRepo(roomTemplateCrudRepository);
-
         publisher=SinglePublisher.getInstance();
-
     }
 
     /**
@@ -509,6 +506,115 @@ public class RoomManager extends TeacherManager {
         return new Response<>(response.getValue(), OpCode.Success);
     }
 
+
+    private Response<List<RoomDetailsData>> getRoomDetailFromRoom(List<Room> rooms) {
+        List<RoomDetailsData> roomDetailsDataList = new ArrayList<>();
+        for (Room room : rooms) {
+            RoomDetailsData roomDetailsData= room.getData();
+            roomDetailsData.setCurrentMissionNumber(room.getCurrentMissionIndex());
+            roomDetailsData.setNumberOfMissions(room.getRoomTemplate().getMissions().size());
+            if(roomDetailsData!=null) {
+                roomDetailsDataList.add(roomDetailsData);
+            }
+        }
+        return new Response<>(roomDetailsDataList,OpCode.Success);
+    }
+
+
+    /**
+     * req 4.10 - approve or deny student's solution
+     * @param roomId - the room identifier
+     * @param missionId - the mission identifier
+     * @return appropriate message to send all participants
+     */
+    public Response<String> responseStudentSolution(String apiKey, String roomId, String missionId, boolean isApproved) {
+        Response<Teacher> teacherResponse = checkTeacher(apiKey);
+        if(teacherResponse.getReason()!= OpCode.Success){
+            return new Response<>(null,teacherResponse.getReason());
+        }
+        Response<Room> roomRes = getRoomById(roomId);
+        if(roomRes.getReason() != OpCode.Success) {
+            return new Response<>(null, roomRes.getReason());
+        }
+        Room room = roomRes.getValue();
+        boolean isMissionResolved;
+        if (room.isMissionExists(missionId)) {
+            synchronized (room) {
+                isMissionResolved = room.resolveMission(missionId);
+                if (isMissionResolved) {
+                    Response<Boolean> updateResponse = updateRoom(room);
+                    if (!updateResponse.getValue()) {
+                        return new Response<>(null, updateResponse.getReason());
+                    }
+                    String message = getResponseToStudentSolutionMessage(isApproved, updateResponse.getReason());
+                    message = String.format(message, room.getName());
+                    return new Response<>(message, OpCode.Success);
+                } else { // no open ans in mission id
+                    return new Response<>(null, OpCode.MISSION_NOT_IN_OPEN_ANS);
+                }
+            }
+        } else { // mission id not in room
+            return new Response<>(null, OpCode.MISSION_NOT_IN_ROOM);
+        }
+
+    }
+
+    private OpCode getResponseCode(boolean isApproved, OpCode reason) {
+        OpCode code;
+        if (isApproved) {
+            if(reason == OpCode.ROOM_CLOSED) {
+                code = OpCode.APPROVED_CLOSE;
+            } else {
+                code = OpCode.APPROVED_OPEN;
+            }
+        } else {
+            if(reason == OpCode.ROOM_CLOSED) {
+                code = OpCode.REJECT_CLOSE;
+            } else {
+                code = OpCode.REJECT_OPEN;
+            }
+        }
+        return code;
+    }
+
+    /**
+     * get all the student aliases belongs to room.
+     * IMPORTANT: does not do api check, relies on previous checks.
+     * @param roomId
+     * @return
+     */
+    public Response<Set<String>> getAllRoomParticipants(String roomId) {
+        Response<Room> roomRes = getRoomById(roomId);
+        if(roomRes.getReason() != OpCode.Success) {
+            return new Response<>(null, roomRes.getReason());
+        }
+        Room room = roomRes.getValue();
+        return new Response<>(room.getStudentsAlias(), OpCode.Success);
+    }
+
+    public Response<String> getRoomName( String roomId) {
+        Response<Room> roomResponse = getRoomById(roomId);
+        if(roomResponse.getReason() != OpCode.Success) {
+            return new Response<>(null, roomResponse.getReason());
+        }
+        return new Response<>(roomResponse.getValue().getName(), OpCode.Success);
+    }
+
+    private Response<Boolean> updateRoom(Room room) {
+        Response<Boolean> response;
+        if(room.allOpenQuestionsApproved()) {
+            response = roomRepo.deleteRoom(room);
+            response.setReason(response.getValue() ?
+                    OpCode.ROOM_CLOSED :
+                    response.getReason());
+        } else {
+            Response<Room> roomRes = saveRoom(room);
+            response = new Response<>(roomRes.getValue() != null,
+                    roomRes.getReason() == OpCode.Success ? OpCode.ROOM_SAVED : roomRes.getReason());
+        }
+        return response;
+    }
+
     private Response<Room> getRoomById(String roomId) {
         Room room = ram.getRoom(roomId);
         if (room==null) {
@@ -526,18 +632,22 @@ public class RoomManager extends TeacherManager {
         return new Response<>(room, OpCode.Success);
     }
 
-    private Response<List<RoomDetailsData>> getRoomDetailFromRoom(List<Room> rooms) {
-        List<RoomDetailsData> roomDetailsDataList = new ArrayList<>();
-        for (Room room : rooms) {
-            RoomDetailsData roomDetailsData= room.getData();
-            roomDetailsData.setCurrentMissionNumber(room.getCurrentMissionIndex());
-            roomDetailsData.setNumberOfMissions(room.getRoomTemplate().getMissions().size());
-            if(roomDetailsData!=null) {
-                roomDetailsDataList.add(roomDetailsData);
+    private String getResponseToStudentSolutionMessage(boolean isApproved, OpCode roomUpdateCode) {
+        String message;
+        if (isApproved) {
+            if(roomUpdateCode == OpCode.ROOM_CLOSED) {
+                message = OpenAnswerResponseMessages.approveCloseMessage;
+            } else {
+                message = OpenAnswerResponseMessages.approveOpenMessage;
+            }
+        } else {
+            if(roomUpdateCode == OpCode.ROOM_CLOSED) {
+                message = OpenAnswerResponseMessages.rejectCloseMessage;
+            } else {
+                message = OpenAnswerResponseMessages.rejectOpenMessage;
             }
         }
-        return new Response<>(roomDetailsDataList,OpCode.Success);
+        return message;
     }
-
 
 }

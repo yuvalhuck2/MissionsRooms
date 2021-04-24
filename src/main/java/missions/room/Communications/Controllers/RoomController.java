@@ -3,10 +3,7 @@ package missions.room.Communications.Controllers;
 import DataAPI.*;
 import missions.room.Service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,6 +39,11 @@ public class RoomController extends AbsController{
         return response;
     }
 
+    @PostMapping("/responseAnswer")
+    public Response<?> responseStudentSolution(@RequestBody String resolveMissionData) {
+        ResolveMissionData missionResolutionData = json.fromJson(resolveMissionData, ResolveMissionData.class);
+        return  roomService.responseStudentSolution(missionResolutionData.getApiKey(), missionResolutionData.getRoomId(), missionResolutionData.getMissionId(), missionResolutionData.isApprove());
+    }
     @PostMapping("/view")
     public Response<?> watchRoomDetails(@RequestBody String apiKeyObject) {
         ApiKey data = json.fromJson(apiKeyObject, ApiKey.class);
