@@ -279,7 +279,6 @@ const checkLoginUserResponse = (data, dispatch, navigation) => {
 const connectToWebSocketFromLogin = (apiKey,dispatch, navigation) => {
   connectToWebSocket(apiKey,(notification)=>{
     const {additionalData,value,reason} =notification;
-    console.log("web socket call!!!!")
     switch(reason){
       case Finish_Missions_In_Room:
         dispatch({ type: FINISH_MISSION, payload: apiKey });

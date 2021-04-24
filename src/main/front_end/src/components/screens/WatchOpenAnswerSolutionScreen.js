@@ -24,8 +24,8 @@ class WatchOpenAnswerForm extends Component {
 
 
     onDownloadFile() {
-        const { roomId, missionId, fileName } = this.props;
-        this.props.downloadFile(roomId, missionId, fileName);
+        const { apiKey, roomId, missionId, fileName } = this.props;
+        this.props.downloadFile( apiKey, roomId, missionId, fileName);
     }
 
     renderButton() {

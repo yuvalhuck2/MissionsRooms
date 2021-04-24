@@ -92,7 +92,6 @@ class WatchMessagesForm extends Component {
 
   render() {
     const { suggestion} = this.props;
-    console.log(Object.keys(suggestion))
     return (
         <KeyboardAwareScrollView style={styles.container}>
          <Appbar.Header styles={styles.bottom}>
