@@ -160,4 +160,14 @@ public class Classroom{
     public boolean hasStudents() {
         return classGroups.parallelStream().anyMatch(ClassGroup::hasStudents);
     }
+
+    public void deleteStudent(String alias){
+        for(ClassGroup classGroup: classGroups) {
+            if (classGroup.getStudent().containsKey(alias)) {
+                classGroup.getStudent().remove(alias);
+                return;
+            }
+        }
+
+    }
 }

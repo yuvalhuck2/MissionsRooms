@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, Dimensions, View } from 'react-native';
+import {StyleSheet, Text, Dimensions, View, Alert} from 'react-native';
 import { connect } from 'react-redux';
 import Button from '../common/Button';
 import { Icon } from 'react-native-elements'
 import  { navigateToUploadCSV, navigateToAddNewIT,passToWatchProfiles, logout,
-  passToWatchMessages, passToManageUsers, passToAddStudent, passToAddTeacher } from '../../actions'
-import { ITStrings, AllUsersStrings  } from '../../locale/locale_heb';
+  passToWatchMessages, passToManageUsers, passToAddStudent, passToAddTeacher,deleteSeniorStudents } from '../../actions'
+import { ITStrings, AllUsersStrings,DeleteUserString  } from '../../locale/locale_heb';
 import * as NavPaths from '../../navigation/NavPaths'
 
 const {
@@ -15,6 +15,7 @@ const {
   add_teacher,
   add_student,
   close_classroom,
+    delete_senior,
 } = ITStrings
 
 const {
@@ -23,6 +24,11 @@ const {
   watch_messages,
   main_screen,
 } = AllUsersStrings
+
+const {
+  sureSeniors,
+    yes, no,
+}=DeleteUserString
 
 const DeviceWidth  = Dimensions.get('window').width;
 const backgroundColor = 'purple';
@@ -34,6 +40,7 @@ class ITForm extends Component {
     this.navigateToUploadCSV = this.navigateToUploadCSV.bind(this);
     this.onLogout=this.onLogout.bind(this);
     this.navigateToAddNewIT=this.navigateToAddNewIT.bind(this);
+    this.onPressDeleteSenior=this.onPressDeleteSenior.bind(this);
   }
 
   navigateToUploadCSV() {
@@ -49,6 +56,14 @@ class ITForm extends Component {
   navigateToAddNewIT(){
     const {navigation}=this.props;
     return this.props.navigateToAddNewIT({navigation});
+  }
+
+  onPressDeleteSenior(){
+    const {apiKey,navigation}=this.props;
+    return Alert.alert(sureSeniors,"",[
+        {text:yes,onPress:()=>this.props.deleteSeniorStudents({apiKey,navigation})},
+        {text:no,onPress:()=>{}}
+    ]);
   }
 
 
@@ -71,7 +86,10 @@ class ITForm extends Component {
           <Button style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}
             onPress={()=>this.props.passToWatchProfiles({navigation,apiKey})}>
             <Text style={{color:"white"}}>{watchProfiles}</Text>
-          </Button> 
+          </Button>
+            <Button onPress={()=>this.onPressDeleteSenior()} style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]}>
+                <Text style={{color:"white"}}>{delete_senior}</Text>
+            </Button>
           <Button onPress={this.onLogout} style={[styles.button, styles.bottom_button_marg, styles.left_button_border, styles.bottom_button_border]} >
             <Text style={{color:"white"}}>{main_screen}</Text> 
             <Icon name='exit-to-app' />
@@ -96,6 +114,9 @@ class ITForm extends Component {
           <Button onPress={()=>navigation.navigate(NavPaths.changePassword)} style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]}>
             <Text style={{color:"white"}}>{changePassword}</Text> 
           </Button>
+            <Button onPress={this.onPressDeleteSenior} style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]}>
+                <Text style={{color:"white"}}>{delete_senior}</Text>
+            </Button>
         </View>
 
       </View>
@@ -114,7 +135,7 @@ const styles = StyleSheet.create({
     backgroundColor: backgroundColor
   },
   button: {width: DeviceWidth*0.45,
-     height: DeviceWidth*0.33,
+     height: DeviceWidth*0.27,
      borderStyle: 'solid',
      borderWidth: 1,
      borderColor: 'black',
@@ -162,4 +183,5 @@ export default connect(mapStateToProps, {
   passToManageUsers,
   passToAddStudent,
   passToAddTeacher,
+    deleteSeniorStudents,
 })(ITForm);

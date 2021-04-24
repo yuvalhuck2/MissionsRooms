@@ -221,6 +221,9 @@ export const TeacherRoomMenuStrings={
     close_room:'סגירת החדר',
     mission:'משימה',
     of:'מתוך',
+    sure:'האם אתה בטוח שאתה רוצה למחוק את החדר?',
+    yes:'כן',
+    no:'לא',
 }
 
 export const ChooseRoomStudentErrors = {
@@ -273,6 +276,7 @@ export const GeneralErrors = {
   classroom_not_exist:'לפי רישומי המערכת, אין לך כיתה',
   wrong_alias: 'יש להזין שם משתמש תקין',
   mail_error: 'יש תקלה עם שליחת המייל, נא נסו שנית',
+  teacher_has_classroom:'לא ניתן למחוק מורה עם כיתה',
 };
 
 export const ITStrings = {
@@ -283,6 +287,7 @@ export const ITStrings = {
   add_teacher: 'הוספת מורה',
   add_student: 'הוספת תלמיד',
   close_classroom: 'סגירת כיתה',
+  delete_senior:'מחיקת תלמידי י"ב',
 };
 
 export const addMissionErrors = {
@@ -376,6 +381,15 @@ export const RolesStrings = {
   supervisor:'מנהל מפקח',
 }
 
+export const DeleteUserString={
+  sure:'האם אתה בטוח שאתה רוצה למחוק את המשתמש?',
+  yes:'כן',
+  no:'לא',
+  deleted:'נמחקת מהמערכת',
+    sureSeniors:'האם אתה בטוח שאתה רוצה למחוק המשתמשים?',
+    deletedSuccessfully: 'תלמידים נמחקו בהצלחה',
+
+}
 export const WatchMessagesStrings = {
   sender:'',
   enter_search:'יש להזין את קידומת מייל השולח',

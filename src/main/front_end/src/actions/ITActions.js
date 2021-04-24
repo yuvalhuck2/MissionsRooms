@@ -1,7 +1,7 @@
 import * as DocumentPicker from 'expo-document-picker';
 import { Platform } from 'react-native';
 import { baseURL } from '../api/API';
-import { GeneralErrors, uploadStrings, uploadStringsErrors } from '../locale/locale_heb';
+import { GeneralErrors, uploadStrings, uploadStringsErrors,DeleteUserString } from '../locale/locale_heb';
 import * as NavPaths from '../navigation/NavPaths';
 import * as APIPaths from '../api/APIPaths';
 import API from '../api/API';
@@ -22,10 +22,13 @@ import {
   UPLOAD_CSV_SUCCESS,
   UPDATE_ALL_USER_PROFILES_MANAGE_USERS,
   IS_STUDENT_USER_CHANGED,
+    UPDATE_ERROR_DELETE_SENIOR,
+    DELETE_ALL_SENIOR_STUDENTS,
 } from './types';
 
 const {
   wrong_key_error,
+    action_succeeded,
 } = GeneralErrors;
 
 const {
@@ -38,6 +41,10 @@ const {
   not_exist,
   already_exist,
 } = uploadStringsErrors;
+
+const {
+    deletedSuccessfully,
+}=DeleteUserString
 
 const { success } = uploadStrings;
 
@@ -184,4 +191,43 @@ export const passToAddStudent = ({ navigation }) => {
 export const passToAddTeacher = ({ navigation }) => {
   navigation.navigate(NavPaths.addUser);
   return { type: IS_STUDENT_USER_CHANGED , payload: false };
+}
+
+export const deleteSeniorStudents=({apiKey,navigation}) =>{
+    return async (dispatch)=> {
+
+        try {
+            const res = await API.post(APIPaths.deleteSeniors, { apiKey });
+            if (res) {
+                checkSeniorStudentsResponse({
+                    data: res.data,
+                    dispatch,
+                    navigation,
+                });
+            } else {
+                dispatch({ type: UPDATE_ERROR_DELETE_SENIOR, payload: server_error });
+            }
+        } catch (err) {
+            console.log(err);
+            return dispatch({ type: UPDATE_ERROR_DELETE_SENIOR, payload: server_error });
+        }
+    };
+}
+
+const checkSeniorStudentsResponse = ({data, dispatch, navigation}) => {
+    const { reason, value } = data;
+    switch (reason) {
+        case Wrong_Key:
+            return dispatch({
+                type: UPDATE_ERROR_DELETE_SENIOR,
+                payload: wrong_key_error,
+            });
+        case Success:
+
+          alert(value+" "+deletedSuccessfully);
+            return dispatch({ type: DELETE_ALL_SENIOR_STUDENTS, payload: value });
+
+        default:
+            return dispatch({ type: UPDATE_ERROR_DELETE_SENIOR, payload: server_error });
+    }
 }

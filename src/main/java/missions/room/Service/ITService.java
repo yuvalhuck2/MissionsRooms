@@ -1,6 +1,7 @@
 package missions.room.Service;
 
 import DataAPI.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import missions.room.Domain.Users.User;
 import missions.room.Managers.ITManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,5 +75,13 @@ public class ITService {
      */
     public Response<Boolean> addTeacher(String apiKey, TeacherData profileDetails){
         return itManager.addTeacher(apiKey,profileDetails);
+    }
+
+    public Response<Boolean> deleteUser(String apiKey,String alias){
+        return itManager.deleteUser(apiKey,alias);
+    }
+
+    public Response<Integer> deleteSeniorStudents(String apiKey){
+        return itManager.deleteSeniorStudents(apiKey);
     }
 }

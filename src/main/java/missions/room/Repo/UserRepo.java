@@ -3,6 +3,8 @@ package missions.room.Repo;
 import CrudRepositories.UserCrudRepository;
 import DataAPI.OpCode;
 import DataAPI.Response;
+import lombok.extern.apachecommons.CommonsLog;
+import missions.room.Domain.Classroom;
 import missions.room.Domain.Users.User;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@CommonsLog
 @Service
 public class UserRepo {
 
@@ -88,5 +91,16 @@ public class UserRepo {
             return new Response<>(new ArrayList<>(),OpCode.DB_Error);
         }
 
+    }
+
+    public Response<Boolean> delete(User user) {
+        try{
+            userCrudRepository.delete(user);
+            return new Response<>(true, OpCode.Success);
+        }
+        catch (Exception e){
+            log.error("error to delete user " + user, e);
+            return new Response<>(false, OpCode.DB_Error);
+        }
     }
 }

@@ -3,10 +3,7 @@ package missions.room.Communications.Controllers;
 import DataAPI.*;
 import missions.room.Service.ITService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -50,5 +47,17 @@ public class ITController extends AbsController{
     public Response<?> closeClassroom(@RequestBody String classRoomDataString){
         ClassRoomData classRoomData = json.fromJson(classRoomDataString, ClassRoomData.class);
         return itService.closeClassroom(classRoomData.getApiKey(), classRoomData.getName());
+    }
+
+    @PostMapping("/delete/user")
+    public Response<?> deleteUser(@RequestBody String apiKeyAndAlias){
+        ApiKeyAndAliasData data=json.fromJson(apiKeyAndAlias,ApiKeyAndAliasData.class);
+        return itService.deleteUser(data.getApiKey(),data.getAlias());
+    }
+
+    @PostMapping("/delete/senior")
+    public Response<?> deleteSeniorStudents(@RequestBody String apiKey){
+        ApiKey data=json.fromJson(apiKey,ApiKey.class);
+        return itService.deleteSeniorStudents(data.getApiKey());
     }
 }
