@@ -109,21 +109,36 @@ public class MissionManager extends TeacherManager {
     private RoomOpenAnswerData convertRoomOpenAnswerViewToSolutionData(RoomOpenAnswersView roomOpenAnswersView) {
         List<OpenAnswer> openAnswers = roomOpenAnswersView.getOpenAnswers();
         RoomTemplate roomTemplate = roomOpenAnswersView.getRoomTemplate();
-        List<SolutionData> solutionDataList = convertOpenAnswerListToSolutionDataList(openAnswers, roomTemplate);
+        String roomId = roomOpenAnswersView.getRoomId();
+        List<SolutionData> solutionDataList = convertOpenAnswerListToSolutionDataList(openAnswers, roomTemplate, roomId);
         return new RoomOpenAnswerData(roomOpenAnswersView.getRoomId(), roomOpenAnswersView.getName(), solutionDataList);
     }
 
-    private List<SolutionData> convertOpenAnswerListToSolutionDataList(List<OpenAnswer> openAnswers, RoomTemplate roomTemplate) {
+    private List<SolutionData> convertOpenAnswerListToSolutionDataList(List<OpenAnswer> openAnswers, RoomTemplate roomTemplate, String roomId) {
         List<SolutionData> solutionDataList = new ArrayList<>();
         for(OpenAnswer openAnswer : openAnswers) {
             OpenAnswerMission relevantMission = (OpenAnswerMission)(roomTemplate.getMission(openAnswer.getMissionId()));
-            solutionDataList.add(convertOpenAnswerToSolutionData(openAnswer, relevantMission.getQuestion()));
+            solutionDataList.add(convertOpenAnswerToSolutionData(openAnswer, relevantMission.getQuestion(), roomId));
         }
         return solutionDataList;
     }
 
-    private SolutionData convertOpenAnswerToSolutionData(OpenAnswer openAnswer, String missionQuestion) {
-        return new SolutionData(openAnswer.getMissionId(), openAnswer.getOpenAnswerText(), openAnswer.isHasFile(), missionQuestion);
+    private SolutionData convertOpenAnswerToSolutionData(OpenAnswer openAnswer, String missionQuestion, String roomId) {
+        SolutionData solutionData = new SolutionData(openAnswer.getMissionId(), openAnswer.getOpenAnswerText(), openAnswer.isHasFile(), missionQuestion);
+        if (openAnswer.isHasFile()) {
+            solutionData.setFileName(getFileName(openAnswer.getMissionId(), roomId));
+        }
+        return solutionData;
+    }
+
+    private String getFileName(String missionId, String roomId) {
+        Response<File> fileRes = getOpenAnswerFile(roomId, missionId);
+        File file = fileRes.getValue();
+        if (file == null) {
+            //TODO add logs
+            return "";
+        }
+        return file.getName();
     }
 
     public Response<Boolean> addMission(Mission mission) {
@@ -171,6 +186,7 @@ public class MissionManager extends TeacherManager {
         }
         return new Response<>(null, openAnswerResponse.getReason());
     }
+
 
     private Response<Room> getRoomById(String roomId) {
         Room room = ram.getRoom(roomId);
