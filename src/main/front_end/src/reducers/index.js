@@ -22,6 +22,7 @@ import ChatRoomReducer from './ChatRoomReducer';
 import ChooseTeacherRoomsReducer from './ChooseTeacherRoomsReducer';
 import WatchOpenAnswerReducer from './WatchOpenAnswerReducer'
 import CloseClassroomReducer from './CloseClassroomReducer';
+import WatchAllOpenQuestionMissionsReducer from './WatchAllOpenQuestionMissionsReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -47,4 +48,5 @@ export default combineReducers({
   resetPassword: ResetPasswordReducer,
   WatchOpenAnswer: WatchOpenAnswerReducer,
   closeClassroom: CloseClassroomReducer,
+  WatchAllOpenQuestionMissions: WatchAllOpenQuestionMissionsReducer
 });

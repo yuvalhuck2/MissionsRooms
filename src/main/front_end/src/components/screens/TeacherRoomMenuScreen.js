@@ -10,7 +10,7 @@ import Button from '../common/Button';
 import Header from '../common/Header';
 import { Menu ,Card, Title, Paragraph} from 'react-native-paper';
 import {DETERMINISTIC_NAME} from "../../actions/types";
-import {closeRoom,enterChatTeacher} from '../../actions/ChooseRoomTeacherActions'
+import {closeRoom,enterChatTeacher,approveAnswer} from '../../actions/ChooseRoomTeacherActions'
 
 const {
     chat,

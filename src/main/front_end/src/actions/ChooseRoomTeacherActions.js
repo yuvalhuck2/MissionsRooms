@@ -149,8 +149,12 @@ const checkEnterChatResponse=({data,dispatch,navigation,apiKey,roomId})=>{
 export const approveAnswer = ({navigation,apiKey,roomId,roomName})=>{
     return async (dispatch)=>{
         try{
+
+
             const res=await API.post(APIPaths.approveAnswer,{apiKey,roomId});
+
             if(res){
+
                 checkApproveAnswerResponse({
                     data:res.data,
                     dispatch,
@@ -164,6 +168,7 @@ export const approveAnswer = ({navigation,apiKey,roomId,roomName})=>{
             }
         }
         catch (err) {
+            alert(err);
             return dispatch({type:UPDATE_ERROR_ANSWER_RESPONSE,payload:server_error});
 
         }
@@ -190,7 +195,8 @@ const checkApproveAnswerResponse=({data,dispatch,navigation,apiKey,roomId,roomNa
                 payload:room_error,
             });
         case Success:
-            dispatch({ type: INIT_ALL_OPEN_ANS,payload:{apiKey:apiKey,roomId:roomId,roomName:roomName,openAnswers: data}});
+
+            dispatch({ type: INIT_ALL_OPEN_ANS,payload:{apiKey:apiKey,roomId:roomId,roomName:roomName,openAnswers: value.openAnswers}});
             return navigation.navigate(NavPaths.WatchAllOpenQuestionMissionsScreen);
 
     }
