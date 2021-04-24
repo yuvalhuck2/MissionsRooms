@@ -115,17 +115,6 @@ class SolveOpenQuestionMissionForm extends Component {
         }
     }
 
-    renderChatButton(){
-
-        return <IconButton
-            icon="chat"
-            size={30}
-            style={styles.chatButton}
-            color={theme.colors.primary}
-            onPress={this.onChatButtonPress}/>//this.props.enterChatStudent}/>
-
-    }
-
     renderPickFile() {
         const { fileText, isInCharge } = this.props;
         if (isInCharge) {
@@ -154,18 +143,20 @@ class SolveOpenQuestionMissionForm extends Component {
     }
 
     render() {
-        const { mission } = this.props;
+        const { mission, isInCharge } = this.props;
+        console.log(isInCharge)
+        console.log(mission)
         return (
             <KeyboardAwareScrollView style={styles.container}>
                 <Appbar.Header>
                     <Appbar.BackAction onPress={() => { this.onBackPress() }} />
+                    <Appbar.Action icon="chat" onPress={() => this.onChatButtonPress()} />
                 </Appbar.Header>
-                <Header>{mission.question}</Header>
+                <Header>{mission ? mission.question[0]: ""}</Header>
                 {this.renderError()}
                 {this.renderTextBox()}
                 {this.renderPickFile()}
                 {this.renderButton()}
-                {this.renderChatButton()}
             </KeyboardAwareScrollView>
         );
     }

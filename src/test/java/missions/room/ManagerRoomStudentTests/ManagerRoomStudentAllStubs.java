@@ -370,9 +370,7 @@ public class ManagerRoomStudentAllStubs {
         assertEquals(notification.getReason(),OpCode.Update_Room);
         RoomDetailsData detailsData= (RoomDetailsData) notification.getValue();
         checkEqualsWithRoomData(Data.VALID_2Mission_Group,detailsData);
-        Notification inChargeNotification=((PublisherMock)mockPublisher).getNotifications(studentApiKey).get(1);
-        assertEquals(inChargeNotification.getReason(),IN_CHARGE);
-        assertEquals(roomId,inChargeNotification.getValue());
+        assertTrue(detailsData.isInCharge());
     }
 
     @Test
@@ -852,28 +850,18 @@ public class ManagerRoomStudentAllStubs {
         assertTrue(response.getValue());
         assertEquals(response.getReason(), Success);
 
-        NonPersistenceNotification<String> notification= (NonPersistenceNotification<String>) ((PublisherMock)mockPublisher)
+        NonPersistenceNotification<RoomDetailsData> notification= (NonPersistenceNotification<RoomDetailsData>) ((PublisherMock)mockPublisher)
                 .getNotifications(studentApiKey).get(0);
         assertEquals(notification.getReason(), Update_Room);
         assertEquals(notification.getValue(), roomDetailsData);
+        boolean isInCharge = notification.getValue().isInCharge();
 
-        notification= (NonPersistenceNotification<String>) ((PublisherMock)mockPublisher)
+        notification= (NonPersistenceNotification<RoomDetailsData>) ((PublisherMock)mockPublisher)
                 .getNotifications(valid2StudentApiKey).get(1);
         assertEquals(notification.getReason(), Update_Room);
         assertEquals(notification.getValue(), roomDetailsData);
+        assertTrue(notification.getValue().isInCharge() || isInCharge );
 
-        try {
-            notification = (NonPersistenceNotification<String>) ((PublisherMock) mockPublisher)
-                    .getNotifications(valid2StudentApiKey).get(2);
-            assertEquals(notification.getReason(), IN_CHARGE);
-            assertEquals(notification.getValue(), room.getRoomId());
-        }
-        catch(Exception e){
-            notification = (NonPersistenceNotification<String>) ((PublisherMock) mockPublisher)
-                    .getNotifications(studentApiKey).get(1);
-            assertEquals(notification.getReason(), IN_CHARGE);
-            assertEquals(notification.getValue(), room.getRoomId());
-        }
     }
 
 

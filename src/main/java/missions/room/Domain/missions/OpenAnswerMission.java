@@ -1,10 +1,12 @@
 package missions.room.Domain.missions;
 
+import DataAPI.MissionData;
 import DataAPI.RoomType;
 import DataAPI.SolutionData;
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+import java.util.Collections;
 import java.util.Set;
 
 @Entity
@@ -23,6 +25,12 @@ public class OpenAnswerMission extends Mission {
     public OpenAnswerMission() {
     }
 
+    @Override
+    protected MissionData completeTheRestOfMissionData(MissionData missionData) {
+        missionData.setQuestion(Collections.singletonList(question));
+        return missionData;
+    }
+
     public String getQuestion() {
         return question;
     }
@@ -31,4 +39,8 @@ public class OpenAnswerMission extends Mission {
         this.question = question;
     }
 
+    @Override
+    public String getMissionName() {
+        return missionName;
+    }
 }

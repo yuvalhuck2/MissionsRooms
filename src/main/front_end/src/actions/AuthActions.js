@@ -279,6 +279,7 @@ const checkLoginUserResponse = (data, dispatch, navigation) => {
 const connectToWebSocketFromLogin = (apiKey,dispatch, navigation) => {
   connectToWebSocket(apiKey,(notification)=>{
     const {additionalData,value,reason} =notification;
+    console.log("web socket call!!!!")
     switch(reason){
       case Finish_Missions_In_Room:
         dispatch({ type: FINISH_MISSION, payload: apiKey });
@@ -292,7 +293,7 @@ const connectToWebSocketFromLogin = (apiKey,dispatch, navigation) => {
         break;
       case Update_Room:
         dispatch({ type: FINISH_MISSION, payload: apiKey });
-        moveToMission(value,dispatch,navigation,false);
+        moveToMission(value,dispatch,navigation,value.inCharge);
         break;
       case IN_CHARGE:
           dispatch({ type: CHANGE_IN_CHARGE, payload: true });

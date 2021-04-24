@@ -29,6 +29,8 @@ const initialState = {fileText: '',
   export default (state = initialState, action) => {
     switch (action.type) {
         case INIT_OPEN_QUESTION_MISSION:
+            console.log(action.payload)
+            console.log("payloaaaddddddddddddd!!!!!!!!!")
             missionData=action.payload.roomData.currentMission
             return {... state, roomId:action.payload.roomData.roomId,loading: false, isInCharge:action.payload.isInCharge, mission:missionData}
         case PICKED_FILE:
@@ -36,6 +38,7 @@ const initialState = {fileText: '',
         case RESET_FILES:
             return {...state, file: undefined, fileText: "", errorMessage: '', successMessage: ''}
         case LOGIN_STUDENT:
+            console.log("LOGIN_STUDENT")
             return { ...initialState, apiKey: action.payload };
         case SEND_OPEN_ANSWER:
             return { ...state, loading: true };
@@ -44,8 +47,10 @@ const initialState = {fileText: '',
         case CHANGE_IN_CHARGE:
             return { ...state, isInCharge: action.payload };
         case EXIT_ROOM:
+            console.log("EXIT_ROOM")
             return {...initialState, apiKey:state.apiKey}
         case FINISH_MISSION:
+            console.log("FINISH_MISSION")
             return {...initialState, apiKey:action.payload, mission:state.mission}
         case UPDATE_ERROR:
             return { ...state, errorMessage: action.payload, loading: false, successMessage: '' }

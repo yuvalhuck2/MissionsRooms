@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static Utils.Utils.checkString;
@@ -189,13 +190,16 @@ public class ManagerRoomStudent extends StudentManager {
         Set<String> userKeys=room.getConnectedUsersAliases();
         for (String alias :
                 userKeys) {
-            publisher.update(ram.getApiKey(alias),notification);
+            if(notification.getReason()==OpCode.Update_Room && Objects.equals(nextInCharge, alias)){
+                notification.getValue().setInCharge(true);
+            }
+            publisher.update(ram.getApiKey(alias), notification);
         }
-        //send to the next mission inCharge notification
-        if(nextInCharge!=null){
-            NonPersistenceNotification<String> inChargeNotification=new NonPersistenceNotification<>(OpCode.IN_CHARGE,room.getRoomId());
-            publisher.update(ram.getApiKey(nextInCharge),inChargeNotification);
-        }
+//        //send to the next mission inCharge notification
+//        if(nextInCharge!=null){
+//            NonPersistenceNotification<String> inChargeNotification=new NonPersistenceNotification<>(OpCode.IN_CHARGE,room.getRoomId());
+//            publisher.update(ram.getApiKey(nextInCharge),inChargeNotification);
+//        }
     }
 
     private Response<Boolean> updateCorrectAnswer(Room room) {

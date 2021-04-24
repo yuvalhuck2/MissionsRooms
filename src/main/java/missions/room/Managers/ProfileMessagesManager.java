@@ -85,7 +85,7 @@ public class ProfileMessagesManager {
         baseUser.addMessage(new Message(UniqueStringGenerator.getTimeNameCode("ms"),
                 message,
                 sender));
-        Response<BaseUser> saveUser= userRepo.save(user);
+        Response<BaseUser> saveUser= userRepo.save(baseUser);
 
         return new Response<>(saveUser.getReason()==OpCode.Success,
                 saveUser.getReason());
