@@ -2,6 +2,7 @@ package missions.room.Managers;
 
 import DataAPI.*;
 import ExternalSystems.HashSystem;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Communications.Publisher.Publisher;
 import missions.room.Communications.Publisher.SinglePublisher;
@@ -81,6 +82,27 @@ public class ITManager {
         return new Response<>(it,OpCode.Success);
     }
 
+    public Response<Boolean> deleteSeniorStudents(String apiKey){
+        Response<IT> itResponse = checkIT(apiKey);
+        if(itResponse.getReason()!=OpCode.Success){
+            log.error(itResponse.getReason().toString());
+            return new Response<>(false,itResponse.getReason());
+        }
+        Response<List<Classroom>> responseClassroom=classroomRepo.findAll();
+        if(responseClassroom.getReason()!=OpCode.Success){
+            return new Response<>(false,responseClassroom.getReason());
+        }
+        for(Classroom classroom:responseClassroom.getValue()){
+            if(classroom.getClassName().startsWith("2")){
+                for(ClassGroup group:classroom.getClassGroups()){
+                    for(String student:group.getStudent().keySet()){
+                        deleteUser(apiKey,student);
+                    }
+                }
+            }
+        }
+        return new Response<>(true,OpCode.Success);
+    }
 
     @Transactional
     public Response<Boolean> deleteUser(String apiKey,String alias){
@@ -99,7 +121,7 @@ public class ITManager {
         synchronized (user){
             if(user instanceof Teacher){
                 if(((Teacher)user).getClassroom()!=null){
-                    return new Response<>(false,OpCode.TEACHER_HAS_CLASSROOM);
+                    return new Response<>(false,OpCode.Teacher_Has_Classroom);
                 }
             }
             else if(user instanceof Student){
@@ -115,7 +137,7 @@ public class ITManager {
                     else{
                         String inCharge=ram.disconnectFromRoom(room.getRoomId(),user.getAlias());
                         if(inCharge!=null){
-                            publisher.update(ram.getApiKey(inCharge),new NonPersistenceNotification<>(OpCode.IN_CHARGE,room.getRoomId()));
+                            publisher.update(ram.getApiKey(inCharge),new NonPersistenceNotification<String>(OpCode.IN_CHARGE,room.getRoomId()));
                         }
                     }
 
@@ -127,8 +149,9 @@ public class ITManager {
 
             }
         }
-        publisher.update(apiKey,new NonPersistenceNotification<>(OpCode.DELETE_USER,""));
-
+        if(ram.getApiKey(user.getAlias())!=null) {
+            publisher.update(ram.getApiKey(user.getAlias()), new NonPersistenceNotification<String>(OpCode.DELETE_USER, ""));
+        }
         return userRepo.delete(user);
     }
 

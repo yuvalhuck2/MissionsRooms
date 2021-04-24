@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ProgressBar, RadioButton} from 'react-native-paper';
 import {ChooseMissionsTemplateStrings, TeacherRoomMenuStrings} from '../../locale/locale_heb';
@@ -18,6 +18,8 @@ const {
     close_room,
     mission,
     of,
+    yes,
+    no,sure
 } = TeacherRoomMenuStrings;
 const {
     deterministic_name,
@@ -85,7 +87,10 @@ class TeacherRoomMenuForm extends Component{
                     })} title={chat}/>
                     <Menu.Item icon="answer" onPress={() => {
                     }} title={approve_answer}/>
-                    <Menu.Item icon="close" onPress={() => this.props.closeRoom({navigation, apiKey, currentRoom})}
+                    <Menu.Item icon="close" onPress={() =>Alert.alert(sure,"",[
+                        {text:yes,onPress:()=>this.props.closeRoom({navigation, apiKey, currentRoom})},
+                        {text:no,onPress:()=>{}}
+                    ]) }
                                title={close_room}/>
                 </View>
             </View>

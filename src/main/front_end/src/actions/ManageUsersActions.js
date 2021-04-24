@@ -13,6 +13,7 @@ import {
     CHANGE_ENABLE_LAST_NAME,
     LAST_NAME_CHANGED_MANAGE_USERS,
     ACTION_FINISHED_MANAGED_USERS,
+    UPDATE_ERROR_DELETE_USER,DELETE_USER,
 } from "./types";
 
 import {
@@ -20,6 +21,7 @@ Success,
 Not_Exist,
 Wrong_Details,
 Wrong_Key,
+    Teacher_Has_Classroom,
 } from './OpCodeTypes';
 
 const {
@@ -28,6 +30,7 @@ const {
     server_error,
     empty_details,
     action_succeeded,
+    teacher_has_classroom,
 } = GeneralErrors;
 
 export const searchChanged= (text) => {
@@ -124,5 +127,36 @@ export const editUserDetails = ({apiKey,firstName,lastName,alias}) => {
   }
 
 
-export const deleteUser = () =>{}
+export const deleteUser = ({apiKey,alias}) =>{
+    return async (dispatch)=> {
+        try {
+
+            const res = await API.post(APIPaths.deleteUser,{apiKey,alias});
+            res
+                ? checkDeleteUserResponse(res.data, dispatch,alias)
+                : dispatch({ type: UPDATE_ERROR_DELETE_USER, payload: server_error });
+        } catch (err) {
+            console.log(err);
+            return dispatch({ type: UPDATE_ERROR_DELETE_USER, payload: server_error });
+        }
+
+    }
+
+}
+const checkDeleteUserResponse= (data,dispatch,alias) =>{
+    const {reason} =data
+
+    switch (reason) {
+        case Teacher_Has_Classroom:
+            alert(teacher_has_classroom);
+            return dispatch ({type:UPDATE_ERROR_DELETE_USER, payload: teacher_has_classroom})
+        case Wrong_Key:
+            return dispatch({ type: UPDATE_ERROR_DELETE_USER, payload: wrong_key_error });
+        case Success:
+            alert(action_succeeded)
+            return dispatch({ type: DELETE_USER, payload:{alias:alias}});
+        default:
+            return dispatch({ type: UPDATE_ERROR_DELETE_USER, payload: server_error });
+    }
+}
 export const passToTransferGroup = () =>{}

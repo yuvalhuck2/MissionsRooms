@@ -50,7 +50,14 @@ public class ITController extends AbsController{
     }
 
     @PostMapping("/delete/user")
-    public Response<?> deleteUser(@RequestParam String apiKey,@RequestParam String alias){
-        return itService.deleteUser(apiKey,alias);
+    public Response<?> deleteUser(@RequestBody String apiKeyAndAlias){
+        ApiKeyAndAliasData data=json.fromJson(apiKeyAndAlias,ApiKeyAndAliasData.class);
+        return itService.deleteUser(data.getApiKey(),data.getAlias());
+    }
+
+    @PostMapping("/delete/senior")
+    public Response<?> deleteSeniorStudents(@RequestBody String apiKey){
+        ApiKey data=json.fromJson(apiKey,ApiKey.class);
+        return itService.deleteSeniorStudents(data.getApiKey());
     }
 }
