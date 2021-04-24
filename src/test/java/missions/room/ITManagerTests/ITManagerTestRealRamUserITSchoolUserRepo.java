@@ -3,14 +3,11 @@ package missions.room.ITManagerTests;
 import CrudRepositories.SchoolUserCrudRepository;
 import Data.Data;
 import DataAPI.OpCode;
-import DataAPI.Response;
 import DataAPI.TeacherData;
-import missions.room.Domain.Users.IT;
 import missions.room.Domain.Users.SchoolUser;
 import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.ITManager;
 import missions.room.Repo.SchoolUserRepo;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +25,7 @@ import static org.mockito.Mockito.when;
 @Service
 @SpringBootTest
 @TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
-public class ITManagerTestRealRamUserITSchoolUserRepo extends ITMangerTestsRealRamUserITRepo{
+public class ITManagerTestRealRamUserITSchoolUserRepo extends ITMangerTestsRealRamBaseUserITRepo {
 
     @Autowired
     protected SchoolUserRepo realSchoolUserRepo;

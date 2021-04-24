@@ -161,13 +161,13 @@ public class ITManager {
     }
 
     public Response<List<UserProfileData>> getAllUsersSchoolProfiles() {
-        Response<List<User>> users= schoolUserRepo.findAllSchoolUsers();
+        Response<List<BaseUser>> users= schoolUserRepo.findAllSchoolUsers();
         if(users.getReason()!=OpCode.Success){
             log.error("Function getAllSchoolUsersProfiles: connection to the DB lost");
         }
         return new Response<>(users.getValue()
                 .stream()
-                .map((User::getProfileData))
+                .map((BaseUser::getProfileData))
                 .collect(Collectors.toList()),
                 OpCode.Success);
     }

@@ -2,14 +2,9 @@ package missions.room.PointsManagerTests;
 
 import CrudRepositories.ClassroomRepository;
 import CrudRepositories.TeacherCrudRepository;
-import CrudRepositories.UserCrudRepository;
 import Data.Data;
-import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.Teacher;
-import missions.room.Domain.Users.User;
-import missions.room.Managers.ProfileMessagesManager;
 import missions.room.Managers.TeacherManager;
-import missions.room.Repo.ClassroomRepo;
 import missions.room.Repo.TeacherRepo;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

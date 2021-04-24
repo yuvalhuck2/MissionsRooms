@@ -6,11 +6,15 @@ import missions.room.Managers.TeacherManager;
 import missions.room.Repo.StudentRepo;
 import missions.room.Repo.TeacherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+@SpringBootTest
+@TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
 public class TriviaManagerTestsRealRamTeacher extends  TriviaManagerTestsRealRam {
 
     @Autowired

@@ -1,6 +1,5 @@
 package missions.room.UserAuthenticationTests;
 
-import Data.Data;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Users.Student;
 import missions.room.Managers.TeacherManager;
@@ -11,7 +10,7 @@ import static Data.DataConstants.*;
 import static Data.DataConstants.WRONG_TEACHER_NAME;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class UserAuthenticationTestRealRam extends UserAuthenticationTestsAllStubs{
+public class BaseUserAuthenticationTestRealRam extends BaseUserAuthenticationTestsAllStubs {
 
     @Override
     protected void initRam(Student student){

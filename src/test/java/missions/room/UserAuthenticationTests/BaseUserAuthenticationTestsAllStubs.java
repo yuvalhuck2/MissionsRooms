@@ -42,7 +42,7 @@ import static org.mockito.Mockito.when;
 @Service
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class UserAuthenticationTestsAllStubs {
+public class BaseUserAuthenticationTestsAllStubs {
 
     @InjectMocks
     protected UserAuthenticationManager userAuthenticationManager;

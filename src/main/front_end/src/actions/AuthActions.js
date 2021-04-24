@@ -292,7 +292,7 @@ const connectToWebSocketFromLogin = (apiKey,dispatch, navigation) => {
         break;
       case Update_Room:
         dispatch({ type: FINISH_MISSION, payload: apiKey });
-        moveToMission(value,dispatch,navigation,false);
+        moveToMission(value,dispatch,navigation,value.inCharge);
         break;
       case IN_CHARGE:
           dispatch({ type: CHANGE_IN_CHARGE, payload: true });
