@@ -83,8 +83,8 @@ class TeacherRoomMenuForm extends Component{
                         apiKey,
                         roomId: currentRoom.roomId
                     })} title={chat}/>
-                    <Menu.Item icon="answer" onPress={() => {
-                    }} title={approve_answer}/>
+                    <Menu.Item icon="answer" onPress={() => this.props.approveAnswer({navigation, apiKey, roomId:currentRoom.roomId,roomName:currentRoom.name})
+                    } title={approve_answer}/>
                     <Menu.Item icon="close" onPress={() => this.props.closeRoom({navigation, apiKey, currentRoom})}
                                title={close_room}/>
                 </View>
@@ -166,4 +166,5 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
     closeRoom,
     enterChatTeacher,
+    approveAnswer,
 })(TeacherRoomMenuForm);
