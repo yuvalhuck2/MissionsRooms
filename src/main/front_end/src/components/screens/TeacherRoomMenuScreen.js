@@ -97,40 +97,6 @@ class TeacherRoomMenuForm extends Component{
         );
 
     }
-        /*
-        else{
-            return (
-                <View>
-                    <Text style={styles.errorTextStyle}>{chat}</Text>
-                </View>
-            )
-        }*/
-
-
-            /*
-            <View style={styles.container}>
-                <View>
-
-                    /*
-                    <Button onPress={() => this.props.passToRoomList({navigation, apiKey, roomsType,type:"Personal"})}
-                            style={[styles.button, styles.top_button_marg, styles.left_button_border, styles.top_button_border]}>
-                        <Text style={{color: "white"}}> {approve_answer}</Text>
-                    </Button>
-                    <Button onPress={() => this.props.passToRoomList({navigation, apiKey, roomsType,type:"Group"})}
-                            style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}>
-                        <Text style={{color: "white"}}>{chat}</Text>
-                    </Button>
-                    <Button onPress={() => this.props.passToRoomList({navigation, apiKey, roomsType,type:"Class"})}
-                            style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}>
-
-                        <Text style={{color: "white"}}>{close_room}</Text>
-                    </Button>
-                </View>
-            </View>*/
-
-
-
-
 
 }
 

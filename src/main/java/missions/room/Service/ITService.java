@@ -81,7 +81,7 @@ public class ITService {
         return itManager.deleteUser(apiKey,alias);
     }
 
-    public Response<Boolean> deleteSeniorStudents(String apiKey){
+    public Response<Integer> deleteSeniorStudents(String apiKey){
         return itManager.deleteSeniorStudents(apiKey);
     }
 }

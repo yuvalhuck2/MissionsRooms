@@ -8,10 +8,10 @@ INSERT INTO USER (alias, password) VALUES
 INSERT INTO IT (alias) VALUES ('gal');
 
 INSERT INTO Classroom (class_name,points) VALUES
-('0=4',21), ('1=3',2);
+('2=4',21), ('1=3',2);
 
 INSERT INTO Class_group (group_name, group_type,classroom,points) VALUES
-('A',0,'0=4',20), ('B',0,'1=3',20), ('A2',1,'1=3',20);
+('A',0,'2=4',20), ('B',0,'1=3',20), ('A2',1,'1=3',20);
 
 INSERT INTO SCHOOL_USER (first_name, last_name, alias) VALUES
 ('niv', 'shir', 'niv'), ('roy', 'levi', 'roy4'), ('tal', 'cohen', 'tal');
@@ -20,7 +20,7 @@ INSERT INTO STUDENT (alias, class_group,points) VALUES
 ('niv', 'A',3), ('roy4', 'A',6);
 
 INSERT INTO TEACHER (alias,group_type, classroom_class_name) VALUES
-('tal', 0,'0=4');
+('tal', 0,'2=4');
 
 INSERT INTO MISSION(mission_id,points) VALUES
 ('mid1',2), ('mid2',2),('story1',2),('story2',4),('open1',1),('open_mission_id',3);
@@ -68,7 +68,7 @@ INSERT INTO GROUP_ROOM(room_id,participant_group_name) values
 
 INSERT INTO CLASSROOM_ROOM(room_id,participant_class_name) values
 --('rid3','class');
-('rid_story','0=4');
+('rid_story','2=4');
 
 INSERT INTO MESSAGE(id, content, sender, date, time, dest) values
 ('123', 'הודעה טובה מאוד', 'shmulik', '12/12/2012','20:30','niv');

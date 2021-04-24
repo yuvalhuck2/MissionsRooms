@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -82,26 +83,30 @@ public class ITManager {
         return new Response<>(it,OpCode.Success);
     }
 
-    public Response<Boolean> deleteSeniorStudents(String apiKey){
+    public Response<Integer> deleteSeniorStudents(String apiKey){
         Response<IT> itResponse = checkIT(apiKey);
         if(itResponse.getReason()!=OpCode.Success){
             log.error(itResponse.getReason().toString());
-            return new Response<>(false,itResponse.getReason());
+            return new Response<>(null,itResponse.getReason());
         }
         Response<List<Classroom>> responseClassroom=classroomRepo.findAll();
         if(responseClassroom.getReason()!=OpCode.Success){
-            return new Response<>(false,responseClassroom.getReason());
+            return new Response<>(null,responseClassroom.getReason());
         }
+        int counter=0;
         for(Classroom classroom:responseClassroom.getValue()){
             if(classroom.getClassName().startsWith("2")){
                 for(ClassGroup group:classroom.getClassGroups()){
-                    for(String student:group.getStudent().keySet()){
-                        deleteUser(apiKey,student);
+                    List<String> students=new ArrayList<>(group.getStudent().keySet());
+                    for(String student:students){
+                        if(deleteUser(apiKey,student).getReason()==OpCode.Success){
+                            counter++;
+                        }
                     }
                 }
             }
         }
-        return new Response<>(true,OpCode.Success);
+        return new Response<>(counter,OpCode.Success);
     }
 
     @Transactional
