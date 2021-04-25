@@ -117,12 +117,12 @@ public class ITManager {
             return new Response<>(false,itResponse.getReason());
         }
 
-        Response<User> userResponse=userRepo.findUserForWrite(alias);
+        Response<BaseUser> userResponse=userRepo.findUserForWrite(alias);
 
         if(userResponse.getReason()!=OpCode.Success){
             return new Response<>(false,userResponse.getReason());
         }
-        User user=userResponse.getValue();
+        BaseUser user=userResponse.getValue();
         synchronized (user){
             if(user instanceof Teacher){
                 if(((Teacher)user).getClassroom()!=null){
@@ -346,13 +346,13 @@ public class ITManager {
     }
 
     public Response<List<UserProfileData>> getAllUsersSchoolProfiles() {
-        Response<List<User>> users= schoolUserRepo.findAllSchoolUsers();
+        Response<List<BaseUser>> users= schoolUserRepo.findAllSchoolUsers();
         if(users.getReason()!=OpCode.Success){
             log.error("Function getAllSchoolUsersProfiles: connection to the DB lost");
         }
         return new Response<>(users.getValue()
                 .stream()
-                .map((User::getProfileData))
+                .map((BaseUser::getProfileData))
                 .collect(Collectors.toList()),
                 OpCode.Success);
     }

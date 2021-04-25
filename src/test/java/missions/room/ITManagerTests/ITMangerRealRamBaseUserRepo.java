@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
-public class ITMangerRealRamUserRepo extends ITManagerTestsRealRam {
+public class ITMangerRealRamBaseUserRepo extends ITManagerTestsRealRam {
 
     @Autowired
     private UserRepo realUserRepo;

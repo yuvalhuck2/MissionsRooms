@@ -7,11 +7,21 @@ public class SolutionData {
     private String openAnswer;
     private Boolean hasFile;
     private String missionQuestion;
+    private String fileName;
 
     public SolutionData(String missionId, String roomId, String openAnswer) {
         this.missionId = missionId;
         this.roomId = roomId;
         this.openAnswer = openAnswer;
+        this.fileName = null;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public SolutionData(String missionId, String openAnswer, boolean hasFile, String missionQuestion) {

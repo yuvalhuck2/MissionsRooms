@@ -4,15 +4,18 @@ import { connect } from 'react-redux';
 import { uploadStrings, watchOpenSolution } from '../../locale/locale_heb';
 import Button from '../common/Button';
 import Header from '../common/Header';
-import { downloadFile } from '../../actions/WatchOpenAnswerActions'
+import { downloadFile, responseAns } from '../../actions/WatchOpenAnswerActions'
 import { theme } from '../../core/theme';
+import { ActivityIndicator } from 'react-native-paper';
 
 
 const {
     header,
     download_btn,
     question_title,
-    answer_title
+    answer_title,
+    approve_ans,
+    reject_ans
 } = watchOpenSolution;
 
 const DeviceWidth = Dimensions.get('window').width;
@@ -20,12 +23,24 @@ class WatchOpenAnswerForm extends Component {
     constructor(...args) {
         super(...args);
         this.onDownloadFile = this.onDownloadFile.bind(this);
+        this.onApprove = this.onApprove.bind(this);
+        this.onReject = this.onReject.bind(this);
     }
 
 
     onDownloadFile() {
-        const { roomId, missionId, fileName } = this.props;
-        this.props.downloadFile(roomId, missionId, fileName);
+        const { apiKey, roomId, missionId, fileName } = this.props;
+        /*this.props.*/downloadFile(apiKey, roomId, missionId, fileName);
+    }
+
+    onApprove() {
+        const { apiKey, roomId, missionId } = this.props;
+        this.props.responseAns({apiKey, roomId, missionId, isAprove: true});
+    }
+
+    onReject() {
+        const { apiKey, roomId, missionId } = this.props;
+        this.props.responseAns({ apiKey, roomId, missionId, isApprove: false });
     }
 
     renderButton() {
@@ -39,6 +54,26 @@ class WatchOpenAnswerForm extends Component {
                 {download_btn}
             </Button>) : null
 
+    }
+
+    renderApproveBtn() {
+        return (<Button
+            mode='contained'
+            style={styles.button}
+            onPress={this.onApprove}>
+            {approve_ans}
+        </Button>
+        )
+    }
+
+    renderRejectBtn() {
+        return (<Button
+            mode='contained'
+            style={styles.button}
+            onPress={this.onReject}>
+            {reject_ans}
+        </Button>
+        )
     }
 
     renderQuestion() {
@@ -60,6 +95,40 @@ class WatchOpenAnswerForm extends Component {
         return (<Text style={styles.text}>{text}</Text>)
     }
 
+    renderSpinner() {
+        return (
+            <ActivityIndicator
+                animating={true}
+                color={theme.colors.primary}
+                size='large'
+            />
+        );
+    }
+
+    renderError() {
+        const { errorMessage } = this.props;
+    
+        if (errorMessage && errorMessage !== '') {
+          return (
+            <View>
+              <Text style={styles.errorTextStyle}>{errorMessage}</Text>
+            </View>
+          );
+        }
+      }
+
+    renderResponseBtns() {
+        const { loading } = this.props;
+
+        return loading ? (
+            this.renderSpinner()
+        ) : (<View style={styles.row_center}>
+            {this.renderApproveBtn()}
+            {this.renderRejectBtn()}
+        </View>
+        );
+    }
+
     render() {
         const { question, openText } = this.props;
         return (
@@ -77,6 +146,8 @@ class WatchOpenAnswerForm extends Component {
                 <View style={styles.row_center}>
                     {this.renderButton()}
                 </View>
+                {this.renderResponseBtns()}
+                {this.renderError()}
             </View>
         );
     }
@@ -137,9 +208,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    const { apiKey, roomId, missionId, openText, question, hasFile } = state.WatchOpenAnswer
-    return { apiKey, roomId, missionId, openText, question, hasFile };
+    const { apiKey, roomId, missionId, openText, question, hasFile, loading, errorMessage, fileName } = state.WatchOpenAnswer
+    return { apiKey, roomId, missionId, openText, question, hasFile, loading, errorMessage, fileName };
 };
 
 export default connect(mapStateToProps,
-    { downloadFile })(WatchOpenAnswerForm);
+    { responseAns })(WatchOpenAnswerForm);

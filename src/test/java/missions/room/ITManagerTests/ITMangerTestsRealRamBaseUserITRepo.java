@@ -4,7 +4,6 @@ import CrudRepositories.ITCrudRepository;
 import Data.Data;
 import DataAPI.OpCode;
 import DataAPI.RegisterDetailsData;
-import DataAPI.Response;
 import missions.room.Domain.Users.IT;
 import missions.room.Managers.ITManager;
 import missions.room.Repo.ITRepo;
@@ -26,7 +25,7 @@ import static org.mockito.Mockito.when;
 @Service
 @SpringBootTest
 @TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
-public class ITMangerTestsRealRamUserITRepo extends ITMangerRealRamUserRepo {
+public class ITMangerTestsRealRamBaseUserITRepo extends ITMangerRealRamBaseUserRepo {
 
     @Autowired
     private ITRepo realITRepo;

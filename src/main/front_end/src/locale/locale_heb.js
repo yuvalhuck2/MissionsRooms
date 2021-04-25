@@ -40,7 +40,9 @@ export const watchOpenSolution = {
   download_btn: 'הורד קובץ',
   header: 'פתרון משימה',
   question_title: 'שאלה:',
-  answer_title: 'תשובה:'
+  answer_title: 'תשובה:',
+  approve_ans: 'אשר תשובה',
+  reject_ans: 'דחה תשובה',
 };
 
 export const uploadStringsErrors = {

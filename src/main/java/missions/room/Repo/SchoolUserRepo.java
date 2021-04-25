@@ -2,9 +2,9 @@ package missions.room.Repo;
 
 import DataAPI.OpCode;
 import DataAPI.Response;
+import missions.room.Domain.Users.BaseUser;
 import missions.room.Domain.Users.SchoolUser;
 import CrudRepositories.SchoolUserCrudRepository;
-import missions.room.Domain.Users.User;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,10 +61,10 @@ public class SchoolUserRepo {
         }
     }
 
-    public Response<List<User>> findAllSchoolUsers() {
+    public Response<List<BaseUser>> findAllSchoolUsers() {
         try{
-            List<User> users = Lists.newArrayList(schoolUserCrudRepository.findAll());
-            return new Response<>(users,OpCode.Success);
+            List<BaseUser> userLIES = Lists.newArrayList(schoolUserCrudRepository.findAll());
+            return new Response<>(userLIES,OpCode.Success);
         }
         catch (Exception e){
             return new Response<>(new ArrayList<>(),OpCode.DB_Error);

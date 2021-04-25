@@ -8,7 +8,7 @@ import DataAPI.MessageData;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import missions.room.Domain.Users.Student;
-import missions.room.Domain.Users.User;
+import missions.room.Domain.Users.BaseUser;
 import missions.room.Managers.ProfileMessagesManager;
 import missions.room.Repo.UserRepo;
 import org.junit.jupiter.api.AfterEach;
@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})
-public class ProfileProfileProfileMessageManagerRealRamUserRepo extends ProfileProfileMessageManagerTestsRealRam {
+public class ProfileProfileProfileMessageManagerRealRamBaseUserRepo extends ProfileProfileMessageManagerTestsRealRam {
 
     @Autowired
     private UserRepo realUserRepo;
@@ -52,10 +52,10 @@ public class ProfileProfileProfileMessageManagerRealRamUserRepo extends ProfileP
 
     @Override
     protected void initUserRepo(Student student, Student student2) {
-        User teacher = dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM);
-        User it = dataGenerator.getUser(Data.VALID_IT);
-        users = new ArrayList<>();
-        Collections.addAll(users,student,student2,teacher,it);
+        BaseUser teacher = dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM);
+        BaseUser it = dataGenerator.getUser(Data.VALID_IT);
+        userLIES = new ArrayList<>();
+        Collections.addAll(userLIES,student,student2,teacher,it);
         classroomRepository.save(dataGenerator.getClassroom(Data.Valid_Classroom));
         studentCrudRepository.save(student2);
         userCrudRepository.save(teacher);
