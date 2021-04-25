@@ -117,12 +117,12 @@ public class ITManager {
             return new Response<>(false,itResponse.getReason());
         }
 
-        Response<User> userResponse=userRepo.findUserForWrite(alias);
+        Response<BaseUser> userResponse=userRepo.findUserForWrite(alias);
 
         if(userResponse.getReason()!=OpCode.Success){
             return new Response<>(false,userResponse.getReason());
         }
-        User user=userResponse.getValue();
+        BaseUser user=userResponse.getValue();
         synchronized (user){
             if(user instanceof Teacher){
                 if(((Teacher)user).getClassroom()!=null){
