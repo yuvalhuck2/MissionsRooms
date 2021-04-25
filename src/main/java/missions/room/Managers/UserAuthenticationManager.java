@@ -10,9 +10,9 @@ import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
 import ExternalSystems.VerificationCodeGenerator;
 import CrudRepositories.SchoolUserCrudRepository;
+import missions.room.Domain.Users.BaseUser;
 import missions.room.Domain.Users.SchoolUser;
 import missions.room.Domain.Users.Teacher;
-import missions.room.Domain.Users.User;
 import missions.room.Repo.ClassroomRepo;
 import missions.room.Repo.SchoolUserRepo;
 import Utils.Utils;
@@ -254,24 +254,24 @@ public class UserAuthenticationManager extends TeacherManager {
         if(!Utils.checkString(alias)){
             return new Response<>(null,OpCode.Wrong_Alias);
         }
-        Response<User> rsp= userRepo.findUserForRead(alias);
+        Response<BaseUser> rsp= userRepo.findUserForRead(alias);
         if (rsp.getReason()!=OpCode.Success){
             return new Response<>(null, rsp.getReason());
         }
-        User user =rsp.getValue();
-        if (user ==null){
+        BaseUser baseUser =rsp.getValue();
+        if (baseUser ==null){
             return new Response<>(null, OpCode.Not_Exist);
         }
         String api= UniqueStringGenerator.getUniqueCode(alias);
         String encryptedPassword = hashSystem.encrypt(password);
         PasswordAndTime passwordAndTime = aliasToResetPassword.get(alias);
-        if(encryptedPassword.equals(user.getPassword())){
-            return addToRamAndGetResponse(alias, user.getOpcode(), api);
+        if(encryptedPassword.equals(baseUser.getPassword())){
+            return addToRamAndGetResponse(alias, baseUser.getOpcode(), api);
         }
         else if(passwordAndTime != null &&
                 encryptedPassword.equals(passwordAndTime.getPassword())){
             aliasToResetPassword.remove(alias);
-            return addToRamAndGetResponse(alias, user.getOpcode(), api);
+            return addToRamAndGetResponse(alias, baseUser.getOpcode(), api);
         }
         else{
             return new Response<>(null,OpCode.Wrong_Password);
@@ -295,16 +295,16 @@ public class UserAuthenticationManager extends TeacherManager {
             return new Response<>(false,OpCode.Wrong_Password);
         }
         String alias = ram.getAlias(apiKey);
-        Response<User> rsp= userRepo.findUserForWrite(alias);
+        Response<BaseUser> rsp= userRepo.findUserForWrite(alias);
         if (rsp.getReason()!=OpCode.Success){
             return new Response<>(false, rsp.getReason());
         }
-        User user=rsp.getValue();
-        if(user==null){
+        BaseUser baseUser =rsp.getValue();
+        if(baseUser ==null){
             return new Response<>(false,OpCode.Not_Exist);
         }
-        user.setPassword(hashSystem.encrypt(newPassword));
-        rsp=userRepo.save(user);
+        baseUser.setPassword(hashSystem.encrypt(newPassword));
+        rsp=userRepo.save(baseUser);
         return new Response<>(rsp.getReason()==OpCode.Success,rsp.getReason());
     }
 

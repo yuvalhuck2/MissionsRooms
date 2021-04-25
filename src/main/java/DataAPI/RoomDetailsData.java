@@ -13,6 +13,8 @@ public class RoomDetailsData {
     private int currentMissionNumber;
     private int numberOfMissions;
     private String studentName;
+    private boolean inCharge;
+
     public RoomDetailsData(String roomId, String name, MissionData currentMission, RoomType roomType, boolean waitingForStory){
         this.roomId=roomId;
         this.name=name;
@@ -79,6 +81,14 @@ public class RoomDetailsData {
 
     public void setNumberOfMissions(int numberOfMissions) {
         this.numberOfMissions = numberOfMissions;
+    }
+
+    public boolean isInCharge() {
+        return inCharge;
+    }
+
+    public void setInCharge(boolean inCharge) {
+        this.inCharge = inCharge;
     }
 
     @Override

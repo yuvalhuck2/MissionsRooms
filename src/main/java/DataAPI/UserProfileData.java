@@ -74,10 +74,17 @@ public class UserProfileData {
         if (o == null || getClass() != o.getClass()) return false;
         UserProfileData that = (UserProfileData) o;
         return Objects.equals(points, that.points) &&
-                Objects.equals(firstName, that.firstName) &&
-                Objects.equals(lastName, that.lastName) &&
                 Objects.equals(alias, that.alias) &&
-                userType == that.userType;
+                userType == that.userType &&
+                userType == OpCode.IT ||
+                (
+                Objects.equals(firstName, that.firstName) &&
+                Objects.equals(lastName, that.lastName)
+                );
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(apiKey, firstName, lastName, alias, userType, points);
+    }
 }

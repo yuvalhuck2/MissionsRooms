@@ -2,15 +2,13 @@ package missions.room.Service;
 
 import DataAPI.*;
 import com.sun.org.apache.xpath.internal.operations.Bool;
-import missions.room.Domain.Users.User;
+import missions.room.Domain.Users.BaseUser;
 import missions.room.Managers.ITManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import sun.java2d.cmm.Profile;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ITService {

@@ -144,6 +144,7 @@ public class ManagerRoomStudentRealRamRealClassroomClassGroupRepo extends Manage
     @AfterEach
     void tearDown() {
         super.tearDown();
+        roomRepo.deleteAll();
         teacherCrudRepository.deleteAll();
         classroomRepository.deleteAll();
     }
