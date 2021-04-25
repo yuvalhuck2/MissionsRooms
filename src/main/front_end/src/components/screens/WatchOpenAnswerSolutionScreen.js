@@ -34,13 +34,13 @@ class WatchOpenAnswerForm extends Component {
     }
 
     onApprove() {
-        const { apiKey, roomId, missionId } = this.props;
-        this.props.responseAns({apiKey, roomId, missionId, isAprove: true});
+        const { apiKey, roomId, missionId, navigation } = this.props;
+        this.props.responseAns({ apiKey, roomId, missionId, isApprove: true, navigation });
     }
 
     onReject() {
-        const { apiKey, roomId, missionId } = this.props;
-        this.props.responseAns({ apiKey, roomId, missionId, isApprove: false });
+        const { apiKey, roomId, missionId, navigation } = this.props;
+        this.props.responseAns({ apiKey, roomId, missionId, isApprove: false, navigation });
     }
 
     renderButton() {
@@ -107,15 +107,15 @@ class WatchOpenAnswerForm extends Component {
 
     renderError() {
         const { errorMessage } = this.props;
-    
+
         if (errorMessage && errorMessage !== '') {
-          return (
-            <View>
-              <Text style={styles.errorTextStyle}>{errorMessage}</Text>
-            </View>
-          );
+            return (
+                <View>
+                    <Text style={styles.errorTextStyle}>{errorMessage}</Text>
+                </View>
+            );
         }
-      }
+    }
 
     renderResponseBtns() {
         const { loading } = this.props;

@@ -151,6 +151,11 @@ export const ChooseMissionsTemplateStrings = {
   story_description:'סוג: משימת סיפור בהמשכים',
 };
 
+export const ResponseOpenAnsStrings = {
+  approved: 'תשובה אושרה בהצלחה',
+  rejected: 'תשובה נדחתה בהצלחה'
+}
+
 export const TeacherStrings = {
   addMission: 'הוספת משימה',
   addTemplate: 'בניית תבנית לחדר',
