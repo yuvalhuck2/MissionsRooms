@@ -34,5 +34,7 @@ export const addStudent = "it/add/student"
 export const addTeacher = "it/add/teacher"
 export const resetPassword = "UserAuth/password/reset"
 export const closeClassroom = "it/classroom/close"
+export const deleteUser="it/delete/user";
+export const deleteSeniors="it/delete/senior";
 export const approveAnswer="mission/unApprovedAnswers"
 export const responseAnswer = "/room/responseAnswer"

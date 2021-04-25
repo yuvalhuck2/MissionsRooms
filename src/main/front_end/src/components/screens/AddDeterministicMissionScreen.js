@@ -57,8 +57,8 @@ class AddDeterministicMissionForm extends Component{
     }
 
     onButtonPress() {
-        const {apiKey,question,realAnswer,missionTypes,navigation} = this.props;
-        this.props.addMission( {apiKey, question, navigation, missionTypes, className: DETERMINISTIC, realAnswer} );
+        const {apiKey, question, points, realAnswer, missionTypes, navigation} = this.props;
+        this.props.addMission( {apiKey, question, points, navigation, missionTypes, className: DETERMINISTIC, realAnswer} );
     }
 
     renderSpinner() {
@@ -146,8 +146,6 @@ const styles = StyleSheet.create({
       width: '100%',
       maxWidth: 340,
       alignSelf: 'center',
-      // alignItems: 'center',
-      // justifyContent: 'center',
     },
     button: {
       marginTop: 24,
@@ -168,8 +166,8 @@ const styles = StyleSheet.create({
   });
 
 const mapStateToProps = (state) => {
-    const { apiKey,question,realAnswer,missionTypes, loading, errorMessage } = state.addMission;
-    return { apiKey,question,realAnswer,missionTypes, loading, errorMessage };
+    const { apiKey, question, realAnswer, missionTypes, points, loading, errorMessage } = state.addMission;
+    return { apiKey, question, realAnswer, missionTypes, points, loading, errorMessage };
   };
   
 export default connect(mapStateToProps, {

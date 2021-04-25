@@ -44,21 +44,22 @@ export const downloadFile = async (apiKey, roomId, missionId, fileName) => {
     } else {
         const perm = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
         if (perm.status != 'granted') {
+            alert("Status not granted")
             return;
         }
         try {
             const asset = await MediaLibrary.createAssetAsync(downloadedFile.uri);
-            const album = await MediaLibrary.getAlbumAsync('Download');
+            const album = await MediaLibrary.getAlbumAsync('Downloadd');
             if (album == null) {
-                await MediaLibrary.createAlbumAsync('Download', asset, false);
+                await MediaLibrary.createAlbumAsync('Downloadd', asset, false);
             } else {
                 await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
             }
+            alert("done");
         } catch (e) {
             alert(e);
         }
     }
-    alert("done");
 }
 
 export const responseAns = ({ apiKey, roomId, missionId, isApprove, navigation }) => {

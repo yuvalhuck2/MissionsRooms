@@ -3,6 +3,7 @@ package missions.room.Communications.Controllers;
 import DataAPI.*;
 import Utils.Utils;
 import com.google.gson.Gson;
+import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Service.MissionService;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @RestController // This means that this class is a Controller
 @RequestMapping(path="/mission") // This means URL's start with /demo (after Application path)
+@CommonsLog
 public class MissionController extends AbsController {
 
     @Autowired
@@ -70,9 +72,10 @@ public class MissionController extends AbsController {
             headers.add("Expires", "0");
             ResponseEntity<Object> responseEntity = ResponseEntity.ok().headers(headers).contentLength(f.length())
                     .contentType(MediaType.parseMediaType("application/txt")).body(resource);
+            log.info(responseEntity);
             return  responseEntity;
         } catch (FileNotFoundException e) { //TODO add log
-            e.printStackTrace();
+            log.error("error down;pad file", e);
         }
 
         return null;

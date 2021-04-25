@@ -175,7 +175,7 @@ public class ManagerRoomStudent extends StudentManager {
         if (room.toCloseRoom()) {
             reason = roomRepo.deleteRoom(room).getReason();
             if (reason != OpCode.Success) {
-                //log.error(String.format("Failed to delete room: {0}. function: updateRoomAndMissionInCharge", room.getRoomId()));
+                log.error(String.format("Failed to delete room: {0}. function: updateRoomAndMissionInCharge", room.getRoomId()));
             }
             ram.deleteRoom(room.getRoomId());
             notification = new NonPersistenceNotification<>(OpCode.Finish_Missions_In_Room, null);
@@ -200,11 +200,6 @@ public class ManagerRoomStudent extends StudentManager {
             }
             publisher.update(ram.getApiKey(alias), notification);
         }
-//        //send to the next mission inCharge notification
-//        if(nextInCharge!=null){
-//            NonPersistenceNotification<String> inChargeNotification=new NonPersistenceNotification<>(OpCode.IN_CHARGE,room.getRoomId());
-//            publisher.update(ram.getApiKey(nextInCharge),inChargeNotification);
-//        }
     }
 
     private void saveRoomAndLog(Room room) {
@@ -266,7 +261,6 @@ public class ManagerRoomStudent extends StudentManager {
         if(!room.isBelongToRoom(student.getAlias())){
             return new Response<>(null,OpCode.NOT_BELONGS_TO_ROOM);
         }
-
         OpCode opCode=ram.connectToRoom(roomId,student.getAlias());
         RoomDetailsData roomDetailsData=room.getData();
         roomDetailsData.setStudentName(student.getFirstName()+" "+student.getLastName());
