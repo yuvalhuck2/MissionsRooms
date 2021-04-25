@@ -69,11 +69,11 @@ export const responseAns = ({ apiKey, roomId, missionId, isApprove, navigation }
             console.log("here")
             res
                 ? checkResponseOpenAnswersResponse(res.data, dispatch, isApprove, navigation)
-                : dispatch({ type: UPDATE_RES_ANS_ERROR, payload: server_error + 1 });
+                : dispatch({ type: UPDATE_RES_ANS_ERROR, payload: server_error });
         } catch (err) {
             console.log(err);
             alert(err)
-            dispatch({ type: UPDATE_RES_ANS_ERROR, payload: server_error + 2 });
+            dispatch({ type: UPDATE_RES_ANS_ERROR, payload: server_error });
         }
     };
 }
@@ -85,14 +85,14 @@ const checkResponseOpenAnswersResponse = (data, dispatch, isApprove, navigation)
         case Wrong_Key:
             return dispatch({ type: UPDATE_RES_ANS_ERROR, payload: wrong_key_error });
         case DB_Error:
-            return dispatch({ type: UPDATE_RES_ANS_ERROR, payload: server_error + 3 });
+            return dispatch({ type: UPDATE_RES_ANS_ERROR, payload: server_error });
         case Success:
             isApprove ? alert(approved) : alert(rejected)
             navigation.navigate(NavPaths.teacherMainScreen);
             //handleBack({navigation})
             return dispatch({ type: RES_ANS_RESET });
         default:
-            return dispatch({ type: UPDATE_RES_ANS_ERROR, payload: server_error + 4 });
+            return dispatch({ type: UPDATE_RES_ANS_ERROR, payload: server_error });
     }
 }
 
