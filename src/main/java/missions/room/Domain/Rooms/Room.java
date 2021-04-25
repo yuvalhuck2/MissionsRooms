@@ -159,6 +159,12 @@ public abstract class Room {
         return addPoints(points);
     }
 
+    public RoomType updatePoints(String missionId) {
+        addCorrectAnswer();
+        int points=roomTemplate.getMission(missionId).getPoints();
+        return addPoints(points);
+    }
+
     protected abstract RoomType addPoints(int points);
 
     public boolean isLastMission(){

@@ -41,6 +41,15 @@ public class RoomManager extends TeacherManager {
     @Autowired
     private RoomTemplateRepo roomTemplateRepo;
 
+    @Autowired
+    private ClassroomRepo classroomRepo;
+
+    @Autowired
+    private ClassGroupRepo classGroupRepo;
+
+    @Autowired
+    protected StudentRepo studentRepo;
+
     private static Publisher publisher;
 
     public static void initPublisher(){
@@ -542,10 +551,11 @@ public class RoomManager extends TeacherManager {
             synchronized (room) {
                 isMissionResolved = room.resolveMission(missionId);
                 if (isMissionResolved) {
-                    Response<Boolean> updateResponse = updateRoom(room);
+                    Response<Boolean> updateResponse = updateRoom(room, isApproved, missionId);
                     if (!updateResponse.getValue()) {
                         return new Response<>(null, updateResponse.getReason());
                     }
+
                     String message = getResponseToStudentSolutionMessage(isApproved, updateResponse.getReason());
                     message = String.format(message, room.getName());
                     return new Response<>(message, OpCode.Success);
@@ -600,8 +610,11 @@ public class RoomManager extends TeacherManager {
         return new Response<>(roomResponse.getValue().getName(), OpCode.Success);
     }
 
-    private Response<Boolean> updateRoom(Room room) {
+    private Response<Boolean> updateRoom(Room room, Boolean isApproved, String missionId) {
         Response<Boolean> response;
+        if (isApproved) {
+            updateCorrectAnswer(room, missionId);
+        }
         if(room.allOpenQuestionsApproved()) {
             response = roomRepo.deleteRoom(room);
             response.setReason(response.getValue() ?
@@ -613,6 +626,36 @@ public class RoomManager extends TeacherManager {
                     roomRes.getReason() == OpCode.Success ? OpCode.ROOM_SAVED : roomRes.getReason());
         }
         return response;
+    }
+
+    private Response<Boolean> updateCorrectAnswer(Room room, String missionId) {
+        RoomType roomType=room.updatePoints(missionId);
+        OpCode reason = null;
+        switch (roomType){
+            case Class:
+                Classroom classroom=((ClassroomRoom) room).getParticipant();
+                reason=classroomRepo.save(classroom)
+                        .getReason();
+                break;
+            case Group:
+                ClassGroup classGroup = ((GroupRoom) room).getParticipant();
+                reason = classGroupRepo.save(classGroup)
+                        .getReason();
+                break;
+            case Personal:
+                Student student=((StudentRoom) room).getParticipant();
+                reason=studentRepo.save(student)
+                        .getReason();
+                break;
+            default:
+                //TODO logger error that can't happened
+                break;
+
+        }
+        if(reason!=OpCode.Success){
+            return new Response<>(null,reason);
+        }
+        return new Response<>(true,OpCode.Success);
     }
 
     private Response<Room> getRoomById(String roomId) {
