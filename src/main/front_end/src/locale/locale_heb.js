@@ -153,6 +153,7 @@ export const TeacherStrings = {
   closeRoom: 'סגירת חדר',
   main_screen: 'התנתק/י',
   watch_suggestions:'צפייה בהצעות',
+  add_trivia_subject: 'נושא טריוויה',
 };
 
 export const AddRoomStrings = {
@@ -472,3 +473,9 @@ export const WatchAllOpenQuestionMissions = {
   mission_title: 'משימה מספר ',
   title:'משימות עם תשובה פתוחה בחדר: '
 };
+
+export const AddTriviaSubjectStrings = {
+  header: 'הוספת נושא טריויה',
+  inputPlaceholder: 'כתוב נושא כאן',
+  addButtonText: 'הוסף נושא'
+}

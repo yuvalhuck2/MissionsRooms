@@ -30,4 +30,4 @@ export {default as WatchAllOpenQuestionMissionsScreen} from './WatchAllOpenQuest
 export { default as AddUserScreen} from './AddUserScreen'
 export { default as ResetPasswordScreen} from './ResetPasswordScreen'
 export { default as CloseClassroomScreen} from './CloseClassroomScreen'
-
+export {default as AddTriviaSubject} from "./AddTriviaSubject"

@@ -67,6 +67,10 @@ public class StudentRoomService {
         return managerRoomStudent.answerStoryMission(apiKey, roomId, sentence);
     }
 
+    public Response<Boolean> answerTriviaMission(String apiKey, String roomId, Boolean answer){
+        return managerRoomStudent.answerTriviaMission(apiKey, roomId, answer);
+    }
+
     /**
      * disconnect from all of my rooms
      * @param apiKey - authentication object

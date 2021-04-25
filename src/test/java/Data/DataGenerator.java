@@ -12,11 +12,8 @@ import DataAPI.RoomType;
 import ExternalSystems.HashSystem;
 import javafx.util.Pair;
 import missions.room.Domain.Users.*;
-import missions.room.Domain.missions.KnownAnswerMission;
+import missions.room.Domain.missions.*;
 import DomainMocks.TeacherMock;
-import missions.room.Domain.missions.Mission;
-import missions.room.Domain.missions.OpenAnswerMission;
-import missions.room.Domain.missions.StoryMission;
 
 import java.util.*;
 
@@ -59,6 +56,7 @@ public class DataGenerator {
         initRegisterDetailsDatas();
         initVerificationCodes();
         initTeacher();
+        initTriviaData();
         initMissions();
         initRoomTemplateDatas();
         initRoomTemplates();
@@ -67,7 +65,6 @@ public class DataGenerator {
         initLoginDatas();
         initUsers();
         initStudentDataDatas();
-        initTriviaData();
         initMessagesData();
         initPointsDataSet();
         initUserProfileDataMap();
@@ -143,7 +140,7 @@ public class DataGenerator {
         triviaSubjectHashMap.put(Data.VALID3,"valid subject3");
         triviaSubjectHashMap.put(Data.INVALID, "");
         triviaQuestionHashMap = new HashMap<Data, TriviaQuestionData>();
-        List<String> validAnswers = Arrays.asList("ans1", "ans2");
+        List<String> validAnswers = Arrays.asList("ans1", "ans2", "correctANS");
         List<String> invalidAnswers = new ArrayList<>();
         triviaQuestionHashMap.put(Data.VALID, new TriviaQuestionData( "question?", validAnswers,
                 "correctANS", triviaSubjectHashMap.get(Data.VALID)));
@@ -424,6 +421,20 @@ public class DataGenerator {
         missions.put(Data.VALID_STORY,new StoryMission("story",types,""));
         missions.put(Data.VALID_STORY2,new StoryMission("story2",types,""));
         missions.put(Data.VALID_OPEN_ANS, new OpenAnswerMission("open1", types, "question"));
+        missions.put(Data.TRIVIA_VALID,
+                new TriviaMission(
+                       "trivia1",
+                       types,
+                       0.6,
+                       new HashMap<String, TriviaQuestion>(){{
+                           TriviaQuestionData quest1 = triviaQuestionHashMap.get(Data.VALID);
+                           put("quest1", new TriviaQuestion("quest1", quest1.getQuestion(), quest1.getAnswers(),
+                                   quest1.getCorrectAnswer(), quest1.getSubject()));
+                           TriviaQuestionData quest2 = triviaQuestionHashMap.get(Data.VALID2);
+                           put("quest2", new TriviaQuestion("quest2", quest2.getQuestion(),
+                                   quest2.getAnswers(), quest2.getCorrectAnswer(), quest2.getSubject()));
+                       }}
+                ));
     }
 
     private void initTeacher() {

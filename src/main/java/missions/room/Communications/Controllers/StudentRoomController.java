@@ -1,8 +1,6 @@
 package missions.room.Communications.Controllers;
 
 import DataAPI.*;
-import missions.room.Communications.Publisher.SinglePublisher;
-import missions.room.Domain.Notifications.NonPersistenceNotification;
 import missions.room.Service.StudentRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,6 +49,17 @@ public class StudentRoomController extends AbsController{
                 data.getRoomId(),data.isAnswer());
         return response;
     }
+
+    @PostMapping("/trivia")
+    public Response<?> answerTriviaMission(@RequestBody String answerData){
+        AnswerTriviaData data = json.fromJson(answerData, AnswerTriviaData.class);
+        return studentRoomService.answerTriviaMission(
+                data.getApiKey(),
+                data.getRoomId(),
+                data.isAnswer()
+        );
+    }
+
     @PostMapping("/openAns")
     @ResponseStatus(HttpStatus.CREATED)
     public Response<?> answerOpenQuestion(@RequestParam(name = "file", required = false) MultipartFile file, @RequestParam("missionId") String missionId, @RequestParam("roomId") String roomId, @RequestParam(name = "openAnswer", defaultValue = "") String openAnswer, @RequestParam String token) {

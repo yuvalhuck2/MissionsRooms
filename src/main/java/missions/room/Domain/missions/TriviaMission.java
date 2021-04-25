@@ -1,6 +1,7 @@
 package missions.room.Domain.missions;
 
 
+import DataAPI.MissionData;
 import DataAPI.RoomType;
 import missions.room.Domain.TriviaQuestion;
 
@@ -11,7 +12,9 @@ import java.util.Set;
 @Entity
 public class TriviaMission extends Mission {
 
-    private int secondsForAnswer;
+    private double passRatio;
+
+    private final static String missionName = "Trivia mission";
 
     @OneToMany
     @MapKey(name = "id")
@@ -24,18 +27,18 @@ public class TriviaMission extends Mission {
     public TriviaMission() {
     }
 
-    public TriviaMission(String missionId, Set<RoomType> missionTypes, int secondsForAnswer, Map<String, TriviaQuestion> questions) {
+    public TriviaMission(String missionId, Set<RoomType> missionTypes, double passRatio, Map<String, TriviaQuestion> questions) {
         super(missionId, missionTypes);
-        this.secondsForAnswer = secondsForAnswer;
+        this.passRatio = passRatio;
         this.questions = questions;
     }
 
-    public int getSecondsForAnswer() {
-        return secondsForAnswer;
+    public double getPassRatio() {
+        return passRatio;
     }
 
-    public void setSecondsForAnswer(int secondsForAnswer) {
-        this.secondsForAnswer = secondsForAnswer;
+    public void setPassRatio(double passRatio) {
+        this.passRatio = passRatio;
     }
 
     public Map<String, TriviaQuestion> getQuestions() {
@@ -44,5 +47,17 @@ public class TriviaMission extends Mission {
 
     public void setQuestions(Map<String, TriviaQuestion> questions) {
         this.questions = questions;
+    }
+
+    @Override
+    protected MissionData completeTheRestOfMissionData(MissionData missionData) {
+        missionData.setTriviaQuestionMap(this.questions);
+        missionData.setPassRatio(this.passRatio);
+        return missionData;
+    }
+
+    @Override
+    public String getMissionName() {
+        return missionName;
     }
 }

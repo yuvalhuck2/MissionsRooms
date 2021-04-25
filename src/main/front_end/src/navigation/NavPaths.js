@@ -30,3 +30,4 @@ export const resetPassword = "ResetPassword"
 export const closeClassroom = "CloseClassroom"
 export const WatchOpenAnswerSolutionScreen = 'WatchOpenAnswerSolutionScreen';
 export const WatchAllOpenQuestionMissionsScreen = 'WatchAllOpenQuestionMissionsScreen';
+export const addTriviaSubject = "AddTriviaSubject";

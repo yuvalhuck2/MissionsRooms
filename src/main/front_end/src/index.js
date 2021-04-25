@@ -34,6 +34,7 @@ import {
     ResetPasswordScreen,
     CloseClassroomScreen,
     Test,
+    AddTriviaSubject
 } from './components/screens';
 
 const Stack = createStackNavigator();
@@ -128,6 +129,7 @@ const App = () => {
         <Stack.Screen name="WatchMessages" component={WatchMessagesScreen} />
         <Stack.Screen name="AddSuggestion" component={AddSuggestionScreen} />
         <Stack.Screen name="WatchSuggestions" component={WatchSuggestionsScreen} />
+        <Stack.Screen name="AddTriviaSubject" component={AddTriviaSubject} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -97,14 +97,23 @@ public class TriviaManager extends TeacherManager{
                 ,saveAnswer);
     }
 
-    public Response<List<TriviaQuestion>> GetAllQuestionsBySubject(String apiKey, String subjectName) {
+    public Response<List<TriviaQuestionData>> GetAllQuestionsBySubject(String apiKey, String subjectName) {
         OpCode validity = checkSubjectArgValidity(apiKey, subjectName);
         if(validity != OpCode.Success){
             return new Response<>(null
                     ,validity);
         }
-        // TODO: convert to TriviaQuestionData
-        return triviaRepo.getAllQuestionsBySubject(subjectName);
+        Response<List<TriviaQuestion>> res = triviaRepo.getAllQuestionsBySubject(subjectName);
+
+        if(res.getReason() == OpCode.Success){
+            List<TriviaQuestion> triviaQuestions = res.getValue();
+            List<TriviaQuestionData> triviaQuestionData = triviaQuestions.stream()
+                    .map(tq -> new TriviaQuestionData(tq.getQuestion(), tq.getAnswers(), tq.getCorrectAnswer(), tq.getSubject()))
+                    .collect(Collectors.toList());
+            return new Response<>(triviaQuestionData, OpCode.Success);
+        }else{
+            return new Response<>(null, res.getReason());
+        }
     }
 
 

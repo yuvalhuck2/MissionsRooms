@@ -17,6 +17,7 @@ const {
   addTemplate,
   createRoom,
   watch_suggestions,
+  add_trivia_subject
 } = TeacherStrings;
 
 
@@ -91,12 +92,13 @@ class TeacherForm extends Component {
             <Text style={{color:"white"}}>{watch_messages}</Text> 
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
-            onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
-            <Text style={{color:"white"}}>{watch_messages}</Text> 
+            onPress={()=>this.navigate(NavPaths.addTriviaSubject)}>
+            <Text style={{color:"white"}}>{add_trivia_subject}</Text>
+            <Icon name='create' />
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
             onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
-            <Text style={{color:"white"}}>{watch_messages}</Text> 
+            <Text style={{color:"white"}}>{watch_messages}</Text>
           </Button>
           <Button onPress={this.onLogout} style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]}>
           <Text style={{color:"white"}}>{main_screen}</Text> 

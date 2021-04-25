@@ -1,6 +1,9 @@
 package DataAPI;
 
+import missions.room.Domain.TriviaQuestion;
+
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,6 +17,8 @@ public class MissionData {
     private int timeForAns;
     private List<String> answers;
     private String story;
+    private double passRatio;
+    private Map<String, TriviaQuestion> triviaQuestionMap;
 
     public MissionData(String missionId, Set<RoomType> missionTypes, String name, String story) {
         this.missionId = missionId;
@@ -35,6 +40,14 @@ public class MissionData {
         this.name = name;
         this.question = question;
         this.timeForAns = timeForAns;
+    }
+
+    public MissionData(String missionId, Set<RoomType> missionTypes, String name, double passRatio, Map<String, TriviaQuestion> triviaQuestionMap){
+        this.missionId = missionId;
+        this.missionTypes = missionTypes;
+        this.name = name;
+        this.passRatio = passRatio;
+        this.triviaQuestionMap = triviaQuestionMap;
     }
 
     public void setName(String name) {
@@ -95,5 +108,21 @@ public class MissionData {
 
     public void setStory(String story) {
         this.story=story;
+    }
+
+    public double getPassRatio() {
+        return passRatio;
+    }
+
+    public void setPassRatio(double passRatio) {
+        this.passRatio = passRatio;
+    }
+
+    public Map<String, TriviaQuestion> getTriviaQuestionMap() {
+        return triviaQuestionMap;
+    }
+
+    public void setTriviaQuestionMap(Map<String, TriviaQuestion> triviaQuestionMap) {
+        this.triviaQuestionMap = triviaQuestionMap;
     }
 }

@@ -126,9 +126,24 @@ public class ManagerRoomStudent extends StudentManager {
      * @param answer - answer for the question
      * @return if the answer was correct
      */
-
     @Transactional
     public Response<Boolean> answerDeterministicQuestion(String apiKey, String roomId, boolean answer){
+        return checkBooleanMissionAnswer(apiKey, roomId, answer);
+    }
+
+    /**
+     * req 3.6.2.5 - answer trivia questions mission
+     * @param apiKey - authentication object
+     * @param roomId - room id
+     * @param answer - indicates if the mission was solved successfully
+     * @return true if the mission solved correctly and updated in the server
+     */
+    @Transactional
+    public Response<Boolean> answerTriviaMission(String apiKey, String roomId, boolean answer){
+        return checkBooleanMissionAnswer(apiKey, roomId, answer);
+    }
+
+    private Response<Boolean> checkBooleanMissionAnswer(String apiKey, String roomId, boolean answer) {
         Response<Student> checkStudent = checkStudent(apiKey);
         if (checkStudent.getReason() != OpCode.Success) {
             return new Response<>(null, checkStudent.getReason());
@@ -155,7 +170,6 @@ public class ManagerRoomStudent extends StudentManager {
         }
 
         return new Response<>(true, OpCode.Success);
-
     }
 
 

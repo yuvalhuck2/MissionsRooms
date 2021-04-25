@@ -3,9 +3,12 @@ package missions.room.MissionManagerTests;
 import CrudRepositories.MissionCrudRepository;
 import Data.Data;
 import DataAPI.OpCode;
+import missions.room.Domain.TriviaQuestion;
+import missions.room.Domain.TriviaSubject;
 import missions.room.Domain.missions.Mission;
 import missions.room.Domain.Ram;
 import missions.room.Domain.missions.KnownAnswerMission;
+import missions.room.Domain.missions.TriviaMission;
 import missions.room.Managers.TeacherManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -39,6 +43,7 @@ public class MissionTestsRealRamMissionTeacherTeacherRepoMissionManagerRepo exte
         } catch (IllegalAccessException | NoSuchFieldException e) {
             fail();
         }
+        setUpTrivia();
         super.setUpAddMission();
     }
 
@@ -51,6 +56,7 @@ public class MissionTestsRealRamMissionTeacherTeacherRepoMissionManagerRepo exte
         } catch (IllegalAccessException | NoSuchFieldException e) {
             fail();
         }
+        setUpTrivia();
         super.setupSearch();
 
     }
@@ -83,10 +89,13 @@ public class MissionTestsRealRamMissionTeacherTeacherRepoMissionManagerRepo exte
         teacherCrudRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
         missionCrudRepository.save(dataGenerator.getMission(Data.VALID_STORY));
         missionCrudRepository.save(dataGenerator.getMission(Data.Valid_Deterministic));
+        missionCrudRepository.save(dataGenerator.getMission(Data.TRIVIA_VALID));
         testSearchTwoMissionsDiffTypesTest();
         teacherCrudRepository.delete(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
         missionCrudRepository.delete(dataGenerator.getMission(Data.VALID_STORY));
         missionCrudRepository.delete(dataGenerator.getMission(Data.Valid_Deterministic));
+        missionCrudRepository.delete(dataGenerator.getMission(Data.TRIVIA_VALID));
+
     }
 
     @Test
@@ -98,5 +107,16 @@ public class MissionTestsRealRamMissionTeacherTeacherRepoMissionManagerRepo exte
         teacherCrudRepository.delete(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
     }
 
+
+    void setUpTrivia(){
+        TriviaMission mission1 = (TriviaMission) dataGenerator.getMission(Data.TRIVIA_VALID);
+        Collection<TriviaQuestion> questions1 = mission1.getQuestions().values();
+
+        for (TriviaQuestion tq: questions1){
+            triviaSubjectRepository.save(new TriviaSubject(tq.getSubject()));
+            triviaQuestionRepository.save(tq);
+        }
+
+    }
 
 }

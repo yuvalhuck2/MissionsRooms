@@ -61,14 +61,14 @@ public class TriviaManagerTestsAllReal extends TriviaManagerTestsRealRamTeacher{
     @Test
     public void getAllQuestionInSubjectNotExistSubjectSuccess(){
         addTriviaQuestionSuccess();
-        Response<List<TriviaQuestion>> res = triviaManager.GetAllQuestionsBySubject(teacherApiKey, dataGenerator.getTriviaSubject(Data.VALID3));
+        Response<List<TriviaQuestionData>> res = triviaManager.GetAllQuestionsBySubject(teacherApiKey, dataGenerator.getTriviaSubject(Data.VALID3));
         assertEquals(0, res.getValue().size());
     }
 
     @Test
     public void getAllQuestionInSubjectExistSubjectSuccess(){
         addTriviaQuestionSuccess();
-        Response<List<TriviaQuestion>> res = triviaManager.GetAllQuestionsBySubject(teacherApiKey, dataGenerator.getTriviaSubject(Data.VALID));
+        Response<List<TriviaQuestionData>> res = triviaManager.GetAllQuestionsBySubject(teacherApiKey, dataGenerator.getTriviaSubject(Data.VALID));
         assertTrue(res.getValue().size() > 0);
     }
 
