@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ProgressBar, RadioButton} from 'react-native-paper';
 import {ChooseMissionsTemplateStrings, TeacherRoomMenuStrings} from '../../locale/locale_heb';
@@ -18,6 +18,8 @@ const {
     close_room,
     mission,
     of,
+    yes,
+    no,sure
 } = TeacherRoomMenuStrings;
 const {
     deterministic_name,
@@ -85,47 +87,16 @@ class TeacherRoomMenuForm extends Component{
                     })} title={chat}/>
                     <Menu.Item icon="answer" onPress={() => this.props.approveAnswer({navigation, apiKey, roomId:currentRoom.roomId,roomName:currentRoom.name})
                     } title={approve_answer}/>
-                    <Menu.Item icon="close" onPress={() => this.props.closeRoom({navigation, apiKey, currentRoom})}
+                    <Menu.Item icon="close" onPress={() =>Alert.alert(sure,"",[
+                        {text:yes,onPress:()=>this.props.closeRoom({navigation, apiKey, currentRoom})},
+                        {text:no,onPress:()=>{}}
+                    ]) }
                                title={close_room}/>
                 </View>
             </View>
         );
 
     }
-        /*
-        else{
-            return (
-                <View>
-                    <Text style={styles.errorTextStyle}>{chat}</Text>
-                </View>
-            )
-        }*/
-
-
-            /*
-            <View style={styles.container}>
-                <View>
-
-                    /*
-                    <Button onPress={() => this.props.passToRoomList({navigation, apiKey, roomsType,type:"Personal"})}
-                            style={[styles.button, styles.top_button_marg, styles.left_button_border, styles.top_button_border]}>
-                        <Text style={{color: "white"}}> {approve_answer}</Text>
-                    </Button>
-                    <Button onPress={() => this.props.passToRoomList({navigation, apiKey, roomsType,type:"Group"})}
-                            style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}>
-                        <Text style={{color: "white"}}>{chat}</Text>
-                    </Button>
-                    <Button onPress={() => this.props.passToRoomList({navigation, apiKey, roomsType,type:"Class"})}
-                            style={[styles.button, styles.bottom_button_marg, styles.left_button_border]}>
-
-                        <Text style={{color: "white"}}>{close_room}</Text>
-                    </Button>
-                </View>
-            </View>*/
-
-
-
-
 
 }
 

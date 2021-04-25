@@ -1,8 +1,8 @@
 import API from '../api/API';
 import * as APIPaths from '../api/APIPaths';
-import { authErrors, registerCodeErrors, webSocketMessages } from '../locale/locale_heb';
+import { authErrors, registerCodeErrors, webSocketMessages,DeleteUserString } from '../locale/locale_heb';
 import * as NavPaths from '../navigation/NavPaths';
-import { connectToWebSocket} from '../handler/WebSocketHandler';
+import {closeSocket, connectToWebSocket} from '../handler/WebSocketHandler';
 import {moveToMission} from './ChooseStudentRoomActions';
 // import Constants from 'expo-constants'
 import {
@@ -54,6 +54,7 @@ import {
   CHANGE_STORY_IN_CHARGE,
     UPDATE_CHAT_ROOM,
   Has_Unapproved_Solutions,
+    DELETE_USER,
 } from './types';
 
 const {
@@ -80,6 +81,10 @@ const {
   final,
   has_unapproveds_solutions,
 } = webSocketMessages;
+
+const{
+  deleted,
+} = DeleteUserString;
 
 // THIS IS FOR CHECKING DNS ADDRESS WHEN RUNNING EXPO ON PHYSICAL DEVICE
 // const { manifest } = Constants;
@@ -305,6 +310,12 @@ const connectToWebSocketFromLogin = (apiKey,dispatch, navigation) => {
         break;
       case Update_Chat:
         dispatch({type:UPDATE_CHAT_ROOM,payload:value});
+        break;
+      case DELETE_USER:
+        alert(deleted);
+        dispatch({ type: CLEAR_STATE });
+        closeSocket();
+        navigation.navigate(NavPaths.loginScreen);
         break;
       default:
         console.log("No match case in web socket for"+reason)
