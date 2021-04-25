@@ -7,6 +7,8 @@ import {
   QUESTION_CHANGED,
   TYPES_CHANGED,
   UPDATE_ERROR_MISSION,
+  ADD_MISSION_POINTS_CHANGED,
+  ENTER_ADD_MISSION,
 } from '../actions/types';
 import API from '../api/API';
 import * as APIPaths from '../api/APIPaths';
@@ -30,6 +32,7 @@ const {
   question_empty,
   answer_empty,
   types_empty,
+  points_must_be_positive,
 } = AddDeterministicMissionErrors;
 
 const { mission_added } = AddDeterministicMissionSuccess;
@@ -63,13 +66,18 @@ export const typesChanged = (list) => {
   };
 };
 
-export const navigateToMission = (type, navigation) => {
-  return async () => {
+export const navigateToMission = (type, navigation, points) => {
+  return async (dispatch) => {
+    if(points.trim()=="" || parseInt(points) <= 0){
+      return dispatch({type: UPDATE_ERROR_MISSION, payload: points_must_be_positive})
+    }
+    dispatch({type: ENTER_ADD_MISSION})
+
     switch (type) {
       case DETERMINISTIC:
-        navigation.navigate(NavPaths.AddDeterministicMission);
+        return navigation.navigate(NavPaths.AddDeterministicMission);
       case OPEN_QUESTION:
-        navigation.navigate(NavPaths.AddOpenQuestionMission);
+        return navigation.navigate(NavPaths.AddOpenQuestionMission);
 
     }
   };
@@ -77,14 +85,18 @@ export const navigateToMission = (type, navigation) => {
 
 export const addMission = ({
   apiKey,
-  question,
   navigation,
   missionTypes,
   className,
+  points,
+  question = undefined,
   realAnswer = undefined,
 }) => {
   return async (dispatch) => {
-    if (question.trim() === '') {
+    if(points.trim()=="" || parseInt(points) <= 0){
+      return dispatch({type: UPDATE_ERROR_MISSION, payload: points_must_be_positive})
+    }
+    if (question != undefined && question.trim() === '') {
       dispatch({ type: UPDATE_ERROR_MISSION, payload: question_empty });
     } else if ( realAnswer != undefined && realAnswer.trim() === '') {
       dispatch({ type: UPDATE_ERROR_MISSION, payload: answer_empty });
@@ -95,7 +107,7 @@ export const addMission = ({
         dispatch({ type: ADD_MISSON });
         missionData = JSON.stringify({
           CLASSNAME: className,
-          DATA: { question, realAnswer, missionTypes },
+          DATA: { question, realAnswer, missionTypes, points },
         });
         const res = await API.post(APIPaths.addMission, {
           apiKey,
@@ -178,4 +190,11 @@ const checkAddMissionResponse = (data, dispatch, navigation, apiKey) => {
     default:
       return dispatch({ type: UPDATE_ERROR_MISSION, payload: server_error });
   }
+};
+
+export const changePoints = (points) => {
+  return {
+    type: ADD_MISSION_POINTS_CHANGED,
+    payload: points,
+  };
 };

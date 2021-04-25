@@ -85,6 +85,7 @@ export const AddDeterministicMissionErrors = {
   answer_empty: 'יש להזין תשובה',
   types_empty: 'יש לבחור לפחות סוג משימה אחד',
   server_error: 'שגיאת שרת',
+  points_must_be_positive:'מספר הנקודות חייב להיות חיובי',
 };
 
 export const AddDeterministicMissionSuccess = {
@@ -98,7 +99,9 @@ export const AddStrings = {
 export const ChooseMissionToAddStrings = {
   header: ' יש לבחור סוג משימה להוספה',
   deterministicButton: 'שאלה עם פתרון יחיד',
-  OpenAnswerMissionButton: 'שאלה פתוחה/העלאת קובץ'
+  OpenAnswerMissionButton: 'שאלה פתוחה/העלאת קובץ',
+  StoryMissionButton: 'סיפור בהמשכים',
+  enter_points: 'כמות נקודות עבור המשימה'
 };
 
 export const AddRoomTempalteStrings = {
