@@ -142,7 +142,7 @@ public class Ram {
     }
 
     private boolean recordDataIsOld() {
-        return recordTableData.getTimeStamp().compareTo(LocalDateTime.now().plusHours(TTL_OF_POINTS_TABLE)) > 0;
+        return recordTableData.getTimeStamp().compareTo(LocalDateTime.now().minusNanos(TTL_OF_POINTS_TABLE)) < 0;
     }
 
     public void updateTable(RecordTable tableData) {
