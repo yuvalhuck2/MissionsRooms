@@ -2,6 +2,7 @@ package missions.room.Communications.Controllers;
 
 import DataAPI.Response;
 import DataAPI.TriviaQuestionData;
+import DataAPI.TriviaSubjectData;
 import missions.room.Service.TriviaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,12 +19,14 @@ public class TriviaController extends AbsController {
 
     @PostMapping("/addTriviaSubject")
     public Response<Boolean> addTriviaSubject(@RequestBody String subjectName, @RequestParam String apiKey){
-        return triviaService.createTriviaSubject(apiKey, subjectName);
+        TriviaSubjectData triviaSubjectData = json.fromJson(subjectName, TriviaSubjectData.class);
+        return triviaService.createTriviaSubject(apiKey, triviaSubjectData.getSubject());
     }
 
     @PostMapping("/deleteTriviaSubject")
     public Response<Boolean> deleteTriviaSubject(@RequestBody String subjectName, @RequestParam String apiKey){
-        return triviaService.deleteTriviaSubject(apiKey, subjectName);
+        TriviaSubjectData triviaSubjectData = json.fromJson(subjectName, TriviaSubjectData.class);
+        return triviaService.deleteTriviaSubject(apiKey, triviaSubjectData.getSubject());
     }
 
     @PostMapping("/addTriviaQuestion")

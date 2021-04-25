@@ -476,6 +476,14 @@ export const WatchAllOpenQuestionMissions = {
 
 export const AddTriviaSubjectStrings = {
   header: 'הוספת נושא טריויה',
-  inputPlaceholder: 'כתוב נושא כאן',
-  addButtonText: 'הוסף נושא'
+  inputPlaceholder: 'אקטואליה',
+  addButtonText: 'הוסף נושא',
+  labelPlaceholder: 'הקלד נושא',
+  addedSubject: 'הנושא נוסף'
+}
+
+export const AddTriviaSubjectErrors = {
+  alreadyExist: 'נושא טריויה כבר קיים',
+  invalidSubject: 'נושא טריויה לא תקין',
+
 }
