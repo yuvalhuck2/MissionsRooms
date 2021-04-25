@@ -5,6 +5,7 @@ import DataAPI.RegisterDetailsData;
 import io.restassured.mapper.ObjectMapper;
 import io.restassured.mapper.ObjectMapperType;
 import org.junit.jupiter.api.Test;
+import com.google.gson.Gson;
 
 
 import static io.restassured.module.webtestclient.RestAssuredWebTestClient.given;
@@ -16,7 +17,7 @@ class UserAuthenticationControllerTest {
     void greeting_controller_returns_json_greeting() {
         given().
                 standaloneSetup(new UserAuthenticationController()).
-                body("registerCodeDetailsDataStr", (ObjectMapper) new RegisterDetailsData("yuval","s")).
+                body(new Gson().toJson(new RegisterDetailsData("yuval","sabag"))).
 //                body("alias" , ObjectMapperType.valueOf("yuval")).
 //                body("password" , ObjectMapperType.valueOf("pasword")).
                 when().
