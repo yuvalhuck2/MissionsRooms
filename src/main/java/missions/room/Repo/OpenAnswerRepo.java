@@ -29,7 +29,7 @@ public class OpenAnswerRepo {
     private RoomCrudRepository roomCrudRepository;
 
     private boolean saveOpenAnswerFile(String roomId, String missionId, MultipartFile file){
-        String rootDirectory = "/home/user1"; //Utils.getRootDirectory();
+        String rootDirectory = Utils.getRootDirectory();
         Path folderPath = FileSystems.getDefault().getPath(rootDirectory,"openAnswer", roomId, missionId);
         Path filePath = Paths.get(folderPath.toString(), file.getOriginalFilename());
         File folder = folderPath.toFile();
