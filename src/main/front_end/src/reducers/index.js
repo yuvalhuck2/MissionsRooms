@@ -21,6 +21,7 @@ import ResetPasswordReducer from './ResetPasswordReducer'
 import WatchOpenAnswerReducer from './WatchOpenAnswerReducer'
 import CloseClassroomReducer from './CloseClassroomReducer';
 import AddTriviaSubjectReducer from "./AddTriviaSubjectReducer"
+import AddTriviaQuestionReducer from "./AddTriviaQuestionReducer";
 
 export default combineReducers({
   auth: AuthReducer,
@@ -45,4 +46,5 @@ export default combineReducers({
   WatchOpenAnswer: WatchOpenAnswerReducer,
   closeClassroom: CloseClassroomReducer,
   addTriviaSubject: AddTriviaSubjectReducer,
+  addTriviaQuestion: AddTriviaQuestionReducer,
 });
