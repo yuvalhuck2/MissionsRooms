@@ -2,6 +2,7 @@ package missions.room.Communications.Controllers;
 
 import DataAPI.OpCode;
 import DataAPI.RegisterDetailsData;
+import io.restassured.http.ContentType;
 import io.restassured.mapper.ObjectMapper;
 import io.restassured.mapper.ObjectMapperType;
 import org.junit.jupiter.api.Test;
@@ -16,10 +17,10 @@ class UserAuthenticationControllerTest {
     @Test
     void greeting_controller_returns_json_greeting() {
         given().
-                standaloneSetup(new UserAuthenticationController()).
+                standaloneSetup(new UserAuthenticationController())
+                .contentType(ContentType.JSON).
                 body(new Gson().toJson(new RegisterDetailsData("yuval","sabag"))).
-//                body("alias" , ObjectMapperType.valueOf("yuval")).
-//                body("password" , ObjectMapperType.valueOf("pasword")).
+
                 when().
                 post("/UserAuth").
                 then().
