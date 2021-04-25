@@ -233,16 +233,13 @@ const checkRegisterCodeResponse = (data, dispatch, navigation) => {
 export const loginUser = ({ email, password, navigation }) => {
   return async (dispatch) => {
     dispatch({ type: LOGIN_USER });
-    alert("ss")
     try {
       const res = await API.post(APIPaths.login, { alias: email, password });
-      alert("res")
       res
         ? checkLoginUserResponse(res.data, dispatch, navigation)
         : dispatch({ type: UPDATE_ERROR, payload: server_error });
     } catch (err) {
       console.log(err);
-      alert(err)
       dispatch({ type: UPDATE_ERROR, payload: server_error });
     }
   };
