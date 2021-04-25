@@ -22,6 +22,7 @@ export const downloadFile = async (apiKey, roomId, missionId, fileName) => {
     console.log( apiKey + roomId + missionId + fileName )
     uri =  baseURL + "/mission/downloadFile?missionId=" + missionId + "&apiKey=" + apiKey + "&roomId=" + roomId;
     const downloadedFile = await FileSystem.downloadAsync(uri, FileSystem.documentDirectory + fileName);
+    alert("s")
     const imageFileExts = ['jpg', 'png', 'gif', 'heic', 'webp', 'bmp'];
 
     if (Platform.OS == 'ios' && imageFileExts.every(x => !downloadedFile.uri.endsWith(x))) {

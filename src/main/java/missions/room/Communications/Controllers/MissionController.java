@@ -54,9 +54,13 @@ public class MissionController extends AbsController {
     @GetMapping("/downloadFile")
     public  ResponseEntity<?> downloadOpenAnswerFile(@RequestParam String apiKey, @RequestParam(name = "roomId") String roomId, @RequestParam(name = "missionId") String missionId) {
         Response<File> fileRes = missionService.getMissionOpenAnswerFile(apiKey, roomId, missionId);
-        String rootPath = Utils.getRootDirectory();
-        Path folderPath = FileSystems.getDefault().getPath(rootPath,"openAnswer", roomId, missionId);
-        File f = folderPath.toFile().listFiles()[0]; //TODO add defense
+//        String rootPath = Utils.getRootDirectory();
+//        Path folderPath = FileSystems.getDefault().getPath(rootPath,"openAnswer", roomId, missionId);
+        if (fileRes.getReason() != OpCode.Success) {
+            //TODO add logs
+            return null;
+        }
+        File f = fileRes.getValue(); //TODO add defense
         try {
             InputStreamResource resource = new InputStreamResource(new FileInputStream(f));
             HttpHeaders headers = new HttpHeaders();
