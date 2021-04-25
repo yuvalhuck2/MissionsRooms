@@ -249,7 +249,6 @@ public class ManagerRoomStudent extends StudentManager {
         if(!room.isBelongToRoom(student.getAlias())){
             return new Response<>(null,OpCode.NOT_BELONGS_TO_ROOM);
         }
-
         OpCode opCode=ram.connectToRoom(roomId,student.getAlias());
         RoomDetailsData roomDetailsData=room.getData();
         roomDetailsData.setStudentName(student.getFirstName()+" "+student.getLastName());
