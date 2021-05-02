@@ -2,10 +2,10 @@ package missions.room.ProfileMessagesManagerTests;
 
 import Data.Data;
 import Data.DataGenerator;
-import DataAPI.MessageData;
-import DataAPI.OpCode;
-import DataAPI.Response;
-import DataAPI.UserProfileData;
+import DataObjects.APIObjects.MessageData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.UserProfileData;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Users.BaseUser;
 import missions.room.Domain.Users.Student;

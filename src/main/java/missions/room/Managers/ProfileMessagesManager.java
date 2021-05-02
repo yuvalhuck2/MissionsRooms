@@ -1,11 +1,10 @@
 package missions.room.Managers;
 
-import DataAPI.MessageData;
-import DataAPI.OpCode;
-import DataAPI.Response;
-import DataAPI.UserProfileData;
+import DataObjects.APIObjects.MessageData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.UserProfileData;
 import ExternalSystems.UniqueStringGenerator;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Domain.Message;
 import missions.room.Domain.Ram;

@@ -1,8 +1,11 @@
 package missions.room.Service;
 
-import DataAPI.*;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import missions.room.Domain.Users.BaseUser;
+import DataObjects.APIObjects.AddITData;
+import DataObjects.APIObjects.RegisterDetailsData;
+import DataObjects.APIObjects.StudentData;
+import DataObjects.APIObjects.TeacherData;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.UserProfileData;
 import missions.room.Managers.ITManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

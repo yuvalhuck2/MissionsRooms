@@ -5,26 +5,18 @@ import CrudRepositories.RoomCrudRepository;
 import CrudRepositories.RoomTemplateCrudRepository;
 import CrudRepositories.StudentCrudRepository;
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.Response;
-import missions.room.Domain.Rooms.Room;
-import missions.room.Domain.Rooms.StudentRoom;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.RoomManager;
-import missions.room.Managers.TeacherManager;
 import missions.room.Repo.RoomRepo;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 import java.lang.reflect.Field;
 
-import static Data.DataConstants.WRONG_ROOM_ID;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})

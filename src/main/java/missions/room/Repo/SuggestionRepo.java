@@ -1,8 +1,8 @@
 package missions.room.Repo;
 
 import CrudRepositories.SuggestionCrudRepository;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Domain.Suggestion;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,17 +1,13 @@
 package missions.room.SuggestionManagerTests;
 
 import CrudRepositories.ClassroomRepository;
-import CrudRepositories.StudentCrudRepository;
 import CrudRepositories.TeacherCrudRepository;
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
 import missions.room.Managers.StudentTeacherManager;
-import missions.room.Managers.TeacherManager;
 import missions.room.Repo.StudentRepo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;

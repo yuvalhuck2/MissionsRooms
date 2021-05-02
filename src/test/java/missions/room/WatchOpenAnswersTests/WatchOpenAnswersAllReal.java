@@ -2,14 +2,12 @@ package missions.room.WatchOpenAnswersTests;
 
 import CrudRepositories.*;
 import Data.Data;
-import DataAPI.Response;
-import missions.room.Domain.Classroom;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.RoomTemplate;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.missions.Mission;
 import missions.room.Managers.MissionManager;
-import missions.room.Managers.TriviaManager;
 import missions.room.Repo.*;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;

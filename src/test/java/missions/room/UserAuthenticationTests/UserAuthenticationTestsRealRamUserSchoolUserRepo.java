@@ -1,13 +1,12 @@
 package missions.room.UserAuthenticationTests;
 
-import CrudRepositories.ClassroomRepository;
 import CrudRepositories.SchoolUserCrudRepository;
 import CrudRepositories.TeacherCrudRepository;
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.RegisterDetailsData;
-import DataAPI.Response;
-import DataAPI.TeacherData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.APIObjects.RegisterDetailsData;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.APIObjects.TeacherData;
 import missions.room.Domain.Users.SchoolUser;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.Teacher;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;

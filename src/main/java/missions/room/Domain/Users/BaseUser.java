@@ -1,8 +1,8 @@
 package missions.room.Domain.Users;
 
-import DataAPI.OpCode;
-import DataAPI.Response;
-import DataAPI.UserProfileData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.UserProfileData;
 import missions.room.Domain.Message;
 
 import javax.persistence.*;

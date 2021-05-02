@@ -1,9 +1,9 @@
 package missions.room.Managers;
 
 
-import DataAPI.ChatMessageData;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.APIObjects.ChatMessageData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Communications.Publisher.Publisher;
 import missions.room.Communications.Publisher.SinglePublisher;
@@ -75,8 +75,11 @@ public class ChatManager {
     }
 
     public Response<String> enterChat(String apiKey,String roomId){
+        if(apiKey ==null){
+            return new Response<>(null, OpCode.Wrong_Key);
+        }
         String alias = ram.getAlias(apiKey);
-        if(alias==null){
+        if(alias ==null){
             return new Response<>(null, OpCode.Wrong_Key);
         }
         Response<SchoolUser> schoolUserResponse=schoolUserRepo.findUserForRead(alias);

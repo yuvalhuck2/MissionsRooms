@@ -4,7 +4,8 @@ package missions.room.ManagerRoomStudentTests;
 import CrudRepositories.*;
 import Data.Data;
 import Data.DataGenerator;
-import DataAPI.*;
+import DataObjects.APIObjects.SolutionData;
+import DataObjects.FlatDataObjects.*;
 import DomainMocks.MockRam;
 import DomainMocks.PublisherMock;
 import RepositoryMocks.ClassGroupRepository.ClassGroupRepositoryMock;
@@ -45,7 +46,7 @@ import java.util.List;
 import java.lang.reflect.Field;
 
 import static Data.DataConstants.*;
-import static DataAPI.OpCode.*;
+import static DataObjects.FlatDataObjects.OpCode.*;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;

@@ -1,18 +1,14 @@
 package missions.room.TriviaManagerTests;
 
-import CrudRepositories.*;
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.Ram;
-import missions.room.Domain.Suggestion;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.TriviaManager;
-import missions.room.Repo.StudentRepo;
 import missions.room.Repo.TeacherRepo;
 import missions.room.Repo.TriviaRepo;
-import org.assertj.core.error.ShouldBeSymbolicLink;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +22,6 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Collections;
 import Data.DataGenerator;
 import org.springframework.test.context.TestPropertySource;
 

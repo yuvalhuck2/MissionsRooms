@@ -1,16 +1,14 @@
 package missions.room.Communications.Controllers;
 
-import DataAPI.*;
-import missions.room.Communications.Publisher.SinglePublisher;
-import missions.room.Domain.Notifications.NonPersistenceNotification;
+import DataObjects.APIObjects.*;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.RoomDetailsData;
 import missions.room.Service.StudentRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @RestController // This means that this class is a Controller
@@ -53,6 +51,7 @@ public class StudentRoomController extends AbsController{
                 data.getRoomId(),data.isAnswer());
         return response;
     }
+
     @PostMapping("/openAns")
     @ResponseStatus(HttpStatus.CREATED)
     public Response<?> answerOpenQuestion(@RequestParam(name = "file", required = false) MultipartFile file, @RequestParam("missionId") String missionId, @RequestParam("roomId") String roomId, @RequestParam(name = "openAnswer", defaultValue = "") String openAnswer, @RequestParam String token) {

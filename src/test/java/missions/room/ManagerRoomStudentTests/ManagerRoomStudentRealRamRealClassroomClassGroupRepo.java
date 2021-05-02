@@ -21,7 +21,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.lang.reflect.Field;
 
-import static DataAPI.OpCode.DB_Error;
+import static DataObjects.FlatDataObjects.OpCode.DB_Error;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;

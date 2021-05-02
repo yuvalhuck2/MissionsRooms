@@ -2,9 +2,8 @@ package missions.room.Repo;
 
 import CrudRepositories.RoomCrudRepository;
 import lombok.extern.apachecommons.CommonsLog;
-import CrudRepositories.OpenAnswerRepository;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.OpenAnswer;
 import missions.room.Domain.RoomOpenAnswersView;
 import missions.room.Domain.Rooms.Room;
@@ -18,8 +17,6 @@ import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @CommonsLog

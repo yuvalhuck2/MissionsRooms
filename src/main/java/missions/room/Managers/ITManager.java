@@ -1,8 +1,13 @@
 package missions.room.Managers;
 
-import DataAPI.*;
+import DataObjects.APIObjects.RegisterDetailsData;
+import DataObjects.APIObjects.StudentData;
+import DataObjects.APIObjects.TeacherData;
+import DataObjects.FlatDataObjects.GroupType;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.UserProfileData;
 import ExternalSystems.HashSystem;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Communications.Publisher.Publisher;
 import missions.room.Communications.Publisher.SinglePublisher;
@@ -23,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -470,7 +474,7 @@ public class ITManager {
         if(!Utils.checkString(profileDetails.getClassroom())){
             return new Response<>(false,OpCode.Wrong_Classroom);
         }
-        if(profileDetails.getGroupType()==null||profileDetails.getGroupType()==GroupType.BOTH){
+        if(profileDetails.getGroupType()==null||profileDetails.getGroupType()== GroupType.BOTH){
             return new Response<>(false,OpCode.Wrong_Group);
         }
         return checkTeacherDetails(new TeacherData(profileDetails));

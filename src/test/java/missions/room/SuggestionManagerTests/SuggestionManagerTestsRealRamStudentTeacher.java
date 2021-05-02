@@ -1,8 +1,7 @@
 package missions.room.SuggestionManagerTests;
 
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
 import missions.room.Managers.TeacherManager;
 import missions.room.Repo.TeacherRepo;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package missions.room.Domain;
 
-import DataAPI.*;
+import DataObjects.FlatDataObjects.*;
 import Utils.Utils;
 import missions.room.Domain.Users.SchoolUser;
 import missions.room.Domain.Users.Student;

@@ -3,9 +3,9 @@ package missions.room.RoomManagerMockitoTests;
 
 import Data.Data;
 import Data.DataGenerator;
-import DataAPI.OpCode;
-import DataAPI.Response;
-import DataAPI.RoomsDataByRoomType;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.APIObjects.RoomsDataByRoomType;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Rooms.StudentRoom;
@@ -26,11 +26,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static Data.DataConstants.*;

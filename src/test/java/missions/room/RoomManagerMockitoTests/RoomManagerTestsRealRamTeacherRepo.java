@@ -2,28 +2,19 @@ package missions.room.RoomManagerMockitoTests;
 
 
 import CrudRepositories.ClassroomRepository;
-import CrudRepositories.RoomCrudRepository;
 import CrudRepositories.TeacherCrudRepository;
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.Response;
 import missions.room.Domain.Users.Teacher;
-import missions.room.Managers.ProfileMessagesManager;
 import missions.room.Managers.TeacherManager;
 import missions.room.Repo.TeacherRepo;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.TestPropertySource;
 
 import java.lang.reflect.Field;
 
-import static Data.DataConstants.WRONG_USER_NAME;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @TestPropertySource(locations = {"classpath:application-unit-integration-tests.properties"})

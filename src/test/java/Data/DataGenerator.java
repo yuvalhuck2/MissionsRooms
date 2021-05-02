@@ -1,14 +1,14 @@
 package Data;
 
-import DataAPI.*;
+import DataObjects.APIObjects.*;
+import DataObjects.FlatDataObjects.*;
 import missions.room.Domain.*;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Rooms.StudentRoom;
-import DataAPI.RegisterDetailsData;
-import DataAPI.RoomTemplateDetailsData;
-import DataAPI.RoomType;
+import DataObjects.APIObjects.RegisterDetailsData;
+import DataObjects.APIObjects.RoomTemplateDetailsData;
 import ExternalSystems.HashSystem;
 import javafx.util.Pair;
 import missions.room.Domain.Users.*;
@@ -38,16 +38,17 @@ public class DataGenerator {
     private HashMap<Data, Room> roomsMap;
     private HashMap<Data, NewRoomDetails> newRoomDetailsMap;
     private HashMap<Data,Classroom> classRoomMap;
-    private HashMap<Data,ClassRoomData> classRoomDataMap;
+    private HashMap<Data, ClassRoomData> classRoomDataMap;
     private HashMap<Data,ClassGroup> classGroupMap;
-    private HashMap<Data,GroupData> classGroupData;
+    private HashMap<Data, GroupData> classGroupData;
     private HashMap<Data,Suggestion> suggestionHashMap;
     private HashMap<Data, String> triviaSubjectHashMap;
     private HashMap<Data, TriviaQuestionData> triviaQuestionHashMap;
     private HashMap<Data, MessageData> messageDataMap;
     private HashMap<Data,HashSet<PointsData>> pointsDataSets;
-    private HashMap<Data,UserProfileData> userProfileDataMap;
+    private HashMap<Data, UserProfileData> userProfileDataMap;
     private HashMap<Data, TeacherData> teacherDatas;
+    private HashMap<Data, ChatMessageData> chatMessageDataHashMap;
 
     public DataGenerator() {
         initStudents();
@@ -72,6 +73,14 @@ public class DataGenerator {
         initPointsDataSet();
         initUserProfileDataMap();
         initTeacherDatas();
+        initChatData();
+    }
+
+    private void initChatData() {
+        chatMessageDataHashMap = new HashMap<Data, ChatMessageData>();
+        UserChatData userChatData = new UserChatData("id","name");
+        chatMessageDataHashMap.put(Data.VALID,
+                new ChatMessageData("text", userChatData,"data", "id"));
     }
 
     private void initTeacherDatas() {
@@ -202,7 +211,7 @@ public class DataGenerator {
         classRoomMap.put(Data.Empty_Students, empty);
 
         classRoomMap.put(Data.Valid_Without_Students,new Classroom("0=1",
-                new ClassGroup("g11",GroupType.A,new HashMap<>()),new ClassGroup("g22",GroupType.B,new HashMap<>())));
+                new ClassGroup("g11", GroupType.A,new HashMap<>()),new ClassGroup("g22",GroupType.B,new HashMap<>())));
 
     }
 
@@ -260,18 +269,18 @@ public class DataGenerator {
         String roomTemplateStudent=roomTemplates.get(Data.VALID).getRoomTemplateId();
         String roomTemplateGroup=roomTemplates.get(Data.Valid_Group).getRoomTemplateId();
         String roomTemplateClassroom=roomTemplates.get(Data.Valid_Classroom).getRoomTemplateId();
-        newRoomDetailsMap.put(Data.Valid_Student,new NewRoomDetails(student,RoomType.Personal,"name",teacher,roomTemplateStudent,3));
-        newRoomDetailsMap.put(Data.Valid_Group,new NewRoomDetails(group,RoomType.Group,"name",teacher,roomTemplateGroup,3));
-        newRoomDetailsMap.put(Data.Valid_Classroom,new NewRoomDetails(classroom,RoomType.Class,"name",teacher,roomTemplateClassroom,3));
-        newRoomDetailsMap.put(Data.NULL_NAME,new NewRoomDetails(student,RoomType.Personal,null,teacher,roomTemplateStudent,3));
-        newRoomDetailsMap.put(Data.EMPTY_NAME,new NewRoomDetails(student,RoomType.Personal,"",teacher,roomTemplateStudent,3));
+        newRoomDetailsMap.put(Data.Valid_Student,new NewRoomDetails(student,RoomType.Personal,"name",roomTemplateStudent,3));
+        newRoomDetailsMap.put(Data.Valid_Group,new NewRoomDetails(group,RoomType.Group,"name",roomTemplateGroup,3));
+        newRoomDetailsMap.put(Data.Valid_Classroom,new NewRoomDetails(classroom,RoomType.Class,"name",roomTemplateClassroom,3));
+        newRoomDetailsMap.put(Data.NULL_NAME,new NewRoomDetails(student,RoomType.Personal,null,roomTemplateStudent,3));
+        newRoomDetailsMap.put(Data.EMPTY_NAME,new NewRoomDetails(student,RoomType.Personal,"",roomTemplateStudent,3));
         newRoomDetailsMap.put(Data.NULL,null);
-        newRoomDetailsMap.put(Data.NEG_AMOUNT,new NewRoomDetails(student,RoomType.Personal,"name",teacher,roomTemplateStudent,-1));
-        newRoomDetailsMap.put(Data.TYPE_NOT_MATCH,new NewRoomDetails(group,RoomType.Group,"name",teacher,roomTemplateStudent,3));
-        newRoomDetailsMap.put(Data.NOT_EXIST_CLASSROOM,new NewRoomDetails("Wrong",RoomType.Class,"name",teacher,roomTemplateClassroom,3));
-        newRoomDetailsMap.put(Data.NOT_EXIST_CLASSGROUP,new NewRoomDetails("Wrong",RoomType.Group,"name",teacher,roomTemplateGroup,3));
-        newRoomDetailsMap.put(Data.NOT_EXIST_STUDENT,new NewRoomDetails("Wrong",RoomType.Personal,"name",teacher,roomTemplateStudent,3));
-        newRoomDetailsMap.put(Data.NOT_EXIST_TEMPLATE,new NewRoomDetails(student,RoomType.Personal,"name",teacher,roomTemplateStudent+"1",3));
+        newRoomDetailsMap.put(Data.NEG_AMOUNT,new NewRoomDetails(student,RoomType.Personal,"name",roomTemplateStudent,-1));
+        newRoomDetailsMap.put(Data.TYPE_NOT_MATCH,new NewRoomDetails(group,RoomType.Group,"name",roomTemplateStudent,3));
+        newRoomDetailsMap.put(Data.NOT_EXIST_CLASSROOM,new NewRoomDetails("Wrong",RoomType.Class,"name",roomTemplateClassroom,3));
+        newRoomDetailsMap.put(Data.NOT_EXIST_CLASSGROUP,new NewRoomDetails("Wrong",RoomType.Group,"name",roomTemplateGroup,3));
+        newRoomDetailsMap.put(Data.NOT_EXIST_STUDENT,new NewRoomDetails("Wrong",RoomType.Personal,"name",roomTemplateStudent,3));
+        newRoomDetailsMap.put(Data.NOT_EXIST_TEMPLATE,new NewRoomDetails(student,RoomType.Personal,"name",roomTemplateStudent+"1",3));
     }
 
     private void initRooms() {
@@ -638,5 +647,9 @@ public class DataGenerator {
 
     public TeacherData getTeacherData(Data data) {
         return teacherDatas.get(data);
+    }
+
+    public ChatMessageData getChatMessageData(Data data){
+        return chatMessageDataHashMap.get(data);
     }
 }

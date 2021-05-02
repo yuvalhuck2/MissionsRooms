@@ -1,6 +1,6 @@
 package missions.room.Domain.Notifications;
 
-import DataAPI.OpCode;
+import DataObjects.FlatDataObjects.OpCode;
 
 public class NonPersistenceNotification<T> extends Notification<T> {
 

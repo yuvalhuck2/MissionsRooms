@@ -1,11 +1,10 @@
 package missions.room.Repo;
 
 import CrudRepositories.UserCrudRepository;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.Users.BaseUser;
 import lombok.extern.apachecommons.CommonsLog;
-import missions.room.Domain.Classroom;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

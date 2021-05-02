@@ -2,12 +2,17 @@ package missions.room.Managers;
 
 import CrudRepositories.MissionCrudRepository;
 import CrudRepositories.TeacherCrudRepository;
-import DataAPI.*;
+import DataObjects.APIObjects.RoomOpenAnswerData;
+import DataObjects.FlatDataObjects.MissionData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.APIObjects.SolutionData;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.InterfaceAdapter;
 import Utils.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Domain.OpenAnswer;
 import missions.room.Domain.RoomOpenAnswersView;
 import missions.room.Domain.RoomTemplate;
@@ -30,6 +35,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@CommonsLog
 public class MissionManager extends TeacherManager {
 
     private final Gson gson;
@@ -67,7 +73,7 @@ public class MissionManager extends TeacherManager {
      */
     public Response<Boolean> addMission(String apiKey, String missionData){
         Response<Teacher> teacherResponse=checkTeacher(apiKey);
-        if(teacherResponse.getReason()!=OpCode.Success){
+        if(teacherResponse.getReason()!= OpCode.Success){
             return new Response<>(false,teacherResponse.getReason());
         }
         Response<Mission> missionResponse=getMissionFromData(missionData);
@@ -92,8 +98,8 @@ public class MissionManager extends TeacherManager {
             mission.setMissionId(UniqueStringGenerator.getTimeNameCode(missionName));
             return new Response<>(mission,OpCode.Success);
         }
-        catch (Exception ignored){
-            //TODO write to logger
+        catch (Exception e){
+            log.error("wrong format mission "+ missionData.toString(), e);
         }
         return new Response<>(null,OpCode.Not_Mission);
     }
@@ -135,7 +141,7 @@ public class MissionManager extends TeacherManager {
         Response<File> fileRes = getOpenAnswerFile(roomId, missionId);
         File file = fileRes.getValue();
         if (file == null) {
-            //TODO add logs
+            log.error("null file name");
             return "";
         }
         return file.getName();
@@ -235,7 +241,8 @@ public class MissionManager extends TeacherManager {
             else {
                 return  new Response<>(null, OpCode.NO_OPEN_ANSWER_FILE);
             }
-        } catch (Exception e) { //TODO add log
+        } catch (Exception e) {
+            log.error("cannot read file path", e);
             return new Response<>(null, OpCode.FILE_SYS_ERROR);
         }
 

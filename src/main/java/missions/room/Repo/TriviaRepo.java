@@ -2,8 +2,8 @@ package missions.room.Repo;
 
 import CrudRepositories.TriviaQuestionRepository;
 import CrudRepositories.TriviaSubjectRepository;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.TriviaQuestion;
 import missions.room.Domain.TriviaSubject;
 import org.springframework.beans.factory.annotation.Autowired;

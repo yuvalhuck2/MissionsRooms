@@ -2,9 +2,9 @@ package missions.room.WatchOpenAnswersTests;
 
 import Data.Data;
 import Data.DataGenerator;
-import DataAPI.OpCode;
-import DataAPI.Response;
-import DataAPI.RoomOpenAnswerData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.APIObjects.RoomOpenAnswerData;
 import missions.room.Domain.OpenAnswer;
 import missions.room.Domain.Ram;
 import missions.room.Domain.RoomOpenAnswersView;
@@ -24,7 +24,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package missions.room.MissionManagerTests;
 
 import Data.Data;
-import DataAPI.OpCode;
+import DataObjects.FlatDataObjects.OpCode;
 import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
 import missions.room.Domain.missions.Mission;

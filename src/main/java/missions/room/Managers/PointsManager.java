@@ -1,10 +1,10 @@
 package missions.room.Managers;
 
-import DataAPI.*;
-import javassist.bytecode.Opcode;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.RecordTableData;
+import DataObjects.FlatDataObjects.Response;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Domain.Classroom;
-import missions.room.Domain.Ram;
 import missions.room.Domain.RecordTable;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.Teacher;

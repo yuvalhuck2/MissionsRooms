@@ -2,7 +2,7 @@ package missions.room.UserAuthenticationTests;
 
 import CrudRepositories.ClassroomRepository;
 import Data.Data;
-import DataAPI.OpCode;
+import DataObjects.FlatDataObjects.OpCode;
 import missions.room.Managers.UserAuthenticationManager;
 import missions.room.Repo.ClassroomRepo;
 import org.junit.jupiter.api.Test;

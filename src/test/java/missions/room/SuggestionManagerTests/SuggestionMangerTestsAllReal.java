@@ -2,12 +2,9 @@ package missions.room.SuggestionManagerTests;
 
 import CrudRepositories.SuggestionCrudRepository;
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
 import missions.room.Domain.Suggestion;
-import missions.room.Managers.StudentTeacherManager;
 import missions.room.Managers.SuggestionManager;
-import missions.room.Repo.StudentRepo;
 import missions.room.Repo.SuggestionRepo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
