@@ -5,6 +5,7 @@ import DataObjects.APIObjects.CreateMissionData;
 import DataObjects.APIObjects.RoomIdAndApiKeyData;
 import DataObjects.APIObjects.RoomOpenAnswerData;
 import DataObjects.FlatDataObjects.MissionData;
+import DataObjects.FlatDataObjects.OpCode;
 import DataObjects.FlatDataObjects.Response;
 import Utils.Utils;
 import lombok.extern.apachecommons.CommonsLog;
