@@ -1,9 +1,8 @@
 package missions.room.Service;
 
-import DataAPI.Auth;
-import DataAPI.MessageData;
-import DataAPI.Response;
-import DataAPI.UserProfileData;
+import DataObjects.APIObjects.MessageData;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.UserProfileData;
 import missions.room.Managers.ProfileMessagesManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

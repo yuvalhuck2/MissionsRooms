@@ -2,8 +2,8 @@ package missions.room.Managers;
 
 
 import CrudRepositories.StudentCrudRepository;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Users.Student;
 import missions.room.Repo.StudentRepo;

@@ -1,7 +1,7 @@
 package missions.room.Repo;
 
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.Users.BaseUser;
 import missions.room.Domain.Users.SchoolUser;
 import CrudRepositories.SchoolUserCrudRepository;

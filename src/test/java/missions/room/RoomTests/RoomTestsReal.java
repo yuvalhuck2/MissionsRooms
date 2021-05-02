@@ -2,8 +2,8 @@ package missions.room.RoomTests;
 
 import Data.Data;
 import Data.DataGenerator;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.Rooms.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

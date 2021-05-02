@@ -1,16 +1,8 @@
 package missions.room.RoomManagerTests;
 
 import Data.Data;
-import DataAPI.OpCode;
-import Data.DataGenerator;
-import DataAPI.Response;
-import RepositoryMocks.ClassroomRepository.ClassRoomRepositoryMock;
-import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
-import RepositoryMocks.RoomRepository.RoomCrudRepositoryMock;
-import RepositoryMocks.RoomTemplateRepository.RoomTemplateCrudRepositoryMock;
-import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
+import DataObjects.FlatDataObjects.OpCode;
 import missions.room.Domain.Ram;
-import missions.room.Managers.RoomManager;
 import missions.room.Managers.TeacherManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +12,6 @@ import java.lang.reflect.Field;
 
 import static Data.DataConstants.*;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.Mockito.when;
 
 
 public class RoomMangerTestsRealRam extends RoomManagerTestsAllStubs{

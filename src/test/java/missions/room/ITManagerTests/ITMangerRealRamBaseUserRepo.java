@@ -3,7 +3,7 @@ package missions.room.ITManagerTests;
 import CrudRepositories.ITCrudRepository;
 import CrudRepositories.UserCrudRepository;
 import Data.Data;
-import DataAPI.OpCode;
+import DataObjects.FlatDataObjects.OpCode;
 import missions.room.Domain.Users.IT;
 import missions.room.Managers.ITManager;
 import missions.room.Repo.UserRepo;

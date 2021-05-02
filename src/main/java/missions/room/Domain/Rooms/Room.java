@@ -1,15 +1,12 @@
 package missions.room.Domain.Rooms;
 
-import DataAPI.*;
+import DataObjects.FlatDataObjects.*;
 import Utils.Utils;
 import missions.room.Domain.OpenAnswer;
 import missions.room.Domain.missions.Mission;
 import missions.room.Domain.RoomMessage;
 import missions.room.Domain.RoomTemplate;
-import missions.room.Domain.TriviaQuestion;
 import missions.room.Domain.Users.Teacher;
-import missions.room.Domain.missions.*;
-import org.assertj.core.util.VisibleForTesting;
 
 import javax.persistence.*;
 import java.util.*;
@@ -169,7 +166,6 @@ public abstract class Room {
         return isLastMission()&&allOpenQuestionsApproved();
     }
 
-    //TODO implement after doing openRoomMission
     public boolean allOpenQuestionsApproved() {
         return openAnswers.isEmpty();
     }

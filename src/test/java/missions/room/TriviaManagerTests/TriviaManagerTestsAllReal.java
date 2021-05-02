@@ -1,13 +1,11 @@
 package missions.room.TriviaManagerTests;
 
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.TriviaQuestion;
-import missions.room.Managers.SuggestionManager;
 import missions.room.Managers.TriviaManager;
 import missions.room.Repo.TriviaRepo;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

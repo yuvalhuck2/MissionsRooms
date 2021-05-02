@@ -1,31 +1,42 @@
 package missions.room.Communications.Controllers;
 
-import DataAPI.OpCode;
-import DataAPI.RegisterDetailsData;
-import io.restassured.http.ContentType;
-import io.restassured.mapper.ObjectMapper;
-import io.restassured.mapper.ObjectMapperType;
+import Data.Data;
 import org.junit.jupiter.api.Test;
-import com.google.gson.Gson;
 
+import static Data.APIPaths.*;
+import static DataObjects.FlatDataObjects.OpCode.*;
 
-import static io.restassured.module.webtestclient.RestAssuredWebTestClient.given;
-import static org.hamcrest.Matchers.equalTo;
-
-class UserAuthenticationControllerTest {
+class UserAuthenticationControllerTest extends ControllerTest {
 
     @Test
-    void greeting_controller_returns_json_greeting() {
-        given().
-                standaloneSetup(new UserAuthenticationController())
-                .contentType(ContentType.JSON).
-                body(new Gson().toJson(new RegisterDetailsData("yuval","sabag"))).
-
-                when().
-                post("/UserAuth").
-                then().
-                statusCode(200).
-                body("reason", equalTo(OpCode.Not_Exist)).
-                body("value", equalTo(null));
+    void testRegister() {
+        String body = gson.toJson(dataGenerator.getRegisterDetails(Data.VALID));
+        testControllerWithBody(REGISTER, body, Not_Exist, null);
     }
+
+    @Test
+    void testRegisterCode(){
+        String body = gson.toJson(dataGenerator.getRegisterDetails(Data.VALID));
+        testControllerWithBody(REGISTER_CODE, body, Wrong_Code, false);
+    }
+
+    @Test
+    void testLogin(){
+        String body = gson.toJson(dataGenerator.getRegisterDetails(Data.VALID));
+        testControllerWithBody(LOGIN, body, Not_Exist, null);
+    }
+
+    @Test
+    void testChangePassword(){
+        String body = gson.toJson(dataGenerator.getRegisterDetails(Data.VALID));
+        testControllerWithBody(CHANGE_PASSWORD, body, Not_Exist, false);
+    }
+
+    @Test
+    void testResetPassword(){
+        String body = gson.toJson(dataGenerator.getRegisterDetails(Data.VALID));
+        testControllerWithBody(RESET_PASSWORD, body, Not_Exist, false);
+    }
+
+
 }

@@ -1,7 +1,8 @@
 package missions.room.Managers;
 
 import CrudRepositories.*;
-import DataAPI.*;
+import DataObjects.APIObjects.SolutionData;
+import DataObjects.FlatDataObjects.*;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Communications.Publisher.Publisher;
 import missions.room.Communications.Publisher.SinglePublisher;
@@ -217,7 +218,7 @@ public class ManagerRoomStudent extends StudentManager {
                         .getReason();
                 break;
             default:
-                //TODO logger error that can't happened
+                log.error(String.format("room %s does not have a type", room.getRoomId()));
                 break;
 
         }
@@ -289,7 +290,6 @@ public class ManagerRoomStudent extends StudentManager {
      *
      * @param apiKey - authentication object
      * @return the mission details of the given room
-     * TODO refactor the name to watchMyRooms from the controller to the manager
      */
     public Response<List<RoomDetailsData>> watchRoomDetails(String apiKey) {
         Response<Student> checkStudent = checkStudent(apiKey);

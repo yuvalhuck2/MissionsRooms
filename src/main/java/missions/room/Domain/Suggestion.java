@@ -1,7 +1,6 @@
 package missions.room.Domain;
 
-import DataAPI.StudentData;
-import DataAPI.SuggestionData;
+import DataObjects.APIObjects.SuggestionData;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

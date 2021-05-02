@@ -2,7 +2,9 @@ package missions.room.UserAuthenticationTests;
 
 import Data.Data;
 import Data.DataGenerator;
-import DataAPI.*;
+import DataObjects.APIObjects.RegisterDetailsData;
+import DataObjects.APIObjects.TeacherData;
+import DataObjects.FlatDataObjects.*;
 import ExternalSystems.HashSystem;
 import ExternalSystems.MailSender;
 import missions.room.Domain.Ram;
@@ -125,7 +127,7 @@ public class BaseUserAuthenticationTestsAllStubs {
     protected void initClassroomRepo() {
         when(mockClassroomRepo.save(any()))
                 .thenReturn(new Response<>(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getClassroom()
-                        ,OpCode.Success));
+                        , OpCode.Success));
     }
 
     protected void initSchoolUserRepo(Student student) {

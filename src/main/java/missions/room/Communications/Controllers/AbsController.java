@@ -1,6 +1,6 @@
 package missions.room.Communications.Controllers;
 
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.Response;
 import com.google.gson.Gson;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

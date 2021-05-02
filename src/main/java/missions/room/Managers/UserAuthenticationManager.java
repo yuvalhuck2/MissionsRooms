@@ -3,7 +3,9 @@ package missions.room.Managers;
 import CrudRepositories.ClassroomRepository;
 import CrudRepositories.TeacherCrudRepository;
 import CrudRepositories.UserCrudRepository;
-import DataAPI.*;
+import DataObjects.APIObjects.RegisterDetailsData;
+import DataObjects.APIObjects.TeacherData;
+import DataObjects.FlatDataObjects.*;
 import ExternalSystems.UniqueStringGenerator;
 import missions.room.Domain.*;
 import ExternalSystems.HashSystem;
@@ -85,7 +87,7 @@ public class UserAuthenticationManager extends TeacherManager {
      */
     public Response<List<TeacherData>> register (RegisterDetailsData details){
         Response<List<TeacherData>> checkDetails= checkRegisterDetails(details);
-        if(checkDetails.getReason()!=OpCode.Success){
+        if(checkDetails.getReason()!= OpCode.Success){
             return checkDetails;
         }
         details.setPassword(hashSystem.encrypt(details.getPassword()));
@@ -163,7 +165,7 @@ public class UserAuthenticationManager extends TeacherManager {
      * @param groupType - group type if it is student and c if it is a teacher
      * @return if register succeeded
      */
-    public Response<Boolean> registerCode(String alias, String code,String teacherAlias,GroupType groupType) {
+    public Response<Boolean> registerCode(String alias, String code, String teacherAlias, GroupType groupType) {
         if(!Utils.checkString(alias)){
             return new Response<>(false,OpCode.Wrong_Alias);
         }

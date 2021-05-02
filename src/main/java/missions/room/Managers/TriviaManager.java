@@ -1,9 +1,8 @@
 package missions.room.Managers;
 
-import DataAPI.Auth;
-import DataAPI.OpCode;
-import DataAPI.Response;
-import DataAPI.TriviaQuestionData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.APIObjects.TriviaQuestionData;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;
 import missions.room.Domain.*;

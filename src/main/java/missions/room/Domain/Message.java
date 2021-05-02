@@ -1,6 +1,6 @@
 package missions.room.Domain;
 
-import DataAPI.MessageData;
+import DataObjects.APIObjects.MessageData;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

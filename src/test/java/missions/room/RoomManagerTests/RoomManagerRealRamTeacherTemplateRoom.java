@@ -1,7 +1,7 @@
 package missions.room.RoomManagerTests;
 
 import Data.Data;
-import DataAPI.OpCode;
+import DataObjects.FlatDataObjects.OpCode;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;

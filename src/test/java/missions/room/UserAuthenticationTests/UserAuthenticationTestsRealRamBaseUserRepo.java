@@ -3,7 +3,7 @@ package missions.room.UserAuthenticationTests;
 import CrudRepositories.ClassroomRepository;
 import CrudRepositories.UserCrudRepository;
 import Data.Data;
-import DataAPI.OpCode;
+import DataObjects.FlatDataObjects.OpCode;
 import missions.room.Domain.Users.Student;
 import missions.room.Managers.UserAuthenticationManager;
 import missions.room.Repo.UserRepo;

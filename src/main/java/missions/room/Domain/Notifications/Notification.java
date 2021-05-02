@@ -1,8 +1,7 @@
 package missions.room.Domain.Notifications;
 
-import DataAPI.OpCode;
+import DataObjects.FlatDataObjects.OpCode;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 public abstract class Notification<T> implements Serializable {

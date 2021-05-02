@@ -2,10 +2,10 @@ package missions.room.ClassroomTests;
 
 import Data.Data;
 import Data.DataGenerator;
-import DataAPI.ClassRoomData;
+import DataObjects.FlatDataObjects.ClassRoomData;
 import missions.room.Domain.ClassGroup;
 import missions.room.Domain.Classroom;
-import DataAPI.GroupType;
+import DataObjects.FlatDataObjects.GroupType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

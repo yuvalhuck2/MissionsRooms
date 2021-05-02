@@ -1,8 +1,8 @@
 package missions.room.Service;
 
-import DataAPI.Response;
-import DataAPI.RoomDetailsData;
-import DataAPI.SolutionData;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.RoomDetailsData;
+import DataObjects.APIObjects.SolutionData;
 import missions.room.Managers.ManagerRoomStudent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,6 @@ public class StudentRoomService {
      * req 3.6.1 - watch details of the room
      * @param apiKey - authentication object
      * @return the mission details of the given room
-     * TODO check on database if can generate unique string
-     * TODO refactor the name to watchMyRooms from the controller to the manager
      */
     public Response<List<RoomDetailsData>> watchRoomDetails (String apiKey){
         return managerRoomStudent.watchRoomDetails(apiKey);

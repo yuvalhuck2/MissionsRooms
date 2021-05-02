@@ -2,11 +2,9 @@ package missions.room.RoomManagerMockitoTests;
 
 
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.Ram;
-import missions.room.Managers.ProfileMessagesManager;
-import missions.room.Managers.RoomManager;
 import missions.room.Managers.TeacherManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.stereotype.Service;
@@ -15,7 +13,6 @@ import java.lang.reflect.Field;
 
 import static Data.DataConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @Service
 public class RoomManagerTestsRealRam extends RoomManagerTestsAllStubs{

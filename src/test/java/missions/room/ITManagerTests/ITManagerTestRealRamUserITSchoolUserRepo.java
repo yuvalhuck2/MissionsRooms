@@ -2,8 +2,8 @@ package missions.room.ITManagerTests;
 
 import CrudRepositories.SchoolUserCrudRepository;
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.TeacherData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.APIObjects.TeacherData;
 import missions.room.Domain.Users.SchoolUser;
 import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.ITManager;

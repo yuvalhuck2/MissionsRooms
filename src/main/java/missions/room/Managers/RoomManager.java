@@ -3,13 +3,13 @@ package missions.room.Managers;
 import CrudRepositories.RoomCrudRepository;
 import CrudRepositories.RoomTemplateCrudRepository;
 import CrudRepositories.TeacherCrudRepository;
-import DataAPI.*;
+import DataObjects.APIObjects.NewRoomDetails;
+import DataObjects.APIObjects.RoomsDataByRoomType;
+import DataObjects.FlatDataObjects.*;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;
-import javassist.bytecode.Opcode;
 import lombok.extern.apachecommons.CommonsLog;
 import javafx.util.Pair;
-import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Communications.Publisher.Publisher;
 import missions.room.Communications.Publisher.SinglePublisher;
 import missions.room.Domain.*;
@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.transform.sax.TemplatesHandler;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -65,7 +64,7 @@ public class RoomManager extends TeacherManager {
      */
     public Response<Boolean> createRoom(String apiKey, NewRoomDetails roomDetails){
         Response<Teacher> checkTeacher=checkTeacher(apiKey);
-        if(checkTeacher.getReason()!=OpCode.Success){
+        if(checkTeacher.getReason()!= OpCode.Success){
             return new Response<>(false,checkTeacher.getReason());
         }
         Response<Room> roomResponse= validateDetails(roomDetails,checkTeacher.getValue());
@@ -457,7 +456,7 @@ public class RoomManager extends TeacherManager {
         ClassGroup a=null;
         ClassGroup b=null;
         for(ClassGroup classGroup:classroom.getClassGroups()){
-            if(classGroup.getGroupType()==GroupType.A){
+            if(classGroup.getGroupType()== GroupType.A){
                 a=classGroup;
             }
             if(classGroup.getGroupType()==GroupType.B){

@@ -1,6 +1,8 @@
 package missions.room.Communications.Controllers;
 
-import DataAPI.*;
+import DataObjects.APIObjects.*;
+import DataObjects.FlatDataObjects.ClassRoomData;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +29,7 @@ public class RoomController extends AbsController{
 
     @PostMapping("/close")
     public Response<?> closeRoom(@RequestBody String closeRoomData) {
-        CloseRoomData data = json.fromJson(closeRoomData, CloseRoomData.class);
+        RoomIdAndApiKeyData data = json.fromJson(closeRoomData, RoomIdAndApiKeyData.class);
         Response<Boolean> response = roomService.closeRoom(data.getApiKey(),data.getRoomId());
         return response;
     }

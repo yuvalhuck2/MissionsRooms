@@ -1,6 +1,9 @@
 package missions.room.Service;
 
-import DataAPI.*;
+import DataObjects.APIObjects.RegisterDetailsData;
+import DataObjects.APIObjects.TeacherData;
+import DataObjects.FlatDataObjects.GroupType;
+import DataObjects.FlatDataObjects.Response;
 import ExternalSystems.MailSender;
 import ExternalSystems.VerificationCodeGenerator;
 import missions.room.Managers.UserAuthenticationManager;

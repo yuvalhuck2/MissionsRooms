@@ -1,9 +1,8 @@
 package missions.room.Domain;
 
-import DataAPI.ChatMessageData;
-import DataAPI.OpCode;
-import DataAPI.RecordTableData;
-import DataAPI.Response;
+import DataObjects.APIObjects.ChatMessageData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import Utils.StringAndTime;
 import missions.room.Domain.Rooms.Room;
 
@@ -42,7 +41,7 @@ public class Ram {
     }
 
     public String getAlias(String apiKey) {
-        if(apiToAlias.containsKey(apiKey)) {
+        if(apiKey!=null && apiToAlias.containsKey(apiKey)) {
             return apiToAlias.get(apiKey).getString();
         }
         return null;

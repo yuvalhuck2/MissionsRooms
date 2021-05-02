@@ -18,7 +18,6 @@ import org.springframework.web.socket.config.annotation.*;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 /**
- * TODO tests for 2 users
  * 1. to check room with 2 users connected
  */
 

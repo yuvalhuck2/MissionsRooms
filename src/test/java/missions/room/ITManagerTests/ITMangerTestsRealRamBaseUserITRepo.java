@@ -2,8 +2,8 @@ package missions.room.ITManagerTests;
 
 import CrudRepositories.ITCrudRepository;
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.RegisterDetailsData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.APIObjects.RegisterDetailsData;
 import missions.room.Domain.Users.IT;
 import missions.room.Managers.ITManager;
 import missions.room.Repo.ITRepo;
