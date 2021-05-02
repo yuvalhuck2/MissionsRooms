@@ -509,10 +509,10 @@ public class RoomManager extends TeacherManager {
     private Response<List<RoomDetailsData>> getRoomDetailFromRoom(List<Room> rooms) {
         List<RoomDetailsData> roomDetailsDataList = new ArrayList<>();
         for (Room room : rooms) {
-            RoomDetailsData roomDetailsData= room.getData();
-            roomDetailsData.setCurrentMissionNumber(room.getCurrentMissionIndex());
-            roomDetailsData.setNumberOfMissions(room.getRoomTemplate().getMissions().size());
+            RoomDetailsData roomDetailsData= room.getRoomDetailsData();
             if(roomDetailsData!=null) {
+                roomDetailsData.setCurrentMissionNumber(room.getCurrentMissionIndex());
+                roomDetailsData.setNumberOfMissions(room.getRoomTemplate().getMissions().size());
                 roomDetailsDataList.add(roomDetailsData);
             }
         }

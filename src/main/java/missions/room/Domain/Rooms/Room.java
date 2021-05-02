@@ -162,6 +162,10 @@ public abstract class Room {
         return currentMission>=roomTemplate.getMissions().size()-1;
     }
 
+    public boolean allQuestionsAnswered() {
+        return currentMission > roomTemplate.getMissions().size() - 1;
+    }
+
     public boolean toCloseRoom(){
         return isLastMission()&&allOpenQuestionsApproved();
     }
@@ -176,6 +180,12 @@ public abstract class Room {
             return null;
         }
         MissionData missionData = mission.getData();
+        return new RoomDetailsData(roomId,name,missionData,roomTemplate.getType(),waitingForStory);
+    }
+
+    public  RoomDetailsData getRoomDetailsData () {
+        Mission mission = roomTemplate.getMission(currentMission);
+        MissionData missionData = mission == null ? null : mission.getData();
         return new RoomDetailsData(roomId,name,missionData,roomTemplate.getType(),waitingForStory);
     }
 

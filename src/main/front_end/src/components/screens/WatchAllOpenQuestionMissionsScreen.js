@@ -45,7 +45,7 @@ class WatchAllAnswersForm extends Component {
         <List.Item 
           right={props => <View style={styles.item_view}>
             <Text style={styles.item_text}>{mission_title + index}</Text>
-            <List.Icon {...props} icon="account" />
+            <List.Icon {...props} icon="playlist-edit" />
           </View>}
           key={mission.missionId}
           onPress={() => this.onMissionPress(mission)}

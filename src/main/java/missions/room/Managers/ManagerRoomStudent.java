@@ -107,10 +107,18 @@ public class ManagerRoomStudent extends StudentManager {
                                             , openAnswerData.getOpenAnswer(), file);
 
                 Room room = roomRes.getValue();
+                Response<Boolean> openAnsSaveRes;
+                synchronized (room) {
+                    openAnsSaveRes = openAnswerRepo.saveOpenAnswer(openAnswer, room);
+                }
+                // failed to save open answer
+                if (openAnsSaveRes == null || openAnsSaveRes.getReason() != OpCode.Success) {
+                    return new Response<>(false, openAnsSaveRes != null ? openAnsSaveRes.getReason() : OpCode.DB_Error);
+                }
                 synchronized (room) {
                     updateRoomAndMissionInCharge(room);
                 }
-                return openAnswerRepo.saveOpenAnswer(openAnswer, room);
+                return openAnsSaveRes;
 
             } catch (Exception ex) {
                 return new Response<>(false, OpCode.FAILED_READ_FILE_BYTES);
@@ -174,15 +182,12 @@ public class ManagerRoomStudent extends StudentManager {
             notification = new NonPersistenceNotification<>(OpCode.Finish_Missions_In_Room, null);
         }
         else if(room.isLastMission()){
+            saveRoomAndLog(room);
             ram.deleteRoom(room.getRoomId());
             notification = new NonPersistenceNotification<>(OpCode.Has_Unapproved_Solutions, null);
         }
         else{
-            room.increaseCurrentMission();
-            reason = roomRepo.save(room).getReason();
-            if (reason != OpCode.Success) {
-                log.error(String.format("Failed to save room: {0}. function: updateRoomAndMissionInCharge", room.getRoomId()));
-            }
+            saveRoomAndLog(room);
             //roll mission in charge
             notification = new NonPersistenceNotification<>(OpCode.Update_Room, room.getData());
             nextInCharge=room.drawMissionInCharge();
@@ -195,6 +200,14 @@ public class ManagerRoomStudent extends StudentManager {
                 notification.getValue().setInCharge(true);
             }
             publisher.update(ram.getApiKey(alias), notification);
+        }
+    }
+
+    private void saveRoomAndLog(Room room) {
+        room.increaseCurrentMission();
+        OpCode reason = roomRepo.save(room).getReason();
+        if (reason != OpCode.Success) {
+            log.error(String.format("Failed to save room: {0}. function: updateRoomAndMissionInCharge", room.getRoomId()));
         }
     }
 
@@ -347,6 +360,7 @@ public class ManagerRoomStudent extends StudentManager {
         if (rooms.size()==0){
             return new Response<>(new ArrayList<>(),OpCode.Success);
         }
+        rooms.removeIf(room -> room.allQuestionsAnswered());
         return getRoomDetailFromRoom(rooms);
     }
 
