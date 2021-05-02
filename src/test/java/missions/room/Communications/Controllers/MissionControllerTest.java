@@ -4,10 +4,13 @@ import Data.Data;
 import DataObjects.APIObjects.CreateMissionData;
 import missions.room.Domain.missions.Mission;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static Data.APIPaths.*;
 import static DataObjects.FlatDataObjects.OpCode.Wrong_Key;
 
+@RunWith(SpringRunner.class)
 class MissionControllerTest extends ControllerTest {
 
     @Test

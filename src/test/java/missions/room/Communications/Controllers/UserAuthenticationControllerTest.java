@@ -2,10 +2,13 @@ package missions.room.Communications.Controllers;
 
 import Data.Data;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static Data.APIPaths.*;
 import static DataObjects.FlatDataObjects.OpCode.*;
 
+@RunWith(SpringRunner.class)
 class UserAuthenticationControllerTest extends ControllerTest {
 
     @Test

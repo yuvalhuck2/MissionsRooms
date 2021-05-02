@@ -2,11 +2,14 @@ package missions.room.Communications.Controllers;
 
 import Data.Data;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static Data.APIPaths.*;
 import static DataObjects.FlatDataObjects.OpCode.DB_Error;
 import static DataObjects.FlatDataObjects.OpCode.Not_Exist;
 
+@RunWith(SpringRunner.class)
 class ProfilesMessagesControllerTest extends ControllerTest {
 
     @Test

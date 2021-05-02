@@ -2,10 +2,13 @@ package missions.room.Communications.Controllers;
 
 import DataObjects.APIObjects.SuggestionData;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static Data.APIPaths.*;
 import static DataObjects.FlatDataObjects.OpCode.Wrong_Key;
 
+@RunWith(SpringRunner.class)
 class SuggestionControllerTest extends ControllerTest {
 
     private static final SuggestionData suggestionData =

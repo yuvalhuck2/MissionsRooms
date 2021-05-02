@@ -2,10 +2,13 @@ package missions.room.Communications.Controllers;
 
 import Data.Data;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static Data.APIPaths.*;
 import static DataObjects.FlatDataObjects.OpCode.Wrong_Key;
 
+@RunWith(SpringRunner.class)
 class ChatControllerTest extends ControllerTest {
 
     @Test

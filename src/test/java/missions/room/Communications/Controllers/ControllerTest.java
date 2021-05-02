@@ -19,7 +19,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-@RunWith(SpringRunner.class)
 public class ControllerTest {
 
     protected static String reasonParamName = "reason";
