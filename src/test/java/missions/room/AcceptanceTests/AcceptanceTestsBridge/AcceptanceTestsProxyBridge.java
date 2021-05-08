@@ -30,9 +30,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestBridge{
     }
 
     @Override
-    public Boolean registerCode(String alias, String code) {
+    public Boolean registerCode(String alias, String code, String teacherRegisterDetailsAlias) {
         if(realBridge!=null)
-            return realBridge.registerCode(alias, code);
+            return realBridge.registerCode(alias, code, teacherRegisterDetailsAlias);
         return false;
     }
 
@@ -77,10 +77,17 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestBridge{
     }
 
     @Override
-    public Boolean openRoom(String token, RoomDetailsTest roomDetails) {
+    public Boolean openRoom(RoomDetailsTest roomDetails) {
         if(realBridge!=null)
-            return realBridge.openRoom(token, roomDetails);
+            return realBridge.openRoom(roomDetails);
         return false;
+    }
+
+    @Override
+    public RoomDetailsTest watchRoomDetails() {
+        if(realBridge!=null)
+            return realBridge.watchRoomDetails();
+        return null;
     }
 
     @Override
@@ -91,9 +98,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestBridge{
     }
 
     @Override
-    public Boolean addRoomTemplate(String token, RoomTemplateDetailsTestData roomTemplateDetails) {
+    public Boolean addRoomTemplate(RoomTemplateDetailsTestData roomTemplateDetails) {
         if(realBridge!=null)
-            return realBridge.addRoomTemplate(token, roomTemplateDetails);
+            return realBridge.addRoomTemplate(roomTemplateDetails);
         return false;
     }
 
@@ -122,5 +129,19 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestBridge{
     public void setExternalSystems(MailSender mailSender, VerificationCodeGenerator verificationCodeGenerator) {
         if(realBridge!=null)
              realBridge.setExternalSystems(mailSender, verificationCodeGenerator);
+    }
+
+    @Override
+    public boolean registerCodeTeacher(String alias, String verificationCode) {
+        if(realBridge != null)
+            return realBridge.registerCodeTeacher(alias, verificationCode);
+        return true;
+    }
+
+    @Override
+    public boolean teacherLogin(String alias, String password) {
+        if(realBridge != null)
+            return realBridge.teacherLogin(alias, password);
+        return true;
     }
 }

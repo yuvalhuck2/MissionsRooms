@@ -1,14 +1,16 @@
 package missions.room.AcceptanceTests.AcceptanceTests;
 
-import missions.room.AcceptanceTests.AcceptanceTestDataObjects.RegisterDetailsTest;
-import missions.room.AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import com.sun.deploy.cache.BaseLocalApplicationProperties;
+import missions.room.AcceptanceTests.AcceptanceTestDataObjects.*;
 import missions.room.AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsProxyBridge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.plugin.javascript.navig.Array;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,7 +24,12 @@ public class AcceptanceTest {
 
     protected static List<UserTestData> students = new ArrayList<>();
     protected static List<UserTestData> teacher = new ArrayList<>();
+    protected static List<RoomTemplateDetailsTestData> templatesData = new ArrayList<>();
+    protected static List<RoomDetailsTest> roomDetails = new ArrayList<>();
+    protected static List<MissionDetailsTest> missionData = new ArrayList<>();
     protected final String testVerificationCode = "0";
+
+    private String itToken;
 
     @Autowired
     protected AcceptanceTestsProxyBridge bridge;
@@ -71,19 +78,39 @@ public class AcceptanceTest {
             }
         }
 
+        public static void initAddRoomData() {
+            List<String> missions = Arrays.asList("story1", "open1", "mid1");
+            RoomTemplateDetailsTestData roomTemplateDetailsTestData =
+                    new RoomTemplateDetailsTestData(missions, "name", 0, ParticipantTypeTest.Class);
+            templatesData.add(roomTemplateDetailsTestData);
+
+            roomDetails.add(new RoomDetailsTest("roomName", 3, "2=4", ParticipantTypeTest.Class));
+
+            missionData.add(new MissionDetailsTest("story1",
+                    Arrays.asList(ParticipantTypeTest.Personal, ParticipantTypeTest.Class, ParticipantTypeTest.Group),
+                    ""));
+        }
     }
 
     protected boolean setUpCSV(){
-        //login();
+        itToken = login();
         return true;
     }
 
-    protected boolean registerCode(String alias, String code){
-        return bridge.registerCode(alias, code);
+    protected boolean registerCode(String alias, String code, String teacherRegisterDetailsAlias){
+        return bridge.registerCode(alias, code, teacherRegisterDetailsAlias);
     }
 
     protected boolean register(RegisterDetailsTest registerDetailsTest){
         return bridge.register(registerDetailsTest);
+    }
+
+    protected boolean registerCodeTeacher(String alias, String verificationCode) {
+        return bridge.registerCodeTeacher(alias, verificationCode);
+    }
+
+    protected boolean teacherLogin(String alias, String password){
+        return bridge.teacherLogin(alias, password);
     }
 
     protected String login(){
@@ -91,17 +118,20 @@ public class AcceptanceTest {
         return token;
     }
 
-    protected boolean deleteUser(){
-        return true;
+    protected boolean createTemplate(RoomTemplateDetailsTestData roomTemplateDetailsTestData){
+        return bridge.addRoomTemplate(roomTemplateDetailsTestData);
     }
 
-//    @Test
-//    public void testtest(){
-//        fail();
-//    }
+    protected boolean createRoom(RoomDetailsTest roomDetailsTest){
+        return bridge.openRoom(roomDetailsTest);
+    }
 
+    protected RoomDetailsTest watchRoomDetails(){
+        return bridge.watchRoomDetails();
+    }
 
     public AcceptanceTest() {
         TestDataInitializer.getTestDataFromCsvReport();
+        TestDataInitializer.initAddRoomData();
     }
 }
