@@ -34,4 +34,7 @@ export {default as WatchAllOpenQuestionMissionsScreen} from './WatchAllOpenQuest
 export { default as AddUserScreen} from './AddUserScreen'
 export { default as ResetPasswordScreen} from './ResetPasswordScreen'
 export { default as CloseClassroomScreen} from './CloseClassroomScreen'
-
+export { default as TriviaManagement } from './TriviaManagement'
+export { default as AddTriviaQuestion } from './AddTriviaQuestion';
+export { default as SolveTriviaMission } from './SolveTriviaMission';
+export { default as AddTriviaMission } from "./AddTriviaMission";

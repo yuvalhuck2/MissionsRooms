@@ -101,7 +101,8 @@ export const ChooseMissionToAddStrings = {
   deterministicButton: 'שאלה עם פתרון יחיד',
   OpenAnswerMissionButton: 'שאלה פתוחה/העלאת קובץ',
   StoryMissionButton: 'סיפור בהמשכים',
-  enter_points: 'כמות נקודות עבור המשימה'
+  enter_points: 'כמות נקודות עבור המשימה',
+  TriviaMissionButton: 'משימת טריוויה',
 };
 
 export const AddRoomTempalteStrings = {
@@ -525,3 +526,11 @@ export const WatchAllOpenQuestionMissions = {
   mission_title: 'משימה מספר ',
   title:'משימות עם תשובה פתוחה בחדר: '
 };
+
+
+export const TriviaManagementStrings = {
+  header: "ניהול טריוויה",
+  subjectManagement: "ניהול נושאים",
+  questionManagement: "ניהול שאלות",
+  viewQuestions: "צפייה בשאלות",
+}

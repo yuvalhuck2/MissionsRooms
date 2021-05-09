@@ -191,3 +191,4 @@ export const ENTER_ADD_MISSION = "enter add mission"
 export const RES_ANS_CLICKED = "response open answer clicked"
 export const UPDATE_RES_ANS_ERROR = "update response answer error"
 export const RES_ANS_RESET = "response answer reset"
+export const TRIVIA_MISSION = "TRIVIA_MISSION";

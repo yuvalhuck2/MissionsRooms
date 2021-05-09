@@ -94,11 +94,11 @@ class TeacherForm extends Component {
           </Button>
           <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
             onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
-            <Text style={{color:"white"}}>{watch_messages}</Text>
+            <Text style={{color:"white"}}>ניהול משימת טריוויה</Text>
           </Button>
             <Button style={[styles.button, styles.bottom_button_marg, styles.right_button_border]}
                     onPress={()=>this.props.passToWatchMessages({navigation,apiKey})}>
-                <Text style={{color:"white"}}>{watch_messages}</Text>
+                <Text style={{color:"white"}}></Text>
             </Button>
           <Button onPress={this.onLogout} style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]}>
           <Text style={{color:"white"}}>{main_screen}</Text> 

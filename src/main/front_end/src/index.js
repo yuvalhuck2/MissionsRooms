@@ -30,13 +30,13 @@ import {
   ChangePasswordScreen,
   PointsTableScreen,
   ManageUsersScreen,
-    AddUserScreen,
-    ResetPasswordScreen,
-    CloseClassroomScreen,
-    Test,
-    ChooseTeacherRoomTypeScreen,
-    ChooseClassroomRoomScreen,
-  ChatRoomScreen,
+  AddUserScreen,
+  ResetPasswordScreen,
+  CloseClassroomScreen,
+  Test,
+  ChooseTeacherRoomTypeScreen,
+  ChooseClassroomRoomScreen,
+  ChatRoomScreen, TriviaManagement, AddTriviaQuestion, SolveTriviaMission, AddTriviaMission,
 } from './components/screens';
 import TeacherRoomMenuScreen from "./components/screens/TeacherRoomMenuScreen";
 
@@ -45,7 +45,7 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Register'>
+      <Stack.Navigator initialRouteName='AddTriviaMission'>
       <Stack.Screen
         name = 'CloseClassroom'
         component={CloseClassroomScreen}
@@ -136,6 +136,10 @@ const App = () => {
         <Stack.Screen name ="ChooseClassroomRoom" component={ChooseClassroomRoomScreen}/>
         <Stack.Screen name = "TeacherRoomMenu" component={TeacherRoomMenuScreen}/>
         <Stack.Screen name = "ChatRoom" component={ChatRoomScreen}/>
+        <Stack.Screen name = "TriviaManagement" component={TriviaManagement}/>
+        <Stack.Screen name = "AddTriviaQuestion" component={AddTriviaQuestion}/>
+        <Stack.Screen name = "SolveTriviaMission" component={SolveTriviaMission}/>
+        <Stack.Screen name = "AddTriviaMission" component={AddTriviaMission}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
