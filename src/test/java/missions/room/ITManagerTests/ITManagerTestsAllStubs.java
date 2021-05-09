@@ -13,11 +13,10 @@ import missions.room.Domain.Classroom;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Users.IT;
 import missions.room.Domain.Users.SchoolUser;
+import missions.room.Domain.Users.Student;
+import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.ITManager;
-import missions.room.Repo.ClassroomRepo;
-import missions.room.Repo.ITRepo;
-import missions.room.Repo.SchoolUserRepo;
-import missions.room.Repo.UserRepo;
+import missions.room.Repo.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,11 +59,16 @@ public class ITManagerTestsAllStubs {
     protected ITRepo mockITRepo;
 
     @Mock
+    protected RoomRepo roomRepo;
+
+    @Mock
     protected ClassroomRepo mockClassroomRepo;
 
     protected DataGenerator dataGenerator;
 
     protected String ITApiKey;
+
+    protected String userAlias;
 
     protected UserProfileData userProfileData;
 
@@ -73,6 +77,10 @@ public class ITManagerTestsAllStubs {
     protected StudentData studentData;
 
     private AutoCloseable closeable;
+
+    protected Student student;
+
+    protected Teacher teacher;
 
     protected String classroomName;
 
@@ -83,6 +91,9 @@ public class ITManagerTestsAllStubs {
         userProfileData = dataGenerator.getProfileData(Data.VALID);
         teacherData = dataGenerator.getTeacherData(Data.VALID);
         studentData = dataGenerator.getStudentData(Data.VALID_STUDENT);
+        student = dataGenerator.getStudent(Data.VALID);
+        teacher = dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD);
+        userAlias = student.getAlias();
         initMocks();
     }
 
@@ -104,7 +115,17 @@ public class ITManagerTestsAllStubs {
         initSchoolUserRepo(schoolUser);
         initITRepo(it, itAlias, it2);
         initClassroomRepo(empty);
+        initRoomRepo();
         initHashSystem();
+    }
+
+    private void initRoomRepo() {
+        when(roomRepo.findClassroomRoomByAlias(anyString()))
+                .thenReturn(new Response<>(null, OpCode.Success));
+        when(roomRepo.findGroupRoomByAlias(anyString()))
+                .thenReturn(new Response<>(null, OpCode.Success));
+        when(roomRepo.findStudentRoomByAlias(anyString()))
+                .thenReturn(new Response<>(null, OpCode.Success));
     }
 
     protected void initClassroomRepo(Classroom empty) {
@@ -121,6 +142,8 @@ public class ITManagerTestsAllStubs {
                 .thenReturn(new Response<>(classroom, OpCode.Success));
         when(mockClassroomRepo.delete(any()))
                 .thenReturn(new Response<>(true, OpCode.Success));
+        when(mockClassroomRepo.findClassroomByStudent(student.getAlias()))
+                .thenReturn(new Response<>(classroom, OpCode.Success));
 
     }
 
@@ -154,6 +177,9 @@ public class ITManagerTestsAllStubs {
     }
 
     protected void initUserRepo(IT it, String itAlias2) {
+
+        Teacher teacherWithClassroom = dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM);
+
         when(mockUserRepo.isExistsById(itAlias2))
                 .thenReturn(new Response<>(false, OpCode.Success));
         when(mockUserRepo.isExistsById(it.getAlias()))
@@ -162,6 +188,18 @@ public class ITManagerTestsAllStubs {
                 .thenReturn(new Response<>(false, OpCode.Success));
         when(mockUserRepo.isExistsById(studentData.getAlias()))
                 .thenReturn(new Response<>(false, OpCode.Success));
+
+        when(mockUserRepo.findUserForWrite(student.getAlias()))
+                .thenReturn(new Response<>(student, OpCode.Success));
+        when(mockUserRepo.findUserForWrite(teacher.getAlias()))
+                .thenReturn(new Response<>(teacher, OpCode.Success));
+        when(mockUserRepo.findUserForWrite(teacherWithClassroom.getAlias()))
+                .thenReturn(new Response<>(teacherWithClassroom, OpCode.Success));
+        when(mockUserRepo.findUserForWrite(WRONG_USER_NAME))
+                .thenReturn(new Response<>(null, OpCode.Success));
+        when(mockUserRepo.delete(any()))
+                .thenReturn(new Response<>(true, OpCode.Success));
+
     }
 
     protected void initRam(String itAlias) {
@@ -554,6 +592,50 @@ public class ITManagerTestsAllStubs {
         Response<Boolean> closeClassroomResponse = itManager.closeClassroom(ITApiKey, classroomName);
         assertFalse(closeClassroomResponse.getValue());
         assertEquals(closeClassroomResponse.getReason(), opCode);
+    }
+
+    @Test
+    void testDeleteUserHappyCase(){
+        Response<Boolean> deleteUserResponse = itManager.deleteUser(ITApiKey, userAlias);
+        assertTrue(deleteUserResponse.getValue());
+        assertEquals(deleteUserResponse.getReason(), OpCode.Success);
+    }
+
+    @Test
+    void testDeleteUserWrongKey(){
+        ITApiKey = INVALID_KEY;
+        testDeleteUserInvalid(OpCode.Wrong_Key);
+    }
+
+    @Test
+    void testDeleteUserNotExistAlias(){
+        ITApiKey = NULL_USER_KEY;
+        testDeleteUserInvalid(OpCode.Not_Exist);
+    }
+
+    @Test
+    void testDeleteUserITRepoFindByIdThrowsException(){
+        when(mockITRepo.findITById(anyString()))
+                .thenReturn(new Response<>(null,OpCode.DB_Error));
+        testDeleteUserInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    void testDeleteUserTeacherHasClassroom(){
+        userAlias = dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getAlias();
+        testDeleteUserInvalid(OpCode.Teacher_Has_Classroom);
+    }
+
+    @Test
+    void testDeleteUserNotExistUserAlias(){
+        userAlias = WRONG_USER_NAME;
+        testDeleteUserInvalid(OpCode.Not_Exist);
+    }
+
+    protected void testDeleteUserInvalid(OpCode opCode){
+        Response<Boolean> deleteUserResponse = itManager.deleteUser(ITApiKey, userAlias);
+        assertFalse(deleteUserResponse.getValue());
+        assertEquals(deleteUserResponse.getReason(), opCode);
     }
 
     @AfterEach

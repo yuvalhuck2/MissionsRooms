@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 public class ITManager {
 
     protected static final Object ADD_USER_LOCK = new Object();
+    protected static final String SENIOR_PREFIX = "2";
 
     @Autowired
     protected ITRepo itRepo;
@@ -99,7 +100,7 @@ public class ITManager {
         }
         int counter=0;
         for(Classroom classroom:responseClassroom.getValue()){
-            if(classroom.getClassName().startsWith("2")){
+            if(classroom.getClassName().startsWith(SENIOR_PREFIX)){
                 for(ClassGroup group:classroom.getClassGroups()){
                     List<String> students=new ArrayList<>(group.getStudent().keySet());
                     for(String student:students){
@@ -127,39 +128,41 @@ public class ITManager {
             return new Response<>(false,userResponse.getReason());
         }
         BaseUser user=userResponse.getValue();
-        synchronized (user){
-            if(user instanceof Teacher){
-                if(((Teacher)user).getClassroom()!=null){
-                    return new Response<>(false,OpCode.Teacher_Has_Classroom);
-                }
-            }
-            else if(user instanceof Student){
-                Response<List<Room>> responseStudentRooms=getStudentRooms((Student)user);
-                if(responseStudentRooms.getReason()!=OpCode.Success){
-                    return new Response<>(false,responseStudentRooms.getReason());
-                }
-                for(Room room:responseStudentRooms.getValue()){
-                    if(room instanceof StudentRoom){
-                        roomRepo.deleteRoom(room);
-                        ram.deleteRoom(room.getRoomId());
-                    }
-                    else{
-                        String inCharge=ram.disconnectFromRoom(room.getRoomId(),user.getAlias());
-                        if(inCharge!=null){
-                            publisher.update(ram.getApiKey(inCharge),new NonPersistenceNotification<String>(OpCode.IN_CHARGE,room.getRoomId()));
-                        }
-                    }
-
-                }
-
-                Response<Classroom> classroomResponse=classroomRepo.findClassroomByStudent(user.getAlias());
-                classroomResponse.getValue().deleteStudent(user.getAlias());
-                classroomRepo.save(classroomResponse.getValue());
-
+        if(user == null) {
+            return new Response<>(false, OpCode.Not_Exist);
+        }
+        if(user instanceof Teacher){
+            if(((Teacher)user).getClassroom()!=null){
+                return new Response<>(false,OpCode.Teacher_Has_Classroom);
             }
         }
+        else if(user instanceof Student){
+            Response<List<Room>> responseStudentRooms=getStudentRooms((Student)user);
+            if(responseStudentRooms.getReason()!=OpCode.Success){
+                return new Response<>(false,responseStudentRooms.getReason());
+            }
+            for(Room room:responseStudentRooms.getValue()){
+                if(room instanceof StudentRoom){
+                    roomRepo.deleteRoom(room);
+                    ram.deleteRoom(room.getRoomId());
+                }
+                else{
+                    String inCharge=ram.disconnectFromRoom(room.getRoomId(),user.getAlias());
+                    if(inCharge!=null){
+                        publisher.update(ram.getApiKey(inCharge),new NonPersistenceNotification<>(OpCode.IN_CHARGE,room.getRoomId()));
+                    }
+                }
+
+            }
+
+            Response<Classroom> classroomResponse=classroomRepo.findClassroomByStudent(user.getAlias());
+            classroomResponse.getValue().deleteStudent(user.getAlias());
+            classroomRepo.save(classroomResponse.getValue());
+
+        }
+
         if(ram.getApiKey(user.getAlias())!=null) {
-            publisher.update(ram.getApiKey(user.getAlias()), new NonPersistenceNotification<String>(OpCode.DELETE_USER, ""));
+            publisher.update(ram.getApiKey(user.getAlias()), new NonPersistenceNotification<>(OpCode.DELETE_USER, ""));
         }
         return userRepo.delete(user);
     }
