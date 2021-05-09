@@ -297,7 +297,7 @@ export const ITStrings = {
   add_teacher: 'הוספת מורה',
   add_student: 'הוספת תלמיד',
   close_classroom: 'סגירת כיתה',
-  delete_senior:'מחיקת תלמידי י"ב',
+  delete_senior:'מחיקת שכבת י"ב',
 };
 
 export const addMissionErrors = {

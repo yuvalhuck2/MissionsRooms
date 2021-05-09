@@ -7,7 +7,7 @@ public class NewRoomDetails {
 
     private String apiKey;
     private String roomId;
-    private  String roomTemplateId;
+    private String roomTemplateId;
     private String participantKey;
     private RoomType roomType;
     private String roomName;

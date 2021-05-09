@@ -15,7 +15,7 @@ const {
   add_teacher,
   add_student,
   close_classroom,
-    delete_senior,
+  delete_senior,
 } = ITStrings
 
 const {
@@ -114,8 +114,8 @@ class ITForm extends Component {
           <Button onPress={()=>navigation.navigate(NavPaths.changePassword)} style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]}>
             <Text style={{color:"white"}}>{changePassword}</Text> 
           </Button>
-            <Button onPress={this.onPressDeleteSenior} style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]}>
-                <Text style={{color:"white"}}>{delete_senior}</Text>
+            <Button  style={[styles.button, styles.bottom_button_marg, styles.right_button_border, styles.bottom_button_border]}>
+                
             </Button>
         </View>
 
