@@ -26,14 +26,10 @@ public class Ram {
     private static final ConcurrentHashMap<String, List<ChatMessageData>> roomToChat=new ConcurrentHashMap<>();
 
     public void addChatMessage(String roomId,ChatMessageData roomMessage){
-        if(roomToChat.containsKey(roomId)) {
-            roomToChat.get(roomId).add(roomMessage);
+        if(!roomToChat.containsKey(roomId)) {
+            roomToChat.put(roomId,new ArrayList<>());
         }
-        else{
-            List<ChatMessageData> tmp=new ArrayList<>();
-            tmp.add(roomMessage);
-            roomToChat.put(roomId,tmp);
-        }
+        roomToChat.get(roomId).add(roomMessage);
     }
 
     public void addApi(String api,String alias){
