@@ -25,9 +25,6 @@ public class ITManagerTestsRealRamUserITSchoolUserClassroomRepo extends ITManage
     @Autowired
     protected ClassroomRepo realClassroomRepo;
 
-    @Autowired
-    private ClassroomRepository classroomRepository;
-
     @Mock
     private ClassroomRepository mockClassroomRepository;
 
@@ -44,7 +41,6 @@ public class ITManagerTestsRealRamUserITSchoolUserClassroomRepo extends ITManage
 
     @Override
     protected void initClassroomRepo(Classroom empty) {
-        classroomRepository.save(dataGenerator.getClassroom(Data.Valid_Classroom));
         classroomRepository.save(empty);
         try {
             Field classroomRepo = ITManager.class.getDeclaredField("classroomRepo");
@@ -112,7 +108,6 @@ public class ITManagerTestsRealRamUserITSchoolUserClassroomRepo extends ITManage
     @Override
     @AfterEach
     void tearDown() {
-        classroomRepository.deleteAll();
         super.tearDown();
     }
 }
