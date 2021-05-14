@@ -23,14 +23,32 @@ INSERT INTO TEACHER (alias,group_type, classroom_class_name) VALUES
 ('tal', 0,'2=4');
 
 INSERT INTO MISSION(mission_id,points) VALUES
-('mid1',2), ('mid2',2),('story1',2),('story2',4),('open1',1),('open_mission_id',3);
+('mid1',2), ('mid2',2),('story1',2),('story2',4),('open1',1),('open_mission_id',3), ('triv_mis', 1);
 
 INSERT INTO MISSION_MISSION_TYPES(mission_mission_id,mission_types) VALUES
 ('mid1',0), ('mid2',2),('mid1',1),('mid1',2),
 ('story1',0),('story1',1),('story1',2),
 ('story2',0),('story2',1),('story2',2),
 ('open_mission_id',0),('open_mission_id',1),('open_mission_id',2),
-('open1',0);
+('open1',0),('triv_mis',0), ('triv_mis', 1), ('triv_mis',2);
+
+INSERT into trivia_subject(name) values
+('נושא');
+
+insert into trivia_question(id, correct_answer, question, subject) values
+('trivia', 'התשובה הנכונה', 'שאלה', 'נושא'),
+('trivia2', 'התשובה הנכונה2', 'שאלה2', 'נושא');
+
+insert into trivia_question_answers(trivia_question_id, answer, index) VALUES
+('trivia', 'התשובה הנכונה', 0), ('trivia', 'התשובה 3', 1), ('trivia', 'התשובה 2', 2), ('trivia', 'התשובה 1', 3),
+('trivia2', 'התשובה הנכונה2', 0), ('trivia2', 'התשובה  השנייה 3', 1), ('trivia2', 'התשובה 2 השנייה', 2), ('trivia2', 'התשובה 1 השנייה', 3);
+
+insert into trivia_mission(mission_id, pass_ratio) values
+('triv_mis', 0.5);
+
+insert into trivia_mission_questions(mission_id, id) VALUES
+('triv_mis', 'trivia'),
+('triv_mis', 'trivia2');
 
 INSERT INTO OPEN_ANSWER_MISSION(question,mission_id) VALUES ('WHATS MY NAME','open1');
 INSERT INTO KNOWN_ANSWER_MISSION(question,real_answer,mission_id) VALUES

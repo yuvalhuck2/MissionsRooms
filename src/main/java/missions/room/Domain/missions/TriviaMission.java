@@ -8,6 +8,7 @@ import missions.room.Domain.TriviaQuestion;
 import javax.persistence.*;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class TriviaMission extends Mission {
@@ -53,6 +54,11 @@ public class TriviaMission extends Mission {
     protected MissionData completeTheRestOfMissionData(MissionData missionData) {
         missionData.setTriviaQuestionMap(this.questions);
         missionData.setPassRatio(this.passRatio);
+        missionData.setQuestion(this.questions
+                .values()
+                .stream()
+                .map(TriviaQuestion::getQuestion)
+                .collect(Collectors.toList()));
         return missionData;
     }
 

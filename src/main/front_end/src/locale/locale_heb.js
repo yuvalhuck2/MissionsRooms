@@ -150,6 +150,9 @@ export const ChooseMissionsTemplateStrings = {
   trivia_label:'טריוויה',
   choose_type:'משימות אותן ארצה לראות',
   story_description:'סוג: משימת סיפור בהמשכים',
+  open_question_name: 'סוג: שאלה פתוחה',
+  trivia_question_name: 'סוג: טריוויה',
+  see_questions: 'לחצו לשאלות',
 };
 
 export const ResponseOpenAnsStrings = {

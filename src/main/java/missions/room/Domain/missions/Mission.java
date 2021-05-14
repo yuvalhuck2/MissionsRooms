@@ -74,13 +74,7 @@ public abstract class Mission implements Serializable {
         return completeTheRestOfMissionData(missionData);
     }
 
-    //TODO need to become abstract after implement all the missions
-    public String getMissionName() {
-        return null;
-    }
+    public abstract String getMissionName();
 
-    //TODO need to become abstract after implement all the missions
-    protected MissionData completeTheRestOfMissionData(MissionData missionData){
-        return null;
-    }
+    protected abstract MissionData completeTheRestOfMissionData(MissionData missionData);
 }

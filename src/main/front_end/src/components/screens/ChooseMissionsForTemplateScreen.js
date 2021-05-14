@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
 import Button from '../common/Button';
 import Header from '../common/Header';
-import { DETERMINISTIC_NAME, STORY_NAME } from '../../actions/types';
+import { DETERMINISTIC_NAME, STORY_NAME, OPEN_QUESTION_NAME, TRIVIA_NAME } from '../../actions/types';
 
 const {
     header,
@@ -23,6 +23,9 @@ const {
     trivia_label,
     choose_type,
     story_description,
+    open_question_name,
+    trivia_question_name,
+    see_questions,
   } = ChooseMissionsTemplateStrings;
   
 const {
@@ -67,6 +70,10 @@ class ChooseMissionsForTemplateForm extends Component{
           return deterministic_name+'\n'+question+mission.question[0]
         case STORY_NAME:
           return story_description
+        case OPEN_QUESTION_NAME:
+          return open_question_name+'\n'+question+mission.question[0]
+        case TRIVIA_NAME:
+          return trivia_question_name;
         default:
       }
     }
@@ -105,12 +112,24 @@ class ChooseMissionsForTemplateForm extends Component{
 
       renderItem(mission,toCheck){
           return (
-          <Checkbox.Item
+          [<Checkbox.Item
                 key = {mission.missionId}
                 label={this.getMissionPresentation(mission)}
                 status={toCheck ? 'checked'  : 'unchecked'}
                 onPress={()=>this.onMissionsChanged(mission,toCheck)}
-            />
+            />, mission.name  == TRIVIA_NAME ?
+            <List.Accordion
+            title={see_questions}>
+              {this.presentQuestions(mission.question)}
+              
+            </List.Accordion>: null]
+          )
+      }
+
+      presentQuestions(questions){
+        console.log(questions)
+        return questions.map(
+          (question) => <List.Item title={question}/>
           )
       }
 

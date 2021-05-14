@@ -9,6 +9,11 @@ const initialState = {
     subjects: [],
 }
 
+import {
+    TRIVIA_QUESTION_CHANGED,
+    TRIVIA_SUBJECT_CHANGED
+} from '../actions/types';
+
 export default (state = initialState, action) => {
     switch(action.type){
         case TRIVIA_QUESTION_CHANGED:
