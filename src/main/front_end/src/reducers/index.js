@@ -50,7 +50,7 @@ export default combineReducers({
   resetPassword: ResetPasswordReducer,
   WatchOpenAnswer: WatchOpenAnswerReducer,
   closeClassroom: CloseClassroomReducer,
-  WatchAllOpenQuestionMissions: WatchAllOpenQuestionMissionsReducer
+  WatchAllOpenQuestionMissions: WatchAllOpenQuestionMissionsReducer,
   addTriviaSubject: AddTriviaSubjectReducer,
   addTriviaQuestion: AddTriviaQuestionReducer,
 });
