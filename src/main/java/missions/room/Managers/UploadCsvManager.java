@@ -1,8 +1,8 @@
 package missions.room.Managers;
 
-import DataAPI.GroupType;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.GroupType;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;
 import javafx.util.Pair;

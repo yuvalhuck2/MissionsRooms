@@ -1,8 +1,8 @@
 import API from '../api/API';
 import * as APIPaths from '../api/APIPaths';
-import { authErrors, registerCodeErrors, webSocketMessages } from '../locale/locale_heb';
+import { authErrors, registerCodeErrors, webSocketMessages,DeleteUserString } from '../locale/locale_heb';
 import * as NavPaths from '../navigation/NavPaths';
-import { connectToWebSocket} from '../handler/WebSocketHandler';
+import {closeSocket, connectToWebSocket} from '../handler/WebSocketHandler';
 import {moveToMission} from './ChooseStudentRoomActions';
 // import Constants from 'expo-constants'
 import {
@@ -29,6 +29,7 @@ import {
   IN_CHARGE,
   STORY_FINISH,
   STORY_IN_CHARGE,
+    Update_Chat,
 } from './OpCodeTypes';
 import {
   CLEAR_STATE,
@@ -51,7 +52,9 @@ import {
   CHANGE_IN_CHARGE,
   FINISH_STORY_MISSION,
   CHANGE_STORY_IN_CHARGE,
+    UPDATE_CHAT_ROOM,
   Has_Unapproved_Solutions,
+    DELETE_USER,
 } from './types';
 
 const {
@@ -78,6 +81,10 @@ const {
   final,
   has_unapproveds_solutions,
 } = webSocketMessages;
+
+const{
+  deleted,
+} = DeleteUserString;
 
 // THIS IS FOR CHECKING DNS ADDRESS WHEN RUNNING EXPO ON PHYSICAL DEVICE
 // const { manifest } = Constants;
@@ -290,7 +297,7 @@ const connectToWebSocketFromLogin = (apiKey,dispatch, navigation) => {
         break;
       case Update_Room:
         dispatch({ type: FINISH_MISSION, payload: apiKey });
-        moveToMission(value,dispatch,navigation,false);
+        moveToMission(value,dispatch,navigation,value.inCharge);
         break;
       case IN_CHARGE:
           dispatch({ type: CHANGE_IN_CHARGE, payload: true });
@@ -300,6 +307,15 @@ const connectToWebSocketFromLogin = (apiKey,dispatch, navigation) => {
         break;
       case STORY_FINISH:
         dispatch({ type: FINISH_STORY_MISSION, payload: additionalData});
+        break;
+      case Update_Chat:
+        dispatch({type:UPDATE_CHAT_ROOM,payload:value});
+        break;
+      case DELETE_USER:
+        alert(deleted);
+        dispatch({ type: CLEAR_STATE });
+        closeSocket();
+        navigation.navigate(NavPaths.loginScreen);
         break;
       default:
         console.log("No match case in web socket for"+reason)

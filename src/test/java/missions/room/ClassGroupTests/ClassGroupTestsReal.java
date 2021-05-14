@@ -1,7 +1,7 @@
 package missions.room.ClassGroupTests;
 
 import Data.Data;
-import DataAPI.GroupType;
+import DataObjects.FlatDataObjects.GroupType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 

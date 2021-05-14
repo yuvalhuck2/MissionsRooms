@@ -1,12 +1,11 @@
 package missions.room.Communications.Controllers;
 
-import DataAPI.*;
+import DataObjects.APIObjects.*;
+import DataObjects.FlatDataObjects.ClassRoomData;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class RoomController extends AbsController{
 
     @PostMapping("/close")
     public Response<?> closeRoom(@RequestBody String closeRoomData) {
-        CloseRoomData data = json.fromJson(closeRoomData, CloseRoomData.class);
+        RoomIdAndApiKeyData data = json.fromJson(closeRoomData, RoomIdAndApiKeyData.class);
         Response<Boolean> response = roomService.closeRoom(data.getApiKey(),data.getRoomId());
         return response;
     }
@@ -39,6 +38,18 @@ public class RoomController extends AbsController{
     public Response<?> getClassRoomData(@RequestBody String apiKey) {
         ApiKey data = json.fromJson(apiKey, ApiKey.class);
         Response<ClassRoomData> response = roomService.getClassRoomData(data.getApiKey());
+        return response;
+    }
+
+    @PostMapping("/responseAnswer")
+    public Response<?> responseStudentSolution(@RequestBody String resolveMissionData) {
+        ResolveMissionData missionResolutionData = json.fromJson(resolveMissionData, ResolveMissionData.class);
+        return  roomService.responseStudentSolution(missionResolutionData.getApiKey(), missionResolutionData.getRoomId(), missionResolutionData.getMissionId(), missionResolutionData.isApprove());
+    }
+    @PostMapping("/view")
+    public Response<?> watchRoomDetails(@RequestBody String apiKeyObject) {
+        ApiKey data = json.fromJson(apiKeyObject, ApiKey.class);
+        Response<List<RoomsDataByRoomType>> response = roomService.watchMyClassroomRooms(data.getApiKey());
         return response;
     }
 

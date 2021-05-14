@@ -1,9 +1,9 @@
 package missions.room.Domain;
 
-import DataAPI.MissionData;
-import DataAPI.RoomTemplateDetailsData;
-import DataAPI.RoomTemplateForSearch;
-import DataAPI.RoomType;
+import DataObjects.FlatDataObjects.MissionData;
+import DataObjects.APIObjects.RoomTemplateDetailsData;
+import DataObjects.APIObjects.RoomTemplateForSearch;
+import DataObjects.FlatDataObjects.RoomType;
 import missions.room.Domain.missions.Mission;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;

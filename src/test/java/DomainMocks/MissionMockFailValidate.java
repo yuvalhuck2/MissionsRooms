@@ -1,6 +1,6 @@
 package DomainMocks;
 
-import DataAPI.OpCode;
+import DataObjects.FlatDataObjects.OpCode;
 import missions.room.Domain.missions.Mission;
 
 public class MissionMockFailValidate extends Mission {

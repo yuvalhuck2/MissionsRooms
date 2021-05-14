@@ -1,0 +1,46 @@
+package Data;
+
+public class APIPaths {
+    public static final String REGISTER = "/UserAuth";
+    public static final String LOGIN = "/UserAuth/login";
+    public static final String REGISTER_CODE = "/UserAuth/code";
+    public static final String ADD_MISSION = "/mission/create";
+    public static final String SEARCH_MISSION="/mission/search";
+    public static final String ADD_TEMPLATE="/template/create";
+    public static final String SEARCH_TEMPLATE="/template/search";
+    public static final String GET_CLASSROOM="/room/classroom";
+    public static final String ADD_ROOM="/room/create";
+    public static final String WATCH_STUDET_ROOMS="student/room/view";
+    public static final String SOLVE_DETERMINISTIC="student/room/deterministic";
+    public static final String ADD_SUGGESTION="/suggestion/add";
+    public static final String WATCH_ROOM_DATA="student/room/data";
+    public static final String DISCONNECT_FROM_ROOM="student/room/disconnect";
+    public static final String ADD_NEW_IT = "it/add/it";
+    public static final String SOLVE_STORY="student/room/story";
+    public static final String SOLVE_OPEN_QUESTION="student/room/openAns";
+    public static final String FINISH_STORY="student/room/finish/story";
+    public static final String SEND_MESSAGE="profile/message/send";
+    public static final String WATCH_PROFILE="profile/view";
+    public static final String DELETE_MESSAGE="profile/message/delete";
+    public static final String WATCH_MESSAGES = "profile/message/view";
+    public static final String DELETE_SUGGESTION = "suggestion/delete";
+    public static final String WATCH_SUGGESTIONS = "suggestion/view";
+    public static final String CHANGE_PASSWORD = "UserAuth/password/change";
+    public static final String WATCH_TEACHER_ROOMS= "room/view";
+    public static final String CLOSE_ROOM= "room/close";
+    public static final String ENTER_CHAT= "chat/enter";
+    public static final String SEND_CHAT_MESSAGE= "chat/send";
+    public static final String WATCH_POINTS_TABLE = "points/view";
+    public static final String REDUCE_POINTS = "points/reduce";
+    public static final String GET_ALL_SCHOOL_USERS = "it/view/all";
+    public static final String UPDATE_DETAILS = "it/update";
+    public static final String ADD_STUDENT = "it/add/student";
+    public static final String ADD_TEACHER = "it/add/teacher";
+    public static final String RESET_PASSWORD = "UserAuth/password/reset";
+    public static final String CLOSE_CLASSROOM = "it/classroom/close";
+    public static final String DELETE_USER="it/delete/user";
+    public static final String DELETE_SENIORS="it/delete/senior";
+    public static final String APPROVE_ANSWER="mission/unApprovedAnswers";
+    public static final String RESPONSE_ANSWER = "/room/responseAnswer";
+    public static final String UPLOAD_CSV = "/uploadCsv";
+}

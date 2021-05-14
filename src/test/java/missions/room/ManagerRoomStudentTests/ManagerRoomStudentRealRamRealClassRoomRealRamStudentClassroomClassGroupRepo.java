@@ -2,9 +2,9 @@ package missions.room.ManagerRoomStudentTests;
 
 import CrudRepositories.StudentCrudRepository;
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.Response;
-import DataAPI.RoomDetailsData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.RoomDetailsData;
 import RepositoryMocks.RoomRepository.RoomCrudRepositoryMock;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Rooms.Room;
@@ -23,7 +23,7 @@ import java.lang.reflect.Field;
 import java.util.Optional;
 
 import static Data.DataConstants.VALID2_STUDENT_APIKEY;
-import static DataAPI.OpCode.*;
+import static DataObjects.FlatDataObjects.OpCode.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;

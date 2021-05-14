@@ -2,7 +2,7 @@ package missions.room.MissionManagerTests;
 
 import CrudRepositories.MissionCrudRepository;
 import Data.Data;
-import DataAPI.OpCode;
+import DataObjects.FlatDataObjects.OpCode;
 import missions.room.Domain.TriviaQuestion;
 import missions.room.Domain.TriviaSubject;
 import missions.room.Domain.missions.Mission;

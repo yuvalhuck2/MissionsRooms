@@ -1,12 +1,14 @@
 package missions.room.Domain.Rooms;
 
-import DataAPI.RoomType;
+import DataObjects.FlatDataObjects.RoomType;
 import missions.room.Domain.RoomTemplate;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.Teacher;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class StudentRoom extends Room {
@@ -40,6 +42,12 @@ public class StudentRoom extends Room {
     @Override
     protected int getParticipantsSize() {
         return 1;
+    }
+
+    @Override
+    public Set<String> getStudentsAlias() {
+        String alias = participant.getAlias();
+        return new HashSet<String>(){{add(alias);}};
     }
 
     public StudentRoom(String roomId,String name, Student participant, Teacher teacher, RoomTemplate roomTemplate,int bonus) {

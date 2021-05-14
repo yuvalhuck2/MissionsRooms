@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ActivityIndicator, Appbar } from 'react-native-paper';
+import {ActivityIndicator, Appbar, IconButton} from 'react-native-paper';
 import { connect } from 'react-redux';
 import { answerChanged } from '../../actions/SolveDeterministicActions';
 import { sendOpenQuestionAnswer, onPickFile } from '../../actions/SolveOpenQuestionActions'
-import { handleBack } from '../../actions/ChooseStudentRoomActions';
+import {enterChatStudent, handleBack} from '../../actions/ChooseStudentRoomActions';
 import { theme } from '../../core/theme';
 import { SolveDeterministicMissionStrings, uploadStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
@@ -31,6 +31,7 @@ class SolveOpenQuestionMissionForm extends Component {
         this.onBackPress = this.onBackPress.bind(this);
         this.onPickFile = this.onPickFile.bind(this)
         this.onRestart = this.onRestart.bind(this)
+        this.onChatButtonPress=this.onChatButtonPress.bind(this);
     }
 
     onAnswerChanged(text) {
@@ -46,6 +47,12 @@ class SolveOpenQuestionMissionForm extends Component {
         const { navigation, apiKey, roomId, mission } = this.props;
         this.props.handleBack({ navigation, apiKey, roomId, missionId: mission.missionId });
     }
+
+    onChatButtonPress() {
+        const {navigation} = this.props;
+        this.props.enterChatStudent({navigation});
+    }
+
 
     onRestart() {
         this.props.onRestart()
@@ -136,13 +143,16 @@ class SolveOpenQuestionMissionForm extends Component {
     }
 
     render() {
-        const { mission } = this.props;
+        const { mission, isInCharge } = this.props;
+        console.log(isInCharge)
+        console.log(mission)
         return (
             <KeyboardAwareScrollView style={styles.container}>
                 <Appbar.Header>
                     <Appbar.BackAction onPress={() => { this.onBackPress() }} />
+                    <Appbar.Action icon="chat" onPress={() => this.onChatButtonPress()} />
                 </Appbar.Header>
-                <Header>{mission.question}</Header>
+                <Header>{mission ? mission.question[0]: ""}</Header>
                 {this.renderError()}
                 {this.renderTextBox()}
                 {this.renderPickFile()}
@@ -190,7 +200,13 @@ const styles = StyleSheet.create({
     },
     files_label: {
         width: DeviceWidth,
-    }
+    },
+    chatButton:{
+        //alignSelf: 'flex-end',
+        position: 'absolute',
+        top:550,
+        right:0,
+    },
 });
 
 const mapStateToProps = (state) => {
@@ -204,4 +220,5 @@ export default connect(mapStateToProps, {
     answerChanged,
     sendOpenQuestionAnswer,
     handleBack,
+    enterChatStudent,
 })(SolveOpenQuestionMissionForm);

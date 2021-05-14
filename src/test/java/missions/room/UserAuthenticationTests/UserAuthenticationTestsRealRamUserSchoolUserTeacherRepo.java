@@ -2,9 +2,9 @@ package missions.room.UserAuthenticationTests;
 
 import CrudRepositories.TeacherCrudRepository;
 import Data.Data;
-import DataAPI.GroupType;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.GroupType;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.TeacherManager;
@@ -31,8 +31,10 @@ public class UserAuthenticationTestsRealRamUserSchoolUserTeacherRepo extends Use
 
     @Override
     protected void initTeacherRepo(Teacher teacher, String alias) {
+
         try {
             Field userRepo = TeacherManager.class.getDeclaredField("teacherRepo");
+
             userRepo.setAccessible(true);
             userRepo.set(userAuthenticationManager,realTeacherRepo);
 

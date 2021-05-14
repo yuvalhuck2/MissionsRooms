@@ -1,14 +1,14 @@
 package missions.room.Managers;
 
-import DataAPI.MessageData;
-import DataAPI.OpCode;
-import DataAPI.Response;
-import DataAPI.UserProfileData;
+import DataObjects.APIObjects.MessageData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.UserProfileData;
 import ExternalSystems.UniqueStringGenerator;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Domain.Message;
 import missions.room.Domain.Ram;
-import missions.room.Domain.Users.User;
+import missions.room.Domain.Users.BaseUser;
 import missions.room.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static Utils.Utils.checkString;
@@ -56,22 +57,34 @@ public class ProfileMessagesManager {
         if(!APIResponse.getValue()){
             return new Response<>(false,OpCode.Not_Exist);
         }
-        Response<User> userResponse=userRepo.findUserForWrite(alias);
+        return sendInboxMessage(userAlias, alias, message);
+    }
+
+    public void sendMultipleMessages(Set<String> aliases, String senderApiKey, String message) {
+        String sender = ram.getAlias(senderApiKey);
+        sender = sender == null ? "system" : sender;
+        for (String alias : aliases) {
+            sendInboxMessage(sender, alias, message);
+        }
+    }
+
+    private Response<Boolean> sendInboxMessage(String sender, String receiver, String message) {
+        Response<BaseUser> userResponse=userRepo.findUserForWrite(receiver);
         if(userResponse.getReason()!=OpCode.Success) {
             log.warn(String.format("There was a problem from kind %s when trying to find user %s",
                     userResponse.getReason(),
-                    alias));
+                    receiver));
             return new Response<>(false,userResponse.getReason());
         }
 
-        User user=userResponse.getValue();
-        if(user==null){
+        BaseUser baseUser =userResponse.getValue();
+        if(baseUser ==null){
             return new Response<>(false,OpCode.Not_Exist);
         }
-        user.addMessage(new Message(UniqueStringGenerator.getTimeNameCode("ms"),
+        baseUser.addMessage(new Message(UniqueStringGenerator.getTimeNameCode("ms"),
                 message,
-                userAlias));
-        Response<User> saveUser= userRepo.save(user);
+                sender));
+        Response<BaseUser> saveUser= userRepo.save(baseUser);
 
         return new Response<>(saveUser.getReason()==OpCode.Success,
                 saveUser.getReason());
@@ -85,7 +98,7 @@ public class ProfileMessagesManager {
      */
     public Response<List<MessageData>> viewMessages(String apiKey){
         String userAlias=ram.getAlias(apiKey);
-        Response<User> userResponse=userRepo.findUser(userAlias);
+        Response<BaseUser> userResponse=userRepo.findUser(userAlias);
         if(userResponse.getReason()!=OpCode.Success) {
             log.warn(String.format("There was a problem from kind %s when trying to find user %s",
                     userResponse.getReason(),
@@ -112,7 +125,7 @@ public class ProfileMessagesManager {
     @Transactional
     public Response<Boolean> deleteMessage(String apiKey,String messageId){
         String userAlias=ram.getAlias(apiKey);
-        Response<User> userResponse=userRepo.findUserForWrite(userAlias);
+        Response<BaseUser> userResponse=userRepo.findUserForWrite(userAlias);
         if(userResponse.getReason()!=OpCode.Success) {
             log.warn(String.format("There was a problem from kind %s when trying to find user %s",
                     userResponse.getReason(),
@@ -120,27 +133,27 @@ public class ProfileMessagesManager {
             return new Response<>(false,userResponse.getReason());
         }
 
-        User user = userResponse.getValue();
-        if(user==null){
+        BaseUser baseUser = userResponse.getValue();
+        if(baseUser ==null){
             return new Response<>(false,OpCode.Not_Exist);
         }
-        Response<Boolean> deleteMessageResponse=user.deleteMessage(messageId);
+        Response<Boolean> deleteMessageResponse= baseUser.deleteMessage(messageId);
         if(deleteMessageResponse.getReason()!=OpCode.Success){
             return deleteMessageResponse;
         }
 
-        OpCode reason=userRepo.save(user).getReason();
+        OpCode reason=userRepo.save(baseUser).getReason();
         return new Response<>(reason==OpCode.Success,reason);
     }
 
     private Response<List<UserProfileData>> getAllUsersProfiles() {
-        Response<List<User>> users= userRepo.findAllUsers();
+        Response<List<BaseUser>> users= userRepo.findAllUsers();
         if(users.getReason()!=OpCode.Success){
             log.error("Function getAllUsersProfiles: connection to the DB lost");
         }
         return new Response<>(users.getValue()
                 .stream()
-                .map((User::getProfileData))
+                .map((BaseUser::getProfileData))
                 .collect(Collectors.toList()),
                 OpCode.Success);
     }

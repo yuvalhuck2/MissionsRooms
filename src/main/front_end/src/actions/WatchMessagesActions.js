@@ -32,7 +32,7 @@ export const searchChanged= (text) => {
         type: SEARCH_WATCH_MESSAGES_CHANGED,
         payload: text,
     };
-} 
+};
 
 export const filterMessages = (search, messages) =>{
     return {
@@ -46,7 +46,7 @@ export const messageChanged = (message) => {
         type: CHOOSE_MESSAGE,
         payload: message,
     }
-} 
+}
 
 export const deleteMessage = ({apiKey, message}) => {
     return async (dispatch)=>{

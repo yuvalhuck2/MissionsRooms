@@ -1,8 +1,7 @@
 package missions.room.Domain;
 
-import DataAPI.GroupType;
-import DataAPI.PointsData;
-import DataAPI.RecordTableData;
+import DataObjects.FlatDataObjects.PointsData;
+import DataObjects.FlatDataObjects.RecordTableData;
 
 import java.time.LocalDateTime;
 import java.util.*;

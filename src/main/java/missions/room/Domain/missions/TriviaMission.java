@@ -1,8 +1,8 @@
 package missions.room.Domain.missions;
 
 
-import DataAPI.MissionData;
-import DataAPI.RoomType;
+import DataObjects.FlatDataObjects.RoomType;
+import DataAPI.FlatDataObjects.MissionData;
 import missions.room.Domain.TriviaQuestion;
 
 import javax.persistence.*;

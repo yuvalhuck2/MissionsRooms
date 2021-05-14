@@ -1,6 +1,6 @@
 package missions.room.Domain;
 
-import DataAPI.*;
+import DataObjects.FlatDataObjects.*;
 import Utils.Utils;
 import missions.room.Domain.Users.SchoolUser;
 import missions.room.Domain.Users.Student;
@@ -159,5 +159,15 @@ public class Classroom{
 
     public boolean hasStudents() {
         return classGroups.parallelStream().anyMatch(ClassGroup::hasStudents);
+    }
+
+    public void deleteStudent(String alias){
+        for(ClassGroup classGroup: classGroups) {
+            if (classGroup.getStudent().containsKey(alias)) {
+                classGroup.getStudent().remove(alias);
+                return;
+            }
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 package missions.room.Communications.RealTime;
 
+import missions.room.Service.RoomService;
 import missions.room.Service.StudentRoomService;
 import missions.room.Service.UserAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import org.springframework.web.socket.config.annotation.*;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 /**
- * TODO tests for 2 users
  * 1. to check room with 2 users connected
  */
 
@@ -31,6 +31,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Autowired
     private StudentRoomService studentRoomService;
+
+    @Autowired
+    private RoomService roomService;
+
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -75,6 +79,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void handleDisconnectListener(SessionDisconnectEvent sessionDisconnectEvent) throws Exception {
         String userId = sessionDisconnectEvent.getUser().getName();
         studentRoomService.disconnectFromRooms(userId);
+        roomService.disconnectFromRooms(userId);
         userAuthenticationService.closeWebsocket(userId);
     }
 

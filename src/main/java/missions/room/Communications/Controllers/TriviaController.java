@@ -1,6 +1,6 @@
 package missions.room.Communications.Controllers;
 
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.Response;
 import DataAPI.TriviaQuestionData;
 import DataAPI.TriviaSubjectData;
 import missions.room.Service.TriviaService;

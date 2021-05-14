@@ -1,10 +1,15 @@
 package missions.room.Communications.Controllers;
 
-import DataAPI.*;
+import DataObjects.APIObjects.ApiKey;
+import DataObjects.APIObjects.CreateMissionData;
+import DataObjects.APIObjects.RoomIdAndApiKeyData;
+import DataObjects.APIObjects.RoomOpenAnswerData;
+import DataObjects.FlatDataObjects.MissionData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import Utils.Utils;
-import com.google.gson.Gson;
+import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Service.MissionService;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +26,7 @@ import java.util.List;
 
 @RestController // This means that this class is a Controller
 @RequestMapping(path="/mission") // This means URL's start with /demo (after Application path)
+@CommonsLog
 public class MissionController extends AbsController {
 
     @Autowired
@@ -44,18 +50,23 @@ public class MissionController extends AbsController {
         return response;
     }
 
-    @GetMapping("/unApprovedAnswers")
-    public Response<?> getUnApproveAnswers(@RequestParam String apiKey, @RequestParam(name = "roomId") String roomId) {
-        Response<RoomOpenAnswerData> res = missionService.watchSolutions(apiKey, roomId);
+    @PostMapping("/unApprovedAnswers")
+    public Response<?> getUnApproveAnswers(@RequestBody String apiKeyAndRoomId) {
+        RoomIdAndApiKeyData data=json.fromJson(apiKeyAndRoomId, RoomIdAndApiKeyData.class);
+        Response<RoomOpenAnswerData> res = missionService.watchSolutions(data.getApiKey(), data.getRoomId());
         return res;
     }
 
     @GetMapping("/downloadFile")
     public  ResponseEntity<?> downloadOpenAnswerFile(@RequestParam String apiKey, @RequestParam(name = "roomId") String roomId, @RequestParam(name = "missionId") String missionId) {
         Response<File> fileRes = missionService.getMissionOpenAnswerFile(apiKey, roomId, missionId);
-        String rootPath = Utils.getRootDirectory();
-        Path folderPath = FileSystems.getDefault().getPath(rootPath,"openAnswer", roomId, missionId);
-        File f = folderPath.toFile().listFiles()[0]; //TODO add defense
+//        String rootPath = Utils.getRootDirectory();
+//        Path folderPath = FileSystems.getDefault().getPath(rootPath,"openAnswer", roomId, missionId);
+        if (fileRes.getReason() != OpCode.Success) {
+            //TODO add logs
+            return null;
+        }
+        File f = fileRes.getValue(); //TODO add defense
         try {
             InputStreamResource resource = new InputStreamResource(new FileInputStream(f));
             HttpHeaders headers = new HttpHeaders();
@@ -65,9 +76,10 @@ public class MissionController extends AbsController {
             headers.add("Expires", "0");
             ResponseEntity<Object> responseEntity = ResponseEntity.ok().headers(headers).contentLength(f.length())
                     .contentType(MediaType.parseMediaType("application/txt")).body(resource);
+            log.info(responseEntity);
             return  responseEntity;
         } catch (FileNotFoundException e) { //TODO add log
-            e.printStackTrace();
+            log.error("error down;pad file", e);
         }
 
         return null;

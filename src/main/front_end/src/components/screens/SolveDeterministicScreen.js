@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ActivityIndicator,Appbar  } from 'react-native-paper';
+import { ActivityIndicator,Appbar ,IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { answerChanged, sendDeterministicAnswer } from '../../actions/SolveDeterministicActions';
-import {handleBack} from '../../actions/ChooseStudentRoomActions';
+import {handleBack,enterChatStudent} from '../../actions/ChooseStudentRoomActions';
 import { theme } from '../../core/theme';
 import { SolveDeterministicMissionStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
@@ -22,6 +22,7 @@ class SolveDeterministicForm extends Component {
     this.onAnswerChanged = this.onAnswerChanged.bind(this);
     this.onButtonPress = this.onButtonPress.bind(this);
     this.onBackPress = this.onBackPress.bind(this);
+    this.onChatButtonPress=this.onChatButtonPress.bind(this);
   }
 
   onAnswerChanged(text) {
@@ -32,6 +33,12 @@ class SolveDeterministicForm extends Component {
     const {roomId,mission,tries,apiKey, navigation,currentAnswer } = this.props;
     this.props.sendDeterministicAnswer({roomId,mission,tries,apiKey, navigation,currentAnswer });
   }
+
+  onChatButtonPress() {
+      const {navigation} = this.props;
+      this.props.enterChatStudent({navigation});
+  }
+
 
   onBackPress(){
     const {navigation,apiKey,roomId,mission} =this.props;
@@ -96,6 +103,7 @@ class SolveDeterministicForm extends Component {
       <KeyboardAwareScrollView style={styles.container}>
         <Appbar.Header>
           <Appbar.BackAction onPress={() => {this.onBackPress()}} />
+          <Appbar.Action icon="chat" onPress={() => this.onChatButtonPress()} />
         </Appbar.Header>
         <Header>{mission.question}</Header>
         {this.renderTextBox()}
@@ -132,6 +140,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: theme.colors.error,
   },
+  chatButton:{
+      //alignSelf: 'flex-end',
+      position: 'absolute',
+      top:550,
+      right:0,
+  },
 });
 
 const mapStateToProps = (state) => {
@@ -143,4 +157,5 @@ export default connect(mapStateToProps, {
   answerChanged,
   sendDeterministicAnswer,
   handleBack,
+  enterChatStudent,
 })(SolveDeterministicForm);

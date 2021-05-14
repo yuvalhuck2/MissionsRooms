@@ -1,13 +1,13 @@
 package missions.room.UserAuthenticationTests;
 
-import CrudRepositories.ClassroomRepository;
 import CrudRepositories.SchoolUserCrudRepository;
 import CrudRepositories.TeacherCrudRepository;
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.RegisterDetailsData;
-import DataAPI.Response;
-import DataAPI.TeacherData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.APIObjects.RegisterDetailsData;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.APIObjects.TeacherData;
+import missions.room.Domain.Users.SchoolUser;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.UserAuthenticationManager;
@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class UserAuthenticationTestsRealRamUserSchoolUserRepo extends UserAuthenticationTestsRealRamUserRepo {
+public class UserAuthenticationTestsRealRamUserSchoolUserRepo extends UserAuthenticationTestsRealRamBaseUserRepo {
 
     @Autowired
     protected SchoolUserRepo realSchoolUserRepo;
@@ -39,8 +39,7 @@ public class UserAuthenticationTestsRealRamUserSchoolUserRepo extends UserAuthen
     @Autowired
     protected TeacherCrudRepository teacherCrudRepository;
 
-    @Autowired
-    protected ClassroomRepository classroomRepository;
+
 
     @Mock
     private SchoolUserCrudRepository mockSchoolUserCrudRepository;
@@ -82,7 +81,7 @@ public class UserAuthenticationTestsRealRamUserSchoolUserRepo extends UserAuthen
     void testRegisterInvalidAlreadyRegisteredStudent(){
         Student student = dataGenerator.getStudent(Data.VALID);
         student.setPassword("pass");
-        realSchoolUserRepo.save(student);
+        Response<SchoolUser> res=realSchoolUserRepo.save(student);
         RegisterDetailsData detailsData=dataGenerator.getRegisterDetails(Data.VALID);
         Response<List<TeacherData>> response= userAuthenticationManager.register(detailsData);
         assertNull(response.getValue());

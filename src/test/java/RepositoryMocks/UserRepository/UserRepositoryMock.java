@@ -3,7 +3,7 @@ package RepositoryMocks.UserRepository;
 import CrudRepositories.UserCrudRepository;
 import Data.Data;
 import Data.DataGenerator;
-import missions.room.Domain.Users.User;
+import missions.room.Domain.Users.BaseUser;
 
 import java.util.Optional;
 
@@ -19,7 +19,7 @@ public class UserRepositoryMock implements UserCrudRepository {
     }
 
     @Override
-    public User findUserForWrite(String alias) {
+    public BaseUser findUserForWrite(String alias) {
         if (dataGenerator.getUser(Data.VALID_TEACHER).getAlias().equals(alias))
             return dataGenerator.getUser(Data.VALID_TEACHER);
         else if(dataGenerator.getUser(Data.VALID_STUDENT).getAlias().equals(alias))
@@ -30,7 +30,7 @@ public class UserRepositoryMock implements UserCrudRepository {
     }
 
     @Override
-    public User findUserForRead(String alias) {
+    public BaseUser findUserForRead(String alias) {
         if (dataGenerator.getUser(Data.VALID_TEACHER).getAlias().equals(alias))
             return dataGenerator.getUser(Data.VALID_TEACHER);
         else if(dataGenerator.getUser(Data.VALID_STUDENT).getAlias().equals(alias))
@@ -41,17 +41,17 @@ public class UserRepositoryMock implements UserCrudRepository {
     }
 
     @Override
-    public <S extends User> S save(S s) {
+    public <S extends BaseUser> S save(S s) {
         return null;
     }
 
     @Override
-    public <S extends User> Iterable<S> saveAll(Iterable<S> iterable) {
+    public <S extends BaseUser> Iterable<S> saveAll(Iterable<S> iterable) {
         return null;
     }
 
     @Override
-    public Optional<User> findById(String s) {
+    public Optional<BaseUser> findById(String s) {
         if (dataGenerator.getUser(Data.VALID_TEACHER).getAlias().equals(s))
             return Optional.ofNullable(dataGenerator.getUser(Data.VALID_TEACHER));
         else if(dataGenerator.getUser(Data.VALID_STUDENT).getAlias().equals(s))
@@ -67,12 +67,12 @@ public class UserRepositoryMock implements UserCrudRepository {
     }
 
     @Override
-    public Iterable<User> findAll() {
+    public Iterable<BaseUser> findAll() {
         return null;
     }
 
     @Override
-    public Iterable<User> findAllById(Iterable<String> iterable) {
+    public Iterable<BaseUser> findAllById(Iterable<String> iterable) {
         return null;
     }
 
@@ -87,12 +87,12 @@ public class UserRepositoryMock implements UserCrudRepository {
     }
 
     @Override
-    public void delete(User user) {
+    public void delete(BaseUser baseUser) {
 
     }
 
     @Override
-    public void deleteAll(Iterable<? extends User> iterable) {
+    public void deleteAll(Iterable<? extends BaseUser> iterable) {
 
     }
 

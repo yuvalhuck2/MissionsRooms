@@ -1,9 +1,8 @@
 package missions.room.RoomTemplateTests;
 
 import Data.Data;
-import DataAPI.OpCode;
+import DataObjects.FlatDataObjects.OpCode;
 import RepositoryMocks.RoomTemplateRepository.RoomTemplateCrudRepositoryMock;
-import RepositoryMocks.RoomTemplateRepository.RoomTemplateMockRepositorySearch;
 import missions.room.Managers.RoomTemplateManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

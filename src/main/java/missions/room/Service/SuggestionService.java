@@ -1,9 +1,7 @@
 package missions.room.Service;
 
-import DataAPI.Auth;
-import DataAPI.Response;
-import DataAPI.SuggestionData;
-import missions.room.Domain.Suggestion;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.APIObjects.SuggestionData;
 import missions.room.Managers.SuggestionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

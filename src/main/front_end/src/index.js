@@ -30,12 +30,15 @@ import {
   ChangePasswordScreen,
   PointsTableScreen,
   ManageUsersScreen,
-    AddUserScreen,
-    ResetPasswordScreen,
-    CloseClassroomScreen,
-    Test,
-    AddTriviaSubject
+  AddUserScreen,
+  ResetPasswordScreen,
+  CloseClassroomScreen,
+  Test,
+  ChooseTeacherRoomTypeScreen,
+  ChooseClassroomRoomScreen,
+  ChatRoomScreen, TriviaManagement, AddTriviaQuestion, SolveTriviaMission, AddTriviaMission,AddTriviaSubject
 } from './components/screens';
+import TeacherRoomMenuScreen from "./components/screens/TeacherRoomMenuScreen";
 
 const Stack = createStackNavigator();
 
@@ -124,11 +127,19 @@ const App = () => {
         <Stack.Screen name='Student' component={StudentScreen} />
         <Stack.Screen name='AddRoom' component={AddRoomScreen} />
         <Stack.Screen name='IT' component={ITScreen} />
-        <Stack.Screen name="UploadCsv" component={UploadCsvScreen} />
-        <Stack.Screen name="WatchProfile" component={WatchProfileScreen} />
-        <Stack.Screen name="WatchMessages" component={WatchMessagesScreen} />
-        <Stack.Screen name="AddSuggestion" component={AddSuggestionScreen} />
-        <Stack.Screen name="WatchSuggestions" component={WatchSuggestionsScreen} />
+        <Stack.Screen name="UploadCsv" component={UploadCsvScreen}/>
+        <Stack.Screen name="WatchProfile" component={WatchProfileScreen}/>
+        <Stack.Screen name="WatchMessages" component={WatchMessagesScreen}/>
+        <Stack.Screen name="AddSuggestion" component={AddSuggestionScreen}/>
+        <Stack.Screen name="WatchSuggestions" component={WatchSuggestionsScreen}/>
+        <Stack.Screen name ="ChooseTeacherRoomType" component={ChooseTeacherRoomTypeScreen}/>
+        <Stack.Screen name ="ChooseClassroomRoom" component={ChooseClassroomRoomScreen}/>
+        <Stack.Screen name = "TeacherRoomMenu" component={TeacherRoomMenuScreen}/>
+        <Stack.Screen name = "ChatRoom" component={ChatRoomScreen}/>
+        <Stack.Screen name = "TriviaManagement" component={TriviaManagement}/>
+        <Stack.Screen name = "AddTriviaQuestion" component={AddTriviaQuestion}/>
+        <Stack.Screen name = "SolveTriviaMission" component={SolveTriviaMission}/>
+        <Stack.Screen name = "AddTriviaMission" component={AddTriviaMission}/>
         <Stack.Screen name="AddTriviaSubject" component={AddTriviaSubject} />
       </Stack.Navigator>
     </NavigationContainer>

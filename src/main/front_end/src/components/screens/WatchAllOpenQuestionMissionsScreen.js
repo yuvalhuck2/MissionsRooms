@@ -45,7 +45,7 @@ class WatchAllAnswersForm extends Component {
         <List.Item 
           right={props => <View style={styles.item_view}>
             <Text style={styles.item_text}>{mission_title + index}</Text>
-            <List.Icon {...props} icon="account" />
+            <List.Icon {...props} icon="playlist-edit" />
           </View>}
           key={mission.missionId}
           onPress={() => this.onMissionPress(mission)}
@@ -115,18 +115,19 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   //const { search, message, profile, allUsers, presentedUsers, apiKey, errorMessage, loading } = state.WatchProfile;
   //return { search, message, profile, allUsers, presentedUsers, apiKey, errorMessage, loading };
-  openAnswers = [
-    {
-      "missionId": "open1",
-      "roomId": null,
-      "openAnswer": "answerrrr",
-      "hasFile": true,
-      "missionQuestion": "שאלה"
-    }
-  ];
-  roomName = "ss";
-  roomId = "rid1";
-  return { openAnswers, roomName, roomId};
+  return { apiKey, roomId, roomName, openAnswers} = state.WatchAllOpenQuestionMissions;
+  // openAnswers = [
+  //   {
+  //     "missionId": "open1",
+  //     "roomId": null,
+  //     "openAnswer": "answerrrr",
+  //     "hasFile": true,
+  //     "missionQuestion": "שאלה"
+  //   }
+  // ];
+  // roomName = "ss";
+  // roomId = "rid1";
+  // return { openAnswers, roomName, roomId};
 };
 
 export default connect(mapStateToProps, {

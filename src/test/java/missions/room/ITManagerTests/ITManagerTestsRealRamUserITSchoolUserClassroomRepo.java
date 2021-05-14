@@ -2,8 +2,7 @@ package missions.room.ITManagerTests;
 
 import CrudRepositories.ClassroomRepository;
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
 import missions.room.Domain.Classroom;
 import missions.room.Managers.ITManager;
 import missions.room.Repo.ClassroomRepo;
@@ -21,7 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class ITManagerTestsRealRamUserITSchoolUserClassroomRepo extends ITManagerTestRealRamUserITSchoolUserRepo{
+public class ITManagerTestsRealRamUserITSchoolUserClassroomRepo extends ITManagerTestRealRamUserITSchoolUserRepo {
 
     @Autowired
     protected ClassroomRepo realClassroomRepo;

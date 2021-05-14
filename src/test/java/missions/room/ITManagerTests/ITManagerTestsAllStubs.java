@@ -2,7 +2,12 @@ package missions.room.ITManagerTests;
 
 import Data.Data;
 import Data.DataGenerator;
-import DataAPI.*;
+import DataObjects.APIObjects.RegisterDetailsData;
+import DataObjects.APIObjects.StudentData;
+import DataObjects.APIObjects.TeacherData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.UserProfileData;
 import ExternalSystems.HashSystem;
 import missions.room.Domain.Classroom;
 import missions.room.Domain.Ram;

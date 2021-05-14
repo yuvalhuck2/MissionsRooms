@@ -1,6 +1,8 @@
 package missions.room.Communications.Controllers;
 
-import DataAPI.*;
+import DataObjects.APIObjects.*;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.RoomDetailsData;
 import missions.room.Service.StudentRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,6 +51,7 @@ public class StudentRoomController extends AbsController{
                 data.getRoomId(),data.isAnswer());
         return response;
     }
+
 
     @PostMapping("/trivia")
     public Response<?> answerTriviaMission(@RequestBody String answerData){

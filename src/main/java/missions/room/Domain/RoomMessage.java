@@ -20,4 +20,7 @@ public class RoomMessage {
         this.sender = sender;
         this.message = message;
     }
+
+
+
 }

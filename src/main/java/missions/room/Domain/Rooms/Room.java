@@ -1,15 +1,12 @@
 package missions.room.Domain.Rooms;
 
-import DataAPI.*;
+import DataObjects.FlatDataObjects.*;
 import Utils.Utils;
 import missions.room.Domain.OpenAnswer;
 import missions.room.Domain.missions.Mission;
 import missions.room.Domain.RoomMessage;
 import missions.room.Domain.RoomTemplate;
-import missions.room.Domain.TriviaQuestion;
 import missions.room.Domain.Users.Teacher;
-import missions.room.Domain.missions.*;
-import org.assertj.core.util.VisibleForTesting;
 
 import javax.persistence.*;
 import java.util.*;
@@ -30,6 +27,9 @@ public abstract class Room {
     protected int currentMission;
 
     protected int countCorrectAnswer;
+
+    @Transient
+    protected boolean isTeacherConnect;
 
     @Transient
     protected Set<String>  studentWereChosen;
@@ -80,6 +80,7 @@ public abstract class Room {
         connectedStudents=new HashSet<>();
         studentWereChosenForStory=new HashSet<>();
         waitingForStory=false;
+        this.isTeacherConnect=false;
         openAnswers = new ArrayList<>();
     }
 
@@ -161,12 +162,15 @@ public abstract class Room {
         return currentMission>=roomTemplate.getMissions().size()-1;
     }
 
+    public boolean allQuestionsAnswered() {
+        return currentMission > roomTemplate.getMissions().size() - 1;
+    }
+
     public boolean toCloseRoom(){
         return isLastMission()&&allOpenQuestionsApproved();
     }
 
-    //TODO implement after doing openRoomMission
-    private boolean allOpenQuestionsApproved() {
+    public boolean allOpenQuestionsApproved() {
         return openAnswers.isEmpty();
     }
 
@@ -176,6 +180,12 @@ public abstract class Room {
             return null;
         }
         MissionData missionData = mission.getData();
+        return new RoomDetailsData(roomId,name,missionData,roomTemplate.getType(),waitingForStory);
+    }
+
+    public  RoomDetailsData getRoomDetailsData () {
+        Mission mission = roomTemplate.getMission(currentMission);
+        MissionData missionData = mission == null ? null : mission.getData();
         return new RoomDetailsData(roomId,name,missionData,roomTemplate.getType(),waitingForStory);
     }
 
@@ -192,14 +202,23 @@ public abstract class Room {
             }
             return OpCode.NOT_IN_CHARGE;
         }
+        else if(teacher.getAlias().equals(alias)){
+            isTeacherConnect=true;
+            return OpCode.Teacher;
+        }
         return OpCode.NOT_BELONGS_TO_ROOM;
     }
 
     public abstract boolean isBelongToRoom(String alias);
 
     public Response<String> disconnect(String alias) {
-        connectedStudents.remove(alias);
-        if(connectedStudents.isEmpty()){
+        if(teacher.getAlias().equals(alias)){
+            isTeacherConnect=false;
+        }
+        else {
+            connectedStudents.remove(alias);
+        }
+        if(connectedStudents.isEmpty()&&!isTeacherConnect){
             return new Response<>(null, OpCode.Delete);
         }
         else if(missionIncharge.equals(alias)){
@@ -233,7 +252,12 @@ public abstract class Room {
         return true;
     }
 
+    public boolean isTeacherConnect() {
+        return isTeacherConnect;
+    }
+
     public void addOpenAnswer(OpenAnswer openAnswer) {
+        resolveMission(openAnswer.getMissionId()); // run over current answer
         openAnswers.add(openAnswer);
     }
 
@@ -249,4 +273,9 @@ public abstract class Room {
         return alias.equals(missionIncharge);
     }
 
+    public boolean resolveMission(String misId) {
+        return openAnswers.removeIf(ans -> ans.getMissionId().equals(misId));
+    }
+
+    public abstract Set<String> getStudentsAlias();
 }

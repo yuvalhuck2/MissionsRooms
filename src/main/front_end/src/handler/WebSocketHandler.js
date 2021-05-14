@@ -23,9 +23,14 @@ export function sendMessage(name) {
   stompClient.send("/app/hello", {},  name);
 }
 
+
 //close web soceket
 export function closeSocket() {
   if(stompClient!==null) {
     stompClient.disconnect();
   }
 }
+
+
+
+

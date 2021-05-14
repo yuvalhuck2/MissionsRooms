@@ -18,8 +18,11 @@ import ManageUsersReducer from './ManageUsersReducer';
 import SolveOpenQuestion from './SolveOpenQuestionReducer'
 import AddUser from './AddUserReducer'
 import ResetPasswordReducer from './ResetPasswordReducer'
+import ChatRoomReducer from './ChatRoomReducer';
+import ChooseTeacherRoomsReducer from './ChooseTeacherRoomsReducer';
 import WatchOpenAnswerReducer from './WatchOpenAnswerReducer'
 import CloseClassroomReducer from './CloseClassroomReducer';
+import WatchAllOpenQuestionMissionsReducer from './WatchAllOpenQuestionMissionsReducer';
 import AddTriviaSubjectReducer from "./AddTriviaSubjectReducer"
 import AddTriviaQuestionReducer from "./AddTriviaQuestionReducer";
 
@@ -38,6 +41,8 @@ export default combineReducers({
   addSuggestion: AddSuggestionReducer,
   watchSuggestions: WatchSuggestionsReducer,
   changePassword: ChangePasswordReducer,
+  ChooseTeacherRoomType: ChooseTeacherRoomsReducer,
+  ChatRoom: ChatRoomReducer,
   pointsTable: PointsTableReducer,
   manageUsers: ManageUsersReducer,
   SolveOpenQuestion: SolveOpenQuestion,
@@ -45,6 +50,7 @@ export default combineReducers({
   resetPassword: ResetPasswordReducer,
   WatchOpenAnswer: WatchOpenAnswerReducer,
   closeClassroom: CloseClassroomReducer,
+  WatchAllOpenQuestionMissions: WatchAllOpenQuestionMissionsReducer
   addTriviaSubject: AddTriviaSubjectReducer,
   addTriviaQuestion: AddTriviaQuestionReducer,
 });

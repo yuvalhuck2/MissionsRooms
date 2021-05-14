@@ -1,8 +1,8 @@
 package missions.room.Communications.Controllers;
 
-import DataAPI.ApiKey;
-import DataAPI.MessageData;
-import DataAPI.Response;
+import DataObjects.APIObjects.ApiKey;
+import DataObjects.APIObjects.MessageData;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Service.ProfileMessagesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

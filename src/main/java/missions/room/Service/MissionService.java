@@ -1,6 +1,8 @@
 package missions.room.Service;
 
-import DataAPI.*;
+import DataObjects.APIObjects.RoomOpenAnswerData;
+import DataObjects.FlatDataObjects.MissionData;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Managers.MissionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

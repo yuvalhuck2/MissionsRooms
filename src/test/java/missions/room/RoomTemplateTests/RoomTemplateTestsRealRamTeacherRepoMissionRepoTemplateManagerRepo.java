@@ -1,14 +1,11 @@
 package missions.room.RoomTemplateTests;
 
 import CrudRepositories.RoomTemplateCrudRepository;
-import CrudRepositories.TeacherCrudRepository;
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.RoomTemplateDetailsData;
-import RepositoryMocks.RoomTemplateRepository.RoomTemplateMockRepositorySearch;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.APIObjects.RoomTemplateDetailsData;
 import missions.room.Domain.RoomTemplate;
 import missions.room.Domain.missions.KnownAnswerMission;
-import missions.room.Managers.RoomTemplateManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

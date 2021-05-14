@@ -16,7 +16,7 @@ const initialState = {
     loading:false,
   };
 
-import { 
+import {
     SEARCH_CHANGED_MANAGE_USERS,
     MANAGED_USERS_CHANGED,
     RESET_MANAGE_USERS,
@@ -31,6 +31,7 @@ import {
     CHANGE_ENABLE_LAST_NAME,
     LOGIN_IT,
     CLEAR_STATE,
+    DELETE_USER, UPDATE_ERROR_DELETE_USER,
 } from '../actions/types';
 
 export default (state = initialState, action) => {
@@ -52,7 +53,6 @@ export default (state = initialState, action) => {
         case WAIT_MANAGE_USERS:
             return {...state, loading:true}
         case ACTION_FINISHED_MANAGED_USERS:
-            console.log(action.payload)
             currentUser = state.presentedUsers.find((user)=> user.alias == state.profile)
             currentFromAllUsers = state.allUsers.find((user)=> user.alias == state.profile)
             if(action.payload.firstName.trim() != ''){
@@ -60,7 +60,6 @@ export default (state = initialState, action) => {
                 currentFromAllUsers.firstName = action.payload.firstName;
             }
             if(action.payload.lastName.trim() != ''){
-                console.log("herrrreee")
                 currentUser.lastName = action.payload.lastName;
                 currentFromAllUsers.lastName = action.payload.lastName;
             }
@@ -75,6 +74,11 @@ export default (state = initialState, action) => {
         case UPDATE_ERROR_MANAGE_USERS:
             alert(action.payload)
             return { ...state, errorMessage: action.payload, loading:false};
+        case DELETE_USER:
+            newAllUsers=state.allUsers.filter((user)=>user.alias!==action.payload.alias);
+            newPresentedUsers=state.presentedUsers.filter((user)=>user.alias!==action.payload.alias)
+            return {...state,allUsers:newAllUsers,presentedUsers:newPresentedUsers};
+
         case CLEAR_STATE:
             return initialState
         default:

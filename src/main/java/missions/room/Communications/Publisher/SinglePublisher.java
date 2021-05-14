@@ -1,6 +1,9 @@
 package missions.room.Communications.Publisher;
 
+import missions.room.Managers.ChatManager;
+import missions.room.Managers.ITManager;
 import missions.room.Managers.ManagerRoomStudent;
+import missions.room.Managers.RoomManager;
 
 public class SinglePublisher {
 
@@ -10,8 +13,12 @@ public class SinglePublisher {
     }
 
     public static void initPublisher(Publisher pub){
-            publisher=pub;
-            ManagerRoomStudent.initPublisher();
+        publisher=pub;
+        ManagerRoomStudent.initPublisher();
+        RoomManager.initPublisher();
+        ChatManager.initPublisher();
+        ITManager.initPublisher();
+
     }
 
 

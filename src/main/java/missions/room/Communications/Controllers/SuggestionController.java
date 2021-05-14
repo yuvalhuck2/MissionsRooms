@@ -1,11 +1,10 @@
 package missions.room.Communications.Controllers;
 
 
-import DataAPI.ApiKey;
-import DataAPI.Response;
+import DataObjects.APIObjects.ApiKey;
+import DataObjects.FlatDataObjects.Response;
 import java.util.List;
-import DataAPI.SuggestionData;
-import missions.room.Domain.Suggestion;
+import DataObjects.APIObjects.SuggestionData;
 import missions.room.Service.SuggestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

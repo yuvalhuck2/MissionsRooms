@@ -1,15 +1,17 @@
 package missions.room.Service;
 
-import DataAPI.*;
-import missions.room.Domain.Users.User;
+import DataObjects.APIObjects.AddITData;
+import DataObjects.APIObjects.RegisterDetailsData;
+import DataObjects.APIObjects.StudentData;
+import DataObjects.APIObjects.TeacherData;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.UserProfileData;
 import missions.room.Managers.ITManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import sun.java2d.cmm.Profile;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ITService {
@@ -74,5 +76,13 @@ public class ITService {
      */
     public Response<Boolean> addTeacher(String apiKey, TeacherData profileDetails){
         return itManager.addTeacher(apiKey,profileDetails);
+    }
+
+    public Response<Boolean> deleteUser(String apiKey,String alias){
+        return itManager.deleteUser(apiKey,alias);
+    }
+
+    public Response<Integer> deleteSeniorStudents(String apiKey){
+        return itManager.deleteSeniorStudents(apiKey);
     }
 }

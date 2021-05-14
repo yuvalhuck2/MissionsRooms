@@ -10,7 +10,9 @@ import { theme } from '../../core/theme';
 import Button from '../common/Button';
 import Header from '../common/Header';
 import TextInput from '../common/TextInput';
-
+import {
+  OPEN_QUESTION
+} from '../../actions/types';
 
 const {
     enter_question,
@@ -52,8 +54,8 @@ class AddOpenQuestionMissionForm extends Component{
     }
 
     onButtonPress() {
-        const {apiKey,question,missionTypes,navigation} = this.props;
-        this.props.addMission( {apiKey,question,missionTypes,navigation} );
+        const {apiKey,question, points, missionTypes,navigation} = this.props;
+        this.props.addMission( {apiKey,question, points, navigation,missionTypes, className: OPEN_QUESTION} );
     }
 
     renderSpinner() {
@@ -156,8 +158,8 @@ const styles = StyleSheet.create({
   });
 
 const mapStateToProps = (state) => {
-    const { apiKey, question, missionTypes, loading, errorMessage } = state.addMission;
-    return { apiKey, question, missionTypes, loading, errorMessage };
+    const { apiKey, question, points, missionTypes, loading, errorMessage } = state.addMission;
+    return { apiKey, question, points, missionTypes, loading, errorMessage };
   };
   
 export default connect(mapStateToProps, {

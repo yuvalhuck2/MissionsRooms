@@ -4,7 +4,8 @@ package missions.room.ManagerRoomStudentTests;
 import CrudRepositories.*;
 import Data.Data;
 import Data.DataGenerator;
-import DataAPI.*;
+import DataObjects.APIObjects.SolutionData;
+import DataObjects.FlatDataObjects.*;
 import DomainMocks.MockRam;
 import DomainMocks.PublisherMock;
 import RepositoryMocks.ClassGroupRepository.ClassGroupRepositoryMock;
@@ -21,7 +22,7 @@ import missions.room.Domain.OpenAnswer;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Users.Student;
-import missions.room.Domain.Users.User;
+import missions.room.Domain.Users.BaseUser;
 import missions.room.Managers.ManagerRoomStudent;
 import missions.room.Repo.*;
 import org.junit.jupiter.api.AfterEach;
@@ -45,7 +46,7 @@ import java.util.List;
 import java.lang.reflect.Field;
 
 import static Data.DataConstants.*;
-import static DataAPI.OpCode.*;
+import static DataObjects.FlatDataObjects.OpCode.*;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -184,7 +185,7 @@ public class ManagerRoomStudentAllStubs {
         closeable = MockitoAnnotations.openMocks(this);
         Student student = dataGenerator.getStudent(Data.VALID);
         Student student2 = dataGenerator.getStudent(Data.VALID2);
-        User user=dataGenerator.getUser(Data.VALID_STUDENT);
+        BaseUser baseUser =dataGenerator.getUser(Data.VALID_STUDENT);
         Room studentRoom=dataGenerator.getRoom(Data.Valid_Student);
         studentRoom.connect(student.getAlias());
         Room groupRoom=dataGenerator.getRoom(Data.Valid_Group);
@@ -203,7 +204,7 @@ public class ManagerRoomStudentAllStubs {
         Room openAnsRoom = dataGenerator.getRoom((Data.VALID_OPEN_ANS));
 
         when(mockRam.getAlias(thirdStudentKey))
-                .thenReturn(user.getAlias());
+                .thenReturn(baseUser.getAlias());
         when(mockRam.getAlias(studentApiKey))
                 .thenReturn(student.getAlias());
         when(mockRam.getApiKey(student.getAlias()))
@@ -259,8 +260,8 @@ public class ManagerRoomStudentAllStubs {
 
         when(mockStudentRepo.findStudentById(student.getAlias()))
                 .thenReturn(new Response<>(student, OpCode.Success));
-        when(mockStudentRepo.findStudentById(user.getAlias()))
-                .thenReturn(new Response<>((Student) user, OpCode.Success));
+        when(mockStudentRepo.findStudentById(baseUser.getAlias()))
+                .thenReturn(new Response<>((Student) baseUser, OpCode.Success));
         when(mockStudentRepo.findStudentById(student2.getAlias()))
                 .thenReturn(new Response<>(student2, OpCode.Success));
         when(mockStudentRepo.findStudentById(WRONG_USER_NAME))
@@ -370,9 +371,7 @@ public class ManagerRoomStudentAllStubs {
         assertEquals(notification.getReason(),OpCode.Update_Room);
         RoomDetailsData detailsData= (RoomDetailsData) notification.getValue();
         checkEqualsWithRoomData(Data.VALID_2Mission_Group,detailsData);
-        Notification inChargeNotification=((PublisherMock)mockPublisher).getNotifications(studentApiKey).get(1);
-        assertEquals(inChargeNotification.getReason(),IN_CHARGE);
-        assertEquals(roomId,inChargeNotification.getValue());
+        assertTrue(detailsData.isInCharge());
     }
 
     @Test
@@ -852,28 +851,18 @@ public class ManagerRoomStudentAllStubs {
         assertTrue(response.getValue());
         assertEquals(response.getReason(), Success);
 
-        NonPersistenceNotification<String> notification= (NonPersistenceNotification<String>) ((PublisherMock)mockPublisher)
+        NonPersistenceNotification<RoomDetailsData> notification= (NonPersistenceNotification<RoomDetailsData>) ((PublisherMock)mockPublisher)
                 .getNotifications(studentApiKey).get(0);
         assertEquals(notification.getReason(), Update_Room);
         assertEquals(notification.getValue(), roomDetailsData);
+        boolean isInCharge = notification.getValue().isInCharge();
 
-        notification= (NonPersistenceNotification<String>) ((PublisherMock)mockPublisher)
+        notification= (NonPersistenceNotification<RoomDetailsData>) ((PublisherMock)mockPublisher)
                 .getNotifications(valid2StudentApiKey).get(1);
         assertEquals(notification.getReason(), Update_Room);
         assertEquals(notification.getValue(), roomDetailsData);
+        assertTrue(notification.getValue().isInCharge() || isInCharge );
 
-        try {
-            notification = (NonPersistenceNotification<String>) ((PublisherMock) mockPublisher)
-                    .getNotifications(valid2StudentApiKey).get(2);
-            assertEquals(notification.getReason(), IN_CHARGE);
-            assertEquals(notification.getValue(), room.getRoomId());
-        }
-        catch(Exception e){
-            notification = (NonPersistenceNotification<String>) ((PublisherMock) mockPublisher)
-                    .getNotifications(studentApiKey).get(1);
-            assertEquals(notification.getReason(), IN_CHARGE);
-            assertEquals(notification.getValue(), room.getRoomId());
-        }
     }
 
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View,Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ActivityIndicator,Appbar, List, Dialog, Portal, Searchbar, DataTable, Switch} from 'react-native-paper';
 import { connect } from 'react-redux';
@@ -8,7 +8,7 @@ import { searchChanged, editUserDetails, firstNameChanged, lastNameChanged, chan
   deleteUser, passToTransferGroup, handleBack, filterUsers,  changeEnableFirstName,
   changeEnableLastName} from '../../actions/ManageUsersActions';
 import { theme } from '../../core/theme';
-import { WatchProfileStrings,RolesStrings, ManageUsersStrings } from '../../locale/locale_heb';
+import { WatchProfileStrings,RolesStrings, ManageUsersStrings ,DeleteUserString} from '../../locale/locale_heb';
 import Button from '../common/Button';
 import Header from '../common/Header';
 import TextInput from '../common/TextInput';
@@ -26,6 +26,11 @@ const {
   supervisor,
 } = RolesStrings;
 
+const {
+  sure,
+    yes,
+    no,
+}=DeleteUserString;
 const {
   edit_details,
   delete_user,
@@ -83,7 +88,13 @@ class ManageUsersForm extends Component {
   }
 
   onDeleteButtonPress(){
-    
+    const {apiKey,profile} = this.props;
+
+    return Alert.alert(sure,"",[
+        {text:yes,onPress:()=>this.props.deleteUser({apiKey,alias:profile})},
+        {text:no,onPress:()=>{}}
+    ]);
+
   }
 
   setEnableFirstName(){

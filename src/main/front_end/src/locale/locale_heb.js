@@ -40,7 +40,9 @@ export const watchOpenSolution = {
   download_btn: 'הורד קובץ',
   header: 'פתרון משימה',
   question_title: 'שאלה:',
-  answer_title: 'תשובה:'
+  answer_title: 'תשובה:',
+  approve_ans: 'אשר תשובה',
+  reject_ans: 'דחה תשובה',
 };
 
 export const uploadStringsErrors = {
@@ -83,6 +85,7 @@ export const AddDeterministicMissionErrors = {
   answer_empty: 'יש להזין תשובה',
   types_empty: 'יש לבחור לפחות סוג משימה אחד',
   server_error: 'שגיאת שרת',
+  points_must_be_positive:'מספר הנקודות חייב להיות חיובי',
 };
 
 export const AddDeterministicMissionSuccess = {
@@ -96,7 +99,10 @@ export const AddStrings = {
 export const ChooseMissionToAddStrings = {
   header: ' יש לבחור סוג משימה להוספה',
   deterministicButton: 'שאלה עם פתרון יחיד',
-  OpenAnswerMissionButton: 'שאלה פתוחה/העלאת קובץ'
+  OpenAnswerMissionButton: 'שאלה פתוחה/העלאת קובץ',
+  StoryMissionButton: 'סיפור בהמשכים',
+  enter_points: 'כמות נקודות עבור המשימה',
+  TriviaMissionButton: 'משימת טריוויה',
 };
 
 export const AddRoomTempalteStrings = {
@@ -146,6 +152,11 @@ export const ChooseMissionsTemplateStrings = {
   story_description:'סוג: משימת סיפור בהמשכים',
 };
 
+export const ResponseOpenAnsStrings = {
+  approved: 'תשובה אושרה בהצלחה',
+  rejected: 'תשובה נדחתה בהצלחה'
+}
+
 export const TeacherStrings = {
   addMission: 'הוספת משימה',
   addTemplate: 'בניית תבנית לחדר',
@@ -154,6 +165,7 @@ export const TeacherStrings = {
   main_screen: 'התנתק/י',
   watch_suggestions:'צפייה בהצעות',
   add_trivia_subject: 'נושא טריוויה',
+  WatchRooms:'צפיה בחדרים',
 };
 
 export const AddRoomStrings = {
@@ -177,6 +189,11 @@ export const AddRoomErrors = {
   room_added: 'החדר נוסף בהצלחה',
 };
 
+export const CloseRoom ={
+    room_closed:'החדר נמחק בהצלחה',
+    connected_students:'המחיקה נכשלה: ישנם תלמידים מחוברים לחדר',
+}
+
 export const ChooseTempalteStrings = {
   header: 'יש לבחור תבנית לחדר',
   template_name: 'שם התבנית: ',
@@ -194,6 +211,32 @@ export const ChooseStudentRoomStrings = {
   solve: 'כניסה',
   no_rooms: 'אין לך חדרים פעילים',
 };
+
+
+export const ChooseTeacherRoomStrings = {
+    header: 'בחירת חדר',
+    room_name: 'שם החדר: ',
+    solve: 'כניסה',
+    no_rooms: 'אין לך חדרים פעילים',
+};
+
+export const ChooseTeacherRoomTypeStrings={
+  classroom: 'חדרים כיתתיים',
+  group: 'חדרים קבוצתיים',
+  personal:'חדרים אישיים',
+  header:'בחירת סוג חדר',
+}
+
+export const TeacherRoomMenuStrings={
+    chat: 'כניסה לצאט',
+    approve_answer: 'אישור תשובות',
+    close_room:'סגירת החדר',
+    mission:'משימה',
+    of:'מתוך',
+    sure:'האם אתה בטוח שאתה רוצה למחוק את החדר?',
+    yes:'כן',
+    no:'לא',
+}
 
 export const ChooseRoomStudentErrors = {
   room_empty: 'יש לבחור חדר',
@@ -245,6 +288,7 @@ export const GeneralErrors = {
   classroom_not_exist:'לפי רישומי המערכת, אין לך כיתה',
   wrong_alias: 'יש להזין שם משתמש תקין',
   mail_error: 'יש תקלה עם שליחת המייל, נא נסו שנית',
+  teacher_has_classroom:'לא ניתן למחוק מורה עם כיתה',
 };
 
 export const ITStrings = {
@@ -255,6 +299,7 @@ export const ITStrings = {
   add_teacher: 'הוספת מורה',
   add_student: 'הוספת תלמיד',
   close_classroom: 'סגירת כיתה',
+  delete_senior:'מחיקת תלמידי י"ב',
 };
 
 export const addMissionErrors = {
@@ -348,6 +393,15 @@ export const RolesStrings = {
   supervisor:'מנהל מפקח',
 }
 
+export const DeleteUserString={
+  sure:'האם אתה בטוח שאתה רוצה למחוק את המשתמש?',
+  yes:'כן',
+  no:'לא',
+  deleted:'נמחקת מהמערכת',
+    sureSeniors:'האם אתה בטוח שאתה רוצה למחוק המשתמשים?',
+    deletedSuccessfully: 'תלמידים נמחקו בהצלחה',
+
+}
 export const WatchMessagesStrings = {
   sender:'',
   enter_search:'יש להזין את קידומת מייל השולח',
@@ -368,7 +422,7 @@ export const WatchSuggestionsStrings = {
   watch_suggestions:'צפייה בהצעות',
   exit:'יציאה',
   suggestion_deleted:'ההודעה נמחקה בהצלחה',
-} 
+}
 
 export const ChangePasswordStrings = {
   header:'שינוי סיסמא',
@@ -473,6 +527,14 @@ export const WatchAllOpenQuestionMissions = {
   mission_title: 'משימה מספר ',
   title:'משימות עם תשובה פתוחה בחדר: '
 };
+
+
+export const TriviaManagementStrings = {
+  header: "ניהול טריוויה",
+  subjectManagement: "ניהול נושאים",
+  questionManagement: "ניהול שאלות",
+  viewQuestions: "צפייה בשאלות",
+}
 
 export const AddTriviaSubjectStrings = {
   header: 'הוספת נושא טריויה',
