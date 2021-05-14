@@ -97,7 +97,7 @@ public class TriviaManager extends TeacherManager{
         if(res.getReason() == OpCode.Success){
             List<TriviaQuestion> triviaQuestions = res.getValue();
             List<TriviaQuestionData> triviaQuestionData = triviaQuestions.stream()
-                    .map(tq -> new TriviaQuestionData(tq.getQuestion(), tq.getAnswers(), tq.getCorrectAnswer(), tq.getSubject()))
+                    .map(tq -> new TriviaQuestionData(tq.getId(), tq.getQuestion(), tq.getAnswers(), tq.getCorrectAnswer(), tq.getSubject()))
                     .collect(Collectors.toList());
             return new Response<>(triviaQuestionData, OpCode.Success);
         }else{
@@ -128,7 +128,7 @@ public class TriviaManager extends TeacherManager{
         if (triviaQuestions.getReason() == OpCode.Success){
             List<TriviaQuestion> trivQuestions = triviaQuestions.getValue();
             List<TriviaQuestionData> triviaQuestionData = trivQuestions.stream()
-                    .map(tq -> new TriviaQuestionData(tq.getQuestion(), tq.getAnswers(), tq.getCorrectAnswer(), tq.getSubject()))
+                    .map(tq -> new TriviaQuestionData(tq.getId(), tq.getQuestion(), tq.getAnswers(), tq.getCorrectAnswer(), tq.getSubject()))
                     .collect(Collectors.toList());
             return new Response<>(triviaQuestionData, OpCode.Success);
         }else{

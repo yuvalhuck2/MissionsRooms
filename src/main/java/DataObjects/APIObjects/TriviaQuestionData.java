@@ -4,17 +4,21 @@ import java.util.List;
 import java.util.Objects;
 
 public class TriviaQuestionData {
+    private String id;
     private String question;
     private List<String> wrongAnswers;
     private String correctAnswer;
     private String subject;
 
-    public TriviaQuestionData(String question, List<String> answers, String correctAnswer, String subject) {
+    public TriviaQuestionData(String id, String question, List<String> answers, String correctAnswer, String subject) {
+        this.id = id;
         this.question = question;
         this.wrongAnswers = answers;
         this.correctAnswer = correctAnswer;
         this.subject = subject;
     }
+
+    public String getId(){return id;}
 
     public String getQuestion() {
         return question;

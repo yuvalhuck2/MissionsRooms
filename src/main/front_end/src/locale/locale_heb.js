@@ -549,3 +549,12 @@ export const AddTriviaSubjectErrors = {
   invalidSubject: 'נושא טריויה לא תקין',
 
 }
+
+export const AddTriviaQuestionStrings = {
+  header: 'הוספת שאלת טריוויה',
+  addQuestion: 'הוסף שאלה',
+  addSubject: 'הכנס נושא טריוויה',
+  addWrongAnswer: 'הכנס תשובה שגויה',
+  addCorrectAnswer: 'הכנס תשובה נכונה',
+}
+

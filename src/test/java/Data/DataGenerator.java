@@ -151,15 +151,15 @@ public class DataGenerator {
         triviaQuestionHashMap = new HashMap<Data, TriviaQuestionData>();
         List<String> validAnswers = Arrays.asList("ans1", "ans2", "correctANS");
         List<String> invalidAnswers = new ArrayList<>();
-        triviaQuestionHashMap.put(Data.VALID, new TriviaQuestionData( "question?", validAnswers,
+        triviaQuestionHashMap.put(Data.VALID, new TriviaQuestionData( "1", "question?", validAnswers,
                 "correctANS", triviaSubjectHashMap.get(Data.VALID)));
-        triviaQuestionHashMap.put(Data.VALID2, new TriviaQuestionData( "question?", validAnswers,
+        triviaQuestionHashMap.put(Data.VALID2, new TriviaQuestionData( "2","question?", validAnswers,
                 "correctANS", triviaSubjectHashMap.get(Data.VALID2)));
-        triviaQuestionHashMap.put(Data.TRIVIA_INVALID_QUESTION, new TriviaQuestionData( "", validAnswers,
+        triviaQuestionHashMap.put(Data.TRIVIA_INVALID_QUESTION, new TriviaQuestionData( "3","", validAnswers,
                 "correctANS", triviaSubjectHashMap.get(Data.VALID)));
-        triviaQuestionHashMap.put(Data.TRIVIA_INVALID_ANSWERS, new TriviaQuestionData( "question?", invalidAnswers,
+        triviaQuestionHashMap.put(Data.TRIVIA_INVALID_ANSWERS, new TriviaQuestionData( "4","question?", invalidAnswers,
                 "correctANS", triviaSubjectHashMap.get(Data.VALID)));
-        triviaQuestionHashMap.put(Data.TRIVIA_INVALID_CORRECT_ANSWER, new TriviaQuestionData( "question?", validAnswers,
+        triviaQuestionHashMap.put(Data.TRIVIA_INVALID_CORRECT_ANSWER, new TriviaQuestionData( "5","question?", validAnswers,
                 "", triviaSubjectHashMap.get(Data.VALID)));
 
     }
