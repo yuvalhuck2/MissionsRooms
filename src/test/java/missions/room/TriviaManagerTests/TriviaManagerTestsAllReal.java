@@ -3,7 +3,7 @@ package missions.room.TriviaManagerTests;
 import Data.Data;
 import DataObjects.FlatDataObjects.OpCode;
 import DataObjects.FlatDataObjects.Response;
-import DataAPI.TriviaQuestionData;
+import DataObjects.APIObjects.TriviaQuestionData;
 import missions.room.Domain.TriviaQuestion;
 import missions.room.Managers.TriviaManager;
 import missions.room.Repo.TriviaRepo;

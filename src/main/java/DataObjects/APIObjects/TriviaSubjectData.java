@@ -1,4 +1,4 @@
-package DataAPI;
+package DataObjects.APIObjects;
 
 import java.util.Objects;
 

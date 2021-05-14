@@ -1,8 +1,8 @@
 package missions.room.Communications.Controllers;
 
 import DataObjects.FlatDataObjects.Response;
-import DataAPI.TriviaQuestionData;
-import DataAPI.TriviaSubjectData;
+import DataObjects.APIObjects.TriviaQuestionData;
+import DataObjects.APIObjects.TriviaSubjectData;
 import missions.room.Service.TriviaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

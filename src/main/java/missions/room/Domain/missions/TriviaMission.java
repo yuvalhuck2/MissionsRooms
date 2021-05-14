@@ -2,7 +2,7 @@ package missions.room.Domain.missions;
 
 
 import DataObjects.FlatDataObjects.RoomType;
-import DataAPI.FlatDataObjects.MissionData;
+import DataObjects.FlatDataObjects.MissionData;
 import missions.room.Domain.TriviaQuestion;
 
 import javax.persistence.*;
