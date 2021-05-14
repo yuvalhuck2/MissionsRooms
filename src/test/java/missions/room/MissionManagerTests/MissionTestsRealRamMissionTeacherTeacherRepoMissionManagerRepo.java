@@ -89,12 +89,10 @@ public class MissionTestsRealRamMissionTeacherTeacherRepoMissionManagerRepo exte
         teacherCrudRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
         missionCrudRepository.save(dataGenerator.getMission(Data.VALID_STORY));
         missionCrudRepository.save(dataGenerator.getMission(Data.Valid_Deterministic));
-        missionCrudRepository.save(dataGenerator.getMission(Data.TRIVIA_VALID));
         testSearchTwoMissionsDiffTypesTest();
         teacherCrudRepository.delete(dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD));
         missionCrudRepository.delete(dataGenerator.getMission(Data.VALID_STORY));
         missionCrudRepository.delete(dataGenerator.getMission(Data.Valid_Deterministic));
-        missionCrudRepository.delete(dataGenerator.getMission(Data.TRIVIA_VALID));
 
     }
 

@@ -43,7 +43,7 @@ public class TriviaManagerTestsAllReal extends TriviaManagerTestsRealRamTeacher{
 
     @Test
     public void deleteTriviaQuestionFailSubjectDoesntExist(){
-        Response<Boolean> res = triviaManager.deleteTriviaQuestion(teacherApiKey, dataGenerator.getTriviaQuestion(Data.VALID2));
+        Response<Boolean> res = triviaManager.deleteTriviaQuestion(teacherApiKey, dataGenerator.getTriviaQuestion(Data.VALID2).getId());
         assertFalse(res.getValue());
         assertEquals(res.getReason(), OpCode.SUBJECT_DOESNT_EXIST);
     }

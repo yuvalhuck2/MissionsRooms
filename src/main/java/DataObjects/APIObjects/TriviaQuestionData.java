@@ -44,4 +44,8 @@ public class TriviaQuestionData {
     public int hashCode() {
         return Objects.hash(question, wrongAnswers, correctAnswer, subject);
     }
+
+    public String getId() {
+        return null;
+    }
 }
