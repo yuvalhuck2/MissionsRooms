@@ -37,11 +37,7 @@ public class RoomManagerTestsRealRamTeacherRepoRoomRepo extends RoomManagerTests
     @Override
     protected void initRoomRepo(Teacher teacher, Student student) {
         roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.VALID));
-        //roomTemplateCrudRepository.save(dataGenerator.getRoomTemplate(Data.VALID_2Mission_Class));
-        //studentCrudRepository.save(dataGenerator.getStudent(Data.VALID));
-        //studentCrudRepository.save(dataGenerator.getStudent(Data.VALID2));
         roomCrudRepository.save(room);
-        //roomCrudRepository.save(dataGenerator.getRoom(Data.Valid_2Students_From_Different_Groups));
 
         try {
             Field roomRepo = RoomManager.class.getDeclaredField("roomRepo");
@@ -59,11 +55,8 @@ public class RoomManagerTestsRealRamTeacherRepoRoomRepo extends RoomManagerTests
     @Override
     @AfterEach
     void tearDown() {
-
         roomCrudRepository.deleteAll();
-        //studentCrudRepository.deleteAll();
         roomTemplateCrudRepository.deleteAll();
-
         super.tearDown();
     }
 }

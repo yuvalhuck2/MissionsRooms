@@ -8,6 +8,7 @@ import missions.room.Domain.TriviaQuestion;
 import missions.room.Domain.TriviaSubject;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,18 +35,6 @@ public class TriviaRepo {
         }
     }
 
-    public OpCode deleteTriviaSubject(TriviaSubject triviaSubject) {
-        try{
-            boolean isSubjectExist = isSubjectExist(triviaSubject.getName());
-            if(!isSubjectExist)
-                return OpCode.Trivia_Subject_Not_Exists;
-            triviaSubjectRepository.delete(triviaSubject);
-            return OpCode.Success;
-        }catch(Exception e){
-            return OpCode.DB_Error;
-        }
-    }
-
     public boolean isSubjectExist(String subject) {
         return triviaSubjectRepository.existsById(subject);
     }
@@ -59,11 +48,15 @@ public class TriviaRepo {
         }
     }
 
-    public OpCode deleteTriviaQuestion(TriviaQuestion triviaQuestion) {
+    public OpCode deleteTriviaQuestion(String id) {
         try{
-            triviaQuestionRepository.delete(triviaQuestion);
+            triviaQuestionRepository.deleteById(id);
             return OpCode.Success;
-        }catch(Exception e){
+        }
+        catch(DataIntegrityViolationException e){
+            return OpCode.Exist_In_Mission;
+        }
+        catch(Exception e){
             return OpCode.DB_Error;
         }
     }

@@ -45,14 +45,6 @@ public class TriviaQuestion {
         this.subject = new TriviaSubject(subject);
     }
 
-    public TriviaQuestion(String id, String question, List<String> answers, String correctAnswer, TriviaSubject subject) {
-        this.id = id;
-        this.question = question;
-        this.answers = answers;
-        this.correctAnswer = correctAnswer;
-        this.subject = subject;
-    }
-
     public String getSubject() {
         return subject.getName();
     }

@@ -23,12 +23,6 @@ public class TriviaController extends AbsController {
         return triviaService.createTriviaSubject(apiKey, triviaSubjectData.getSubject());
     }
 
-    @PostMapping("/deleteTriviaSubject")
-    public Response<Boolean> deleteTriviaSubject(@RequestBody String subjectName, @RequestParam String apiKey){
-        TriviaSubjectData triviaSubjectData = json.fromJson(subjectName, TriviaSubjectData.class);
-        return triviaService.deleteTriviaSubject(apiKey, triviaSubjectData.getSubject());
-    }
-
     @PostMapping("/addTriviaQuestion")
     public Response<Boolean> addTriviaQuestion(@RequestBody String triviaQuestionStr, @RequestParam String apiKey){
         TriviaQuestionData triviaQuestionData = json.fromJson(triviaQuestionStr, TriviaQuestionData.class);
@@ -38,7 +32,7 @@ public class TriviaController extends AbsController {
     @PostMapping("/deleteTriviaQuestion")
     public Response<Boolean> deleteTriviaQuestion(@RequestBody String triviaQuestionStr, @RequestParam String apiKey){
         TriviaQuestionData triviaQuestionData = json.fromJson(triviaQuestionStr, TriviaQuestionData.class);
-        return triviaService.deleteTriviaQuestion(apiKey, triviaQuestionData);
+        return triviaService.deleteTriviaQuestion(apiKey, triviaQuestionData.getId());
     }
 
     @PostMapping("/getTriviaQuestions")

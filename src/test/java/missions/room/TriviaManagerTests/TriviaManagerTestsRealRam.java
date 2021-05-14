@@ -1,9 +1,9 @@
 package missions.room.TriviaManagerTests;
 
 import Data.Data;
+import DataObjects.APIObjects.TriviaQuestionData;
 import missions.room.Domain.Ram;
 import missions.room.Managers.TeacherManager;
-import org.junit.After;
 import org.junit.jupiter.api.AfterEach;
 
 import java.lang.reflect.Field;
@@ -15,9 +15,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class TriviaManagerTestsRealRam extends TriviaManagerTestsAllStubs{
     private Ram realRam;
     @Override
-    protected void initMocks(){
+    protected void initMocks(TriviaQuestionData triviaQuestion){
         this.realRam = new Ram();
-        super.initMocks();
+        super.initMocks(triviaQuestion);
         try {
             Field managerRam = TeacherManager.class.getDeclaredField("ram");
             managerRam.setAccessible(true);

@@ -62,17 +62,6 @@ public class TriviaManager extends TeacherManager{
                 ,saveAnswer);
     }
 
-    public Response<Boolean> deleteTriviaSubject(String apiKey, String subject){
-        OpCode validity = checkSubjectArgValidity(apiKey, subject);
-        if (validity != OpCode.Success){
-            return new Response<>(false, validity);
-        }
-        TriviaSubject triviaSubject = new TriviaSubject(subject);
-        OpCode deleteAnswer = triviaRepo.deleteTriviaSubject(triviaSubject);
-        return new Response<>(deleteAnswer == OpCode.Success, deleteAnswer);
-    }
-
-
     /**
      * req 4.7 - add trivia question
      * @param apiKey - authentication object
@@ -116,21 +105,16 @@ public class TriviaManager extends TeacherManager{
         }
     }
 
-
-    public Response<Boolean> deleteTriviaQuestion(String apiKey, TriviaQuestionData question){
-        OpCode validity = checkQuestionArgValidity(apiKey, question);
-        if(validity != OpCode.Success){
-            return new Response<>(false
-                    ,validity);
+    public Response<Boolean> deleteTriviaQuestion(String apiKey, String id){
+        if(!Utils.checkString(id)){
+            return new Response<>(false , OpCode.Invalid_Trivia_Question);
         }
-        if (!triviaRepo.isSubjectExist(question.getSubject())) {
-            return new Response<>(false, OpCode.SUBJECT_DOESNT_EXIST);
+        Response<Teacher> teacherResponse = checkTeacher(apiKey);
+        if(teacherResponse.getReason()!= OpCode.Success){
+            return new Response<>(false, teacherResponse.getReason());
         }
-        TriviaQuestion triviaQuestion = new TriviaQuestion(
-                UniqueStringGenerator.getTimeNameCode("TRIV"),
-                question.getQuestion(), question.getAnswers(), question.getCorrectAnswer(), question.getSubject());
-
-        OpCode saveAnswer= triviaRepo.deleteTriviaQuestion(triviaQuestion);
+        //Also check the case of mission exist with that question
+        OpCode saveAnswer= triviaRepo.deleteTriviaQuestion(id);
         return new Response<>(saveAnswer==OpCode.Success
                 ,saveAnswer);
     }

@@ -21,11 +21,6 @@ public class TriviaService {
         return triviaManager.createTriviaSubject(apiKey, subject);
     }
 
-    public Response<Boolean> deleteTriviaSubject(String apiKey, String subject) {
-        return triviaManager.deleteTriviaSubject(apiKey, subject);
-    }
-
-
     /**
      * req 4.7 - add trivia question
      * @param apiKey - authentication object
@@ -37,8 +32,8 @@ public class TriviaService {
         return triviaManager.addTriviaQuestion(apiKey, question);
     }
 
-    public Response<Boolean> deleteTriviaQuestion(String apiKey, TriviaQuestionData question){
-        return triviaManager.deleteTriviaQuestion(apiKey, question);
+    public Response<Boolean> deleteTriviaQuestion(String apiKey, String id){
+        return triviaManager.deleteTriviaQuestion(apiKey, id);
     }
 
     public Response<?> getTriviaQuestions(String apiKey) {
