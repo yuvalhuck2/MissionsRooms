@@ -160,6 +160,7 @@ public class ProfileProfileProfileMessageManagerRealRamBaseUserRepo extends Prof
     void tearDown() {
         studentCrudRepository.deleteAll();
         userCrudRepository.deleteAll();
+        classroomRepository.deleteAll();
         super.tearDown();
     }
 

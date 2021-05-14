@@ -13,7 +13,7 @@ import {
     CHANGE_ENABLE_LAST_NAME,
     LAST_NAME_CHANGED_MANAGE_USERS,
     ACTION_FINISHED_MANAGED_USERS,
-    UPDATE_ERROR_DELETE_USER,DELETE_USER,
+    DELETE_USER,
 } from "./types";
 
 import {
@@ -26,7 +26,7 @@ Wrong_Key,
 
 const {
     wrong_key_error,
-    not_exist,
+    user_not_exist,
     server_error,
     empty_details,
     action_succeeded,
@@ -117,7 +117,7 @@ export const editUserDetails = ({apiKey,firstName,lastName,alias}) => {
       case Wrong_Key:
         return dispatch({ type: UPDATE_ERROR_MANAGE_USERS, payload: wrong_key_error }); 
       case Not_Exist:
-        return dispatch({ type: UPDATE_ERROR_MANAGE_USERS, payload: not_exist });
+        return dispatch({ type: UPDATE_ERROR_MANAGE_USERS, payload: user_not_exist });
       case Success:
           alert(action_succeeded)
         return dispatch({ type: ACTION_FINISHED_MANAGED_USERS, payload:{firstName,lastName}});
@@ -134,10 +134,10 @@ export const deleteUser = ({apiKey,alias}) =>{
             const res = await API.post(APIPaths.deleteUser,{apiKey,alias});
             res
                 ? checkDeleteUserResponse(res.data, dispatch,alias)
-                : dispatch({ type: UPDATE_ERROR_DELETE_USER, payload: server_error });
+                : dispatch({ type: UPDATE_ERROR_MANAGE_USERS, payload: server_error });
         } catch (err) {
             console.log(err);
-            return dispatch({ type: UPDATE_ERROR_DELETE_USER, payload: server_error });
+            return dispatch({ type: UPDATE_ERROR_MANAGE_USERS, payload: server_error });
         }
 
     }
@@ -148,15 +148,16 @@ const checkDeleteUserResponse= (data,dispatch,alias) =>{
 
     switch (reason) {
         case Teacher_Has_Classroom:
-            alert(teacher_has_classroom);
-            return dispatch ({type:UPDATE_ERROR_DELETE_USER, payload: teacher_has_classroom})
+            return dispatch ({type:UPDATE_ERROR_MANAGE_USERS, payload: teacher_has_classroom})
+        case Not_Exist:
+            return dispatch({ type: UPDATE_ERROR_MANAGE_USERS, payload: user_not_exist });
         case Wrong_Key:
-            return dispatch({ type: UPDATE_ERROR_DELETE_USER, payload: wrong_key_error });
+            return dispatch({ type: UPDATE_ERROR_MANAGE_USERS, payload: wrong_key_error });
         case Success:
             alert(action_succeeded)
             return dispatch({ type: DELETE_USER, payload:{alias:alias}});
         default:
-            return dispatch({ type: UPDATE_ERROR_DELETE_USER, payload: server_error });
+            return dispatch({ type: UPDATE_ERROR_MANAGE_USERS, payload: server_error });
     }
 }
 export const passToTransferGroup = () =>{}

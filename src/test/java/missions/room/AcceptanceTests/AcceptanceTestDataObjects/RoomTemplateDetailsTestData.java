@@ -10,6 +10,13 @@ public class RoomTemplateDetailsTestData {
     int minimalMissionsToPass;
     ParticipantTypeTest type;
 
+    public RoomTemplateDetailsTestData(List<String> missionIds, String name, int minimalMissionsToPass, ParticipantTypeTest type) {
+        this.missionIds = missionIds;
+        this.name = name;
+        this.minimalMissionsToPass = minimalMissionsToPass;
+        this.type = type;
+    }
+
     public List<String> getMissionIds() {
         return missionIds;
     }

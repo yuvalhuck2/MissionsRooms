@@ -31,7 +31,7 @@ import {
     CHANGE_ENABLE_LAST_NAME,
     LOGIN_IT,
     CLEAR_STATE,
-    DELETE_USER, UPDATE_ERROR_DELETE_USER,
+    DELETE_USER,
 } from '../actions/types';
 
 export default (state = initialState, action) => {

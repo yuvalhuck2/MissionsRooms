@@ -14,7 +14,7 @@ class ChatControllerTest extends ControllerTest {
     @Test
     void testSendMessage() {
         String body = gson.toJson(dataGenerator.getChatMessageData(Data.VALID));
-        testControllerWithBody(SEND_CHAT_MESSAGE, body, Wrong_Key, null);
+        testControllerWithBody(SEND_CHAT_MESSAGE, body, Wrong_Key, "");
     }
 
     @Test

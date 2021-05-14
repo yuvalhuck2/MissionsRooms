@@ -4,6 +4,7 @@ import CrudRepositories.ITCrudRepository;
 import Data.Data;
 import DataObjects.FlatDataObjects.OpCode;
 import DataObjects.APIObjects.RegisterDetailsData;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.Users.IT;
 import missions.room.Managers.ITManager;
 import missions.room.Repo.ITRepo;
@@ -140,4 +141,16 @@ public class ITMangerTestsRealRamBaseUserITRepo extends ITMangerRealRamBaseUserR
         testAddTeacherInvalid(OpCode.DB_Error);
     }
 
+    @Test
+    void testDeleteUserITRepoFindByIdThrowsException(){
+        setUpITRepoFindByIdThrowsException();
+        testDeleteUserInvalid(OpCode.DB_Error);
+    }
+
+    @Override
+    @Test
+    void testDeleteUserHappyCase() {
+        super.testDeleteUserHappyCase();
+        assertFalse(userCrudRepository.existsById(student.getAlias()));
+    }
 }
