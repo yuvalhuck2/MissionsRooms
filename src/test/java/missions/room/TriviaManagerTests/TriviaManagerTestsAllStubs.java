@@ -1,11 +1,11 @@
 package missions.room.TriviaManagerTests;
 
 import Data.Data;
+import DataObjects.APIObjects.TriviaQuestionData;
 import DataObjects.FlatDataObjects.OpCode;
 import DataObjects.FlatDataObjects.Response;
+import javassist.bytecode.Opcode;
 import missions.room.Domain.Ram;
-import missions.room.Domain.Suggestion;
-import missions.room.Domain.TriviaSubject;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.TriviaManager;
@@ -27,12 +27,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import Data.DataGenerator;
 import org.springframework.test.context.TestPropertySource;
 
+import static Data.Data.VALID_WITH_CLASSROOM;
 import static Data.DataConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.not;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -46,6 +46,8 @@ public class TriviaManagerTestsAllStubs {
     protected String studentApiKey;
 
     protected String teacherApiKey;
+
+    protected String questionId;
 
 
     @InjectMocks
@@ -68,10 +70,12 @@ public class TriviaManagerTestsAllStubs {
         dataGenerator=new DataGenerator();
         studentApiKey = VALID_STUDENT_APIKEY;
         teacherApiKey = VALID_TEACHER_APIKEY;
-        initMocks();
+        TriviaQuestionData triviaQuestion = dataGenerator.getTriviaQuestion(Data.VALID);
+        questionId = triviaQuestion.getId();
+        initMocks(triviaQuestion);
     }
 
-    protected void initMocks() {
+    protected void initMocks(TriviaQuestionData triviaQuestion) {
         closeable= MockitoAnnotations.openMocks(this);
         Student student=dataGenerator.getStudent(Data.VALID);
         Teacher teacher=dataGenerator.getTeacher(Data.VALID_WITH_PASSWORD);
@@ -92,6 +96,7 @@ public class TriviaManagerTestsAllStubs {
         when(mockTriviaRepo.addTriviaQuestion(any()))
                 .thenReturn(OpCode.Success);
         when(mockTriviaRepo.isSubjectExist(any())).thenReturn(true);
+        when(mockTriviaRepo.deleteTriviaQuestion(triviaQuestion.getId())).thenReturn(OpCode.Success);
     }
 
     protected Response<Boolean> addTriviaSubject(String subject){
@@ -135,6 +140,56 @@ public class TriviaManagerTestsAllStubs {
         Response<Boolean> res = triviaManager.createTriviaSubject(teacherApiKey, dataGenerator.getTriviaSubject(Data.INVALID));
         assertFalse(res.getValue());
         assertEquals(res.getReason(), OpCode.Invalid_Trivia_Subject);
+    }
+
+    @Test
+    public void deleteTriviaQuestionHappyCase(){
+        Response<Boolean> res = triviaManager.deleteTriviaQuestion(teacherApiKey, questionId);
+        assertTrue(res.getValue());
+        assertEquals(res.getReason(), OpCode.Success);
+    }
+
+    @Test
+    void testDeleteSuggestionInvalidApiKey(){
+        teacherApiKey=INVALID_KEY;
+        deleteTriviaQuestionInvalid(OpCode.Wrong_Key);
+    }
+
+    @Test
+    void testDeleteSuggestionNullTeacher(){
+        teacherApiKey=NULL_TEACHER_KEY;
+        when(mockTeacherRepo.findTeacherById(WRONG_TEACHER_NAME))
+                .thenReturn(new Response<>(null,OpCode.Success));
+        deleteTriviaQuestionInvalid(OpCode.Not_Exist);
+    }
+
+    @Test
+    void testDeleteQuestionInvalidFindTeacherByIdThrowsException(){
+        when(mockTeacherRepo.findTeacherById(dataGenerator.getTeacher(VALID_WITH_CLASSROOM)
+                .getAlias()))
+                .thenReturn(new Response<>(null
+                        ,OpCode.DB_Error));
+        deleteTriviaQuestionInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    void testDeleteSuggestionInvalidDeleteQuestionByIdThrowsException(){
+        when(mockTriviaRepo.deleteTriviaQuestion(anyString()))
+                .thenReturn(OpCode.DB_Error);
+        deleteTriviaQuestionInvalid(OpCode.DB_Error);
+    }
+
+    @Test
+    void testDeleteSuggestionInvalidHasMissionWithQuestion(){
+        when(mockTriviaRepo.deleteTriviaQuestion(anyString()))
+                .thenReturn(OpCode.Exist_In_Mission);
+        deleteTriviaQuestionInvalid(OpCode.Exist_In_Mission);
+    }
+
+    protected void deleteTriviaQuestionInvalid(OpCode opCode){
+        Response<Boolean> res = triviaManager.deleteTriviaQuestion(teacherApiKey, questionId);
+        assertFalse(res.getValue());
+        assertEquals(res.getReason(), opCode);
     }
 
     @AfterEach

@@ -8,6 +8,7 @@ import missions.room.Domain.TriviaQuestion;
 import missions.room.Domain.TriviaSubject;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,9 +53,9 @@ public class TriviaRepo {
             triviaQuestionRepository.deleteById(id);
             return OpCode.Success;
         }
-//        catch(Exception e){
-//            return OpCode.DB_Error;
-//        }
+        catch(DataIntegrityViolationException e){
+            return OpCode.Exist_In_Mission;
+        }
         catch(Exception e){
             return OpCode.DB_Error;
         }

@@ -32,8 +32,8 @@ public class TriviaService {
         return triviaManager.addTriviaQuestion(apiKey, question);
     }
 
-    public Response<Boolean> deleteTriviaQuestion(String apiKey, TriviaQuestionData question){
-        return triviaManager.deleteTriviaQuestion(apiKey, question);
+    public Response<Boolean> deleteTriviaQuestion(String apiKey, String id){
+        return triviaManager.deleteTriviaQuestion(apiKey, id);
     }
 
     public Response<?> getTriviaQuestions(String apiKey) {

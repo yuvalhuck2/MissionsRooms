@@ -49,7 +49,4 @@ public class TriviaQuestionData {
         return Objects.hash(question, wrongAnswers, correctAnswer, subject);
     }
 
-    public String getId() {
-        return null;
-    }
 }

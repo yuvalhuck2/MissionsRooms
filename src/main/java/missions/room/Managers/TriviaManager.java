@@ -105,7 +105,6 @@ public class TriviaManager extends TeacherManager{
         }
     }
 
-
     public Response<Boolean> deleteTriviaQuestion(String apiKey, String id){
         if(!Utils.checkString(id)){
             return new Response<>(false , OpCode.Invalid_Trivia_Question);
@@ -114,6 +113,7 @@ public class TriviaManager extends TeacherManager{
         if(teacherResponse.getReason()!= OpCode.Success){
             return new Response<>(false, teacherResponse.getReason());
         }
+        //Also check the case of mission exist with that question
         OpCode saveAnswer= triviaRepo.deleteTriviaQuestion(id);
         return new Response<>(saveAnswer==OpCode.Success
                 ,saveAnswer);
