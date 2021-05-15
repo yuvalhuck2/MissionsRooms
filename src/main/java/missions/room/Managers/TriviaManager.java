@@ -1,5 +1,6 @@
 package missions.room.Managers;
 
+import DataObjects.APIObjects.TriviaSubjectData;
 import DataObjects.FlatDataObjects.OpCode;
 import DataObjects.FlatDataObjects.Response;
 import DataObjects.APIObjects.TriviaQuestionData;
@@ -134,5 +135,23 @@ public class TriviaManager extends TeacherManager{
         }else{
             return new Response<>(null, triviaQuestions.getReason());
         }
+    }
+
+    public Response<List<TriviaSubjectData>> getTriviaSubjects(String apiKey){
+        Response<Teacher> teacherResponse = checkTeacher(apiKey);
+        if(teacherResponse.getReason()!= OpCode.Success){
+            return new Response<>(null, teacherResponse.getReason());
+        }
+        Response<List<TriviaSubject>> triviaSubjectsResponse = triviaRepo.getTriviaSubjects();
+        if (triviaSubjectsResponse.getReason() == OpCode.Success){
+            List<TriviaSubjectData> triviaSubjects = triviaSubjectsResponse.getValue().
+                    stream()
+                    .map(sb -> new TriviaSubjectData(sb.getName()))
+                    .collect(Collectors.toList());
+            return new Response<>(triviaSubjects, OpCode.Success);
+        }else{
+            return new Response<>(null, triviaSubjectsResponse.getReason());
+        }
+
     }
 }

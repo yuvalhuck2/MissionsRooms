@@ -2,41 +2,244 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import {
-  WatchAllOpenQuestionMissionsScreen,
-  WatchOpenAnswerSolutionScreen,
-  AddOpenQuestionMissionScreen,
-  SolveOpenQuestionMissionScreen,
   AddDeterministicMissionScreen,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  AddITScreen, AddOpenQuestionMissionScreen,
+
+
   AddRoomScreen,
   AddRoomTemplateScreen,
   AddSuggestionScreen,
-  AuthScreen,
-  ChooseMissionsForTemplateScreen,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  AddTriviaMission, AddTriviaQuestion, AddTriviaSubject, AddUserScreen, AuthScreen,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  ChangePasswordScreen,
+
+
+
+
+
+
+
+
+  ChatRoomScreen, ChooseClassroomRoomScreen, ChooseMissionsForTemplateScreen,
   ChooseMissionToAddScreen,
   ChooseStudentRoomScreen,
-  ChooseTemplateScreen,
-  ITScreen,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  ChooseTeacherRoomTypeScreen, ChooseTemplateScreen,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  CloseClassroomScreen, ITScreen,
   LoginScreen,
-  RegisterScreen,
-  SolveDeterministicScreen,
-  StudentScreen,
-  TeacherScreen,
-  UploadCsvScreen,
-  AddITScreen,
+
+
+
+
+
+
+
+
+
+
+
+
+  ManageUsersScreen, PointsTableScreen, RegisterScreen,
+
+
+
+
+
+
+
+
+
+
+
+
+
+  ResetPasswordScreen, SolveDeterministicScreen, SolveOpenQuestionMissionScreen,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   SolveStoryScreen,
-  WatchProfileScreen,
-  WatchMessagesScreen,
-  WatchSuggestionsScreen,
-  ChangePasswordScreen,
-  PointsTableScreen,
-  ManageUsersScreen,
-  AddUserScreen,
-  ResetPasswordScreen,
-  CloseClassroomScreen,
+
+
+
+
+
+
+
+
+
+
+
+
+  SolveTriviaMission, StudentScreen,
+  TeacherScreen,
+
+
+
+
+
+
+
+
+
+
+
+
   Test,
-  ChooseTeacherRoomTypeScreen,
-  ChooseClassroomRoomScreen,
-  ChatRoomScreen, TriviaManagement, AddTriviaQuestion, SolveTriviaMission, AddTriviaMission,AddTriviaSubject
+
+
+  TriviaManagement, UploadCsvScreen, WatchAllOpenQuestionMissionsScreen,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  WatchMessagesScreen, WatchOpenAnswerSolutionScreen,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  WatchProfileScreen,
+
+  WatchSuggestionsScreen
 } from './components/screens';
 import TeacherRoomMenuScreen from "./components/screens/TeacherRoomMenuScreen";
 

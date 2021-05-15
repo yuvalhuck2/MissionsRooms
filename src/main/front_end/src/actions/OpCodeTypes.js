@@ -68,3 +68,5 @@ export const Teacher_Has_Classroom="Teacher_Has_Classroom"
 export const DELETE_USER="DELETE_USER"
 export const Invalid_Trivia_Subject = "Invalid_Trivia_Subject"
 export const Trivia_Subject_Already_Exists = "Trivia_Subject_Already_Exists"
+export const Invalid_Trivia_Question = "Invalid_Trivia_Question";
+export const Trivia_Subject_Doesnt_exist=  "SUBJECT_DOESNT_EXIST"

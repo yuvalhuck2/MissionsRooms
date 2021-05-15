@@ -22,17 +22,12 @@ const initialState = {
   subjects: [],
 };
 
-const getNewWrongAnswers = ({ wrongAnswer, key }) => {
+const getNewWrongAnswers = ({ wrongAnswer, key }, state) => {
   let index = parseInt(key);
-  let newWrongAnswers = [...initialState.wrongAnswers];
+  let newWrongAnswers = [...state.wrongAnswers];
   newWrongAnswers[index] = wrongAnswer;
   return newWrongAnswers;
 };
-
-import {
-    TRIVIA_QUESTION_CHANGED,
-    TRIVIA_SUBJECT_CHANGED
-} from '../actions/types';
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -49,12 +44,12 @@ export default (state = initialState, action) => {
     case TRIVIA_CORRECT_ANSWER_CHANGED:
       return { ...state, correctAnswer: action.payload };
     case TRIVIA_WRONG_ANSWER_CHANGED:
-      let newWrongAnswers = getNewWrongAnswers(action.payload);
+      let newWrongAnswers = getNewWrongAnswers(action.payload, state);
       return { ...state, wrongAnswers: newWrongAnswers };
     case UPDATE_ERROR_ADD_TRIVIA_QUESTION:
       return { ...state, errorMessage: action.payload, loading: false };
     case ADD_TRIVIA_QUESTION:
-      return { ...state, errorMessage: '', loading: false };
+      return { ...state, errorMessage: '', loading: true };
     case ADD_TRIVIA_QUESTION_SUCCESS:
       return {
         ...state,

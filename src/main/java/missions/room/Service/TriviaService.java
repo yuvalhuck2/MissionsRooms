@@ -39,4 +39,8 @@ public class TriviaService {
     public Response<?> getTriviaQuestions(String apiKey) {
         return triviaManager.getTriviaQuestions(apiKey);
     }
+
+    public Response<?> getTriviaSubjects(String apiKey) {
+        return triviaManager.getTriviaSubjects(apiKey);
+    }
 }

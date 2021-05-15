@@ -40,4 +40,9 @@ public class TriviaController extends AbsController {
         return triviaService.getTriviaQuestions(apiKey);
     }
 
+    @PostMapping("/getTriviaSubjects")
+    public Response<?> getTriviaSubjects(@RequestParam String apiKey){
+        return triviaService.getTriviaSubjects(apiKey);
+    }
+
 }

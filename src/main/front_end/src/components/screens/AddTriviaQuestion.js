@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
-import { FlatList, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { ActivityIndicator } from 'react-native-paper';
 import { connect } from 'react-redux';
+import {
+  addTriviaQuestion,
+  correctAnswerChanged,
+  getCurrentSubjects,
+  questionChanged,
+  subjectChanged,
+  wrongAnswerChanged,
+} from '../../actions/AddTriviaQuestionActions';
+import { theme } from '../../core/theme';
 import { AddTriviaQuestionStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
 import Header from '../common/Header';
@@ -15,7 +25,7 @@ const {
   addCorrectAnswer,
 } = AddTriviaQuestionStrings;
 
-const subjects = ['ספורט', 'אקטואליה', 'פוליטיקה'];
+// const subjects = ['רוי'];
 
 class AddTriviaQuestion extends Component {
   constructor(...args) {
@@ -28,6 +38,13 @@ class AddTriviaQuestion extends Component {
     this.onChangeCorrectAnswer = this.onChangeCorrectAnswer.bind(this);
     this.onButtonPressed = this.onButtonPressed.bind(this);
     this.onChangeSubject = this.onChangeSubject.bind(this);
+    this.renderError = this.renderError.bind(this);
+    this.renderSpinner = this.renderSpinner.bind(this);
+    this.renderSubmitButton = this.renderSubmitButton.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.getCurrentSubjects({ apiKey: this.props.apiKey });
   }
 
   onChangeQuestion(text) {
@@ -43,7 +60,7 @@ class AddTriviaQuestion extends Component {
   }
 
   onChangeSubject(text) {
-    this.props.subjectChanged(text);
+    this.props.subjectChanged(text.value);
   }
 
   onButtonPressed() {
@@ -53,6 +70,7 @@ class AddTriviaQuestion extends Component {
       wrongAnswers,
       correctAnswer,
       questionSubject,
+      navigation,
     } = this.props;
     this.props.addTriviaQuestion({
       apiKey,
@@ -60,7 +78,49 @@ class AddTriviaQuestion extends Component {
       wrongAnswers,
       correctAnswer,
       subject: questionSubject,
+      navigation,
     });
+  }
+
+  renderSpinner() {
+    return (
+      <ActivityIndicator
+        animating={true}
+        color={theme.colors.primary}
+        size='large'
+      />
+    );
+  }
+
+  renderError() {
+    const { errorMessage } = this.props;
+
+    if (errorMessage && errorMessage !== '') {
+      return (
+        <View>
+          <Text style={styles.errorTextStyle}>{errorMessage}</Text>
+        </View>
+      );
+    }
+  }
+
+  renderSubmitButton(placeholder) {
+    const { loading } = this.props;
+
+    return loading ? (
+      this.renderSpinner()
+    ) : (
+      <>
+        <Button
+          mode='contained'
+          style={styles.button}
+          onPress={this.onButtonPressed}
+        >
+          {placeholder}
+        </Button>
+        {this.renderError()}
+      </>
+    );
   }
 
   renderQuestion() {
@@ -75,9 +135,13 @@ class AddTriviaQuestion extends Component {
   }
 
   renderDropDownSubject() {
+    const { subjects } = this.props;
+    let mappedSubjects = subjects.map((sub) => {
+      return { label: sub, value: sub };
+    });
     return (
       <DropDownPicker
-        items={subjects}
+        items={mappedSubjects}
         containerStyle={{ height: 40 }}
         style={{ backgroundColor: '#fafafa' }}
         itemStyle={{
@@ -93,44 +157,35 @@ class AddTriviaQuestion extends Component {
   renderQuestionsInputs() {
     const { wrongAnswers, correctAnswer } = this.props;
     const inputParams = [
-      { name: 'input', placeholder: { addWrongAnswer }, key: '0' },
-      { name: 'input', placeholder: { addWrongAnswer }, key: '1' },
-      { name: 'input', placeholder: { addWrongAnswer }, key: '2' },
-      { name: 'input', placeholder: { addCorrectAnswer }, key: '3' },
+      { name: 'input', placeholder: addWrongAnswer, key: '0' },
+      { name: 'input', placeholder: addWrongAnswer, key: '1' },
+      { name: 'input', placeholder: addWrongAnswer, key: '2' },
+      { name: 'input', placeholder: addCorrectAnswer, key: '3' },
       {
         name: 'button',
-        placeholder: { addQuestion },
+        placeholder: addQuestion,
         key: '4',
       },
     ];
 
-    let getInputValue = (item) => {
-      let index = parseInt(item.key);
-      return index === 3 ? correctAnswer : wrongAnswers[index];
-    };
-
-    let getOnChangeText = (text, key) => {
-      let index = parseInt(key);
-      return index === 3
-        ? () => this.onChangeCorrectAnswer(text)
-        : () => this.onChangeWrongAnswer(text, key);
-    };
+    let inputValues = [...wrongAnswers, correctAnswer];
 
     let renderItem = ({ item }) => {
-      item.name === 'input' ? (
+      return item.name === 'input' ? (
         <TextInput
           label={item.placeholder}
-          value={getInputValue()}
-          onChangeText={getOnChangeText()}
+          value={inputValues[parseInt(item.key)]}
+          onChangeText={(text) => {
+            let index = parseInt(item.key);
+            if (index === 3) {
+              this.onChangeCorrectAnswer(text);
+            } else {
+              this.onChangeWrongAnswer(text, item.key);
+            }
+          }}
         />
       ) : (
-        <Button
-          mode='contained'
-          style={styles.button}
-          onPress={this.onButtonPressed}
-        >
-          {item.placeholder}
-        </Button>
+        this.renderSubmitButton(item.placeholder)
       );
     };
 
@@ -145,12 +200,12 @@ class AddTriviaQuestion extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container}>
+      <View style={styles.container}>
         <Header>{header}</Header>
         {this.renderQuestion()}
         {this.renderDropDownSubject()}
         {this.renderQuestionsInputs()}
-      </KeyboardAvoidingView>
+      </View>
     );
   }
 }
@@ -166,6 +221,11 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 24,
   },
+  errorTextStyle: {
+    fontSize: 22,
+    alignSelf: 'center',
+    color: theme.colors.error,
+  },
 });
 
 const mapStateToProps = (state) => {
@@ -178,7 +238,7 @@ const mapStateToProps = (state) => {
     correctAnswer,
     questionSubject,
     subjects,
-  } = state.AddTriviaQuestion;
+  } = state.addTriviaQuestion;
 
   return {
     apiKey,
@@ -198,4 +258,5 @@ export default connect(mapStateToProps, {
   correctAnswerChanged,
   addTriviaQuestion,
   subjectChanged,
+  getCurrentSubjects,
 })(AddTriviaQuestion);

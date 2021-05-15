@@ -35,3 +35,5 @@ export const closeClassroom = "CloseClassroom"
 export const WatchOpenAnswerSolutionScreen = 'WatchOpenAnswerSolutionScreen';
 export const WatchAllOpenQuestionMissionsScreen = 'WatchAllOpenQuestionMissionsScreen';
 export const addTriviaSubject = "AddTriviaSubject";
+export const triviaManagement = "triviaManagement"
+export const addTriviaQuestion = "AddTriviaQuestion";

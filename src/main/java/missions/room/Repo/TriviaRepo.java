@@ -78,4 +78,13 @@ public class TriviaRepo {
             return new Response<>(null, OpCode.DB_Error);
         }
     }
+
+    public Response<List<TriviaSubject>> getTriviaSubjects(){
+        try{
+            List<TriviaSubject> subjects = Lists.newArrayList(triviaSubjectRepository.findAll());
+            return new Response<>(subjects, OpCode.Success);
+        } catch (Exception e){
+            return new Response<>(null, OpCode.DB_Error);
+        }
+    }
 }
