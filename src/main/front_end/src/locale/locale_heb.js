@@ -532,8 +532,9 @@ export const WatchAllOpenQuestionMissions = {
 
 export const TriviaManagementStrings = {
   header: 'ניהול טריוויה',
-  subjectManagement: 'ניהול נושאים',
-  questionManagement: 'ניהול שאלות',
+  addSubjectTrivia: 'הוסף נושא',
+  addQuestionTrivia: 'הוסף שאלה',
+  deleteQuestionTrivia: 'מחק שאלה',
   viewQuestions: 'צפייה בשאלות',
 };
 

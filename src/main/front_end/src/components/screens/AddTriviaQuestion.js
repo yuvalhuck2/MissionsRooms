@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { ActivityIndicator } from 'react-native-paper';
+import { ActivityIndicator, Appbar } from 'react-native-paper';
 import { connect } from 'react-redux';
 import {
   addTriviaQuestion,
@@ -25,8 +25,6 @@ const {
   addCorrectAnswer,
 } = AddTriviaQuestionStrings;
 
-// const subjects = ['רוי'];
-
 class AddTriviaQuestion extends Component {
   constructor(...args) {
     super(...args);
@@ -41,6 +39,7 @@ class AddTriviaQuestion extends Component {
     this.renderError = this.renderError.bind(this);
     this.renderSpinner = this.renderSpinner.bind(this);
     this.renderSubmitButton = this.renderSubmitButton.bind(this);
+    this.onBackPress = this.onBackPress(this);
   }
 
   componentDidMount() {
@@ -61,6 +60,11 @@ class AddTriviaQuestion extends Component {
 
   onChangeSubject(text) {
     this.props.subjectChanged(text.value);
+  }
+
+  onBackPress() {
+    const { navigation, handleBack, apiKey } = this.props;
+    handleBack({ navigation, apiKey });
   }
 
   onButtonPressed() {
@@ -202,6 +206,13 @@ class AddTriviaQuestion extends Component {
     return (
       <View style={styles.container}>
         <Header>{header}</Header>
+        <Appbar.Header styles={styles.bottom}>
+          <Appbar.BackAction
+            onPress={() => {
+              this.onBackPress();
+            }}
+          />
+        </Appbar.Header>
         {this.renderQuestion()}
         {this.renderDropDownSubject()}
         {this.renderQuestionsInputs()}

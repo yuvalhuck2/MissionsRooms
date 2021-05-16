@@ -225,7 +225,7 @@ export const passToAddSuggestion = ({ navigation, apiKey}) => {
 export const passToTriviaManagement = ({navigation, apiKey}) => {
   return async (dispatch) => {
     dispatch({ type: LOGIN_TEACHER, payload: apiKey  });
-    return navigation.navigate(NavPaths.addTriviaQuestion);
+    return navigation.navigate(NavPaths.triviaManagement);
 };
 }
 

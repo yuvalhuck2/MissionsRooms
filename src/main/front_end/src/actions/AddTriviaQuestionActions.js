@@ -15,6 +15,7 @@ import {
   TRIVIA_SUBJECT_CHANGED_ADD_QUESTION,
   TRIVIA_WRONG_ANSWER_CHANGED,
   UPDATE_ERROR_ADD_TRIVIA_QUESTION,
+  RESET_ADD_TRIVIA_QUESTION,
 } from './types';
 
 const {
@@ -121,7 +122,7 @@ const checkAddTriviaQuestionResponse = (data, dispatch, navigation) => {
 
   switch (reason) {
     case Success:
-      alert(trivia_question_added)
+      alert(trivia_question_added);
       navigation.goBack();
       return dispatch({ type: ADD_TRIVIA_QUESTION_SUCCESS });
     case Invalid_Trivia_Question:
@@ -141,3 +142,11 @@ const checkAddTriviaQuestionResponse = (data, dispatch, navigation) => {
       });
   }
 };
+
+export const handleBack = ({navigation, apiKey}) => {
+  navigation.goBack()
+  return {
+      type: RESET_ADD_TRIVIA_QUESTION,
+      payload: apiKey
+  }
+}

@@ -3,6 +3,7 @@ import {
   ADD_TRIVIA_QUESTION_SUCCESS,
   LOGIN_IT,
   LOGIN_TEACHER,
+  RESET_ADD_TRIVIA_QUESTION,
   TRIVIA_CORRECT_ANSWER_CHANGED,
   TRIVIA_QUESTION_CHANGED,
   TRIVIA_SUBJECTS_RETRIEVED,
@@ -32,9 +33,9 @@ const getNewWrongAnswers = ({ wrongAnswer, key }, state) => {
 export default (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_IT:
-      return { ...state, apiKey: action.payload };
+      return { ...initialState, apiKey: action.payload };
     case LOGIN_TEACHER:
-      return { ...state, apiKey: action.payload };
+      return { ...initialState, apiKey: action.payload };
     case TRIVIA_SUBJECTS_RETRIEVED:
       return { ...state, subjects: action.payload };
     case TRIVIA_QUESTION_CHANGED:
@@ -60,6 +61,11 @@ export default (state = initialState, action) => {
         correctAnswer: '',
         questionSubject: '',
         subjects: [],
+      };
+    case RESET_ADD_TRIVIA_QUESTION:
+      return {
+        ...initialState,
+        apiKey: action.payload,
       };
     default:
       return state;
