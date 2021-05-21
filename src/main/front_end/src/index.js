@@ -3,292 +3,68 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import {
   AddDeterministicMissionScreen,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  AddITScreen, AddOpenQuestionMissionScreen,
-
-
+  AddITScreen,
+  AddOpenQuestionMissionScreen,
   AddRoomScreen,
   AddRoomTemplateScreen,
   AddSuggestionScreen,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  AddTriviaMission, AddTriviaQuestion, AddTriviaSubject, AddUserScreen, AuthScreen,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  AddTriviaMission,
+  AddTriviaQuestion,
+  AddTriviaSubject,
+  AddUserScreen,
+  AuthScreen,
   ChangePasswordScreen,
-
-
-
-
-
-
-
-
-  ChatRoomScreen, ChooseClassroomRoomScreen, ChooseMissionsForTemplateScreen,
+  ChatRoomScreen,
+  ChooseClassroomRoomScreen,
+  ChooseMissionsForTemplateScreen,
   ChooseMissionToAddScreen,
   ChooseStudentRoomScreen,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  ChooseTeacherRoomTypeScreen, ChooseTemplateScreen,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  CloseClassroomScreen, ITScreen,
+  ChooseTeacherRoomTypeScreen,
+  ChooseTemplateScreen,
+  CloseClassroomScreen,
+  ITScreen,
   LoginScreen,
-
-
-
-
-
-
-
-
-
-
-
-
-  ManageUsersScreen, PointsTableScreen, RegisterScreen,
-
-
-
-
-
-
-
-
-
-
-
-
-
-  ResetPasswordScreen, SolveDeterministicScreen, SolveOpenQuestionMissionScreen,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  ManageUsersScreen,
+  PointsTableScreen,
+  RegisterScreen,
+  ResetPasswordScreen,
+  SolveDeterministicScreen,
+  SolveOpenQuestionMissionScreen,
   SolveStoryScreen,
-
-
-
-
-
-
-
-
-
-
-
-
-  SolveTriviaMission, StudentScreen,
+  SolveTriviaMission,
+  StudentScreen,
   TeacherScreen,
-
-
-
-
-
-
-
-
-
-
-
-
   Test,
-
-
-  TriviaManagement, UploadCsvScreen, WatchAllOpenQuestionMissionsScreen,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  WatchMessagesScreen, WatchOpenAnswerSolutionScreen,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  TriviaManagement,
+  UploadCsvScreen,
+  WatchAllOpenQuestionMissionsScreen,
+  WatchMessagesScreen,
+  WatchOpenAnswerSolutionScreen,
   WatchProfileScreen,
-
-  WatchSuggestionsScreen
+  WatchSuggestionsScreen,
 } from './components/screens';
-import TeacherRoomMenuScreen from "./components/screens/TeacherRoomMenuScreen";
+import DeleteTriviaQuestion from './components/screens/DeleteTriviaQuestion';
+import TeacherRoomMenuScreen from './components/screens/TeacherRoomMenuScreen';
 
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Register'>
-      <Stack.Screen
-        name = 'CloseClassroom'
-        component={CloseClassroomScreen}
-      />
-      <Stack.Screen
-          name='ResetPassword'
-          component={ResetPasswordScreen}
-        />
-      <Stack.Screen
-          name='AddUser'
-          component={AddUserScreen}
-        />
-      <Stack.Screen
-          name='ManageUsers'
-          component={ManageUsersScreen}
-        />
-        <Stack.Screen
-          name='PointsTable'
-          component={PointsTableScreen}
-        />
-        <Stack.Screen
-          name='ChangePassword'
-          component={ChangePasswordScreen}
-        />
-        <Stack.Screen
-          name='Test'
-          component={Test}
-        />
-        <Stack.Screen
-          name='AddIT'
-          component={AddITScreen}
-        />
+      <Stack.Navigator initialRouteName='DeleteTriviaQuestion'>
+        <Stack.Screen name='CloseClassroom' component={CloseClassroomScreen} />
+        <Stack.Screen name='ResetPassword' component={ResetPasswordScreen} />
+        <Stack.Screen name='AddUser' component={AddUserScreen} />
+        <Stack.Screen name='ManageUsers' component={ManageUsersScreen} />
+        <Stack.Screen name='PointsTable' component={PointsTableScreen} />
+        <Stack.Screen name='ChangePassword' component={ChangePasswordScreen} />
+        <Stack.Screen name='Test' component={Test} />
+        <Stack.Screen name='AddIT' component={AddITScreen} />
         <Stack.Screen
           name='SolveDeterministic'
           component={SolveDeterministicScreen}
         />
-        <Stack.Screen
-          name='SolveStory'
-          component={SolveStoryScreen}
-        />
+        <Stack.Screen name='SolveStory' component={SolveStoryScreen} />
         <Stack.Screen
           name='ChooseStudentRoom'
           component={ChooseStudentRoomScreen}
@@ -330,20 +106,39 @@ const App = () => {
         <Stack.Screen name='Student' component={StudentScreen} />
         <Stack.Screen name='AddRoom' component={AddRoomScreen} />
         <Stack.Screen name='IT' component={ITScreen} />
-        <Stack.Screen name="UploadCsv" component={UploadCsvScreen}/>
-        <Stack.Screen name="WatchProfile" component={WatchProfileScreen}/>
-        <Stack.Screen name="WatchMessages" component={WatchMessagesScreen}/>
-        <Stack.Screen name="AddSuggestion" component={AddSuggestionScreen}/>
-        <Stack.Screen name="WatchSuggestions" component={WatchSuggestionsScreen}/>
-        <Stack.Screen name ="ChooseTeacherRoomType" component={ChooseTeacherRoomTypeScreen}/>
-        <Stack.Screen name ="ChooseClassroomRoom" component={ChooseClassroomRoomScreen}/>
-        <Stack.Screen name = "TeacherRoomMenu" component={TeacherRoomMenuScreen}/>
-        <Stack.Screen name = "ChatRoom" component={ChatRoomScreen}/>
-        <Stack.Screen name = "TriviaManagement" component={TriviaManagement}/>
-        <Stack.Screen name = "AddTriviaQuestion" component={AddTriviaQuestion}/>
-        <Stack.Screen name = "SolveTriviaMission" component={SolveTriviaMission}/>
-        <Stack.Screen name = "AddTriviaMission" component={AddTriviaMission}/>
-        <Stack.Screen name="AddTriviaSubject" component={AddTriviaSubject} />
+        <Stack.Screen name='UploadCsv' component={UploadCsvScreen} />
+        <Stack.Screen name='WatchProfile' component={WatchProfileScreen} />
+        <Stack.Screen name='WatchMessages' component={WatchMessagesScreen} />
+        <Stack.Screen name='AddSuggestion' component={AddSuggestionScreen} />
+        <Stack.Screen
+          name='WatchSuggestions'
+          component={WatchSuggestionsScreen}
+        />
+        <Stack.Screen
+          name='ChooseTeacherRoomType'
+          component={ChooseTeacherRoomTypeScreen}
+        />
+        <Stack.Screen
+          name='ChooseClassroomRoom'
+          component={ChooseClassroomRoomScreen}
+        />
+        <Stack.Screen
+          name='TeacherRoomMenu'
+          component={TeacherRoomMenuScreen}
+        />
+        <Stack.Screen name='ChatRoom' component={ChatRoomScreen} />
+        <Stack.Screen name='TriviaManagement' component={TriviaManagement} />
+        <Stack.Screen name='AddTriviaQuestion' component={AddTriviaQuestion} />
+        <Stack.Screen
+          name='SolveTriviaMission'
+          component={SolveTriviaMission}
+        />
+        <Stack.Screen name='AddTriviaMission' component={AddTriviaMission} />
+        <Stack.Screen name='AddTriviaSubject' component={AddTriviaSubject} />
+        <Stack.Screen
+          name='DeleteTriviaQuestion'
+          component={DeleteTriviaQuestion}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

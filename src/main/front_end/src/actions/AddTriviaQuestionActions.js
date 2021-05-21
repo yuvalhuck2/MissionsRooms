@@ -73,8 +73,6 @@ export const getCurrentSubjects = ({ apiKey }) => {
 const checkGetCurrentSubjectsResponse = (data, dispatch) => {
   const { reason, value } = data;
   let subjects = value.map((obj) => obj.subject);
-  console.log('subjects');
-  console.log(subjects);
   switch (reason) {
     case Success:
       return dispatch({ type: TRIVIA_SUBJECTS_RETRIEVED, payload: subjects });
