@@ -104,6 +104,14 @@ public class Teacher extends SchoolUser {
 
     @Override
     public UserProfileData getProfileData() {
-        return new UserProfileData(firstName,lastName,alias,getOpcode());
+        return new UserProfileData(firstName,lastName,alias,getOpcode(),classroom!=null);
+    }
+
+    public void setClassroom(Classroom classroom) {
+        this.classroom = classroom;
+    }
+
+    public void setGroupType(GroupType groupType) {
+        this.groupType = groupType;
     }
 }

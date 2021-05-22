@@ -8,11 +8,10 @@ import missions.room.Domain.Classroom;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Users.IT;
 import missions.room.Domain.Users.SchoolUser;
+import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.ITManager;
-import missions.room.Repo.ClassroomRepo;
-import missions.room.Repo.ITRepo;
-import missions.room.Repo.SchoolUserRepo;
-import missions.room.Repo.UserRepo;
+import missions.room.Repo.*;
+import org.apache.commons.lang3.SerializationUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +25,8 @@ import org.mockito.quality.Strictness;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import static Data.DataConstants.*;
 import static org.junit.Assert.*;
@@ -56,6 +57,12 @@ public class ITManagerTestsAllStubs {
 
     @Mock
     protected ClassroomRepo mockClassroomRepo;
+
+    @Mock
+    protected TeacherRepo mockTeacherRepo;
+
+    @Mock
+    protected RoomRepo mockRoomRepo;
 
     protected DataGenerator dataGenerator;
 
@@ -99,7 +106,40 @@ public class ITManagerTestsAllStubs {
         initSchoolUserRepo(schoolUser);
         initITRepo(it, itAlias, it2);
         initClassroomRepo(empty);
+        initTeacherRepo();
+        initRoomRepo();
         initHashSystem();
+    }
+
+    protected void initRoomRepo(){
+        when(mockRoomRepo.findRoomsForWriteByTeacherAlias(dataGenerator.getTeacher(Data.VALID_WITHOUT_CLASSROOM).getAlias()))
+                .thenReturn(new Response<>(new ArrayList<>(),OpCode.Success));
+        when(mockRoomRepo.findRoomsForWriteByTeacherAlias(dataGenerator.getTeacher(Data.Valid_Group_A).getAlias()))
+                .thenReturn(new Response<>(new ArrayList<>(),OpCode.Success));
+        when(mockRoomRepo.findRoomsForWriteByTeacherAlias(dataGenerator.getTeacher(Data.Valid_Group_B).getAlias()))
+                .thenReturn(new Response<>(new ArrayList<>(),OpCode.Success));
+        when(mockRoomRepo.findRoomsForWriteByTeacherAlias(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getAlias()))
+                .thenReturn(new Response<>(new ArrayList<>(),OpCode.Success));
+    }
+
+    protected void initTeacherRepo(){
+        List<Teacher> teacherList=new ArrayList<>();
+        teacherList.add(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM));
+        when(mockTeacherRepo.findTeacherForWriteByClassroom(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getClassroom().getClassName()))
+                .thenReturn(new Response<>(teacherList,OpCode.Success));
+        List<Teacher> teacherList2=new ArrayList<>();
+        teacherList2.add(dataGenerator.getTeacher(Data.Valid_Group_A));
+        teacherList2.add(dataGenerator.getTeacher(Data.Valid_Group_B));
+        when(mockTeacherRepo.findTeacherForWriteByClassroom(dataGenerator.getTeacher(Data.Valid_Group_A).getClassroom().getClassName()))
+                .thenReturn(new Response<>(teacherList2,OpCode.Success));
+        when(mockTeacherRepo.save(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM)))
+                .thenReturn(new Response<>(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM),OpCode.Success));
+        when(mockTeacherRepo.save(dataGenerator.getTeacher(Data.Valid_Group_A)))
+                .thenReturn(new Response<>(dataGenerator.getTeacher(Data.Valid_Group_A),OpCode.Success));
+        when(mockTeacherRepo.save(dataGenerator.getTeacher(Data.Valid_Group_B)))
+                .thenReturn(new Response<>(dataGenerator.getTeacher(Data.Valid_Group_B),OpCode.Success));
+        when(mockTeacherRepo.save(dataGenerator.getTeacher(Data.VALID_WITHOUT_CLASSROOM)))
+                .thenReturn(new Response<>(dataGenerator.getTeacher(Data.VALID_WITHOUT_CLASSROOM),OpCode.Success));
     }
 
     protected void initClassroomRepo(Classroom empty) {
@@ -116,6 +156,10 @@ public class ITManagerTestsAllStubs {
                 .thenReturn(new Response<>(classroom, OpCode.Success));
         when(mockClassroomRepo.delete(any()))
                 .thenReturn(new Response<>(true, OpCode.Success));
+        when(mockClassroomRepo.find(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getClassroom().getClassName()))
+                .thenReturn(new Response<>(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getClassroom(),OpCode.Success));
+        when(mockClassroomRepo.find(dataGenerator.getTeacher(Data.Valid_Group_A).getClassroom().getClassName()))
+                .thenReturn(new Response<>(dataGenerator.getTeacher(Data.Valid_Group_A).getClassroom(),OpCode.Success));
 
     }
 
@@ -157,6 +201,11 @@ public class ITManagerTestsAllStubs {
                 .thenReturn(new Response<>(false, OpCode.Success));
         when(mockUserRepo.isExistsById(studentData.getAlias()))
                 .thenReturn(new Response<>(false, OpCode.Success));
+
+        when(mockUserRepo.findUserForWrite(dataGenerator.getTeacher(Data.VALID_WITHOUT_CLASSROOM).getAlias()))
+                .thenReturn(new Response<>(dataGenerator.getTeacher(Data.VALID_WITHOUT_CLASSROOM),OpCode.Success));
+        when(mockUserRepo.findUserForWrite(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getAlias()))
+                .thenReturn(new Response<>(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM),OpCode.Success));
     }
 
     protected void initRam(String itAlias) {
@@ -167,6 +216,61 @@ public class ITManagerTestsAllStubs {
         when(mockRam.getAlias(NULL_USER_KEY))
                 .thenReturn(WRONG_USER_NAME);
     }
+
+    /*
+    @Test
+    void transferTeacherWithClassroom(){
+        Response<Boolean> response=itManager.transferTeacherClassroom(IT_API_KEY,dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getAlias(),"1=2",GroupType.A);
+        assertFalse(response.getValue());
+        assertEquals(response.getReason(),OpCode.Teacher_Has_Classroom);
+    }*/
+
+
+    @Test
+    void transferTeacherBothToBoth(){
+        Teacher newTeacher=dataGenerator.getTeacher(Data.VALID_WITHOUT_CLASSROOM);
+        Teacher oldTeacher=dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM);
+        Response<Boolean> response=itManager.transferTeacherClassroom(IT_API_KEY,newTeacher.getAlias(),oldTeacher.getClassroom().getClassName(),GroupType.BOTH);
+        assertTrue(response.getValue());
+        assertEquals(response.getReason(),OpCode.Success);
+    }
+
+    @Test
+    void transferTeacherAToBoth(){
+        Teacher newTeacher=dataGenerator.getTeacher(Data.VALID_WITHOUT_CLASSROOM);
+        Teacher oldTeacher=dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM);
+        Response<Boolean> response=itManager.transferTeacherClassroom(IT_API_KEY,newTeacher.getAlias(),oldTeacher.getClassroom().getClassName(),GroupType.A);
+        assertTrue(response.getValue());
+        assertEquals(response.getReason(),OpCode.Success);
+    }
+
+    @Test
+    void transferTeacherAToA(){
+        Teacher newTeacher=dataGenerator.getTeacher(Data.VALID_WITHOUT_CLASSROOM);
+        Teacher oldTeacher=dataGenerator.getTeacher(Data.Valid_Group_A);
+        Response<Boolean> response=itManager.transferTeacherClassroom(IT_API_KEY,newTeacher.getAlias(),oldTeacher.getClassroom().getClassName(),GroupType.A);
+        assertTrue(response.getValue());
+        assertEquals(response.getReason(),OpCode.Success);
+    }
+
+    @Test
+    void transferTeacherBothToAB(){
+        Teacher newTeacher=dataGenerator.getTeacher(Data.VALID_WITHOUT_CLASSROOM);
+        Teacher oldTeacher=dataGenerator.getTeacher(Data.Valid_Group_A);
+        Response<Boolean> response=itManager.transferTeacherClassroom(IT_API_KEY,newTeacher.getAlias(),oldTeacher.getClassroom().getClassName(),GroupType.BOTH);
+        assertTrue(response.getValue());
+        assertEquals(response.getReason(),OpCode.Success);
+    }
+
+    @Test
+    void transferTeacherWrongApiKey(){
+        Teacher newTeacher=dataGenerator.getTeacher(Data.VALID_WITHOUT_CLASSROOM);
+        Teacher oldTeacher=dataGenerator.getTeacher(Data.Valid_Group_A);
+        Response<Boolean> response=itManager.transferTeacherClassroom(INVALID_KEY,newTeacher.getAlias(),oldTeacher.getClassroom().getClassName(),GroupType.BOTH);
+        assertFalse(response.getValue());
+        assertEquals(response.getReason(),OpCode.Wrong_Key);
+    }
+
 
     @Test
     void addNewITHappyCase(){
@@ -530,13 +634,14 @@ public class ITManagerTestsAllStubs {
         testCloseClassroomInvalid(OpCode.DB_Error);
     }
 
+    /*
     @Test
     void testCloseClassroomNotEmptyFromStudents(){
         classroomName = dataGenerator
                 .getClassroom(Data.Valid_Classroom)
                 .getClassName();
         testCloseClassroomInvalid(OpCode.Has_Students);
-    }
+    }*/
 
     @Test
     void testCloseClassroomClassroomRepoDeleteClassroomThrowsException(){

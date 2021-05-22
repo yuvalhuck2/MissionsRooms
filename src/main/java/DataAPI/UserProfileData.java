@@ -9,6 +9,7 @@ public class UserProfileData {
     private final String alias;
     private final OpCode userType;
     private final Integer points;
+    private final boolean hasClassroom;
 
 
     public UserProfileData(String firstName, String lastName, String alias, OpCode userType) {
@@ -17,6 +18,7 @@ public class UserProfileData {
         this.alias = alias;
         this.userType = userType;
         this.points = null;
+        this.hasClassroom=false;
     }
 
     public UserProfileData(String firstName, String lastName, String alias, OpCode userType, int points) {
@@ -25,6 +27,7 @@ public class UserProfileData {
         this.alias = alias;
         this.userType = userType;
         this.points = points;
+        this.hasClassroom=false;
     }
 
     public UserProfileData(String alias, OpCode userType) {
@@ -33,6 +36,7 @@ public class UserProfileData {
         lastName=null;
         this.userType=userType;
         this.points = null;
+        this.hasClassroom=false;
     }
 
     public UserProfileData(String alias, String lastName, String firstName) {
@@ -41,6 +45,16 @@ public class UserProfileData {
         this.alias = alias;
         userType = OpCode.Student;
         points = 0;
+        this.hasClassroom=false;
+    }
+
+    public UserProfileData(String firstName, String lastName, String alias, OpCode userType,boolean hasClassroom) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.alias = alias;
+        this.userType = userType;
+        this.points = null;
+        this.hasClassroom=hasClassroom;
     }
 
     public String getFirstName() {
@@ -68,6 +82,10 @@ public class UserProfileData {
         return apiKey;
     }
 
+    public boolean getHasClassroom() {
+        return hasClassroom;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -77,6 +95,7 @@ public class UserProfileData {
                 Objects.equals(firstName, that.firstName) &&
                 Objects.equals(lastName, that.lastName) &&
                 Objects.equals(alias, that.alias) &&
+                Objects.equals(hasClassroom,that.hasClassroom)&&
                 userType == that.userType;
     }
 

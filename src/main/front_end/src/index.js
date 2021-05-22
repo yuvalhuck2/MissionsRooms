@@ -37,6 +37,8 @@ import {
     ChooseTeacherRoomTypeScreen,
     ChooseClassroomRoomScreen,
   ChatRoomScreen,
+    TransferTeacherScreen,
+    TransferStudentScreen
 } from './components/screens';
 import TeacherRoomMenuScreen from "./components/screens/TeacherRoomMenuScreen";
 
@@ -46,6 +48,14 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Register'>
+          <Stack.Screen
+              name = 'TransferStudent'
+              component={TransferStudentScreen}
+          />
+      <Stack.Screen
+          name = 'TransferTeacher'
+          component={TransferTeacherScreen}
+      />
       <Stack.Screen
         name = 'CloseClassroom'
         component={CloseClassroomScreen}

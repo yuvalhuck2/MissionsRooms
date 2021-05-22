@@ -105,4 +105,34 @@ public class ClassroomRepo {
             return new Response<>(new ArrayList<>(), OpCode.DB_Error);
         }
     }
+
+    public Response<Classroom> find(String classroomName){
+        try{
+            Classroom classroom=classRoomRepository.findClassroom(classroomName);
+            if(classroom==null){
+                log.info("classroom " + classroom + " is not exist");
+                return new Response<>(null,OpCode.Not_Exist_Classroom);
+            }
+            return new Response<>(classroom, OpCode.Success);
+        }
+        catch (Exception e){
+            log.error("error to find classroom " + classroomName,e);
+            return new Response<>(null,OpCode.DB_Error);
+        }
+    }
+
+    public Response<List<Classroom>> findClassroomByGrade(String grade){
+        try{
+            List<Classroom> classrooms=classRoomRepository.findClassroomByGrade(grade);
+            if(classrooms==null){
+                log.info("there is no classrooms in grade: " + grade );
+                return new Response<>(null,OpCode.Not_Exist_Classroom);
+            }
+            return new Response<>(classrooms, OpCode.Success);
+        }
+        catch (Exception e){
+            log.error("error to find classroom in grade " + grade,e);
+            return new Response<>(null,OpCode.DB_Error);
+        }
+    }
 }

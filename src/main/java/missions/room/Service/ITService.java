@@ -2,6 +2,7 @@ package missions.room.Service;
 
 import DataAPI.*;
 import com.sun.org.apache.xpath.internal.operations.Bool;
+import missions.room.Domain.Classroom;
 import missions.room.Domain.Users.User;
 import missions.room.Managers.ITManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,5 +84,21 @@ public class ITService {
 
     public Response<Integer> deleteSeniorStudents(String apiKey){
         return itManager.deleteSeniorStudents(apiKey);
+    }
+
+    public Response<Boolean> transferTeacherClassroom(String apiKey,String alias,String classroomName,GroupType groupType){
+        return itManager.transferTeacherClassroom(apiKey,alias,classroomName,groupType);
+    }
+
+    public Response<List<ClassroomAndGroupsData>> getAllClassrooms(String apiKey){
+        return itManager.getAllClassrooms(apiKey);
+    }
+
+    public Response<List<ClassroomAndGroupsData>> getAllClassroomsByGrade(String apiKey,String alias){
+        return itManager.getAllClassroomsByGrade(apiKey,alias);
+    }
+
+    public Response<Boolean> transferStudentClassroom(String apiKey,String alias,String classroomName,GroupType groupType){
+        return itManager.transferStudentClassroom(apiKey,alias,classroomName,groupType);
     }
 }

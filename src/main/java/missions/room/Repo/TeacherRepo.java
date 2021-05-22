@@ -1,6 +1,7 @@
 package missions.room.Repo;
 
 import CrudRepositories.TeacherCrudRepository;
+import DataAPI.GroupType;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import missions.room.Domain.Users.SchoolUser;
@@ -41,6 +42,19 @@ public class TeacherRepo {
     public Response<Teacher> findTeacherForRead(String alias){
         try{
             return new Response<>(teacherCrudRepository.findTeacherForRead(alias), OpCode.Success);
+        }
+        catch(LockTimeoutException e){
+            return new Response<>(null,OpCode.TimeOut);
+        }
+        catch(Exception e){
+            return new Response<>(null,OpCode.DB_Error);
+        }
+    }
+
+    @Transactional
+    public Response<List<Teacher>> findTeacherForWriteByClassroom(String classroomName){
+        try{
+            return new Response<>(teacherCrudRepository.findTeacherForWriteByClassroom(classroomName), OpCode.Success);
         }
         catch(LockTimeoutException e){
             return new Response<>(null,OpCode.TimeOut);

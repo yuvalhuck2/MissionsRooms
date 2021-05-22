@@ -8,12 +8,15 @@ const initialState = {
     firstName:'',
     lastName:'',
     enableFirstName:false,
-    firstName:'',
-    lastName:'',
     enableLastName:false,
     classroom:{},
     group:{},
     loading:false,
+    allClassrooms:[],
+    currUser:'',
+    chosenClassroom:'',
+    chosenGroup:'',
+    visible:true,
   };
 
 import {
@@ -31,7 +34,15 @@ import {
     CHANGE_ENABLE_LAST_NAME,
     LOGIN_IT,
     CLEAR_STATE,
-    DELETE_USER, UPDATE_ERROR_DELETE_USER,
+    RESET_MANAGE_USERS_TRANSFER,
+    DELETE_USER,
+    UPDATE_ERROR_DELETE_USER,
+    PASS_TO_TRANSFER_TEACHER,
+    TRANSFER_GROUP_CHANGED,
+    TRANSFER_CLASSROOM_CHANGED,
+    TRANSFER_TEACHER_SUCCESS,
+    UPDATE_ERROR_TRANSFER_TEACHER,
+    PASS_TO_TRANSFER_STUDENT, TRANSFER_STUDENT_SUCCESS,UPDATE_ERROR_TRANSFER_STUDENT
 } from '../actions/types';
 
 export default (state = initialState, action) => {
@@ -48,8 +59,11 @@ export default (state = initialState, action) => {
             return { ...initialState, apiKey: action.payload};
         case RESET_MANAGE_USERS:
             return { ...initialState, apiKey: action.payload};
+        case RESET_MANAGE_USERS_TRANSFER:
+            return {...state,visible:true,profile:'',firstName:'',lastName:'',chosenClassroom:'',chosenGroup:''}
         case PROFILE_CHANGED_MANAGE_USERS:
-            return {...state, profile: action.payload}
+            currentUser = state.presentedUsers.find((user)=> user.alias == action.payload)
+            return {...state,profile: action.payload,currUser:currentUser}
         case WAIT_MANAGE_USERS:
             return {...state, loading:true}
         case ACTION_FINISHED_MANAGED_USERS:
@@ -66,7 +80,11 @@ export default (state = initialState, action) => {
                 currentFromAllUsers.lastName = action.payload.lastName;
             }
             
-            return {...state, loading:false, firstName:'', lastName:'', errorMessage:''}
+            return {...state, loading:false, firstName:'', lastName:'', errorMessage:'',currUser:''}
+        case PASS_TO_TRANSFER_TEACHER:
+            return {...state,allClassrooms:action.payload.classrooms,visible:false};
+        case PASS_TO_TRANSFER_STUDENT:
+            return {...state,allClassrooms:action.payload.classrooms,visible:false};
         case UPDATE_ALL_USER_PROFILES_MANAGE_USERS:
             return {... state, allUsers: action.payload, presentedUsers: action.payload}
         case CHANGE_ENABLE_FIRST_NAME:
@@ -74,13 +92,23 @@ export default (state = initialState, action) => {
         case CHANGE_ENABLE_LAST_NAME:
             return {... state, enableLastName:action.payload}
         case UPDATE_ERROR_MANAGE_USERS:
-            alert(action.payload)
             return { ...state, errorMessage: action.payload, loading:false};
         case DELETE_USER:
             newAllUsers=state.allUsers.filter((user)=>user.alias!==action.payload.alias);
             newPresentedUsers=state.presentedUsers.filter((user)=>user.alias!==action.payload.alias)
             return {...state,allUsers:newAllUsers,presentedUsers:newPresentedUsers};
-
+        case TRANSFER_GROUP_CHANGED:
+            return {...state,chosenGroup: action.payload};
+        case TRANSFER_CLASSROOM_CHANGED:
+            return{...state,chosenClassroom: action.payload}
+        case TRANSFER_TEACHER_SUCCESS:
+            return{...state,profile:'',visible:true,chosenClassroom:'',chosenGroup:''};
+        case TRANSFER_STUDENT_SUCCESS:
+            return{...state,profile:'',visible:true,chosenClassroom:'',chosenGroup:''};
+        case UPDATE_ERROR_TRANSFER_TEACHER:
+            return{...state,profile:'',visible:true};
+        case UPDATE_ERROR_TRANSFER_STUDENT:
+            return{...state,profile:'',visible:true};
         case CLEAR_STATE:
             return initialState
         default:

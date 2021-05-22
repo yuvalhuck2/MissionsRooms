@@ -60,4 +60,29 @@ public class ITController extends AbsController{
         ApiKey data=json.fromJson(apiKey,ApiKey.class);
         return itService.deleteSeniorStudents(data.getApiKey());
     }
+
+    @PostMapping("/transfer/teacher")
+    public Response<?> transferTeacherClassroom(@RequestBody String transferDetails){
+        TransferDetailsData data= json.fromJson(transferDetails, TransferDetailsData.class);
+        return itService.transferTeacherClassroom(data.getApiKey(),data.getAlias(),data.getClassroomName(),data.getGroupType());
+    }
+
+    @PostMapping("/get/classrooms")
+    public Response<?> getAllClassrooms(@RequestBody String apikey){
+        ApiKey data=json.fromJson(apikey,ApiKey.class);
+        return itService.getAllClassrooms(data.getApiKey());
+    }
+
+    @PostMapping("/get/classrooms/grade")
+    public Response<?> getAllClassroomsByGrade(@RequestBody String apikeyAndAlias){
+        ApiKeyAndAliasData data=json.fromJson(apikeyAndAlias,ApiKeyAndAliasData.class);
+        return itService.getAllClassroomsByGrade(data.getApiKey(),data.getAlias());
+    }
+
+    @PostMapping("/transfer/student")
+    public Response<?> transferStudentClassroom(@RequestBody String transferDetails){
+        TransferDetailsData data=json.fromJson(transferDetails,TransferDetailsData.class);
+        return itService.transferStudentClassroom(data.getApiKey(),data.getAlias(),data.getClassroomName(),data.getGroupType());
+    }
+
 }

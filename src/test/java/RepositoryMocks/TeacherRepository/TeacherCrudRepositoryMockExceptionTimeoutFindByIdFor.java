@@ -79,4 +79,9 @@ public class TeacherCrudRepositoryMockExceptionTimeoutFindByIdFor implements Tea
     public void deleteAll() {
 
     }
+
+    @Override
+    public List<Teacher> findTeacherForWriteByClassroom(String classroomName) {
+        return null;
+    }
 }

@@ -4,7 +4,9 @@ import CrudRepositories.ITCrudRepository;
 import CrudRepositories.UserCrudRepository;
 import Data.Data;
 import DataAPI.OpCode;
+import DataAPI.Response;
 import missions.room.Domain.Users.IT;
+import missions.room.Domain.Users.User;
 import missions.room.Managers.ITManager;
 import missions.room.Repo.UserRepo;
 import org.junit.jupiter.api.AfterEach;
@@ -40,6 +42,9 @@ public class ITMangerRealRamUserRepo extends ITManagerTestsRealRam {
     @Override
     protected void initUserRepo(IT it, String itAlias2) {
         itCrudRepository.save(it);
+        realUserRepo.save(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM3));
+        realUserRepo.save(dataGenerator.getTeacher(Data.VALID_WITHOUT_CLASSROOM));
+
         try {
             Field userRepo = ITManager.class.getDeclaredField("userRepo");
             userRepo.setAccessible(true);

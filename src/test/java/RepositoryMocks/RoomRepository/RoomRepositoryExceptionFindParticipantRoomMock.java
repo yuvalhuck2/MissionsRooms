@@ -126,4 +126,9 @@ public class RoomRepositoryExceptionFindParticipantRoomMock implements RoomCrudR
     public void deleteAll() {
 
     }
+
+    @Override
+    public Iterable<Room> findRoomsForWriteByTeacherAlias(String teacherAlias) {
+        return null;
+    }
 }
