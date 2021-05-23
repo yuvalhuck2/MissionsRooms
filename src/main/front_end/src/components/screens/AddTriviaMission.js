@@ -1,83 +1,237 @@
-import React, {Component} from "react";
-import {StyleSheet, View, Text, FlatList} from "react-native";
+import React, { Component } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
+import { Checkbox } from "react-native-paper";
+import { connect } from "react-redux";
+import {
+  addMission,
+  chooseTriviaQuestion,
+  getTriviaQuestions,
+  passRatioChanged,
+  removeTriviaQuestion,
+  typesChanged,
+} from "../../actions/AddMissionActions";
+import { TRIVIA } from "../../actions/types";
+import { AddDeterministicMissionStrings } from "../../locale/locale_heb";
 import Button from "../common/Button";
 import Header from "../common/Header";
-import { Checkbox } from 'react-native-paper';
+import TextInput from "../common/TextInput";
+const { personal, group, classroom } = AddDeterministicMissionStrings;
 
-const questions = [
-    {
-        id: "1",
-        question: "מי הוא ראש הממשלה?",
-        checked: "checked"
-    },
-    {
-        id: "2",
-        question: "בירת צרפת היא?",
-        checked: "checked"
-    },
-    {
-        id: "3",
-        question: "כמה ימים יש בשבוע?",
-        checked: "unchecked"
-    },
-    {
-        id: "4",
-        question: "כמה זה 10:(2+2)?",
-        checked: "checked"
-    },
-]
+class AddTriviaMission extends Component {
+  constructor(...args) {
+    super(...args);
+    this.renderQuestions = this.renderQuestions.bind(this);
+    this.onPassRatioChanged = this.onPassRatioChanged.bind(this);
+    this.onTypesChanged = this.onTypesChanged.bind(this);
+    this.onButtonPress = this.onButtonPress.bind(this);
+  }
 
-class AddTriviaMission extends Component{
-    constructor(...args) {
-        super(...args);
-        this.renderQuestions = this.renderQuestions.bind(this);
+  componentDidMount() {
+    this.props.getTriviaQuestions({ apiKey: this.props.apiKey });
+  }
+
+  onPassRatioChanged(text) {
+    this.props.passRatioChanged(text);
+  }
+
+  onTypesChanged(text) {
+    const { missionTypes } = this.props;
+    let x;
+    if (missionTypes.includes(text)) {
+      x = missionTypes.filter((type) => type !== text);
+    } else {
+      x = [...missionTypes, text];
     }
+    this.props.typesChanged(x);
+  }
 
-    renderQuestions(){
-        let renderItem = ({item}) => {
-            return(
-                <View>
-                    <Checkbox.Item label={item.question} status={item.checked}/>
-                </View>
-            )
-        }
+  onButtonPress() {
+    const {
+      apiKey,
+      triviaQuestions,
+      points,
+      passRatio,
+      missionTypes,
+      navigation,
+    } = this.props;
 
-        return (
-            <FlatList
-                data={questions}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-            />
-        )
+    this.props.addMission({
+      apiKey,
+      triviaQuestions,
+      points,
+      passRatio,
+      navigation,
+      missionTypes,
+      className: TRIVIA,
+    });
+  }
+
+  onQuestionChanged(item) {
+    const {
+      triviaQuestions,
+      chooseTriviaQuestion,
+      removeTriviaQuestion,
+    } = this.props;
+    triviaQuestions.includes(item)
+      ? removeTriviaQuestion(item)
+      : chooseTriviaQuestion(item);
+  }
+
+  renderQuestions() {
+    const { triviaQuestions, allTriviaQuestions } = this.props;
+    let renderItem = ({ item }) => {
+      return (
+        <View>
+          <Checkbox.Item
+            label={item.question}
+            status={triviaQuestions.includes(item) ? "checked" : "unchecked"}
+            onPress={() => this.onQuestionChanged(item)}
+          />
+        </View>
+      );
+    };
+
+    return (
+      <FlatList
+        data={allTriviaQuestions}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+      />
+    );
+  }
+
+  renderSpinner() {
+    return (
+      <ActivityIndicator
+        animating={true}
+        color={theme.colors.primary}
+        size="large"
+      />
+    );
+  }
+
+  renderButton() {
+    const { loading } = this.props;
+
+    return loading ? (
+      this.renderSpinner()
+    ) : (
+      <Button
+        mode="contained"
+        style={styles.button}
+        onPress={this.onButtonPress}
+      >
+        {addButton}
+      </Button>
+    );
+  }
+
+  renderError() {
+    const { errorMessage } = this.props;
+
+    if (errorMessage && errorMessage !== "") {
+      return (
+        <View>
+          <Text style={styles.errorTextStyle}>{errorMessage}</Text>
+        </View>
+      );
     }
+  }
 
-    render(){
-        return (
-            <View style={styles.container}>
-                <Header>בחר שאלות עבור המשימה</Header>
-                {this.renderQuestions()}
-                <View style={{flex: 0.5, flexDirection: "column", alignItems: "center"}}>
-                    <Button
-                        mode="contained"
-                        style={styles.button}
-                    >הוסף משימה
-                    </Button>
-                </View>
-            </View>
-        )
-    }
+  renderRoomTypes() {
+    const { missionTypes } = this.props;
+    return (
+      <>
+        <Checkbox.Item
+          label={personal}
+          status={missionTypes.includes("Personal") ? "checked" : "unchecked"}
+          onPress={() => this.onTypesChanged("Personal")}
+        />
+
+        <Checkbox.Item
+          label={group}
+          status={missionTypes.includes("Group") ? "checked" : "unchecked"}
+          onPress={() => this.onTypesChanged("Group")}
+        />
+
+        <Checkbox.Item
+          label={classroom}
+          status={missionTypes.includes("Class") ? "checked" : "unchecked"}
+          onPress={() => this.onTypesChanged("Class")}
+        />
+      </>
+    );
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={{ flex: 1 }}>
+          <Header>בחר שאלות עבור המשימה</Header>
+          {this.renderQuestions()}
+          <TextInput
+            label="אחוז שאלות להצלחה"
+            value={this.props.passRatio}
+            onChangeText={this.onPassRatioChanged}
+          />
+        </View>
+
+        <View style={{ flex: 1 }}>
+          <Header headerStyle={{ marginTop: 0 }}>בחר סוגי משימה</Header>
+          {this.renderRoomTypes()}
+          <Button
+            mode="contained"
+            style={styles.button}
+            onPress={this.onButtonPress}
+          >
+            הוסף משימה
+          </Button>
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-        width: '100%',
-    },
-    button: {
-        margin: 30,
-        width: "80%"
-    },
-})
+  container: {
+    flex: 1,
+    padding: 20,
+    width: "100%",
+  },
+  button: {
+    margin: 30,
+    width: "80%",
+  },
+});
 
-export default AddTriviaMission;
+const mapStateToProps = (state) => {
+  const {
+    apiKey,
+    triviaQuestions,
+    passRatio,
+    missionTypes,
+    points,
+    loading,
+    errorMessage,
+    allTriviaQuestions,
+  } = state.addMission;
+  return {
+    apiKey,
+    triviaQuestions,
+    passRatio,
+    missionTypes,
+    points,
+    loading,
+    errorMessage,
+    allTriviaQuestions,
+  };
+};
+
+export default connect(mapStateToProps, {
+  getTriviaQuestions,
+  passRatioChanged,
+  chooseTriviaQuestion,
+  removeTriviaQuestion,
+  addMission,
+  typesChanged,
+})(AddTriviaMission);

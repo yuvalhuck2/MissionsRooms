@@ -10,6 +10,7 @@ import {
   questionChanged,
   subjectChanged,
   wrongAnswerChanged,
+  handleBack,
 } from '../../actions/AddTriviaQuestionActions';
 import { theme } from '../../core/theme';
 import { AddTriviaQuestionStrings } from '../../locale/locale_heb';
@@ -39,7 +40,7 @@ class AddTriviaQuestion extends Component {
     this.renderError = this.renderError.bind(this);
     this.renderSpinner = this.renderSpinner.bind(this);
     this.renderSubmitButton = this.renderSubmitButton.bind(this);
-    this.onBackPress = this.onBackPress(this);
+    this.onBackPress = this.onBackPress.bind(this);
   }
 
   componentDidMount() {
@@ -270,4 +271,5 @@ export default connect(mapStateToProps, {
   addTriviaQuestion,
   subjectChanged,
   getCurrentSubjects,
+  handleBack,
 })(AddTriviaQuestion);

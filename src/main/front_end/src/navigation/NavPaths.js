@@ -38,3 +38,4 @@ export const WatchAllOpenQuestionMissionsScreen =
 export const addTriviaSubject = 'AddTriviaSubject';
 export const triviaManagement = 'TriviaManagement';
 export const addTriviaQuestion = 'AddTriviaQuestion';
+export const addTriviaMission = 'AddTriviaMission';

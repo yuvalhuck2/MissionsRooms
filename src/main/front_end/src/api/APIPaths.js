@@ -41,3 +41,4 @@ export const responseAnswer = '/room/responseAnswer';
 export const addTriviaSubject = '/addTriviaSubject';
 export const addTriviaQuestion = '/addTriviaQuestion';
 export const getTriviaSubjects = '/getTriviaSubjects';
+export const getTriviaQuestions = '/getTriviaQuestions';

@@ -4,6 +4,7 @@ import { TriviaManagementStrings } from '../../locale/locale_heb';
 import * as NavPaths from '../../navigation/NavPaths';
 import Button from '../common/Button';
 import Header from '../common/Header';
+import { Appbar } from 'react-native-paper';
 
 const {
   header,

@@ -1,7 +1,7 @@
 import axios from 'axios';
 //export const baseURL = "http://132.72.232.60:8080"
 //export const baseURL = "http://132.73.214.238:8080"
-export const baseURL = 'http://192.168.14.119:8080';
+export const baseURL = 'http://192.168.0.10:8080';
 export default axios.create({
   baseURL: baseURL,
 });

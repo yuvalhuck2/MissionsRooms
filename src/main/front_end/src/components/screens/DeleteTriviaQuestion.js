@@ -1,24 +1,24 @@
-import React, { Component } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { RadioButton } from 'react-native-paper';
-import ListAccordion from 'react-native-paper/src/components/List/ListAccordion';
-import ListAccordionGroup from 'react-native-paper/src/components/List/ListAccordionGroup';
-import RadioButtonGroup from 'react-native-paper/src/components/RadioButton/RadioButtonGroup';
-import Button from '../common/Button';
-import Header from '../common/Header';
+import React, { Component } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { RadioButton } from "react-native-paper";
+import ListAccordion from "react-native-paper/src/components/List/ListAccordion";
+import ListAccordionGroup from "react-native-paper/src/components/List/ListAccordionGroup";
+import RadioButtonGroup from "react-native-paper/src/components/RadioButton/RadioButtonGroup";
+import Button from "../common/Button";
+import Header from "../common/Header";
 
 const questions = [
   {
-    id: '1',
-    question: 'מי הוא ראש הממשלה?',
-    answers: ['יאיר לפיד', 'בני גנץ', 'בנימין נתינהו', 'נפתלי בנט'],
-    correctAnswer: 'בנימין נתינהו',
+    id: "1",
+    question: "מי הוא ראש הממשלה?",
+    answers: ["יאיר לפיד", "בני גנץ", "בנימין נתינהו", "נפתלי בנט"],
+    correctAnswer: "בנימין נתינהו",
   },
   {
-    id: '2',
-    question: 'כמה זה 10:(2+2)?',
-    answers: ['0.2', '0.4', '0', '2.2'],
-    correctAnswer: '0.4',
+    id: "2",
+    question: "כמה זה 10:(2+2)?",
+    answers: ["0.2", "0.4", "0", "2.2"],
+    correctAnswer: "0.4",
   },
 ];
 
@@ -35,13 +35,14 @@ class DeleteTriviaQuestion extends Component {
         <View
           style={{
             flex: 1,
-            flexDirection: 'row',
+            flexDirection: "row",
             paddingLeft: 30,
             paddingRight: 30,
+            alignItems: 'center'
           }}
         >
-          <Text style={{ flex: 1 }}>{item}</Text>
-          <RadioButton style={{ flex: 1 }} value={item} />
+          <Text>{item}</Text>
+          <RadioButton value={item} />
         </View>
       );
     };
@@ -113,7 +114,7 @@ class DeleteTriviaQuestion extends Component {
         {/* <View
           style={{ flex: 0.5, flexDirection: 'column', alignItems: 'center' }}
         > */}
-        <Button mode='contained' style={styles.button}>
+        <Button mode="contained" style={styles.button}>
           מחק שאלה
         </Button>
       </ListAccordionGroup>
@@ -126,15 +127,16 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     // width: '100%',
-    // alignItems: 'center',
-    width: '100%',
+    alignItems: 'center',
+    width: "100%",
     maxWidth: 340,
-    alignSelf: 'center',
+    // alignSelf: "center",
+    justifyContent: "center",
   },
   button: {
     margin: 30,
-    width: '80%',
-    height: '80%',
+    width: "80%",
+    // height: "80%",
   },
 });
 
