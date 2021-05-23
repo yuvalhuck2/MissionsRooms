@@ -2,21 +2,21 @@ import {
   ADD_MISSION_POINTS_CHANGED,
   ADD_MISSON,
   ANSWER_CHANGED,
+  CHOOSE_TRIVIA_QUESTION,
   DETERMINISTIC,
   ENTER_ADD_MISSION,
+  GOT_TRIVIA_QUESTIONS,
   LOGIN_TEACHER,
   OPEN_QUESTION,
   PASS_RATIO_CHANGED,
   QUESTION_CHANGED,
+  REMOVE_TRIVIA_QUESTION,
   TRIVIA,
   TYPES_CHANGED,
   UPDATE_ERROR_MISSION,
-  CHOOSE_TRIVIA_QUESTION,
-  REMOVE_TRIVIA_QUESTION,
-  GOT_TRIVIA_QUESTIONS,
 } from "../actions/types";
 import API from "../api/API";
-import * as APIPaths from '../api/APIPaths';
+import * as APIPaths from "../api/APIPaths";
 import {
   AddDeterministicMissionErrors,
   AddDeterministicMissionSuccess,
@@ -113,7 +113,6 @@ export const navigateToMission = (type, navigation, points) => {
   };
 };
 
-
 export const getTriviaQuestions = ({ apiKey }) => {
   return async (dispatch) => {
     try {
@@ -122,9 +121,9 @@ export const getTriviaQuestions = ({ apiKey }) => {
       );
       res
         ? checkGetCurrentQuestionsResponse(res.data, dispatch)
-        : dispatch({ type: '' });
+        : dispatch({ type: "" });
     } catch (err) {
-      return dispatch({ type: '' });
+      return dispatch({ type: "" });
     }
   };
 };
@@ -135,10 +134,9 @@ const checkGetCurrentQuestionsResponse = (data, dispatch) => {
     case Success:
       return dispatch({ type: GOT_TRIVIA_QUESTIONS, payload: value });
     default:
-      return dispatch({ type: '' });
+      return dispatch({ type: "" });
   }
 };
-
 
 export const addMission = ({
   apiKey,
@@ -175,8 +173,10 @@ export const addMission = ({
           });
         } else {
           let triviaMap = {};
-          let updatedTriviaQuestions = triviaQuestions.map(q => {return {...q, subject: {name: q.subject}}})
-          updatedTriviaQuestions.forEach(q => triviaMap[q.id] = q);
+          let updatedTriviaQuestions = triviaQuestions.map((q) => {
+            return { ...q, subject: { name: q.subject } };
+          });
+          updatedTriviaQuestions.forEach((q) => (triviaMap[q.id] = q));
           missionData = JSON.stringify({
             CLASSNAME: className,
             DATA: {

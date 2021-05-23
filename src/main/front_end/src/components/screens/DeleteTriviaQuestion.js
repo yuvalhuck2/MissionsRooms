@@ -66,6 +66,29 @@ class DeleteTriviaQuestion extends Component {
     );
   }
 
+  renderTriviaForm2() {
+
+    let renderItem = ({ item }) => {
+      <View>
+        <Text>item.question</Text>
+        <RadioButton value={item.question}/>
+      </View>
+    }
+
+    <RadioButtonGroup
+      onValueChange={ newValue => this.questionChanged(newValue)} 
+      value={this.props.selectedQuestion}
+    >
+
+      <FlatList
+        data={this.props.questions}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+      />
+
+    </RadioButtonGroup>
+  }
+
   renderTriviaForm() {
     let renderItem = ({ item }) => {
       return (
@@ -108,16 +131,13 @@ class DeleteTriviaQuestion extends Component {
 
   render() {
     return (
-      <ListAccordionGroup style={styles.container}>
+      <View style={styles.container}>
         <Header>מחק שאלת טריוויה</Header>
-        {this.renderTriviaForm()}
-        {/* <View
-          style={{ flex: 0.5, flexDirection: 'column', alignItems: 'center' }}
-        > */}
+        {this.renderTriviaForm2()}
         <Button mode="contained" style={styles.button}>
           מחק שאלה
         </Button>
-      </ListAccordionGroup>
+      </View>
     );
   }
 }
@@ -130,12 +150,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: "100%",
     maxWidth: 340,
-    // alignSelf: "center",
-    justifyContent: "center",
+    alignSelf: "center",
   },
   button: {
     margin: 30,
-    width: "80%",
+    // width: "80%",
     // height: "80%",
   },
 });

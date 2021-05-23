@@ -121,7 +121,7 @@ class AddTriviaMission extends Component {
         style={styles.button}
         onPress={this.onButtonPress}
       >
-        {addButton}
+        הוסף משימה
       </Button>
     );
   }
@@ -179,13 +179,8 @@ class AddTriviaMission extends Component {
         <View style={{ flex: 1 }}>
           <Header headerStyle={{ marginTop: 0 }}>בחר סוגי משימה</Header>
           {this.renderRoomTypes()}
-          <Button
-            mode="contained"
-            style={styles.button}
-            onPress={this.onButtonPress}
-          >
-            הוסף משימה
-          </Button>
+          {this.renderButton()}
+          {this.renderError()}
         </View>
       </View>
     );
