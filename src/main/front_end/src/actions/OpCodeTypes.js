@@ -70,3 +70,4 @@ export const Invalid_Trivia_Subject = "Invalid_Trivia_Subject"
 export const Trivia_Subject_Already_Exists = "Trivia_Subject_Already_Exists"
 export const Invalid_Trivia_Question = "Invalid_Trivia_Question";
 export const Trivia_Subject_Doesnt_exist=  "SUBJECT_DOESNT_EXIST"
+export const Exist_In_Mission = "Exist_In_Mission";

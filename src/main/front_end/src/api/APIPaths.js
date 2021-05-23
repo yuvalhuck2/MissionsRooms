@@ -42,3 +42,5 @@ export const addTriviaSubject = '/addTriviaSubject';
 export const addTriviaQuestion = '/addTriviaQuestion';
 export const getTriviaSubjects = '/getTriviaSubjects';
 export const getTriviaQuestions = '/getTriviaQuestions';
+export const deleteTriviaQuestion = '/deleteTriviaQuestion';
+

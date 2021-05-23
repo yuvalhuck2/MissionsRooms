@@ -1,142 +1,131 @@
-import React, { Component } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import { RadioButton } from "react-native-paper";
-import ListAccordion from "react-native-paper/src/components/List/ListAccordion";
-import ListAccordionGroup from "react-native-paper/src/components/List/ListAccordionGroup";
-import RadioButtonGroup from "react-native-paper/src/components/RadioButton/RadioButtonGroup";
-import Button from "../common/Button";
-import Header from "../common/Header";
+import React, { Component } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, RadioButton, Appbar } from 'react-native-paper';
+import RadioButtonGroup from 'react-native-paper/src/components/RadioButton/RadioButtonGroup';
+import { connect } from 'react-redux';
+import { getTriviaQuestions } from '../../actions/AddMissionActions';
+import {
+  deleteTriviaQuestion,
+  questionChanged,
+  handleBack,
+} from '../../actions/DeleteTriviaQuestionActions';
+import { theme } from '../../core/theme';
+import { deleteTriviaQuestionStrings } from '../../locale/locale_heb';
+import Button from '../common/Button';
+import Header from '../common/Header';
 
-const questions = [
-  {
-    id: "1",
-    question: "מי הוא ראש הממשלה?",
-    answers: ["יאיר לפיד", "בני גנץ", "בנימין נתינהו", "נפתלי בנט"],
-    correctAnswer: "בנימין נתינהו",
-  },
-  {
-    id: "2",
-    question: "כמה זה 10:(2+2)?",
-    answers: ["0.2", "0.4", "0", "2.2"],
-    correctAnswer: "0.4",
-  },
-];
+const { header, button } = deleteTriviaQuestionStrings;
 
 class DeleteTriviaQuestion extends Component {
   constructor(...args) {
     super(...args);
     this.renderTriviaForm = this.renderTriviaForm.bind(this);
-    this.renderQuestionAnswers = this.renderQuestionAnswers.bind(this);
+    this.onButtonPress = this.onButtonPress.bind(this);
+    this.questionChanged = this.questionChanged.bind(this);
+    this.renderButton = this.renderButton.bind(this);
+    this.renderError = this.renderError.bind(this);
+    this.onBackPress = this.onBackPress.bind(this);
   }
 
-  renderQuestionAnswers({ answers, correctAnswer }) {
-    let renderItem = ({ item }) => {
-      return (
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            paddingLeft: 30,
-            paddingRight: 30,
-            alignItems: 'center'
-          }}
-        >
-          <Text>{item}</Text>
-          <RadioButton value={item} />
-        </View>
-      );
-    };
-
-    let answerList = (
-      <FlatList
-        data={answers}
-        renderItem={renderItem}
-        keyExtractor={(item) => item}
-      />
-    );
-
-    return (
-      <RadioButtonGroup
-        // style={{ flex: 1, padding: 50 }}
-        onValueChange={() => {}}
-        value={correctAnswer}
-      >
-        {answerList}
-      </RadioButtonGroup>
-    );
+  componentDidMount() {
+    this.props.getTriviaQuestions({ apiKey: this.props.apiKey });
   }
 
-  renderTriviaForm2() {
+  onBackPress() {
+    const { navigation, handleBack } = this.props;
+    handleBack({ navigation });
+  }
 
-    let renderItem = ({ item }) => {
-      <View>
-        <Text>item.question</Text>
-        <RadioButton value={item.question}/>
-      </View>
-    }
+  onButtonPress() {
+    const { apiKey, navigation, selectedQuestion } = this.props;
+    this.props.deleteTriviaQuestion({
+      apiKey,
+      navigation,
+      questionStr: selectedQuestion,
+    });
+  }
 
-    <RadioButtonGroup
-      onValueChange={ newValue => this.questionChanged(newValue)} 
-      value={this.props.selectedQuestion}
-    >
-
-      <FlatList
-        data={this.props.questions}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
-
-    </RadioButtonGroup>
+  questionChanged(newQuestion) {
+    this.props.questionChanged(newQuestion);
   }
 
   renderTriviaForm() {
     let renderItem = ({ item }) => {
       return (
-        <View
-          style={
-            {
-              // flex: 1,
-              // flexDirection: 'row',
-              // alignItems: 'stretch',
-              // paddingLeft: 200,
-              // paddingRight: 30,
-            }
-          }
-        >
-          {/* <RadioButton value={questions[0]} style={{ flex: 1 }} /> */}
-
-          <ListAccordion
-            title={item.question}
-            id={item.id}
-            // style={{ flex: 30 }}
-          >
-            {this.renderQuestionAnswers({
-              answers: item.answers,
-              correctAnswer: item.correctAnswer,
-            })}
-          </ListAccordion>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <Text>{item.question}</Text>
+          <RadioButton value={item} />
         </View>
       );
     };
+
     return (
-      <RadioButtonGroup>
-        <FlatList
-          data={questions}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
-      </RadioButtonGroup>
+      <View style={{flex: 0.5}}>
+        <RadioButtonGroup
+          onValueChange={(newValue) => this.questionChanged(newValue)}
+          value={this.props.selectedQuestion}
+        >
+          <FlatList
+            data={this.props.questions}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+        </RadioButtonGroup>
+      </View>
     );
+  }
+
+  renderSpinner() {
+    return (
+      <ActivityIndicator
+        animating={true}
+        color={theme.colors.primary}
+        size='large'
+      />
+    );
+  }
+
+  renderButton() {
+    const { loading } = this.props;
+    return loading ? (
+      this.renderSpinner()
+    ) : (
+      <Button
+        mode='contained'
+        style={styles.button}
+        onPress={this.onButtonPress}
+      >
+        {button}
+      </Button>
+    );
+  }
+
+  renderError() {
+    const { errorMessage } = this.props;
+
+    if (errorMessage && errorMessage !== '') {
+      return (
+        <View>
+          <Text style={styles.errorTextStyle}>{errorMessage}</Text>
+        </View>
+      );
+    }
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Header>מחק שאלת טריוויה</Header>
-        {this.renderTriviaForm2()}
-        <Button mode="contained" style={styles.button}>
-          מחק שאלה
-        </Button>
+        <Appbar.Header styles={styles.bottom}>
+          <Appbar.BackAction
+            onPress={() => {
+              this.onBackPress();
+            }}
+          />
+        </Appbar.Header>
+        <Header>{header}</Header>
+        {this.renderTriviaForm()}
+        {this.renderButton()}
+        {this.renderError()}
       </View>
     );
   }
@@ -146,17 +135,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    // width: '100%',
     alignItems: 'center',
-    width: "100%",
+    width: '100%',
     maxWidth: 340,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   button: {
     margin: 30,
-    // width: "80%",
-    // height: "80%",
+  },
+  errorTextStyle: {
+    fontSize: 25,
+    alignSelf: 'center',
+    color: theme.colors.error,
   },
 });
 
-export default DeleteTriviaQuestion;
+export const mapStateToProps = (state) => {
+  const {
+    apiKey,
+    questions,
+    selectedQuestion,
+    errorMessage,
+    loading,
+  } = state.deleteTriviaQuestion;
+  return { apiKey, questions, selectedQuestion, errorMessage, loading };
+};
+
+export default connect(mapStateToProps, {
+  questionChanged,
+  deleteTriviaQuestion,
+  getTriviaQuestions,
+  handleBack,
+})(DeleteTriviaQuestion);

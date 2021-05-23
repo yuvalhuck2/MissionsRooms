@@ -561,3 +561,12 @@ export const AddTriviaQuestionStrings = {
   choose_trivia_subject_error: 'אנא בחר נושא טריוויה',
   trivia_question_added: 'השאלה נוספה בהצלחה',
 };
+
+
+export const deleteTriviaQuestionStrings = {
+  header: "מחק שאלת טריוויה",
+  button: "מחק שאלה",
+  invalid_trivia_question_error: 'נתוני שאלה לא תקינים',
+  question_deleted: 'השאלה נמחקה בהצלחה!',
+  question_in_mission: 'השאלה נמצאת במשימה קיימת'
+}

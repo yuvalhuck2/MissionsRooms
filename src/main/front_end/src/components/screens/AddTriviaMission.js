@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
-import { Checkbox } from "react-native-paper";
+import { FlatList, StyleSheet, View, Text } from "react-native";
+import { Checkbox, ActivityIndicator } from "react-native-paper";
 import { connect } from "react-redux";
 import {
   addMission,
@@ -16,6 +16,7 @@ import Button from "../common/Button";
 import Header from "../common/Header";
 import TextInput from "../common/TextInput";
 const { personal, group, classroom } = AddDeterministicMissionStrings;
+import { theme } from '../../core/theme'
 
 class AddTriviaMission extends Component {
   constructor(...args) {
@@ -24,6 +25,8 @@ class AddTriviaMission extends Component {
     this.onPassRatioChanged = this.onPassRatioChanged.bind(this);
     this.onTypesChanged = this.onTypesChanged.bind(this);
     this.onButtonPress = this.onButtonPress.bind(this);
+    this.renderButton = this.renderButton.bind(this);
+    this.renderError = this.renderError.bind(this);
   }
 
   componentDidMount() {
@@ -196,6 +199,11 @@ const styles = StyleSheet.create({
   button: {
     margin: 30,
     width: "80%",
+  },
+  errorTextStyle: {
+    fontSize: 25,
+    alignSelf: 'center',
+    color: theme.colors.error,
   },
 });
 

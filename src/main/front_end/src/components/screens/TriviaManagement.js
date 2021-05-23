@@ -33,7 +33,9 @@ const buttons = [
       navigateTo(navigation, NavPaths.addTriviaQuestion);
     },
   },
-  { name: deleteQuestionTrivia, key: '2', onPress: (navigation) => {} },
+  { name: deleteQuestionTrivia, key: '2', onPress: (navigation) => {
+    navigateTo(navigation, NavPaths.deleteTriviaQuestion)
+  } },
   { name: viewQuestions, key: '3', onPress: (navigation) => {} },
 ];
 
