@@ -1,14 +1,10 @@
 package missions.room.Domain.Users;
 
-import missions.room.Domain.Message;
-
 import javax.persistence.*;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class SchoolUser extends User {
+public abstract class SchoolUser extends BaseUser {
 
 
     protected String firstName;
@@ -45,5 +41,9 @@ public abstract class SchoolUser extends User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
     }
 }

@@ -1,10 +1,7 @@
 package Utils;
 
-import DataAPI.UserType;
 import javafx.util.Pair;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Random;
 import java.util.Set;
 import java.util.List;
@@ -110,9 +107,10 @@ public class Utils {
     }
 
     public static String getRootDirectory(){
-        Path currentRelativePath = Paths.get("").toAbsolutePath();
-        String rootDirectory = currentRelativePath.getRoot().toString();
-        return rootDirectory;
+//        Path currentRelativePath = Paths.get("").toAbsolutePath();
+//        String rootDirectory = currentRelativePath.getRoot().toString();
+//        return rootDirectory;
+        return "/home/user1";
     }
 
     public static String getClassHebrewName(String className){

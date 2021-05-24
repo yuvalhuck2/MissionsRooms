@@ -2,8 +2,6 @@ package missions.room.PointsManagerTests;
 
 import CrudRepositories.UserCrudRepository;
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.Response;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.PointsManager;

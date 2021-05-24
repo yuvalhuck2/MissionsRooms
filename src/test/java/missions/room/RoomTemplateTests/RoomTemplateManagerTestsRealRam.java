@@ -1,7 +1,7 @@
 package missions.room.RoomTemplateTests;
 
 import Data.Data;
-import DataAPI.OpCode;
+import DataObjects.FlatDataObjects.OpCode;
 import RepositoryMocks.MissionRepository.MissionCrudRepositoryMock;
 import RepositoryMocks.RoomTemplateRepository.RoomTemplateCrudRepositoryMock;
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;

@@ -1,7 +1,8 @@
 package missions.room.Managers;
 
 import CrudRepositories.*;
-import DataAPI.*;
+import DataObjects.APIObjects.SolutionData;
+import DataObjects.FlatDataObjects.*;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Communications.Publisher.Publisher;
 import missions.room.Communications.Publisher.SinglePublisher;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static Utils.Utils.checkString;
@@ -105,10 +107,18 @@ public class ManagerRoomStudent extends StudentManager {
                                             , openAnswerData.getOpenAnswer(), file);
 
                 Room room = roomRes.getValue();
+                Response<Boolean> openAnsSaveRes;
+                synchronized (room) {
+                    openAnsSaveRes = openAnswerRepo.saveOpenAnswer(openAnswer, room);
+                }
+                // failed to save open answer
+                if (openAnsSaveRes == null || openAnsSaveRes.getReason() != OpCode.Success) {
+                    return new Response<>(false, openAnsSaveRes != null ? openAnsSaveRes.getReason() : OpCode.DB_Error);
+                }
                 synchronized (room) {
                     updateRoomAndMissionInCharge(room);
                 }
-                return openAnswerRepo.saveOpenAnswer(openAnswer, room);
+                return openAnsSaveRes;
 
             } catch (Exception ex) {
                 return new Response<>(false, OpCode.FAILED_READ_FILE_BYTES);
@@ -166,21 +176,18 @@ public class ManagerRoomStudent extends StudentManager {
         if (room.toCloseRoom()) {
             reason = roomRepo.deleteRoom(room).getReason();
             if (reason != OpCode.Success) {
-                //log.error(String.format("Failed to delete room: {0}. function: updateRoomAndMissionInCharge", room.getRoomId()));
+                log.error(String.format("Failed to delete room: {0}. function: updateRoomAndMissionInCharge", room.getRoomId()));
             }
             ram.deleteRoom(room.getRoomId());
             notification = new NonPersistenceNotification<>(OpCode.Finish_Missions_In_Room, null);
         }
         else if(room.isLastMission()){
+            saveRoomAndLog(room);
             ram.deleteRoom(room.getRoomId());
             notification = new NonPersistenceNotification<>(OpCode.Has_Unapproved_Solutions, null);
         }
         else{
-            room.increaseCurrentMission();
-            reason = roomRepo.save(room).getReason();
-            if (reason != OpCode.Success) {
-                //log.error(String.format("Failed to save room: {0}. function: updateRoomAndMissionInCharge", room.getRoomId()));
-            }
+            saveRoomAndLog(room);
             //roll mission in charge
             notification = new NonPersistenceNotification<>(OpCode.Update_Room, room.getData());
             nextInCharge=room.drawMissionInCharge();
@@ -189,12 +196,18 @@ public class ManagerRoomStudent extends StudentManager {
         Set<String> userKeys=room.getConnectedUsersAliases();
         for (String alias :
                 userKeys) {
-            publisher.update(ram.getApiKey(alias),notification);
+            if(notification.getReason()==OpCode.Update_Room && Objects.equals(nextInCharge, alias)){
+                notification.getValue().setInCharge(true);
+            }
+            publisher.update(ram.getApiKey(alias), notification);
         }
-        //send to the next mission inCharge notification
-        if(nextInCharge!=null){
-            NonPersistenceNotification<String> inChargeNotification=new NonPersistenceNotification<>(OpCode.IN_CHARGE,room.getRoomId());
-            publisher.update(ram.getApiKey(nextInCharge),inChargeNotification);
+    }
+
+    private void saveRoomAndLog(Room room) {
+        room.increaseCurrentMission();
+        OpCode reason = roomRepo.save(room).getReason();
+        if (reason != OpCode.Success) {
+            log.error(String.format("Failed to save room: {0}. function: updateRoomAndMissionInCharge", room.getRoomId()));
         }
     }
 
@@ -218,7 +231,7 @@ public class ManagerRoomStudent extends StudentManager {
                         .getReason();
                 break;
             default:
-                //TODO logger error that can't happened
+                log.error(String.format("room %s does not have a type", room.getRoomId()));
                 break;
 
         }
@@ -249,7 +262,6 @@ public class ManagerRoomStudent extends StudentManager {
         if(!room.isBelongToRoom(student.getAlias())){
             return new Response<>(null,OpCode.NOT_BELONGS_TO_ROOM);
         }
-
         OpCode opCode=ram.connectToRoom(roomId,student.getAlias());
         RoomDetailsData roomDetailsData=room.getData();
         roomDetailsData.setStudentName(student.getFirstName()+" "+student.getLastName());
@@ -291,7 +303,6 @@ public class ManagerRoomStudent extends StudentManager {
      *
      * @param apiKey - authentication object
      * @return the mission details of the given room
-     * TODO refactor the name to watchMyRooms from the controller to the manager
      */
     public Response<List<RoomDetailsData>> watchRoomDetails(String apiKey) {
         Response<Student> checkStudent = checkStudent(apiKey);
@@ -349,6 +360,7 @@ public class ManagerRoomStudent extends StudentManager {
         if (rooms.size()==0){
             return new Response<>(new ArrayList<>(),OpCode.Success);
         }
+        rooms.removeIf(room -> room.allQuestionsAnswered());
         return getRoomDetailFromRoom(rooms);
     }
 

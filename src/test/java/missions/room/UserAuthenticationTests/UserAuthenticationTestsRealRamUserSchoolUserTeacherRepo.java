@@ -2,9 +2,9 @@ package missions.room.UserAuthenticationTests;
 
 import CrudRepositories.TeacherCrudRepository;
 import Data.Data;
-import DataAPI.GroupType;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.GroupType;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.TeacherManager;

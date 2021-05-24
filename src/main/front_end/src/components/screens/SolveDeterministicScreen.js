@@ -71,17 +71,6 @@ class SolveDeterministicForm extends Component {
     )
   }
 
-  renderChatButton(){
-
-    return <IconButton
-      icon="chat"
-      size={30}
-      style={styles.chatButton}
-      color={theme.colors.primary}
-      onPress={this.onChatButtonPress}/>//this.props.enterChatStudent}/>
-
-  }
-
   renderError() {
     const { errorMessage } = this.props;
 
@@ -114,12 +103,12 @@ class SolveDeterministicForm extends Component {
       <KeyboardAwareScrollView style={styles.container}>
         <Appbar.Header>
           <Appbar.BackAction onPress={() => {this.onBackPress()}} />
+          <Appbar.Action icon="chat" onPress={() => this.onChatButtonPress()} />
         </Appbar.Header>
         <Header>{mission.question}</Header>
         {this.renderTextBox()}
         {this.renderButton()}
         {this.renderError()}
-        {this.renderChatButton()}
       </KeyboardAwareScrollView>
     );
   }

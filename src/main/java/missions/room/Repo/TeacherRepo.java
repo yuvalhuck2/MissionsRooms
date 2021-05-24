@@ -1,9 +1,8 @@
 package missions.room.Repo;
 
 import CrudRepositories.TeacherCrudRepository;
-import DataAPI.GroupType;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.Users.SchoolUser;
 import missions.room.Domain.Users.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;

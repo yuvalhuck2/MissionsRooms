@@ -1,9 +1,8 @@
 package missions.room.Repo;
 
 import CrudRepositories.ClassroomRepository;
-import DataAPI.OpCode;
-import DataAPI.Response;
-import javassist.bytecode.Opcode;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Domain.Classroom;
 import org.assertj.core.util.Lists;

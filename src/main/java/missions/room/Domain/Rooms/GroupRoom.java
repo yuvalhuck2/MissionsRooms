@@ -1,13 +1,12 @@
 package missions.room.Domain.Rooms;
 
-import DataAPI.RoomType;
+import DataObjects.FlatDataObjects.RoomType;
 import missions.room.Domain.ClassGroup;
 import missions.room.Domain.RoomTemplate;
 import missions.room.Domain.Users.Teacher;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
-import java.util.List;
 import java.util.Set;
 
 @Entity

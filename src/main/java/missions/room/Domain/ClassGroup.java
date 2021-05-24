@@ -1,14 +1,12 @@
 package missions.room.Domain;
 
-import DataAPI.GroupData;
-import DataAPI.GroupType;
-import DataAPI.PointsData;
-import DataAPI.RecordTableData;
+import DataObjects.FlatDataObjects.GroupData;
+import DataObjects.FlatDataObjects.GroupType;
+import DataObjects.FlatDataObjects.PointsData;
 import missions.room.Domain.Users.Student;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 

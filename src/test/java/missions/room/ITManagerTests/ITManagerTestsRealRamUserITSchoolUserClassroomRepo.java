@@ -2,8 +2,7 @@ package missions.room.ITManagerTests;
 
 import CrudRepositories.ClassroomRepository;
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
 import missions.room.Domain.Classroom;
 import missions.room.Managers.ITManager;
 import missions.room.Repo.ClassroomRepo;
@@ -21,13 +20,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class ITManagerTestsRealRamUserITSchoolUserClassroomRepo extends ITManagerTestRealRamUserITSchoolUserRepo{
+public class ITManagerTestsRealRamUserITSchoolUserClassroomRepo extends ITManagerTestRealRamUserITSchoolUserRepo {
 
     @Autowired
     protected ClassroomRepo realClassroomRepo;
-
-    @Autowired
-    private ClassroomRepository classroomRepository;
 
     @Mock
     private ClassroomRepository mockClassroomRepository;
@@ -45,7 +41,6 @@ public class ITManagerTestsRealRamUserITSchoolUserClassroomRepo extends ITManage
 
     @Override
     protected void initClassroomRepo(Classroom empty) {
-        classroomRepository.save(dataGenerator.getClassroom(Data.Valid_Classroom));
         classroomRepository.save(empty);
         classroomRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getClassroom());
         classroomRepository.save(dataGenerator.getTeacher(Data.Valid_Group_A).getClassroom());
@@ -115,7 +110,6 @@ public class ITManagerTestsRealRamUserITSchoolUserClassroomRepo extends ITManage
     @Override
     @AfterEach
     void tearDown() {
-        classroomRepository.deleteAll();
         super.tearDown();
     }
 }

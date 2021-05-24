@@ -2,7 +2,7 @@ package missions.room.MissionManagerTests;
 
 import CrudRepositories.MissionCrudRepository;
 import Data.Data;
-import DataAPI.OpCode;
+import DataObjects.FlatDataObjects.OpCode;
 import missions.room.Domain.missions.Mission;
 import missions.room.Domain.Ram;
 import missions.room.Domain.missions.KnownAnswerMission;

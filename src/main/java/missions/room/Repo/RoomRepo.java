@@ -1,9 +1,8 @@
 package missions.room.Repo;
 
-import CrudRepositories.OpenAnswerRepository;
 import CrudRepositories.RoomCrudRepository;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;

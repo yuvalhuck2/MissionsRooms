@@ -1,0 +1,16 @@
+delete from classroom_room;
+delete from room;
+delete from mission_templates;
+delete from room_template;
+delete from mission_mission_types;
+delete from known_answer_mission;
+delete from open_answer_mission;
+delete from story_mission;
+delete from mission;
+delete from it;
+delete from student;
+delete from teacher;
+delete from class_group;
+delete from classroom;
+delete from school_user;
+delete from base_user;

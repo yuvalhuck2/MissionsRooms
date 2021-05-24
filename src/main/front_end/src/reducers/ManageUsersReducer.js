@@ -67,7 +67,6 @@ export default (state = initialState, action) => {
         case WAIT_MANAGE_USERS:
             return {...state, loading:true}
         case ACTION_FINISHED_MANAGED_USERS:
-            console.log(action.payload)
             currentUser = state.presentedUsers.find((user)=> user.alias == state.profile)
             currentFromAllUsers = state.allUsers.find((user)=> user.alias == state.profile)
             if(action.payload.firstName.trim() != ''){
@@ -75,7 +74,6 @@ export default (state = initialState, action) => {
                 currentFromAllUsers.firstName = action.payload.firstName;
             }
             if(action.payload.lastName.trim() != ''){
-                console.log("herrrreee")
                 currentUser.lastName = action.payload.lastName;
                 currentFromAllUsers.lastName = action.payload.lastName;
             }

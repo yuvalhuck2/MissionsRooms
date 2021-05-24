@@ -1,7 +1,7 @@
 package missions.room.Service;
 
-import DataAPI.RecordTableData;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.RecordTableData;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Managers.PointsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

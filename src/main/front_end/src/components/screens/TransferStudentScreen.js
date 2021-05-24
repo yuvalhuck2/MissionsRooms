@@ -139,10 +139,9 @@ class TransferStudentForm extends Component {
                     <Appbar.BackAction onPress={() => {this.onBackPress()}} />
                 </Appbar.Header>
 
-                <View style={styles.container2}>
                 <Header>{this.getHeaderPresentation()}</Header>
                 <View>
-                    <Picker
+                    <Picker style={styles.pickerContainer}
                         mode='dropdown'
                         selectedValue={chosenClassroom}
                         onValueChange={(itemValue, itemIndex) =>
@@ -153,7 +152,7 @@ class TransferStudentForm extends Component {
                     </Picker>
                 </View>
                 <View>
-                    <Picker
+                    <Picker style={styles.pickerContainer}
                         mode='dropdown'
                         selectedValue={chosenGroup}
                         onValueChange={(itemValue, itemIndex) =>
@@ -166,7 +165,7 @@ class TransferStudentForm extends Component {
                 </View>
                 {this.renderButton()}
                     {this.renderError()}
-                </View>
+
             </KeyboardAwareScrollView>
 
 
@@ -184,12 +183,8 @@ const styles = StyleSheet.create({
         maxWidth: 340,
         alignSelf: 'center',
     },
-    container2: {
-        flex: 1,
-        padding: 20,
-        width: '100%',
-        alignSelf: 'center',
-        marginTop:-50,
+    pickerContainer:{
+        marginTop: -20,
     },
     button: {
         marginTop: 20,

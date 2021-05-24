@@ -3,7 +3,11 @@ package missions.room.Managers;
 import CrudRepositories.MissionCrudRepository;
 import CrudRepositories.RoomTemplateCrudRepository;
 import CrudRepositories.TeacherCrudRepository;
-import DataAPI.*;
+import DataObjects.APIObjects.RoomTemplateDetailsData;
+import DataObjects.APIObjects.RoomTemplateForSearch;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.RoomType;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.Utils;
 import missions.room.Domain.*;
@@ -39,7 +43,7 @@ public class RoomTemplateManager extends TeacherManager{
 
     public Response<Boolean> createRoomTemplate(String apiKey, RoomTemplateDetailsData details) {
         Response<Teacher> checkTeacher=checkTeacher(apiKey);
-        if(checkTeacher.getReason()!=OpCode.Success){
+        if(checkTeacher.getReason()!= OpCode.Success){
             return new Response<>(false,checkTeacher.getReason());
         }
         Response<RoomTemplate> templateResponse= validateDetails(details);

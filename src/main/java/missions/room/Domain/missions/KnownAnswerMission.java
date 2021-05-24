@@ -1,8 +1,8 @@
 package missions.room.Domain.missions;
 
-import DataAPI.MissionData;
-import DataAPI.OpCode;
-import DataAPI.RoomType;
+import DataObjects.FlatDataObjects.MissionData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.RoomType;
 import Utils.*;
 
 import javax.persistence.Entity;

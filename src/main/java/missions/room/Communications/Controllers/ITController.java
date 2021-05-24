@@ -1,11 +1,13 @@
 package missions.room.Communications.Controllers;
 
-import DataAPI.*;
+import DataAPI.TransferDetailsData;
+import DataObjects.APIObjects.*;
+import DataObjects.FlatDataObjects.ClassRoomData;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.UserProfileData;
 import missions.room.Service.ITService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController // This means that this class is a Controller
 @RequestMapping(path="/it")

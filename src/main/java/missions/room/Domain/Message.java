@@ -1,9 +1,7 @@
 package missions.room.Domain;
 
-import DataAPI.MessageData;
-import missions.room.Domain.Users.User;
+import DataObjects.APIObjects.MessageData;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Objects;

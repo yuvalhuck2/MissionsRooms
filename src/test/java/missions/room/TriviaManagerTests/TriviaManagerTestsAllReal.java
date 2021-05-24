@@ -1,10 +1,9 @@
 package missions.room.TriviaManagerTests;
 
 import Data.Data;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.TriviaQuestion;
-import missions.room.Managers.SuggestionManager;
 import missions.room.Managers.TriviaManager;
 import missions.room.Repo.TriviaRepo;
 import org.junit.jupiter.api.Test;
@@ -57,4 +56,5 @@ public class TriviaManagerTestsAllReal extends TriviaManagerTestsRealRamTeacher{
         assertEquals(0, res.getValue().size());
 
     }
+
 }

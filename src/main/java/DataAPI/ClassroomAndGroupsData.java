@@ -1,5 +1,7 @@
 package DataAPI;
 
+import DataObjects.FlatDataObjects.GroupType;
+
 import java.util.List;
 
 public class ClassroomAndGroupsData {

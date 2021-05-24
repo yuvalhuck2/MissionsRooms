@@ -63,17 +63,6 @@ class SolveStoryFrom extends Component {
     );
   }
 
-    renderChatButton(){
-
-        return <IconButton
-            icon="chat"
-            size={30}
-            style={styles.chatButton}
-            color={theme.colors.primary}
-            onPress={this.onChatButtonPress}/>//this.props.enterChatStudent}/>
-
-    }
-
   renderButton(){
     const {loading, isInCharge} = this.props
 
@@ -132,6 +121,7 @@ class SolveStoryFrom extends Component {
       <KeyboardAwareScrollView style={styles.container}>
         <Appbar.Header>
           <Appbar.BackAction onPress={() => {this.onBackPress()}} />
+          <Appbar.Action icon="chat" onPress={() => this.onChatButtonPress()} />
         </Appbar.Header>
         <Header>{header}</Header>
         <KeyboardAwareScrollView style={styles.container}>
@@ -140,7 +130,6 @@ class SolveStoryFrom extends Component {
         {this.renderTextBox()}
         {this.renderButton()}
         {this.renderFinishButton()}
-          {this.renderChatButton()}
         {this.renderError()}
 
       </KeyboardAwareScrollView>

@@ -1,17 +1,19 @@
 package missions.room.Service;
 
+import DataObjects.APIObjects.AddITData;
+import DataObjects.APIObjects.RegisterDetailsData;
+import DataObjects.APIObjects.StudentData;
+import DataObjects.APIObjects.TeacherData;
+import DataObjects.FlatDataObjects.GroupType;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.UserProfileData;
 import DataAPI.*;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import missions.room.Domain.Classroom;
-import missions.room.Domain.Users.User;
 import missions.room.Managers.ITManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import sun.java2d.cmm.Profile;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ITService {
@@ -86,7 +88,7 @@ public class ITService {
         return itManager.deleteSeniorStudents(apiKey);
     }
 
-    public Response<Boolean> transferTeacherClassroom(String apiKey,String alias,String classroomName,GroupType groupType){
+    public Response<Boolean> transferTeacherClassroom(String apiKey, String alias, String classroomName, GroupType groupType){
         return itManager.transferTeacherClassroom(apiKey,alias,classroomName,groupType);
     }
 

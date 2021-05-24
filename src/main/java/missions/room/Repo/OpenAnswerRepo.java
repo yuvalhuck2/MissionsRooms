@@ -2,9 +2,8 @@ package missions.room.Repo;
 
 import CrudRepositories.RoomCrudRepository;
 import lombok.extern.apachecommons.CommonsLog;
-import CrudRepositories.OpenAnswerRepository;
-import DataAPI.OpCode;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.OpenAnswer;
 import missions.room.Domain.RoomOpenAnswersView;
 import missions.room.Domain.Rooms.Room;
@@ -18,15 +17,10 @@ import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @CommonsLog
 public class OpenAnswerRepo {
-
-    @Autowired
-    private OpenAnswerRepository openAnswerRepository;
 
     @Autowired
     private RoomCrudRepository roomCrudRepository;
@@ -45,7 +39,8 @@ public class OpenAnswerRepo {
             }
             file.transferTo(filePath.toAbsolutePath());
         } catch (Exception e) {
-            //log.error(String.format("Error while saving file. stack trace: {0}", e.getStackTrace()));
+            log.error(String.format("Error while saving file. stack trace: %s, %s",
+                    rootDirectory, filePath.toAbsolutePath()), e);
             return false;
         }
         return true;
@@ -79,15 +74,4 @@ public class OpenAnswerRepo {
         }
     }
 
-//    public Response<Boolean> hasUncheckedOpenAnswer(String roomId) {
-//        OpCode opCode;
-//        Boolean exists = false;
-//        try{
-//            exists = openAnswerRepository.existsByRoomId(roomId);
-//            opCode = OpCode.Success;
-//        } catch(Exception e){
-//            opCode = OpCode.DB_Error;
-//        }
-//        return new Response<>(exists, opCode);
-//    }
 }

@@ -40,7 +40,9 @@ export const watchOpenSolution = {
   download_btn: 'הורד קובץ',
   header: 'פתרון משימה',
   question_title: 'שאלה:',
-  answer_title: 'תשובה:'
+  answer_title: 'תשובה:',
+  approve_ans: 'אשר תשובה',
+  reject_ans: 'דחה תשובה',
 };
 
 export const uploadStringsErrors = {
@@ -83,6 +85,7 @@ export const AddDeterministicMissionErrors = {
   answer_empty: 'יש להזין תשובה',
   types_empty: 'יש לבחור לפחות סוג משימה אחד',
   server_error: 'שגיאת שרת',
+  points_must_be_positive:'מספר הנקודות חייב להיות חיובי',
 };
 
 export const AddDeterministicMissionSuccess = {
@@ -96,7 +99,9 @@ export const AddStrings = {
 export const ChooseMissionToAddStrings = {
   header: ' יש לבחור סוג משימה להוספה',
   deterministicButton: 'שאלה עם פתרון יחיד',
-  OpenAnswerMissionButton: 'שאלה פתוחה/העלאת קובץ'
+  OpenAnswerMissionButton: 'שאלה פתוחה/העלאת קובץ',
+  StoryMissionButton: 'סיפור בהמשכים',
+  enter_points: 'כמות נקודות עבור המשימה'
 };
 
 export const AddRoomTempalteStrings = {
@@ -145,6 +150,11 @@ export const ChooseMissionsTemplateStrings = {
   choose_type:'משימות אותן ארצה לראות',
   story_description:'סוג: משימת סיפור בהמשכים',
 };
+
+export const ResponseOpenAnsStrings = {
+  approved: 'תשובה אושרה בהצלחה',
+  rejected: 'תשובה נדחתה בהצלחה'
+}
 
 export const TeacherStrings = {
   addMission: 'הוספת משימה',
@@ -308,7 +318,7 @@ export const ITStrings = {
   add_teacher: 'הוספת מורה',
   add_student: 'הוספת תלמיד',
   close_classroom: 'סגירת כיתה',
-  delete_senior:'מחיקת תלמידי י"ב',
+  delete_senior:'מחיקת שכבת י"ב',
 };
 
 export const addMissionErrors = {

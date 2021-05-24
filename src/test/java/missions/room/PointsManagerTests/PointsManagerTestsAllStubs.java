@@ -2,10 +2,9 @@ package missions.room.PointsManagerTests;
 
 import Data.Data;
 import Data.DataGenerator;
-import DataAPI.OpCode;
-import DataAPI.PointsData;
-import DataAPI.RecordTableData;
-import DataAPI.Response;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.RecordTableData;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.Classroom;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Users.Student;
@@ -29,10 +28,9 @@ import org.mockito.quality.Strictness;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import static Data.DataConstants.*;
-import static DataAPI.OpCode.DB_Error;
+import static DataObjects.FlatDataObjects.OpCode.DB_Error;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;

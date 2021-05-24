@@ -1,8 +1,8 @@
 package missions.room.Managers;
 
-import DataAPI.OpCode;
-import DataAPI.Response;
-import DataAPI.SuggestionData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.APIObjects.SuggestionData;
 import ExternalSystems.UniqueStringGenerator;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Domain.Users.Student;

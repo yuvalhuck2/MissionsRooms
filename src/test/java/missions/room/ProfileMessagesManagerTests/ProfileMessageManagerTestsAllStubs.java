@@ -2,15 +2,16 @@ package missions.room.ProfileMessagesManagerTests;
 
 import Data.Data;
 import Data.DataGenerator;
-import DataAPI.MessageData;
-import DataAPI.OpCode;
-import DataAPI.Response;
-import DataAPI.UserProfileData;
+import DataObjects.APIObjects.MessageData;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.UserProfileData;
 import missions.room.Domain.Ram;
+import missions.room.Domain.Users.BaseUser;
 import missions.room.Domain.Users.Student;
-import missions.room.Domain.Users.User;
 import missions.room.Managers.ProfileMessagesManager;
 import missions.room.Repo.UserRepo;
+import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import static Data.DataConstants.*;
@@ -45,7 +47,7 @@ public class ProfileMessageManagerTestsAllStubs {
 
     protected String student2ApiKey;
 
-    protected List<User> users;
+    protected List<BaseUser> userLIES;
 
     @InjectMocks
     protected ProfileMessagesManager profileMessagesManager;
@@ -94,10 +96,10 @@ public class ProfileMessageManagerTestsAllStubs {
     }
 
     protected void initUserRepo(Student student, Student student2) {
-        User teacher = dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM);
-        User it = dataGenerator.getUser(Data.VALID_IT);
-        users = new ArrayList<>();
-        Collections.addAll(users,student,student2,teacher,it);
+        BaseUser teacher = dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM);
+        BaseUser it = dataGenerator.getUser(Data.VALID_IT);
+        userLIES = new ArrayList<>();
+        Collections.addAll(userLIES,student,student2,teacher,it);
 
         when(mockUserRepo.isExistsById(student.getAlias()))
                 .thenReturn(new Response<>(true, OpCode.Success));
@@ -120,7 +122,7 @@ public class ProfileMessageManagerTestsAllStubs {
         when(mockUserRepo.findUser(it.getAlias())).
                 thenReturn(new Response<>(it,OpCode.Success));
         when(mockUserRepo.findAllUsers())
-                .thenReturn(new Response<>(users,OpCode.Success));
+                .thenReturn(new Response<>(userLIES,OpCode.Success));
     }
 
     protected void initRam(String alias) {
@@ -266,12 +268,12 @@ public class ProfileMessageManagerTestsAllStubs {
 
     @Test
     void testWatchProfileHappyCase(){
-        List<UserProfileData> userProfileDataList=new ArrayList<>();
-        for( User u: users)
+        HashSet<UserProfileData> userProfileDataList=new HashSet<>();
+        for( BaseUser u: userLIES)
             userProfileDataList.add(u.getProfileData());
         Response<List<UserProfileData>> userResponse = profileMessagesManager.watchProfile(studentApiKey);
         assertEquals(userResponse.getReason(),OpCode.Success);
-        assertEquals(userResponse.getValue(),userProfileDataList);
+        assertEquals(Sets.newHashSet(userResponse.getValue()),userProfileDataList);
     }
 
     @Test

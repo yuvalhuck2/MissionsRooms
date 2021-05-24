@@ -1,6 +1,10 @@
 package missions.room.Domain.Users;
 
-import DataAPI.*;
+import DataObjects.APIObjects.TeacherData;
+import DataObjects.FlatDataObjects.GroupType;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.UserProfileData;
 import missions.room.Domain.ClassGroup;
 import missions.room.Domain.Classroom;
 import org.springframework.beans.factory.annotation.Configurable;

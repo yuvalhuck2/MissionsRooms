@@ -1,5 +1,7 @@
 package DataAPI;
 
+import DataObjects.FlatDataObjects.GroupType;
+
 public class TransferDetailsData {
     private String apiKey;
     private String alias;

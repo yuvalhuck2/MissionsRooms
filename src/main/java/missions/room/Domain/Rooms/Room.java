@@ -1,15 +1,12 @@
 package missions.room.Domain.Rooms;
 
-import DataAPI.*;
+import DataObjects.FlatDataObjects.*;
 import Utils.Utils;
 import missions.room.Domain.OpenAnswer;
 import missions.room.Domain.missions.Mission;
 import missions.room.Domain.RoomMessage;
 import missions.room.Domain.RoomTemplate;
-import missions.room.Domain.TriviaQuestion;
 import missions.room.Domain.Users.Teacher;
-import missions.room.Domain.missions.*;
-import org.assertj.core.util.VisibleForTesting;
 
 import javax.persistence.*;
 import java.util.*;
@@ -165,11 +162,14 @@ public abstract class Room {
         return currentMission>=roomTemplate.getMissions().size()-1;
     }
 
+    public boolean allQuestionsAnswered() {
+        return currentMission > roomTemplate.getMissions().size() - 1;
+    }
+
     public boolean toCloseRoom(){
         return isLastMission()&&allOpenQuestionsApproved();
     }
 
-    //TODO implement after doing openRoomMission
     public boolean allOpenQuestionsApproved() {
         return openAnswers.isEmpty();
     }
@@ -180,6 +180,12 @@ public abstract class Room {
             return null;
         }
         MissionData missionData = mission.getData();
+        return new RoomDetailsData(roomId,name,missionData,roomTemplate.getType(),waitingForStory);
+    }
+
+    public  RoomDetailsData getRoomDetailsData () {
+        Mission mission = roomTemplate.getMission(currentMission);
+        MissionData missionData = mission == null ? null : mission.getData();
         return new RoomDetailsData(roomId,name,missionData,roomTemplate.getType(),waitingForStory);
     }
 

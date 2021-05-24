@@ -96,7 +96,7 @@ const {
       case Not_Exist:
         return dispatch({ type: UPDATE_ERROR_SOLVE_STORY, payload: student_not_exist });
       case Success:
-        return dispatch({ type: FINISH_MISSION, payload:apiKey});
+        break;
       default:
         return dispatch({ type: UPDATE_ERROR_SOLVE_STORY, payload: server_error });
     }

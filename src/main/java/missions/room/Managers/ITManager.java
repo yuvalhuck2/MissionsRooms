@@ -1,8 +1,14 @@
 package missions.room.Managers;
 
-import DataAPI.*;
+import DataAPI.ClassroomAndGroupsData;
+import DataObjects.APIObjects.RegisterDetailsData;
+import DataObjects.APIObjects.StudentData;
+import DataObjects.APIObjects.TeacherData;
+import DataObjects.FlatDataObjects.GroupType;
+import DataObjects.FlatDataObjects.OpCode;
+import DataObjects.FlatDataObjects.Response;
+import DataObjects.FlatDataObjects.UserProfileData;
 import ExternalSystems.HashSystem;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Communications.Publisher.Publisher;
 import missions.room.Communications.Publisher.SinglePublisher;
@@ -23,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +36,7 @@ import java.util.stream.Collectors;
 public class ITManager {
 
     protected static final Object ADD_USER_LOCK = new Object();
+    protected static final String SENIOR_PREFIX = "2";
 
     @Autowired
     protected ITRepo itRepo;
@@ -98,7 +104,7 @@ public class ITManager {
         }
         int counter=0;
         for(Classroom classroom:responseClassroom.getValue()){
-            if(classroom.getClassName().startsWith("2")){
+            if(classroom.getClassName().startsWith(SENIOR_PREFIX)){
                 for(ClassGroup group:classroom.getClassGroups()){
                     List<String> students=new ArrayList<>(group.getStudent().keySet());
                     for(String student:students){
@@ -120,45 +126,47 @@ public class ITManager {
             return new Response<>(false,itResponse.getReason());
         }
 
-        Response<User> userResponse=userRepo.findUserForWrite(alias);
+        Response<BaseUser> userResponse=userRepo.findUserForWrite(alias);
 
         if(userResponse.getReason()!=OpCode.Success){
             return new Response<>(false,userResponse.getReason());
         }
-        User user=userResponse.getValue();
-        synchronized (user){
-            if(user instanceof Teacher){
-                if(((Teacher)user).getClassroom()!=null){
-                    return new Response<>(false,OpCode.Teacher_Has_Classroom);
-                }
-            }
-            else if(user instanceof Student){
-                Response<List<Room>> responseStudentRooms=getStudentRooms((Student)user);
-                if(responseStudentRooms.getReason()!=OpCode.Success){
-                    return new Response<>(false,responseStudentRooms.getReason());
-                }
-                for(Room room:responseStudentRooms.getValue()){
-                    if(room instanceof StudentRoom){
-                        roomRepo.deleteRoom(room);
-                        ram.deleteRoom(room.getRoomId());
-                    }
-                    else{
-                        String inCharge=ram.disconnectFromRoom(room.getRoomId(),user.getAlias());
-                        if(inCharge!=null){
-                            publisher.update(ram.getApiKey(inCharge),new NonPersistenceNotification<String>(OpCode.IN_CHARGE,room.getRoomId()));
-                        }
-                    }
-
-                }
-
-                Response<Classroom> classroomResponse=classroomRepo.findClassroomByStudent(user.getAlias());
-                classroomResponse.getValue().deleteStudent(user.getAlias());
-                classroomRepo.save(classroomResponse.getValue());
-
+        BaseUser user=userResponse.getValue();
+        if(user == null) {
+            return new Response<>(false, OpCode.Not_Exist);
+        }
+        if(user instanceof Teacher){
+            if(((Teacher)user).getClassroom()!=null){
+                return new Response<>(false,OpCode.Teacher_Has_Classroom);
             }
         }
+        else if(user instanceof Student){
+            Response<List<Room>> responseStudentRooms=getStudentRooms((Student)user);
+            if(responseStudentRooms.getReason()!=OpCode.Success){
+                return new Response<>(false,responseStudentRooms.getReason());
+            }
+            for(Room room:responseStudentRooms.getValue()){
+                if(room instanceof StudentRoom){
+                    roomRepo.deleteRoom(room);
+                    ram.deleteRoom(room.getRoomId());
+                }
+                else{
+                    String inCharge=ram.disconnectFromRoom(room.getRoomId(),user.getAlias());
+                    if(inCharge!=null){
+                        publisher.update(ram.getApiKey(inCharge),new NonPersistenceNotification<>(OpCode.IN_CHARGE,room.getRoomId()));
+                    }
+                }
+
+            }
+
+            Response<Classroom> classroomResponse=classroomRepo.findClassroomByStudent(user.getAlias());
+            classroomResponse.getValue().deleteStudent(user.getAlias());
+            classroomRepo.save(classroomResponse.getValue());
+
+        }
+
         if(ram.getApiKey(user.getAlias())!=null) {
-            publisher.update(ram.getApiKey(user.getAlias()), new NonPersistenceNotification<String>(OpCode.DELETE_USER, ""));
+            publisher.update(ram.getApiKey(user.getAlias()), new NonPersistenceNotification<>(OpCode.DELETE_USER, ""));
         }
         return userRepo.delete(user);
     }
@@ -349,13 +357,13 @@ public class ITManager {
     }
 
     public Response<List<UserProfileData>> getAllUsersSchoolProfiles() {
-        Response<List<User>> users= schoolUserRepo.findAllSchoolUsers();
+        Response<List<BaseUser>> users= schoolUserRepo.findAllSchoolUsers();
         if(users.getReason()!=OpCode.Success){
             log.error("Function getAllSchoolUsersProfiles: connection to the DB lost");
         }
         return new Response<>(users.getValue()
                 .stream()
-                .map((User::getProfileData))
+                .map((BaseUser::getProfileData))
                 .collect(Collectors.toList()),
                 OpCode.Success);
     }
@@ -473,7 +481,7 @@ public class ITManager {
         if(!Utils.checkString(profileDetails.getClassroom())){
             return new Response<>(false,OpCode.Wrong_Classroom);
         }
-        if(profileDetails.getGroupType()==null||profileDetails.getGroupType()==GroupType.BOTH){
+        if(profileDetails.getGroupType()==null||profileDetails.getGroupType()== GroupType.BOTH){
             return new Response<>(false,OpCode.Wrong_Group);
         }
         return checkTeacherDetails(new TeacherData(profileDetails));
@@ -499,7 +507,7 @@ public class ITManager {
             log.error(itResponse.getReason().toString());
             return new Response<>(false,itResponse.getReason());
         }
-        Response<User> responseTeacher=userRepo.findUserForWrite(alias);
+        Response<BaseUser> responseTeacher=userRepo.findUserForWrite(alias);
         if(responseTeacher.getReason()!=OpCode.Success){
             return new Response<>(false,responseTeacher.getReason());
         }

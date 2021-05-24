@@ -1,7 +1,7 @@
 package missions.room.RoomManagerTests;
 
 import Data.Data;
-import DataAPI.OpCode;
+import DataObjects.FlatDataObjects.OpCode;
 import RepositoryMocks.RoomRepository.RoomCrudRepositoryMock;
 import RepositoryMocks.RoomTemplateRepository.RoomTemplateCrudRepositoryMock;
 import missions.room.Domain.Ram;
