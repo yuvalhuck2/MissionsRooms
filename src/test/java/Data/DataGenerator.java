@@ -465,6 +465,12 @@ public class DataGenerator {
         teachers.put(Data.VALID_WITHOUT_CLASSROOM,new Teacher("TeacherWithoutClassroom","Avi","Ron","1234"));
 
         teachers.put(Data.VALID_WITH_CLASSROOM2,new Teacher("withClassRoom","Gal","Ron",classRoomMap.get(Data.Valid_Without_Students),GroupType.A,"1111"));
+        teachers.put(Data.Valid_Group_A,new Teacher("TeacherGroupA","name","L name",
+                classRoomMap.get(Data.Valid_2Students_From_Different_Groups),GroupType.A,"1234"));
+        teachers.put(Data.Valid_Group_B,new Teacher("TeacherGroupB","name","L name",
+                classRoomMap.get(Data.Valid_2Students_From_Different_Groups),GroupType.B,"1234"));
+        teachers.put(Data.VALID_WITH_CLASSROOM3,new Teacher("withClassRoom1","Avi","Ron",
+                classRoomMap.get(Data.Valid_Classroom),GroupType.BOTH,"1234"));
     }
 
     private void initVerificationCodes() {

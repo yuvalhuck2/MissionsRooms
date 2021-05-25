@@ -8,6 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import javax.persistence.LockModeType;
+import java.util.List;
 
 public interface ClassroomRepository extends CrudRepository<Classroom, String> {
 
@@ -23,4 +24,10 @@ public interface ClassroomRepository extends CrudRepository<Classroom, String> {
 
     @Query("select className from Classroom")
     Iterable<String> getAllNames();
+
+    @Query("select a from Classroom a where a.className = :className")
+    Classroom findClassroom(@Param("className") String className);
+
+    @Query("select a from Classroom a where a.className like :grade%")
+    List<Classroom> findClassroomByGrade(@Param("grade") String grade);
 }

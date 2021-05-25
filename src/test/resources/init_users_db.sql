@@ -2,25 +2,26 @@ INSERT INTO base_USER (alias, password) VALUES
 ('niv', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec'),
 ('roy4', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec'),
 ('tal', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec'),
-('gal', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec');
+('gal', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec'),
+('ron', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec');
 
 
 INSERT INTO IT (alias) VALUES ('gal');
 
 INSERT INTO Classroom (class_name,points) VALUES
-('2=4',21), ('1=3',2);
+('2=4',21), ('1=3',2),('1=2',3);
 
 INSERT INTO Class_group (group_name, group_type,classroom,points) VALUES
-('A',0,'2=4',20), ('B',0,'1=3',20), ('A2',1,'1=3',20);
+('A',0,'2=4',20), ('B',0,'1=3',20), ('A2',1,'1=3',20),('AA',0,'1=2',20),('BB',1,'1=2',20);
 
 INSERT INTO SCHOOL_USER (first_name, last_name, alias) VALUES
-('niv', 'shir', 'niv'), ('roy', 'levi', 'roy4'), ('tal', 'cohen', 'tal');
+('niv', 'shir', 'niv'), ('roy', 'levi', 'roy4'), ('tal', 'cohen', 'tal'),('ron','keller','ron');
 
 INSERT INTO STUDENT (alias, class_group,points) VALUES
-('niv', 'A',3), ('roy4', 'A',6);
+('niv', 'A',3), ('roy4', 'AA',6);
 
 INSERT INTO TEACHER (alias,group_type, classroom_class_name) VALUES
-('tal', 0,'2=4');
+('tal', 0,'2=4'),('ron',3,null );
 
 INSERT INTO MISSION(mission_id,points) VALUES
 ('mid1',2), ('mid2',2),('story1',2),('story2',4),('open1',1),('open_mission_id',3);

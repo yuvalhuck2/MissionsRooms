@@ -126,4 +126,9 @@ public class RoomRepositoryTimeOutExceptionFindParticipantRoomMock implements Ro
     public void deleteAll() {
 
     }
+
+    @Override
+    public Iterable<Room> findRoomsForWriteByTeacherAlias(String teacherAlias) {
+        return null;
+    }
 }
