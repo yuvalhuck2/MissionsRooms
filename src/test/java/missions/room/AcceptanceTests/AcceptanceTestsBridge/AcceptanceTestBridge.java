@@ -13,7 +13,7 @@ public interface AcceptanceTestBridge {
     Boolean register(RegisterDetailsTest details);
 
     //Guest 2.2 - Register  - step 2
-    Boolean registerCode(String alias, String code);
+    Boolean registerCode(String alias, String code, String teacherRegisterDetailsAlias);
 
     //Guest 2.3 - Login
     String login(String alias, String hashedPassword);
@@ -33,18 +33,14 @@ public interface AcceptanceTestBridge {
     //Student 3.6.2.3
     Boolean answerOpenQuestion(String token, String roomId, String missionId, String answer, byte[] file);
 
-    //Student 3.6.2.7
-    //TODO
-
-
     //Teacher 4.1 - Create new room
-    Boolean openRoom(String token, RoomDetailsTest roomDetails);
+    Boolean openRoom(RoomDetailsTest roomDetails);
 
     //Teacher 4.2 - Close existing room
     Boolean closeRoom(String token, String roomId);
 
     //Teacher 4.4 - Add room template
-    Boolean addRoomTemplate(String token, RoomTemplateDetailsTestData roomTemplateDetails);
+    Boolean addRoomTemplate(RoomTemplateDetailsTestData roomTemplateDetails);
 
     //Teacher 4.13 - Deduce point
     Boolean deducePoint(String token, String aliasOfStudent, int pointsToDeduce);
@@ -55,8 +51,12 @@ public interface AcceptanceTestBridge {
     //IT 6.3 - upload CSV
     Boolean uploadCsv(String token, byte[] csv);
 
+    RoomDetailsTest watchRoomDetails();
+
     void setExternalSystems(MailSender mailSender, VerificationCodeGenerator verificationCodeGenerator);
 
 
+    boolean registerCodeTeacher(String alias, String verificationCode);
 
+    boolean teacherLogin(String alias, String password);
 }

@@ -120,4 +120,9 @@ public class RoomCrudRepositoryExceptionSave implements RoomCrudRepository {
     public void deleteAll() {
 
     }
+
+    @Override
+    public Iterable<Room> findRoomsForWriteByTeacherAlias(String teacherAlias) {
+        return null;
+    }
 }

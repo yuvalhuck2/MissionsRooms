@@ -1,11 +1,14 @@
 package missions.room.ITManagerTests;
 
+import CrudRepositories.ClassroomRepository;
 import CrudRepositories.ITCrudRepository;
 import CrudRepositories.UserCrudRepository;
 import Data.Data;
 import DataObjects.FlatDataObjects.OpCode;
 import missions.room.Domain.Users.IT;
+import missions.room.Domain.Users.Teacher;
 import missions.room.Managers.ITManager;
+import missions.room.Repo.ClassroomRepo;
 import missions.room.Repo.UserRepo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -35,11 +38,18 @@ public class ITMangerRealRamBaseUserRepo extends ITManagerTestsRealRam {
     private UserCrudRepository mockCrudRepository;
 
     @Autowired
-    private UserCrudRepository userCrudRepository;
+    protected UserCrudRepository userCrudRepository;
+
+    @Autowired
+    protected ClassroomRepository classroomRepository;
 
     @Override
     protected void initUserRepo(IT it, String itAlias2) {
         itCrudRepository.save(it);
+        classroomRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getClassroom());
+        realUserRepo.save(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM3));
+        realUserRepo.save(dataGenerator.getTeacher(Data.VALID_WITHOUT_CLASSROOM));
+
         try {
             Field userRepo = ITManager.class.getDeclaredField("userRepo");
             userRepo.setAccessible(true);
@@ -83,9 +93,17 @@ public class ITMangerRealRamBaseUserRepo extends ITManagerTestsRealRam {
     }
 
     @Override
+    @Test
+    void testDeleteUserTeacherHasClassroom() {
+        userCrudRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM));
+        super.testDeleteUserTeacherHasClassroom();
+    }
+
+    @Override
     @AfterEach
     void tearDown() {
         userCrudRepository.deleteAll();
+        classroomRepository.deleteAll();
         super.tearDown();
     }
 }

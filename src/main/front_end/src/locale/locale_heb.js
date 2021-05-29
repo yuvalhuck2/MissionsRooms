@@ -216,6 +216,20 @@ export const ChooseStudentRoomStrings = {
   no_rooms: 'אין לך חדרים פעילים',
 };
 
+export const TransferTeacherStrings={
+  header:'העברת המורה',
+  select_classroom:'בחר כיתה',
+  select_group:'בחר קבוצה',
+  ok:'אישור',
+};
+
+export const TransferStudentStrings={
+    header:'העברת התלמיד',
+    select_classroom:'בחר כיתה',
+    select_group:'בחר קבוצה',
+    ok:'אישור',
+};
+
 
 export const ChooseTeacherRoomStrings = {
     header: 'בחירת חדר',
@@ -293,7 +307,14 @@ export const GeneralErrors = {
   wrong_alias: 'יש להזין שם משתמש תקין',
   mail_error: 'יש תקלה עם שליחת המייל, נא נסו שנית',
   teacher_has_classroom:'לא ניתן למחוק מורה עם כיתה',
+    teacher_has_classroom_transfer:'לא ניתן להעביר מורה עם כיתה',
 };
+
+export const TransferError={
+  empty_classroom_error:'לא נמצאו כיתות מתאימות',
+    empty_group_error:'לא נמצאו קבוצות מתאימות',
+    not_exist_classgroup_error:'הקבוצה לא קיימת',
+}
 
 export const ITStrings = {
   uploadCSV: 'העלאת קבצים',
@@ -303,7 +324,7 @@ export const ITStrings = {
   add_teacher: 'הוספת מורה',
   add_student: 'הוספת תלמיד',
   close_classroom: 'סגירת כיתה',
-  delete_senior:'מחיקת תלמידי י"ב',
+  delete_senior:'מחיקת שכבת י"ב',
 };
 
 export const addMissionErrors = {

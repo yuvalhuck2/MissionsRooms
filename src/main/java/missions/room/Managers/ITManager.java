@@ -1,5 +1,6 @@
 package missions.room.Managers;
 
+import DataAPI.ClassroomAndGroupsData;
 import DataObjects.APIObjects.RegisterDetailsData;
 import DataObjects.APIObjects.StudentData;
 import DataObjects.APIObjects.TeacherData;
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
 public class ITManager {
 
     protected static final Object ADD_USER_LOCK = new Object();
+    protected static final String SENIOR_PREFIX = "2";
 
     @Autowired
     protected ITRepo itRepo;
@@ -50,6 +52,9 @@ public class ITManager {
 
     @Autowired
     protected RoomRepo roomRepo;
+
+    @Autowired
+    protected TeacherRepo teacherRepo;
 
     private Ram ram;
 
@@ -99,7 +104,7 @@ public class ITManager {
         }
         int counter=0;
         for(Classroom classroom:responseClassroom.getValue()){
-            if(classroom.getClassName().startsWith("2")){
+            if(classroom.getClassName().startsWith(SENIOR_PREFIX)){
                 for(ClassGroup group:classroom.getClassGroups()){
                     List<String> students=new ArrayList<>(group.getStudent().keySet());
                     for(String student:students){
@@ -127,39 +132,41 @@ public class ITManager {
             return new Response<>(false,userResponse.getReason());
         }
         BaseUser user=userResponse.getValue();
-        synchronized (user){
-            if(user instanceof Teacher){
-                if(((Teacher)user).getClassroom()!=null){
-                    return new Response<>(false,OpCode.Teacher_Has_Classroom);
-                }
-            }
-            else if(user instanceof Student){
-                Response<List<Room>> responseStudentRooms=getStudentRooms((Student)user);
-                if(responseStudentRooms.getReason()!=OpCode.Success){
-                    return new Response<>(false,responseStudentRooms.getReason());
-                }
-                for(Room room:responseStudentRooms.getValue()){
-                    if(room instanceof StudentRoom){
-                        roomRepo.deleteRoom(room);
-                        ram.deleteRoom(room.getRoomId());
-                    }
-                    else{
-                        String inCharge=ram.disconnectFromRoom(room.getRoomId(),user.getAlias());
-                        if(inCharge!=null){
-                            publisher.update(ram.getApiKey(inCharge),new NonPersistenceNotification<String>(OpCode.IN_CHARGE,room.getRoomId()));
-                        }
-                    }
-
-                }
-
-                Response<Classroom> classroomResponse=classroomRepo.findClassroomByStudent(user.getAlias());
-                classroomResponse.getValue().deleteStudent(user.getAlias());
-                classroomRepo.save(classroomResponse.getValue());
-
+        if(user == null) {
+            return new Response<>(false, OpCode.Not_Exist);
+        }
+        if(user instanceof Teacher){
+            if(((Teacher)user).getClassroom()!=null){
+                return new Response<>(false,OpCode.Teacher_Has_Classroom);
             }
         }
+        else if(user instanceof Student){
+            Response<List<Room>> responseStudentRooms=getStudentRooms((Student)user);
+            if(responseStudentRooms.getReason()!=OpCode.Success){
+                return new Response<>(false,responseStudentRooms.getReason());
+            }
+            for(Room room:responseStudentRooms.getValue()){
+                if(room instanceof StudentRoom){
+                    roomRepo.deleteRoom(room);
+                    ram.deleteRoom(room.getRoomId());
+                }
+                else{
+                    String inCharge=ram.disconnectFromRoom(room.getRoomId(),user.getAlias());
+                    if(inCharge!=null){
+                        publisher.update(ram.getApiKey(inCharge),new NonPersistenceNotification<>(OpCode.IN_CHARGE,room.getRoomId()));
+                    }
+                }
+
+            }
+
+            Response<Classroom> classroomResponse=classroomRepo.findClassroomByStudent(user.getAlias());
+            classroomResponse.getValue().deleteStudent(user.getAlias());
+            classroomRepo.save(classroomResponse.getValue());
+
+        }
+
         if(ram.getApiKey(user.getAlias())!=null) {
-            publisher.update(ram.getApiKey(user.getAlias()), new NonPersistenceNotification<String>(OpCode.DELETE_USER, ""));
+            publisher.update(ram.getApiKey(user.getAlias()), new NonPersistenceNotification<>(OpCode.DELETE_USER, ""));
         }
         return userRepo.delete(user);
     }
@@ -491,6 +498,259 @@ public class ITManager {
             return new Response<>(false,OpCode.Wrong_Last_Name);
         }
         return new Response<>(true,OpCode.Success);
+    }
+
+    @Transactional
+    public Response<Boolean> transferTeacherClassroom(String apiKey,String alias,String classroomName,GroupType groupType){
+        Response<IT> itResponse = checkIT(apiKey);
+        if(itResponse.getReason()!=OpCode.Success){
+            log.error(itResponse.getReason().toString());
+            return new Response<>(false,itResponse.getReason());
+        }
+        Response<BaseUser> responseTeacher=userRepo.findUserForWrite(alias);
+        if(responseTeacher.getReason()!=OpCode.Success){
+            return new Response<>(false,responseTeacher.getReason());
+        }
+        Teacher teacher=(Teacher)responseTeacher.getValue();
+        if(teacher.getClassroom()!=null){
+            return new Response<>(false,OpCode.Teacher_Has_Classroom);
+        }
+
+        Response<List<Teacher>> prevTeacherResponse=teacherRepo.findTeacherForWriteByClassroom(classroomName);
+        if(prevTeacherResponse.getReason()!=OpCode.Success){
+            return new Response<>(false,prevTeacherResponse.getReason());
+        }
+
+        Response<Classroom> classroomResponse=classroomRepo.find(classroomName);
+        if(classroomResponse.getReason()!=OpCode.Success){
+            return new Response<>(false,classroomResponse.getReason());
+        }
+        int numOfGroups=classroomResponse.getValue().getClassGroups().size();
+        List<Teacher> teachers=prevTeacherResponse.getValue();
+        Teacher prevTeacherA=null;
+        Teacher prevTeacherB=null;
+        Teacher prevTeacherBoth=null;
+
+
+        for(Teacher t:teachers){
+            if(t.getGroupType().equals(GroupType.A)){
+                prevTeacherA=t;
+            }
+            else if(t.getGroupType().equals(GroupType.B)){
+                prevTeacherB=t;
+            }
+            else if(t.getGroupType().equals(GroupType.BOTH)){
+                prevTeacherBoth=t;
+            }
+        }
+        boolean transferAlsoClassroom=false;
+
+        switch(groupType.name()){
+            case "A":
+                if(prevTeacherA!=null){
+                    transferAlsoClassroom=numOfGroups==1;
+                    prevTeacherA.setClassroom(null);
+                    prevTeacherA.setGroupType(GroupType.C);
+                    teacherRepo.save(prevTeacherA);
+                    transferByTeacher(prevTeacherA,teacher,transferAlsoClassroom);
+                }
+                else if(prevTeacherBoth!=null){
+                    prevTeacherBoth.setGroupType(GroupType.B);
+                    teacherRepo.save(prevTeacherBoth);
+                    transferByTeacher(prevTeacherBoth,teacher,false);
+                }
+                break;
+            case "B":
+                if(prevTeacherB!=null){
+                    transferAlsoClassroom=numOfGroups==1;
+                    prevTeacherB.setClassroom(null);
+                    prevTeacherB.setGroupType(GroupType.C);
+                    teacherRepo.save(prevTeacherB);
+                    transferByTeacher(prevTeacherB,teacher,transferAlsoClassroom);
+                }
+                else if(prevTeacherBoth!=null){
+                    prevTeacherBoth.setGroupType(GroupType.A);
+                    teacherRepo.save(prevTeacherBoth);
+                    transferByTeacher(prevTeacherBoth,teacher,false);
+                }
+                break;
+            case "BOTH":
+                transferAlsoClassroom=true;
+                if(prevTeacherBoth!=null){
+                    prevTeacherBoth.setClassroom(null);
+                    prevTeacherBoth.setGroupType(GroupType.C);
+                    teacherRepo.save(prevTeacherBoth);
+                    transferByTeacher(prevTeacherBoth,teacher,transferAlsoClassroom);
+                }
+                else{
+                    prevTeacherA.setClassroom(null);
+                    prevTeacherA.setGroupType(GroupType.C);
+                    prevTeacherB.setClassroom(null);
+                    prevTeacherB.setGroupType(GroupType.C);
+                    teacherRepo.save(prevTeacherA);
+                    teacherRepo.save(prevTeacherB);
+                    transferByTeacher(prevTeacherA,teacher,transferAlsoClassroom);
+                    transferByTeacher(prevTeacherB,teacher,transferAlsoClassroom);
+                }
+                break;
+        }
+
+
+        synchronized (teacher){
+            teacher.setClassroom(classroomResponse.getValue());
+            teacher.setGroupType(groupType);
+            teacherRepo.save(teacher);
+            /*
+            Response<Iterable<Room>> responseRoom=roomRepo.findRoomsForWriteByTeacherAlias(prevTeacher.getAlias());
+            if(responseRoom.getReason()!=OpCode.Success){
+                return new Response<>(false,responseRoom.getReason());
+            }
+            for(Room room:responseRoom.getValue()){
+                synchronized (room){
+                    if(ram.isRoomExist(room.getRoomId())){
+                        ram.getRoom(room.getRoomId()).setTeacher(teacher);
+                    }
+                    else{
+                        room.setTeacher(teacher);
+                        roomRepo.save(room);
+                    }
+                }
+            }*/
+        }
+        return new Response<>(true,OpCode.Success);
+    }
+
+    private Response<Boolean> transferByTeacher(Teacher prevTeacher,Teacher currTeacher,boolean transferAlsoClassroom){
+        Response<Iterable<Room>> responseRoom=roomRepo.findRoomsForWriteByTeacherAlias(prevTeacher.getAlias());
+        if(responseRoom.getReason()!=OpCode.Success){
+            return new Response<>(false,responseRoom.getReason());
+        }
+        for(Room room:responseRoom.getValue()){
+            if(room instanceof ClassroomRoom && !transferAlsoClassroom){
+                continue;
+            }
+            synchronized (room){
+                if(ram.isRoomExist(room.getRoomId())){
+                    ram.getRoom(room.getRoomId()).setTeacher(currTeacher);
+                }
+                else{
+                    room.setTeacher(currTeacher);
+                    roomRepo.save(room);
+                }
+            }
+        }
+        return new Response<>(true,OpCode.Success);
+    }
+
+
+
+
+    public Response<List<ClassroomAndGroupsData>> getAllClassrooms(String apiKey){
+        Response<IT> itResponse = checkIT(apiKey);
+        if(itResponse.getReason()!=OpCode.Success){
+            log.error(itResponse.getReason().toString());
+            return new Response<>(null,itResponse.getReason());
+        }
+        Response<List<Classroom>> response=classroomRepo.findAll();
+        if(response.getReason()!=OpCode.Success){
+            return new Response<>(null,response.getReason());
+        }
+        List<ClassroomAndGroupsData> res=new ArrayList<>();
+        for(Classroom classroom:response.getValue()){
+            List<GroupType> groups=new ArrayList<>();
+            for(ClassGroup classGroup:classroom.getClassGroups()){
+                groups.add(classGroup.getGroupType());
+            }
+            if(groups.size()>1){
+                groups.add(GroupType.BOTH);
+            }
+            res.add(new ClassroomAndGroupsData(classroom.getClassName(),classroom.getClassHebrewName(),groups));
+        }
+        if(res.size()==0)
+            return new Response<>(res,OpCode.Empty);
+        return new Response<>(res,OpCode.Success);
+    }
+
+    public Response<List<ClassroomAndGroupsData>> getAllClassroomsByGrade(String apiKey,String alias){
+        Response<IT> itResponse = checkIT(apiKey);
+        if(itResponse.getReason()!=OpCode.Success){
+            log.error(itResponse.getReason().toString());
+            return new Response<>(null,itResponse.getReason());
+        }
+
+        Response<SchoolUser> studentResponse=schoolUserRepo.findUserForRead(alias);
+        if(studentResponse.getReason()!=OpCode.Success){
+            return new Response<>(null,studentResponse.getReason());
+        }
+        Student student=(Student)studentResponse.getValue();
+
+        Response<Classroom> studentClassroomResponse=classroomRepo.findClassroomByStudent(student.getAlias());
+        if(studentClassroomResponse.getReason()!=OpCode.Success){
+            return new Response<>(null,studentClassroomResponse.getReason());
+        }
+        Classroom studentClassroom=studentClassroomResponse.getValue();
+
+        String grade=studentClassroom.getClassName().substring(0,1);
+        Response<List<Classroom>> classroomsResponse=classroomRepo.findClassroomByGrade(grade);
+        if(classroomsResponse.getReason()!=OpCode.Success){
+            return new Response<>(null,classroomsResponse.getReason());
+        }
+        List<ClassroomAndGroupsData> res=new ArrayList<>();
+        for(Classroom classroom:classroomsResponse.getValue()){
+            List<GroupType> groups=new ArrayList<>();
+            for(ClassGroup classGroup:classroom.getClassGroups()){
+                if(!classGroup.containsStudent(alias)){
+                    groups.add(classGroup.getGroupType());
+                }
+            }
+            if(groups.size()>0)
+                res.add(new ClassroomAndGroupsData(classroom.getClassName(),classroom.getClassHebrewName(),groups));
+        }
+        if(res.size()==0)
+            return new Response<>(res,OpCode.Empty);
+        return new Response<>(res,OpCode.Success);
+
+    }
+
+    @Transactional
+    public Response<Boolean> transferStudentClassroom(String apiKey,String alias,String classroomName,GroupType groupType){
+        Response<IT> itResponse = checkIT(apiKey);
+        if(itResponse.getReason()!=OpCode.Success) {
+            log.error(itResponse.getReason().toString());
+            return new Response<>(false, itResponse.getReason());
+        }
+        Response<Classroom> studentClassroomResponse=classroomRepo.findClassroomByStudent(alias);
+        if(studentClassroomResponse.getReason()!=OpCode.Success){
+            return new Response<>(false,studentClassroomResponse.getReason());
+        }
+        Classroom studentClassroom=studentClassroomResponse.getValue();
+        synchronized (studentClassroom) {
+            studentClassroom.deleteStudent(alias);
+            classroomRepo.save(studentClassroom);
+        }
+
+        Response<SchoolUser> studentResponse=schoolUserRepo.findUserForRead(alias);
+        if(studentResponse.getReason()!=OpCode.Success){
+            return new Response<>(false,studentResponse.getReason());
+        }
+
+        Response<Classroom> newClassroomResponse=classroomRepo.findForWrite(classroomName);
+        if(newClassroomResponse.getReason()!=OpCode.Success){
+            return new Response<>(false,newClassroomResponse.getReason());
+        }
+        Classroom newClassroom=newClassroomResponse.getValue();
+        synchronized (newClassroom){
+            if(!newClassroom.addStudent(studentResponse.getValue(),groupType)){
+                return new Response<>(false,OpCode.Wrong_Group);
+            }
+            classroomRepo.save(newClassroom);
+        }
+        return new Response<>(true,OpCode.Success);
+
+
+
+
+
     }
 
 }

@@ -34,3 +34,5 @@ export const chatRoom='ChatRoom'
 export const closeClassroom = "CloseClassroom"
 export const WatchOpenAnswerSolutionScreen = 'WatchOpenAnswerSolutionScreen';
 export const WatchAllOpenQuestionMissionsScreen = 'WatchAllOpenQuestionMissionsScreen';
+export const transferTeacher='TransferTeacher'
+export const transferStudent='TransferStudent'

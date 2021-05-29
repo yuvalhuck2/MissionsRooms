@@ -48,8 +48,8 @@ public enum OpCode implements Serializable {
     Teacher_Has_Classroom ,DELETE_USER,
     MISSION_NOT_IN_OPEN_ANS,
     APPROVED_CLOSE, APPROVED_OPEN, REJECT_CLOSE, REJECT_OPEN,
-    ROOM_CLOSED, ROOM_SAVED,
-    WrongFileExt, InvalidTeacherMail, InvalidStudentMail, InvalidClassMail, InvalidClassName, ClassNotFound;
+    WrongFileExt, InvalidTeacherMail, InvalidStudentMail, InvalidClassMail, InvalidClassName, ClassNotFound,
+    ROOM_CLOSED, ROOM_SAVED,Not_Exist_ClassGroup;
 
 
 

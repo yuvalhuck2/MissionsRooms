@@ -197,4 +197,9 @@ public class RoomCrudRepositoryMock implements RoomCrudRepository {
     public void deleteAll() {
 
     }
+
+    @Override
+    public Iterable<Room> findRoomsForWriteByTeacherAlias(String teacherAlias) {
+        return null;
+    }
 }
