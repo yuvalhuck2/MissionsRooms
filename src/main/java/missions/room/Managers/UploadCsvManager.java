@@ -289,7 +289,7 @@ public class UploadCsvManager extends ITManager{
      * example: י1 -> 72-1
      */
     private String pareHebrewClassName(String className) {
-        String pattern = "^(..?)([0-9]+)";
+        String pattern = "^([^0-9][^0-9]?)([0-9]+)";
         // Create a Pattern object
         Pattern r = Pattern.compile(pattern);
 

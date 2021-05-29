@@ -54,6 +54,12 @@ export const uploadStringsErrors = {
   wrong_file_name: 'אחד הקבצים בעל שם שגוי',
   not_exist: 'שם משתמש לא קיים',
   already_exist: 'משתמש בשם הנ"ל כבר קיים',
+  wrong_ext: ' CSV כל הקבצים צריכים להיות בפורמט',
+  wrong_teacher_mail: 'המייל של אחד המורים שגוי',
+  wrong_student_mail: 'המייל של אחד התלמידים שגוי',
+  wrong_class_mail: 'המייל של אחת הכיתות שגוי',
+  wrong_class_name: 'השם של אחד הכיתות שגוי',
+  class_not_found: 'חוסר התאמה בכיתות בין קובץ הקבוצות לכיתות'
 };
 
 export const openQuestionErrors = {
