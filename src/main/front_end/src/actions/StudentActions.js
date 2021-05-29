@@ -100,6 +100,8 @@ const checkGetStudentRoomsResponse = ({
   navigation,
   rooms,
 }) => {
+  console.log("rooms");
+  console.log(data);
   const { reason, value } = data;
   switch (reason) {
     case Wrong_Key:

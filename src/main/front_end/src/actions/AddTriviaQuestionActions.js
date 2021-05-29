@@ -1,27 +1,31 @@
-import API from '../api/API';
-import * as APIPaths from '../api/APIPaths';
-import { AddTriviaQuestionStrings } from '../locale/locale_heb';
+import API from "../api/API";
+import * as APIPaths from "../api/APIPaths";
+import { AddTriviaQuestionStrings } from "../locale/locale_heb";
 import {
   Invalid_Trivia_Question,
   Success,
   Trivia_Subject_Doesnt_exist,
-} from './OpCodeTypes';
+} from "./OpCodeTypes";
 import {
   ADD_TRIVIA_QUESTION,
   ADD_TRIVIA_QUESTION_SUCCESS,
+  RESET_ADD_TRIVIA_QUESTION,
   TRIVIA_CORRECT_ANSWER_CHANGED,
   TRIVIA_QUESTION_CHANGED,
   TRIVIA_SUBJECTS_RETRIEVED,
   TRIVIA_SUBJECT_CHANGED_ADD_QUESTION,
   TRIVIA_WRONG_ANSWER_CHANGED,
   UPDATE_ERROR_ADD_TRIVIA_QUESTION,
-  RESET_ADD_TRIVIA_QUESTION,
-} from './types';
+} from "./types";
 
 const {
   invalid_trivia_question_error,
   choose_trivia_subject_error,
   trivia_question_added,
+  selectTriviaSubjectError,
+  emptyAnswersError,
+  emptyQuestionError,
+  uniqueAnswersError,
 } = AddTriviaQuestionStrings;
 
 export const questionChanged = (question) => {
@@ -63,9 +67,9 @@ export const getCurrentSubjects = ({ apiKey }) => {
       );
       res
         ? checkGetCurrentSubjectsResponse(res.data, dispatch)
-        : dispatch({ type: '' });
+        : dispatch({ type: "" });
     } catch (err) {
-      return dispatch({ type: '' });
+      return dispatch({ type: "" });
     }
   };
 };
@@ -77,8 +81,37 @@ const checkGetCurrentSubjectsResponse = (data, dispatch) => {
     case Success:
       return dispatch({ type: TRIVIA_SUBJECTS_RETRIEVED, payload: subjects });
     default:
-      return dispatch({ type: '' });
+      return dispatch({ type: "" });
   }
+};
+
+const validateTriviaQuestion = (triviaQuestionData, dispatch) => {
+  const { wrongAnswers, correctAnswer, subject, question } = triviaQuestionData;
+  const answers = [...wrongAnswers, correctAnswer];
+
+  if (subject === undefined || subject === "") {
+    dispatch({
+      type: UPDATE_ERROR_ADD_TRIVIA_QUESTION,
+      payload: selectTriviaSubjectError,
+    });
+    return false;
+  }
+
+  if (answers.some((answer) => answer === undefined || answer === "")) {
+    dispatch({ type: UPDATE_ERROR_ADD_TRIVIA_QUESTION, payload: emptyAnswersError });
+    return false;
+  }
+
+  if (question === undefined || question === "") {
+    dispatch({ type: UPDATE_ERROR_ADD_TRIVIA_QUESTION, payload: emptyQuestionError });
+    return false;
+  }
+  let answersSet = answers.filter((x, i, a) => a.indexOf(x) === i);
+  if (answersSet.length !== answers.length) {
+    dispatch({ type: UPDATE_ERROR_ADD_TRIVIA_QUESTION, payload: uniqueAnswersError });
+    return false;
+  }
+  return true;
 };
 
 export const addTriviaQuestion = ({
@@ -92,23 +125,28 @@ export const addTriviaQuestion = ({
   return async (dispatch) => {
     try {
       const triviaQuestionData = {
-        id: '',
+        id: "",
         question,
         wrongAnswers,
         correctAnswer,
         subject,
       };
       dispatch({ type: ADD_TRIVIA_QUESTION });
-      const res = await API.post(
-        `${APIPaths.addTriviaQuestion}?apiKey=${apiKey}`,
-        triviaQuestionData
-      );
-      res
-        ? checkAddTriviaQuestionResponse(res.data, dispatch, navigation)
-        : dispatch({ type: ADD_TRIVIA_QUESTION_ERROR, payload: server_error });
+      if (validateTriviaQuestion(triviaQuestionData, dispatch)) {
+        const res = await API.post(
+          `${APIPaths.addTriviaQuestion}?apiKey=${apiKey}`,
+          triviaQuestionData
+        );
+        res
+          ? checkAddTriviaQuestionResponse(res.data, dispatch, navigation)
+          : dispatch({
+              type: UPDATE_ERROR_ADD_TRIVIA_QUESTION,
+              payload: server_error,
+            });
+      }
     } catch (err) {
       return dispatch({
-        type: ADD_TRIVIA_QUESTION_ERROR,
+        type: UPDATE_ERROR_ADD_TRIVIA_QUESTION,
         payload: server_error,
       });
     }
@@ -141,10 +179,10 @@ const checkAddTriviaQuestionResponse = (data, dispatch, navigation) => {
   }
 };
 
-export const handleBack = ({navigation, apiKey}) => {
-  navigation.goBack()
+export const handleBack = ({ navigation, apiKey }) => {
+  navigation.goBack();
   return {
-      type: RESET_ADD_TRIVIA_QUESTION,
-      payload: apiKey
-  }
-}
+    type: RESET_ADD_TRIVIA_QUESTION,
+    payload: apiKey,
+  };
+};

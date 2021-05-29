@@ -4,6 +4,8 @@ package missions.room.Domain.missions;
 import DataObjects.FlatDataObjects.RoomType;
 import DataObjects.FlatDataObjects.MissionData;
 import missions.room.Domain.TriviaQuestion;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Map;
@@ -23,6 +25,7 @@ public class TriviaMission extends Mission {
             joinColumns ={@JoinColumn(name = "missionId")},
             inverseJoinColumns={@JoinColumn(name="id")}
     )
+    @LazyCollection(LazyCollectionOption.FALSE)
     private Map<String, TriviaQuestion> questions;
 
     public TriviaMission() {

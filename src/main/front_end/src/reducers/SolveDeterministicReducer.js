@@ -52,11 +52,7 @@ const initialState = {
                 state.missionsTries.set(state.mission.missionId,state.tries)
             }
             return {...initialState, apiKey:action.payload, missionTries:state.missionsTries, mission:state.mission}
-        case UPDATE_ERROR_SOLVE_DETERMINISTIC:
-            alert(action.payload)
-            return { ...state, errorMessage: action.payload, loading: false};
-        case CLEAR_STATE:
-            return initialState;
+
         default:
             return state;
     }

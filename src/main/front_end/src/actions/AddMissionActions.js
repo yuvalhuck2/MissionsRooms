@@ -48,7 +48,11 @@ const {
   teacher_not_exists_error,
 } = GeneralErrors;
 
-const { mission_details_error } = addMissionErrors;
+const { 
+  mission_details_error,
+  invalidPassRatio,
+  selectTriviaQuestionsError,
+} = addMissionErrors;
 
 export const questionChanged = (text) => {
   return {
@@ -138,6 +142,20 @@ const checkGetCurrentQuestionsResponse = (data, dispatch) => {
   }
 };
 
+const validateTriviaMission = (triviaMissionData, dispatch) => {
+  const { passRatio, questions } = triviaMissionData;
+  const parsedPassRatio = parseInt(passRatio);
+  if(isNaN(parsedPassRatio) || parsedPassRatio < 0 || parsedPassRatio > 1){
+    dispatch({type: UPDATE_ERROR_MISSION, payload: invalidPassRatio})
+    return false;
+  }
+  if (Object.keys(questions).length === 0){
+    dispatch({ type: UPDATE_ERROR_MISSION, payload: selectTriviaQuestionsError});
+    return false;
+  }
+  return true;
+}
+
 export const addMission = ({
   apiKey,
   navigation,
@@ -166,10 +184,13 @@ export const addMission = ({
       try {
         dispatch({ type: ADD_MISSON });
         let missionData;
+        let DATA;
+        let validTriviaMission = true;
         if (className != TRIVIA) {
+          DATA = { question, realAnswer, missionTypes, points }
           missionData = JSON.stringify({
             CLASSNAME: className,
-            DATA: { question, realAnswer, missionTypes, points },
+            DATA,
           });
         } else {
           let triviaMap = {};
@@ -177,17 +198,20 @@ export const addMission = ({
             return { ...q, subject: { name: q.subject } };
           });
           updatedTriviaQuestions.forEach((q) => (triviaMap[q.id] = q));
+          let DATA = {
+            passRatio,
+            questions: triviaMap,
+            missionTypes,
+            points,
+          }
+          validTriviaMission = validateTriviaMission(DATA, dispatch);
           missionData = JSON.stringify({
             CLASSNAME: className,
-            DATA: {
-              passRatio,
-              questions: triviaMap,
-              missionTypes,
-              points,
-            },
+            DATA,
           });
         }
         console.log(missionData);
+        if (validTriviaMission) {
         const res = await API.post(APIPaths.addMission, {
           apiKey,
           missionData,
@@ -195,7 +219,7 @@ export const addMission = ({
         res
           ? checkAddMissionResponse(res.data, dispatch, navigation, apiKey)
           : dispatch({ type: UPDATE_ERROR_MISSION, payload: server_error });
-      } catch (err) {
+      }} catch (err) {
         console.log(err);
         dispatch({ type: UPDATE_ERROR_MISSION, payload: server_error });
       }

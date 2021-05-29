@@ -20,7 +20,7 @@ public class TriviaQuestion {
     @Column(name="answer")
     private List<String> answers;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name="TriviaMissionQuestions",
             joinColumns ={@JoinColumn(name = "missionId")},
             inverseJoinColumns={@JoinColumn(name="id")}

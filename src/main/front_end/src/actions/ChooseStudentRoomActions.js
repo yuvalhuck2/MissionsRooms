@@ -13,7 +13,9 @@ import {
     INIT_STORY_MISSION,
     EXIT_ROOM,
     OPEN_QUESTION_MISSION,
-    INIT_OPEN_QUESTION_MISSION, ENTER_CHAT_ROOM_STUDENT
+    INIT_OPEN_QUESTION_MISSION, ENTER_CHAT_ROOM_STUDENT,
+    TRIVIA_NAME, 
+    INIT_TRIVIA_MISSION,
 } from './types';
  
   import {
@@ -99,7 +101,11 @@ const {
         dispatch({ type: INIT_OPEN_QUESTION_MISSION, payload: {roomData, isInCharge} })
         navigation.navigate(NavPaths.SolveOpenQuestionMission);
         break;
-
+      case TRIVIA_NAME:
+        dispatch({ type: PASS_TO_SOLVE_MISSIONS});
+        dispatch({ type: INIT_TRIVIA_MISSION, payload: {roomData, isInCharge}});
+        navigation.navigate(NavPaths.solveTriviaMission);
+        break;
       default:
         console.log(roomData)
         alert("didn't move from room")

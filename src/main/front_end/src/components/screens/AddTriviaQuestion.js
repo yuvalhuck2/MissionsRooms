@@ -206,7 +206,6 @@ class AddTriviaQuestion extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Header>{header}</Header>
         <Appbar.Header styles={styles.bottom}>
           <Appbar.BackAction
             onPress={() => {
@@ -214,6 +213,7 @@ class AddTriviaQuestion extends Component {
             }}
           />
         </Appbar.Header>
+        <Header>{header}</Header>
         {this.renderQuestion()}
         {this.renderDropDownSubject()}
         {this.renderQuestionsInputs()}

@@ -307,6 +307,8 @@ export const ITStrings = {
 
 export const addMissionErrors = {
   mission_details_error: 'פרטי משימה לא תקינים',
+  invalidPassRatio: 'יש להזין מספר בין 0 ל-1',
+  selectTriviaQuestionsError: 'יש לבחור שאלות טריוויה',
 };
 
 export const addRoomTemplateErrors = {
@@ -560,6 +562,10 @@ export const AddTriviaQuestionStrings = {
   invalid_trivia_question_error: 'נתוני שאלה לא תקינים',
   choose_trivia_subject_error: 'אנא בחר נושא טריוויה',
   trivia_question_added: 'השאלה נוספה בהצלחה',
+  selectTriviaSubjectError: 'יש לבחור נושא טריוויה',
+  emptyAnswersError: 'יש למלא את כלל התשובות',
+  emptyQuestionError: 'יש להזין שאלה',
+  uniqueAnswersError: 'על התשובות להיות ייחודיות',
 };
 
 
@@ -569,4 +575,9 @@ export const deleteTriviaQuestionStrings = {
   invalid_trivia_question_error: 'נתוני שאלה לא תקינים',
   question_deleted: 'השאלה נמחקה בהצלחה!',
   question_in_mission: 'השאלה נמצאת במשימה קיימת'
+}
+
+export const SolveTriviaMissionStrings = {
+  triviaPassMessage: 'המשימה הסתיימה\nציונך: עובר',
+  triviaFailMessage: 'המשימה הסתיימה\nציונך: נכשל'
 }

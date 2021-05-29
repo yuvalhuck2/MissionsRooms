@@ -129,16 +129,13 @@ const App = () => {
         <Stack.Screen name="ChatRoom" component={ChatRoomScreen} />
         <Stack.Screen name="TriviaManagement" component={TriviaManagement} />
         <Stack.Screen name="AddTriviaQuestion" component={AddTriviaQuestion} />
-        <Stack.Screen
-          name="SolveTriviaMission"
-          component={SolveTriviaMission}
-        />
         <Stack.Screen name="AddTriviaMission" component={AddTriviaMission} />
         <Stack.Screen name="AddTriviaSubject" component={AddTriviaSubject} />
         <Stack.Screen
           name="DeleteTriviaQuestion"
           component={DeleteTriviaQuestion}
         />
+        <Stack.Screen name="SolveTriviaMission" component={SolveTriviaMission} />
       </Stack.Navigator>
     </NavigationContainer>
   );

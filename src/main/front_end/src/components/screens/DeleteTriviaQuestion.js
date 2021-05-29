@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { ActivityIndicator, RadioButton, Appbar } from 'react-native-paper';
-import RadioButtonGroup from 'react-native-paper/src/components/RadioButton/RadioButtonGroup';
-import { connect } from 'react-redux';
-import { getTriviaQuestions } from '../../actions/AddMissionActions';
+import React, { Component } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Appbar, RadioButton } from "react-native-paper";
+import RadioButtonGroup from "react-native-paper/src/components/RadioButton/RadioButtonGroup";
+import { connect } from "react-redux";
+import { getTriviaQuestions } from "../../actions/AddMissionActions";
 import {
   deleteTriviaQuestion,
-  questionChanged,
   handleBack,
-} from '../../actions/DeleteTriviaQuestionActions';
-import { theme } from '../../core/theme';
-import { deleteTriviaQuestionStrings } from '../../locale/locale_heb';
-import Button from '../common/Button';
-import Header from '../common/Header';
+  questionChanged,
+} from "../../actions/DeleteTriviaQuestionActions";
+import { theme } from "../../core/theme";
+import { deleteTriviaQuestionStrings } from "../../locale/locale_heb";
+import Button from "../common/Button";
+import Header from "../common/Header";
 
 const { header, button } = deleteTriviaQuestionStrings;
 
@@ -52,16 +52,23 @@ class DeleteTriviaQuestion extends Component {
   renderTriviaForm() {
     let renderItem = ({ item }) => {
       return (
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <Text>{item.question}</Text>
-          <RadioButton value={item} />
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            alignItems: "flex-start",
+          }}
+        >
+          {/* <Text>{item.question}</Text> */}
+          <RadioButton.Item label={item.question} value={item} />
         </View>
       );
     };
 
     return (
-      <View style={{flex: 0.5}}>
-        <RadioButtonGroup
+      <View style={{ flex: 0.5 }}>
+        <RadioButton.Group
           onValueChange={(newValue) => this.questionChanged(newValue)}
           value={this.props.selectedQuestion}
         >
@@ -70,7 +77,7 @@ class DeleteTriviaQuestion extends Component {
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
           />
-        </RadioButtonGroup>
+        </RadioButton.Group>
       </View>
     );
   }
@@ -80,7 +87,7 @@ class DeleteTriviaQuestion extends Component {
       <ActivityIndicator
         animating={true}
         color={theme.colors.primary}
-        size='large'
+        size="large"
       />
     );
   }
@@ -91,7 +98,7 @@ class DeleteTriviaQuestion extends Component {
       this.renderSpinner()
     ) : (
       <Button
-        mode='contained'
+        mode="contained"
         style={styles.button}
         onPress={this.onButtonPress}
       >
@@ -103,7 +110,7 @@ class DeleteTriviaQuestion extends Component {
   renderError() {
     const { errorMessage } = this.props;
 
-    if (errorMessage && errorMessage !== '') {
+    if (errorMessage && errorMessage !== "") {
       return (
         <View>
           <Text style={styles.errorTextStyle}>{errorMessage}</Text>
@@ -122,10 +129,12 @@ class DeleteTriviaQuestion extends Component {
             }}
           />
         </Appbar.Header>
-        <Header>{header}</Header>
-        {this.renderTriviaForm()}
-        {this.renderButton()}
-        {this.renderError()}
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Header>{header}</Header>
+          {this.renderTriviaForm()}
+          {this.renderButton()}
+          {this.renderError()}
+        </View>
       </View>
     );
   }
@@ -135,17 +144,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    alignItems: 'center',
-    width: '100%',
+    // justifyContent: 'center',
+    width: "100%",
     maxWidth: 340,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   button: {
     margin: 30,
   },
+  bottom: {
+    margin: 30,
+  },
   errorTextStyle: {
     fontSize: 25,
-    alignSelf: 'center',
+    alignSelf: "center",
     color: theme.colors.error,
   },
 });

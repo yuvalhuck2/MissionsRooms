@@ -1,28 +1,18 @@
-import React, { Component } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { RadioButton, ActivityIndicator, Appbar } from 'react-native-paper';
-import ListAccordion from 'react-native-paper/src/components/List/ListAccordion';
-import ListAccordionGroup from 'react-native-paper/src/components/List/ListAccordionGroup';
-import RadioButtonGroup from 'react-native-paper/src/components/RadioButton/RadioButtonGroup';
-import Button from '../common/Button';
-import Header from '../common/Header';
-import { connect } from 'react-redux';
-import { theme } from '../../core/theme';
-
-const questions = [
-  {
-    id: '1',
-    question: 'מי הוא ראש הממשלה?',
-    answers: ['יאיר לפיד', 'בני גנץ', 'בנימין נתינהו', 'נפתלי בנט'],
-    correctAnswer: 'בנימין נתינהו',
-  },
-  {
-    id: '2',
-    question: 'כמה זה 10:(2+2)?',
-    answers: ['0.2', '0.4', '0', '2.2'],
-    correctAnswer: '0.4',
-  },
-];
+import React, { Component } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Appbar, RadioButton } from "react-native-paper";
+import ListAccordion from "react-native-paper/src/components/List/ListAccordion";
+import ListAccordionGroup from "react-native-paper/src/components/List/ListAccordionGroup";
+import RadioButtonGroup from "react-native-paper/src/components/RadioButton/RadioButtonGroup";
+import { connect } from "react-redux";
+import {
+  enterChatStudent,
+  handleBack,
+} from "../../actions/ChooseStudentRoomActions";
+import { sendTriviaForm } from "../../actions/solveTriviaMissionActions";
+import { theme } from "../../core/theme";
+import Button from "../common/Button";
+import Header from "../common/Header";
 
 class SolveTriviaMission extends Component {
   constructor(...args) {
@@ -32,10 +22,44 @@ class SolveTriviaMission extends Component {
     this.onBackPress = this.onBackPress.bind(this);
     this.onChatButtonPress = this.onChatButtonPress.bind(this);
     this.onAnswerChanged = this.onAnswerChanged.bind(this);
+    this.onButtonPress = this.onButtonPress.bind(this);
+    this.state = {
+      currentAnswers: [],
+      questions: [],
+      answers: [],
+    };
   }
 
-  onAnswerChanged(text, index){
-    this.props.answerChanged(text, index);
+
+  componentDidMount() {
+    const { mission } = this.props;
+    const triviaQuestions = Object.values(mission.triviaQuestionMap);
+    const triviaAnswers = triviaQuestions.map((question, questNum) => {
+      let currAnswers = [...question.answers, question.correctAnswer];
+      currAnswers = currAnswers.sort((a, b) => 0.5 - Math.random());
+      let answersWithIndex = []
+      for(let i=0; i<currAnswers.length; i++){
+        answersWithIndex.push({
+          answer: currAnswers[i],
+          index: i,
+          questNum,
+        })
+      }
+      return answersWithIndex;
+    });
+    const currentAnswers = triviaAnswers.map((answers) => answers[0]);
+
+    this.setState({
+      questions: triviaQuestions,
+      answers: triviaAnswers,
+      currentAnswers,
+    });
+  }
+
+  onAnswerChanged(value) {
+    let newCurrentAnswers = [...this.state.currentAnswers];
+    newCurrentAnswers[value.questNum] = value;
+    this.setState({ currentAnswers: newCurrentAnswers });
   }
 
   onChatButtonPress() {
@@ -43,20 +67,23 @@ class SolveTriviaMission extends Component {
     enterChatStudent({ navigation });
   }
 
-  onBackPress(){
+  onBackPress() {
     const { navigation, apiKey, roomId, mission, handleBack } = this.props;
     handleBack({ navigation, apiKey, roomId, mission });
   }
 
   onButtonPress() {
-    const { roomId, mission, apiKey, navigation, currentAnswers, sendTriviaForm } = this.props;
+    const { roomId, mission, apiKey, navigation, sendTriviaForm } = this.props;
+
+    const { currentAnswers } = this.state;
+    let actualAnswers = currentAnswers.map(value => value.answer);
     sendTriviaForm({
       roomId,
       mission,
       apiKey,
       navigation,
-      currentAnswers,
-    })
+      currentAnswers: actualAnswers,
+    });
   }
 
   renderSpinner() {
@@ -64,31 +91,47 @@ class SolveTriviaMission extends Component {
       <ActivityIndicator
         animating={true}
         color={theme.colors.primary}
-        size='large'
+        size="large"
       />
     );
   }
 
+  // renderButton() {
+  //   const { loading, isInCharge } = this.props;
+
+  //   return loading ? (
+  //     this.renderSpinner()
+  //   ) : isInCharge ? (
+  //     <Button
+  //       mode="contained"
+  //       style={styles.button}
+  //       onPress={this.onButtonPress}
+  //     >
+  //       {send_answer}
+  //     </Button>
+  //   ) : null;
+  // }
+
   renderButton(){
-    const {loading, isInCharge} = this.props
+    const { loading, isInCharge } = this.props;
 
     return loading ? (
       this.renderSpinner()
     ) : (
-        isInCharge ?
-            (<Button
-                mode='contained'
-                style={styles.button}
-                onPress={this.onButtonPress}>
-              {send_answer}
-            </Button>) : null
+      <Button
+        mode="contained"
+        style={styles.button}
+        onPress={this.onButtonPress}
+      >
+        שלח טופס
+      </Button>
     )
   }
 
   renderError() {
     const { errorMessage } = this.props;
 
-    if (errorMessage && errorMessage !== '') {
+    if (errorMessage && errorMessage !== "") {
       return (
         <View>
           <Text style={styles.errorTextStyle}>{errorMessage}</Text>
@@ -97,21 +140,19 @@ class SolveTriviaMission extends Component {
     }
   }
 
-
-
-  renderQuestionAnswers({ answers, correctAnswer }) {
+  renderQuestionAnswers({ answers, currentAnswer }) {
     let renderItem = ({ item }) => {
       return (
         <View
           style={{
             flex: 1,
-            flexDirection: 'row',
+            flexDirection: "row",
             paddingLeft: 30,
             paddingRight: 30,
           }}
         >
-          <Text style={{ flex: 1 }}>{item}</Text>
-          <RadioButton style={{ flex: 1 }} value={item} />
+          {/* <Text style={{ flex: 1 }}>{item}</Text> */}
+          <RadioButton.Item style={{ flex: 1,  }} label={item.answer} value={item} />
         </View>
       );
     };
@@ -120,35 +161,34 @@ class SolveTriviaMission extends Component {
       <FlatList
         data={answers}
         renderItem={renderItem}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => item.index}
       />
     );
-
     return (
-      <RadioButtonGroup
+      <RadioButton.Group
         style={{ flex: 1, padding: 50 }}
-        onValueChange={() => {}}
-        value={correctAnswer}
+        onValueChange={(newValue) => this.onAnswerChanged(newValue)}
+        value={currentAnswer}
       >
         {answerList}
-      </RadioButtonGroup>
+      </RadioButton.Group>
     );
   }
 
   renderTriviaForm() {
-    let renderItem = ({ item }) => {
+    let renderItem = ({ item, index }) => {
       return (
         <ListAccordion title={item.question} id={item.id}>
           {this.renderQuestionAnswers({
-            answers: item.answers,
-            correctAnswer: item.correctAnswer,
+            answers: this.state.answers[index],
+            currentAnswer: this.state.currentAnswers[index],
           })}
         </ListAccordion>
       );
     };
     return (
       <FlatList
-        data={questions}
+        data={this.state.questions}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />
@@ -159,17 +199,20 @@ class SolveTriviaMission extends Component {
     return (
       <ListAccordionGroup style={styles.container}>
         <Appbar.Header>
-          <Appbar.BackAction onPress={() => {this.onBackPress()}} />
+          <Appbar.BackAction
+            onPress={() => {
+              this.onBackPress();
+            }}
+          />
           <Appbar.Action icon="chat" onPress={() => this.onChatButtonPress()} />
         </Appbar.Header>
         <Header>ביצוע משימת טריוויה</Header>
         {this.renderTriviaForm()}
         <View
-          style={{ flex: 0.5, flexDirection: 'column', alignItems: 'center' }}
+          style={{ flex: 0.5, flexDirection: "column", alignItems: "center" }}
         >
-          <Button mode='contained' style={styles.button}>
-            שלח טופס
-          </Button>
+          {this.renderButton()}
+          {this.renderError()}
         </View>
       </ListAccordionGroup>
     );
@@ -180,24 +223,32 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
   },
   button: {
     margin: 30,
-    width: '80%',
+    width: "80%",
   },
   errorTextStyle: {
     fontSize: 22,
-    alignSelf: 'center',
+    alignSelf: "center",
     color: theme.colors.error,
   },
-  chatButton:{
-      //alignSelf: 'flex-end',
-      position: 'absolute',
-      top:550,
-      right:0,
+  chatButton: {
+    position: "absolute",
+    top: 550,
+    right: 0,
   },
 });
 
-export default SolveTriviaMission;
+const mapStateToProps = (state) => {
+  const { roomId, mission, apiKey, navigation, isInCharge } = state.solveTriviaMission;
+  return { roomId, mission, apiKey, navigation, isInCharge };
+};
+
+export default connect(mapStateToProps, {
+  handleBack,
+  sendTriviaForm,
+  enterChatStudent,
+})(SolveTriviaMission);

@@ -4,7 +4,8 @@ import {
     LOGIN_TEACHER,
     PASS_TO_ROOMS,
     UPDATE_CHAT_ROOM,
-    UPDATE_SEND_CHAT_ROOM
+    UPDATE_SEND_CHAT_ROOM,
+    INIT_TRIVIA_MISSION
 } from "../actions/types";
 import {GiftedChat} from 'react-native-gifted-chat';
 const initialState = {
@@ -35,7 +36,8 @@ export default (state = initialState, action) => {
         case INIT_DETEREMINISTIC:
             var {roomData,isIncharge}=action.payload;
             return {...state,name:roomData.studentName,roomId:roomData.roomId}
-
+        case INIT_TRIVIA_MISSION:
+            return {...state, name: action.payload.roomData.studentName, roomId: action.payload.roomData.roomId}
         case LOGIN_STUDENT:
             return {...initialState,apiKey: action.payload, errorMessage:''}
         case LOGIN_TEACHER:

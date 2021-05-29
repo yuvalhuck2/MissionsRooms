@@ -43,4 +43,4 @@ export const addTriviaQuestion = '/addTriviaQuestion';
 export const getTriviaSubjects = '/getTriviaSubjects';
 export const getTriviaQuestions = '/getTriviaQuestions';
 export const deleteTriviaQuestion = '/deleteTriviaQuestion';
-
+export const solveTrivia = "student/room/trivia";

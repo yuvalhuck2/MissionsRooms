@@ -11,7 +11,6 @@ const {
   addSubjectTrivia,
   addQuestionTrivia,
   deleteQuestionTrivia,
-  viewQuestions,
 } = TriviaManagementStrings;
 
 const navigateTo = (navigation, path) => {
@@ -36,7 +35,6 @@ const buttons = [
   { name: deleteQuestionTrivia, key: '2', onPress: (navigation) => {
     navigateTo(navigation, NavPaths.deleteTriviaQuestion)
   } },
-  { name: viewQuestions, key: '3', onPress: (navigation) => {} },
 ];
 
 class TriviaManagement extends Component {
