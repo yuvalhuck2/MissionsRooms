@@ -1,11 +1,9 @@
 package missions.room.AcceptanceTests.AcceptanceTests;
 
-import com.sun.deploy.cache.BaseLocalApplicationProperties;
 import missions.room.AcceptanceTests.AcceptanceTestDataObjects.*;
 import missions.room.AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsProxyBridge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.plugin.javascript.navig.Array;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -14,9 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static org.junit.jupiter.api.Assertions.fail;
-
 
 @Service
 public class AcceptanceTest {

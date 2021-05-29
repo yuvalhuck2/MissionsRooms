@@ -17,7 +17,8 @@ import {Not_Exist, Success, Wrong_Key, DB_Error, CONNECTED_STUDENTS, INVALID_ROO
 import {CloseRoom, GeneralErrors} from "../locale/locale_heb";
 const {
     room_closed,
-    connected_students
+    connected_students,
+    choose_room,
 } = CloseRoom
 const {
     server_error,
@@ -44,11 +45,15 @@ export const roomChanged = (room) => {
 
 export const passToRoomMenu = ({currentRoom,navigation,apiKey})=> {
     return async (dispatch) => {
+        if(currentRoom == ''){
+            return alert(choose_room)
+        }
         dispatch({
             type: PASS_TO_ROOM_MENU,
             payload:currentRoom,
         });
         navigation.navigate(NavPaths.teacherRoomMenu);
+
     }
 }
 

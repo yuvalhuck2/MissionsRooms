@@ -190,6 +190,7 @@ export const AddRoomErrors = {
 export const CloseRoom ={
     room_closed:'החדר נמחק בהצלחה',
     connected_students:'המחיקה נכשלה: ישנם תלמידים מחוברים לחדר',
+    choose_room: 'יש לבחור חדר',
 }
 
 export const ChooseTempalteStrings = {

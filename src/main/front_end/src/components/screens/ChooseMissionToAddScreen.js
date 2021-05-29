@@ -70,6 +70,7 @@ class ChooseMissiontoAddForm extends Component{
           value={points}
           onChangeText={this.onPointsChanged}
           placeholder='0'
+          keyboardType = 'numeric'
         />
       );
     }
