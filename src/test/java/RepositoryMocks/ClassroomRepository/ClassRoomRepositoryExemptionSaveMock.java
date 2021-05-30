@@ -4,12 +4,18 @@ import CrudRepositories.ClassroomRepository;
 import missions.room.Domain.Classroom;
 import org.springframework.dao.DataAccessResourceFailureException;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ClassRoomRepositoryExemptionSaveMock implements ClassroomRepository {
 
 
     public ClassRoomRepositoryExemptionSaveMock() {
+    }
+
+    @Override
+    public List<Classroom> findClassroomByGrade(String grade) {
+        return null;
     }
 
     @Override
@@ -79,6 +85,11 @@ public class ClassRoomRepositoryExemptionSaveMock implements ClassroomRepository
 
     @Override
     public Iterable<String> getAllNames() {
+        return null;
+    }
+
+    @Override
+    public Classroom findClassroom(String className) {
         return null;
     }
 }

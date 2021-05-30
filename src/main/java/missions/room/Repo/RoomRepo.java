@@ -118,6 +118,19 @@ public class RoomRepo {
         }
     }
 
+    @Transactional
+    public Response<Iterable<Room>> findRoomsForWriteByTeacherAlias(String teacherAlias){
+        try{
+            return new Response<>(roomCrudRepository.findRoomsForWriteByTeacherAlias(teacherAlias),OpCode.Success);
+        }
+        catch (LockTimeoutException e){
+            return new Response<>(null,OpCode.TimeOut);
+        }
+        catch (Exception e){
+            return new Response<>(null,OpCode.DB_Error);
+        }
+    }
+
     public Response<Boolean> deleteRoom(Room room){
         try {
             roomCrudRepository.delete(room);

@@ -84,4 +84,9 @@ public class TeacherCrudRepositoryMockTeacherMock implements TeacherCrudReposito
     public void deleteAll() {
 
     }
+
+    @Override
+    public List<Teacher> findTeacherForWriteByClassroom(String classroomName) {
+        return null;
+    }
 }

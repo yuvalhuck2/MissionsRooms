@@ -44,3 +44,7 @@ export const getTriviaSubjects = '/getTriviaSubjects';
 export const getTriviaQuestions = '/getTriviaQuestions';
 export const deleteTriviaQuestion = '/deleteTriviaQuestion';
 export const solveTrivia = "student/room/trivia";
+export const getClassroomAndGroups="it/get/classrooms"
+export const transferTeacher="it/transfer/teacher"
+export const getGradeClassroomAndGroups="it/get/classrooms/grade"
+export const transferStudent="it/transfer/student"

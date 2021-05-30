@@ -42,7 +42,7 @@ public class Utils {
     }
 
     public static String getAlias(String email){
-        String pattern = "([^\\/]+)" + TEST_SUFFIX;
+        String pattern = "\"?([^\\/]+)" + LEOBAECK_SUFFIX;
 
         // Create a Pattern object
         Pattern r = Pattern.compile(pattern);
@@ -64,6 +64,9 @@ public class Utils {
      */
     public static Pair<String,String> getYearAndClassFromEmail(String email){
         String alias = Utils.getAlias(email);
+        if (alias == null) {
+            return null;
+        }
         String pattern = "(.)-(..?)";
         // Create a Pattern object
         Pattern r = Pattern.compile(pattern);

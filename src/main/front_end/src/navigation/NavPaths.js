@@ -41,3 +41,5 @@ export const addTriviaQuestion = 'AddTriviaQuestion';
 export const addTriviaMission = 'AddTriviaMission';
 export const deleteTriviaQuestion = 'DeleteTriviaQuestion';
 export const solveTriviaMission = 'SolveTriviaMission';
+export const transferTeacher='TransferTeacher';
+export const transferStudent='TransferStudent';

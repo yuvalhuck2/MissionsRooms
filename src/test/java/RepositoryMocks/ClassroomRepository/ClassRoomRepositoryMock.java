@@ -5,6 +5,7 @@ import Data.Data;
 import Data.DataGenerator;
 import missions.room.Domain.Classroom;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ClassRoomRepositoryMock implements ClassroomRepository {
@@ -13,6 +14,11 @@ public class ClassRoomRepositoryMock implements ClassroomRepository {
 
     public ClassRoomRepositoryMock(DataGenerator dataGenerator) {
         this.dataGenerator = dataGenerator;
+    }
+
+    @Override
+    public List<Classroom> findClassroomByGrade(String grade) {
+        return null;
     }
 
     @Override
@@ -83,6 +89,11 @@ public class ClassRoomRepositoryMock implements ClassroomRepository {
 
     @Override
     public Iterable<String> getAllNames() {
+        return null;
+    }
+
+    @Override
+    public Classroom findClassroom(String className) {
         return null;
     }
 }

@@ -73,6 +73,9 @@ public class UploadCsvManager extends ITManager{
         if (checkToken.getValue() == null) {
             return new Response<>(false, checkToken.getReason());
         }
+        if (!checkFilesExtension(CSVs)) {
+            return new Response<>(false, OpCode.WrongFileExt);
+        }
         String studentsFile, classesFile, teacherFile, groupsFile;
         try{
             studentsFile = getFileStringByName(CSVs, STUDENT_FILE);
@@ -89,14 +92,22 @@ public class UploadCsvManager extends ITManager{
         String[] classesRows = classesFile.split("lb[0-9]");
         String teachersRows[] = splitNewLine(teacherFile);
         String groupsRows[] = splitNewLine(groupsFile);
-        if (checkCsvHeadersValidity(studentsRows, classesRows, teachersRows, groupsRows)) {
+        if (!checkCsvHeadersValidity(studentsRows, classesRows, teachersRows, groupsRows)) {
             return new Response<>(false, OpCode.Wrong_File_Headers);
         }
-        List<Classroom> classes = createClassesFromCsv(studentsRows, classesRows);
+        Response<List<Classroom>> classesRes = createClassesFromCsv(studentsRows, classesRows);
+        if (!classesRes.getReason().equals(OpCode.Success)){
+            return new Response<>(false, classesRes.getReason());
+        }
+        List<Classroom> classes = classesRes.getValue();
         synchronized (ADD_USER_LOCK) {
             Response<Boolean> classRoomResp = classRoomRepo.saveAll(classes);
             if (classRoomResp.getValue()) {
-                List<Teacher> teachers = createTeachersFromCsv(teachersRows, groupsRows, classes);
+                Response<List<Teacher>> teachersRes = createTeachersFromCsv(teachersRows, groupsRows, classes);
+                if (!teachersRes.getReason().equals(OpCode.Success)){
+                    return new Response<>(false, teachersRes.getReason());
+                }
+                List<Teacher> teachers = teachersRes.getValue();
                 Response<Boolean> teacherResp = teacherRepo.saveAll(teachers);
                 return teacherResp;
             }
@@ -105,38 +116,50 @@ public class UploadCsvManager extends ITManager{
 
     }
 
-    public String getFileStringByName(MultipartFile[] CSVs, String name) throws IOException {
+    private boolean checkFilesExtension(MultipartFile[] CSVs){
+        for (int i = 0 ; i < CSVs.length ; i++){
+            String x = CSVs[i].getContentType();
+            if (!(CSVs[i].getContentType().equals("csv/text") || CSVs[i].getContentType().equals("text/csv")) ) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private String getFileStringByName(MultipartFile[] CSVs, String name) throws IOException {
         Stream<MultipartFile> filesStream = Arrays.stream(CSVs).filter(x -> x.getOriginalFilename().equals(name));
         Optional<MultipartFile> fileOpt = filesStream.findFirst();
         MultipartFile file =  fileOpt.get();
         return new String(file.getBytes(),StandardCharsets.UTF_8);
     }
 
-    public Boolean insertTeachers(String[] rows){
-        return true;
-    }
-
-    public List<Classroom> createClassesFromCsv(String studentRows[], String[] classesRows){
+    private Response<List<Classroom>> createClassesFromCsv(String studentRows[], String[] classesRows){
         HashMap<String,Student> students = new HashMap<>();
         List<Classroom> classes = new ArrayList<>();
         for(int i = 1; i < studentRows.length; i++){
             String[] studentData = studentRows[i].split(COMMA_DEL);
             String alias = Utils.getAlias(studentData[EMAIL]);
+            if (alias == null) {
+                return new Response<>(null, OpCode.InvalidStudentMail, studentData[EMAIL]);
+            }
             students.put(alias, new Student(alias, studentData[FIRST_NAME], studentData[LAST_NAME]));
         }
         for(int i = 1 ; i < classesRows.length; i ++){
             String[] classData = classesRows[i].split(COMMA_DEL);
             Pair<String, String> classPair = Utils.getYearAndClassFromEmail(classData[CLASS_EMAIL]);
+            if(classPair == null) {
+                return new Response<>(null, OpCode.InvalidClassMail, classData[CLASS_EMAIL]);
+            }
             HashMap<String, Student> studentsInClass = getStudentInClass(classData[MEMBERS], students);
 
             //TODO: check compatible with members count
             classes.add(creatClass(studentsInClass, classPair));
         }
-        return classes;
+        return new Response<>(classes, OpCode.Success);
     }
 
     @Override
-    protected   Response<IT> checkIT(String apiKey){
+    protected Response<IT> checkIT(String apiKey){
         String alias = ram.getAlias(apiKey);
         if(alias==null){
             return new Response<>(null, OpCode.Wrong_Key);
@@ -201,26 +224,35 @@ public class UploadCsvManager extends ITManager{
 //First Name [Required]	Last Name [Required]	Email Address [Required]
     private void stripHeaders(String[] headers){
         for(int i =0 ; i <headers.length; i++) {
-            headers[i] = headers[i].replace(" [Required]", "");
+            headers[i] = headers[i].replace(" [Required]", "").replace("\r\n", "");
         }
     }
 
-    private List<Teacher> createTeachersFromCsv(String[] teacherRows, String[] groupRows, List<Classroom> classes){
+    private Response<List<Teacher>> createTeachersFromCsv(String[] teacherRows, String[] groupRows, List<Classroom> classes){
         List<Teacher> teachers = new ArrayList<>();
-        HashMap<String, Pair<String, GroupType>> teacherNameToClassAndGroup = preProcessGroupsFile(groupRows);
+        Response<HashMap<String, Pair<String, GroupType>>> teacherNameToClassAndGroupRes = preProcessGroupsFile(groupRows);
+        if (!teacherNameToClassAndGroupRes.getReason().equals(OpCode.Success)) {
+            return new Response<>(null, teacherNameToClassAndGroupRes.getReason());
+        }
+        HashMap<String, Pair<String, GroupType>> teacherNameToClassAndGroup = teacherNameToClassAndGroupRes.getValue();
+
         for(int i = 1; i < teacherRows.length; i++){
             String[] teacherData = teacherRows[i].split(COMMA_DEL);
             String alias = Utils.getAlias(teacherData[EMAIL]);
+            if (alias == null) {
+                return new Response<>(null, OpCode.InvalidTeacherMail, teacherData[EMAIL]);
+            }
             String fullName = teacherData[FIRST_NAME]+" "+teacherData[LAST_NAME];
             Pair<String, GroupType> classAndGroup = teacherNameToClassAndGroup.get(fullName);
             if(classAndGroup != null){
                 Classroom classRoom = getClassRoomByName(classAndGroup.getKey(), classes);
-                if(classRoom != null){
-                    teachers.add(new Teacher(alias, teacherData[FIRST_NAME], teacherData[LAST_NAME],classRoom, classAndGroup.getValue() ));
+                if (classRoom == null) {
+                    return new Response<>(null, OpCode.ClassNotFound);
                 }
+                teachers.add(new Teacher(alias, teacherData[FIRST_NAME], teacherData[LAST_NAME],classRoom, classAndGroup.getValue() ));
             }
         }
-        return teachers;
+        return new Response<>(teachers, OpCode.Success);
     }
 
     private Classroom getClassRoomByName(String className, List<Classroom> classes) {
@@ -232,31 +264,32 @@ public class UploadCsvManager extends ITManager{
         return null;
     }
 
-    private HashMap<String, Pair<String, GroupType>> preProcessGroupsFile(String[] groupRows){
+    private Response<HashMap<String, Pair<String, GroupType>>> preProcessGroupsFile(String[] groupRows){
         HashMap<String, Pair<String, GroupType>> teacherNameToClass = new HashMap<>();
         for(int i =1; i<groupRows.length; i++){
             String[] groupData = groupRows[i].split(COMMA_DEL);
             String classRoomName = pareHebrewClassName(groupData[CLASS_NAME]);
-            if(classRoomName != null){
-                String teacher_A = groupData[GROUP_A_TEACHER];
-                String teacher_B = groupData[GROUP_B_TEACHER];
-                if (teacher_A.equals(teacher_B)){
-                    teacherNameToClass.put(teacher_A, new Pair<>(classRoomName, GroupType.BOTH));
-                } else {
-                    teacherNameToClass.put(teacher_A, new Pair<>(classRoomName, GroupType.A));
-                    teacherNameToClass.put(teacher_B, new Pair<>(classRoomName, GroupType.B));
-                }
+            if (classRoomName == null) {
+                return new Response<>(null, OpCode.InvalidClassName, groupData[CLASS_NAME]);
+            }
+            String teacher_A = groupData[GROUP_A_TEACHER];
+            String teacher_B = groupData[GROUP_B_TEACHER];
+            if (teacher_A.equals(teacher_B)){
+                teacherNameToClass.put(teacher_A, new Pair<>(classRoomName, GroupType.BOTH));
+            } else {
+                teacherNameToClass.put(teacher_A, new Pair<>(classRoomName, GroupType.A));
+                teacherNameToClass.put(teacher_B, new Pair<>(classRoomName, GroupType.B));
             }
         }
-        return teacherNameToClass;
+        return new Response<>(teacherNameToClass, OpCode.Success);
     }
 
     /**
-     * return string representaion of hebrew class name
+     * return string representation of hebrew class name
      * example: י1 -> 72-1
      */
     private String pareHebrewClassName(String className) {
-        String pattern = "^(..?)([0-9]+)";
+        String pattern = "^([^0-9][^0-9]?)([0-9]+)";
         // Create a Pattern object
         Pattern r = Pattern.compile(pattern);
 

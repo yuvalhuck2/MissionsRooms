@@ -47,6 +47,9 @@ public class ITMangerRealRamBaseUserRepo extends ITManagerTestsRealRam {
     protected void initUserRepo(IT it, String itAlias2) {
         itCrudRepository.save(it);
         classroomRepository.save(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM).getClassroom());
+        realUserRepo.save(dataGenerator.getTeacher(Data.VALID_WITH_CLASSROOM3));
+        realUserRepo.save(dataGenerator.getTeacher(Data.VALID_WITHOUT_CLASSROOM));
+
         try {
             Field userRepo = ITManager.class.getDeclaredField("userRepo");
             userRepo.setAccessible(true);
