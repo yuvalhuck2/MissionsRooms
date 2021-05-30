@@ -62,15 +62,6 @@ public class StudentRepo {
         }
     }
 
-    public Response<Boolean> saveAll(List<Student> students) {
-        try{
-            studentCrudRepository.saveAll(students);
-            return new Response<Boolean>(true, OpCode.Success);
-        } catch (Exception e) {
-            return new Response<>(false,OpCode.DB_Error);
-        }
-    }
-
     public Response<Student> save(Student student){
         try {
             return new Response<>(studentCrudRepository.save(student), OpCode.Success);

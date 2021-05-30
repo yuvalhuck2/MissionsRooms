@@ -4,7 +4,6 @@ import CrudRepositories.RoomTemplateCrudRepository;
 import Data.Data;
 import Data.DataGenerator;
 import missions.room.Domain.RoomTemplate;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataAccessResourceFailureException;
 
 import java.util.Optional;
@@ -14,16 +13,6 @@ public class RoomTemplateCrudRepositoryExceptionFindByIdMock implements RoomTemp
 
     public RoomTemplateCrudRepositoryExceptionFindByIdMock(DataGenerator dataGenerator) {
         this.dataGenerator=dataGenerator;
-    }
-
-    @Override
-    public RoomTemplate findTemplateForWrite(String roomTemplateId) {
-        return null;
-    }
-
-    @Override
-    public RoomTemplate findTemplateForRead(String roomTemplateId) {
-        return null;
     }
 
     @Override

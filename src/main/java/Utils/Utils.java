@@ -30,11 +30,6 @@ public class Utils {
         return checkString(mail) && mail.indexOf('@')!=-1;
     }
 
-    public static boolean checkPhone(String phone){
-        return checkString(phone) && phone.matches("\\d{10}");
-
-    }
-
     public static String getMailFromAlias(String alias) {
         // return alias+LEOBAECK_SUFFIX;
         // TODO: remove when testing is done

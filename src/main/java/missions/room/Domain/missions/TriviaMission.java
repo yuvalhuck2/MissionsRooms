@@ -49,10 +49,6 @@ public class TriviaMission extends Mission {
         return questions;
     }
 
-    public void setQuestions(Map<String, TriviaQuestion> questions) {
-        this.questions = questions;
-    }
-
     @Override
     protected MissionData completeTheRestOfMissionData(MissionData missionData) {
         missionData.setTriviaQuestionMap(this.questions);

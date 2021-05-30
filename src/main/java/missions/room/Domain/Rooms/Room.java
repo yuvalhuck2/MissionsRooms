@@ -3,7 +3,6 @@ package missions.room.Domain.Rooms;
 import DataObjects.FlatDataObjects.*;
 import Utils.Utils;
 import missions.room.Domain.OpenAnswer;
-import missions.room.Domain.RoomMessage;
 import missions.room.Domain.RoomTemplate;
 import missions.room.Domain.Users.Teacher;
 import missions.room.Domain.missions.Mission;
@@ -45,10 +44,6 @@ public abstract class Room {
 
     @Transient
     protected String  missionIncharge;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="roomId",referencedColumnName = "roomId")
-    protected List<RoomMessage> roomMessages;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "roomId", referencedColumnName = "roomId")
@@ -147,10 +142,6 @@ public abstract class Room {
 
     public int getCountCorrectAnswer() {
         return countCorrectAnswer;
-    }
-
-    public void setCountCorrectAnswer(int countCorrectAnswer) {
-        this.countCorrectAnswer = countCorrectAnswer;
     }
 
     public RoomType updatePoints(){

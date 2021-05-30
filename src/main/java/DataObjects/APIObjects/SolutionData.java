@@ -35,39 +35,20 @@ public class SolutionData {
         return missionQuestion;
     }
 
-    public void setMissionQuestion(String missionQuestion) {
-        this.missionQuestion = missionQuestion;
-    }
-
     public String getMissionId() {
         return missionId;
-    }
-
-    public void setMissionId(String missionId) {
-        this.missionId = missionId;
     }
 
     public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
-    }
-
     public String getOpenAnswer() {
         return openAnswer;
-    }
-
-    public void setOpenAnswer(String openAnswer) {
-        this.openAnswer = openAnswer;
     }
 
     public Boolean getHasFile() {
         return hasFile;
     }
 
-    public void setHasFile(Boolean hasFile) {
-        this.hasFile = hasFile;
-    }
 }

@@ -17,23 +17,12 @@ public class RoomOpenAnswerData {
         return roomId;
     }
 
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
-    }
-
     public String getRoomName() {
         return roomName;
-    }
-
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
     }
 
     public List<SolutionData> getOpenAnswers() {
         return openAnswers;
     }
 
-    public void setOpenAnswers(List<SolutionData> openAnswers) {
-        this.openAnswers = openAnswers;
-    }
 }

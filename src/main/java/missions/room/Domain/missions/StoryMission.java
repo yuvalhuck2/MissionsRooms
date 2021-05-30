@@ -28,10 +28,6 @@ public class StoryMission extends Mission{
         return story;
     }
 
-    public void setStory(String story) {
-        this.story = story;
-    }
-
     @Override
     public String getMissionName() {
         return MISSION_NAME;

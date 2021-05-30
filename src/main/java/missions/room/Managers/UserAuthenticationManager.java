@@ -309,20 +309,12 @@ public class UserAuthenticationManager extends TeacherManager {
         return new Response<>(rsp.getReason()==OpCode.Success,rsp.getReason());
     }
 
-    public void setHashSystem(HashSystem hashSystem) {
-        this.hashSystem = hashSystem;
-    }
-
     public void setSender(MailSender sender) {
         this.sender = sender;
     }
 
     public void setVerificationCodeGenerator(VerificationCodeGenerator verificationCodeGenerator) {
         this.verificationCodeGenerator = verificationCodeGenerator;
-    }
-
-    public void setRam(Ram ram) {
-        this.ram = ram;
     }
 
     public void openWebSocket(String apiKey) {

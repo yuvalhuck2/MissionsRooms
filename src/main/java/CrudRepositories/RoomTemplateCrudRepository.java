@@ -12,11 +12,4 @@ import javax.persistence.LockModeType;
 @Repository
 public interface RoomTemplateCrudRepository extends CrudRepository<RoomTemplate,String> {
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select a from RoomTemplate a where a.roomTemplateId = :roomTemplateId")
-    RoomTemplate findTemplateForWrite(@Param("roomTemplateId") String roomTemplateId);
-
-    @Lock(LockModeType.PESSIMISTIC_READ)
-    @Query("select a from RoomTemplate a where a.roomTemplateId = :roomTemplateId")
-    RoomTemplate findTemplateForRead(@Param("roomTemplateId") String roomTemplateId);
 }

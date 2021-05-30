@@ -58,10 +58,6 @@ public class MissionData {
         this.question = question;
     }
 
-    public void setTimeForAns(int timeForAns) {
-        this.timeForAns = timeForAns;
-    }
-
     public String getMissionId() {
         return missionId;
     }

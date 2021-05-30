@@ -40,10 +40,6 @@ public class PointsData {
         return canReduce;
     }
 
-    public void SetCanReduce(boolean canReduce) {
-        this.canReduce=canReduce;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

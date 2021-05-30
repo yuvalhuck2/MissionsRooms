@@ -21,11 +21,6 @@ public class SchoolUserRepositoryExceptionSaveMock implements SchoolUserCrudRepo
     }
 
     @Override
-    public SchoolUser findUserForRead(String alias) {
-        return dataGenerator.getStudent(Data.VALID);
-    }
-
-    @Override
     public Optional<SchoolUser> findById(String s) {
         return Optional.ofNullable(dataGenerator.getStudent(Data.VALID));
     }
