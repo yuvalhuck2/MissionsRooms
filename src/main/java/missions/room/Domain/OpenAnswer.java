@@ -34,20 +34,12 @@ public class OpenAnswer {
         return missionId;
     }
 
-    public void setMissionId(String missionId) {
-        this.missionId = missionId;
-    }
-
     public MultipartFile getFile() {
         return file;
     }
 
     public String getOpenAnswerText() {
         return openAnswerText;
-    }
-
-    public void setOpenAnswerText(String openAnswerText) {
-        this.openAnswerText = openAnswerText;
     }
 
     public boolean isHasFile() {

@@ -18,15 +18,8 @@ public class RoomsDataByRoomType {
         return roomType;
     }
 
-    public void setRoomType(RoomType roomType) {
-        this.roomType = roomType;
-    }
-
     public List<RoomDetailsData> getRoomDetailsDataList() {
         return roomDetailsDataList;
     }
 
-    public void setRoomDetailsDataList(List<RoomDetailsData> roomDetailsDataList) {
-        this.roomDetailsDataList = roomDetailsDataList;
-    }
 }

@@ -34,16 +34,8 @@ public class RoomDetailsData {
         return roomId;
     }
 
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public MissionData getCurrentMission() {
@@ -56,10 +48,6 @@ public class RoomDetailsData {
 
     public RoomType getRoomType() {
         return roomType;
-    }
-
-    public void setRoomType(RoomType roomType) {
-        this.roomType = roomType;
     }
 
     public boolean isWaitingForStory() {

@@ -108,7 +108,7 @@ public class ManagerRoomStudent extends StudentManager {
     public Response<Boolean> answerOpenQuestionMission(String apiKey, SolutionData openAnswerData, MultipartFile file){
         String roomId = openAnswerData.getRoomId();
         Response<Room> roomRes = getRoomById(roomId);
-        OpCode validity = checkOpenAnswerParamsValidity(apiKey, openAnswerData, file, roomRes);//checkStudentIsMissionManager(apiKey, openAnswerData.getRoomId()); //TODO return!!
+        OpCode validity = checkOpenAnswerParamsValidity(apiKey, openAnswerData, file, roomRes);
         //OpCode validity = OpCode.Success;
         if (validity == OpCode.Success) {
             try {

@@ -13,10 +13,6 @@ public class TriviaSubjectData {
         return subject;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

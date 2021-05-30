@@ -23,32 +23,6 @@ public class MissionRepo {
         this.missionCrudRepository = missionCrudRepository;
     }
 
-    @Transactional
-    public Response<Mission> findMissionForWrite(String alias){
-        try {
-            return new Response<>(missionCrudRepository.findMissionForWrite(alias), OpCode.Success);
-        }
-        catch(LockTimeoutException e){
-            return new Response<>(null,OpCode.TimeOut);
-        }
-        catch(Exception e){
-            return new Response<>(null,OpCode.DB_Error);
-        }
-    }
-
-    @Transactional
-    public Response<Mission> findMissionForRead(String alias){
-        try{
-            return new Response<>(missionCrudRepository.findMissionForRead(alias), OpCode.Success);
-        }
-        catch(LockTimeoutException e){
-            return new Response<>(null,OpCode.TimeOut);
-        }
-        catch(Exception e){
-            return new Response<>(null,OpCode.DB_Error);
-        }
-    }
-
     public Response<Mission> findMissionById(String alias){
         try{
             Optional<Mission> missionOptional= missionCrudRepository.findById(alias);

@@ -32,8 +32,4 @@ class MissionControllerTest extends ControllerTest {
         testControllerWithBody(APPROVE_ANSWER, body, Wrong_Key, null);
     }
 
-    //TODO
-    @Test
-    void downloadOpenAnswerFile() {
-    }
 }

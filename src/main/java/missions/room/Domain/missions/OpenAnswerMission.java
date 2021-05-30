@@ -33,10 +33,6 @@ public class OpenAnswerMission extends Mission {
         return question;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
     @Override
     public String getMissionName() {
         return missionName;

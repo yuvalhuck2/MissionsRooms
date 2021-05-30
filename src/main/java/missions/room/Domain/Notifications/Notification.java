@@ -21,7 +21,4 @@ public abstract class Notification<T> implements Serializable {
         return reason;
     }
 
-    public void setReason(OpCode reason) {
-        this.reason = reason;
-    }
 }

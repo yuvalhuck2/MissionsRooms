@@ -22,11 +22,6 @@ public class SchoolUserRepositoryMockExceptionFindRead implements SchoolUserCrud
     }
 
     @Override
-    public SchoolUser findUserForRead(String alias) {
-        throw new EntityNotFoundException();
-    }
-
-    @Override
     public Optional<SchoolUser> findById(String s) {
         throw new EntityNotFoundException();
     }

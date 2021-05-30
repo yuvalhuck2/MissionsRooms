@@ -19,23 +19,12 @@ public class ClassroomAndGroupsData {
         return classroom;
     }
 
-    public void setClassroom(String classroom) {
-        this.classroom = classroom;
-    }
-
     public List<GroupType> getGroupTypes() {
         return groupTypes;
-    }
-
-    public void setGroupTypes(List<GroupType> groupTypes) {
-        this.groupTypes = groupTypes;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 }

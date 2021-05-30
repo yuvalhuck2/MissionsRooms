@@ -1,7 +1,6 @@
 package RepositoryMocks.SchoolUserRepositry;
 
 import CrudRepositories.SchoolUserCrudRepository;
-import Data.Data;
 import Data.DataGenerator;
 import missions.room.Domain.Users.SchoolUser;
 
@@ -19,11 +18,6 @@ public class SchoolUserRepositoryMockLockExceptionFindWrite implements SchoolUse
     @Override
     public SchoolUser findUserForWrite(String alias) {
             throw new LockTimeoutException();
-    }
-
-    @Override
-    public SchoolUser findUserForRead(String alias) {
-        return dataGenerator.getStudent(Data.VALID);
     }
 
     @Override

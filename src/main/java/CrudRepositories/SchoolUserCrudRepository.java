@@ -16,7 +16,4 @@ public interface SchoolUserCrudRepository extends CrudRepository<SchoolUser,Stri
     @Query("select a from SchoolUser a where a.alias = :alias")
     SchoolUser findUserForWrite(@Param("alias") String alias);
 
-    @Lock(LockModeType.PESSIMISTIC_READ)
-    @Query("select a from SchoolUser a where a.alias = :alias")
-    SchoolUser findUserForRead(@Param("alias") String alias);
 }

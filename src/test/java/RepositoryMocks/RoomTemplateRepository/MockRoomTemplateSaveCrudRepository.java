@@ -9,16 +9,6 @@ import java.util.Optional;
 public class MockRoomTemplateSaveCrudRepository implements RoomTemplateCrudRepository {
 
     @Override
-    public RoomTemplate findTemplateForWrite(String roomTemplateId) {
-        return null;
-    }
-
-    @Override
-    public RoomTemplate findTemplateForRead(String roomTemplateId) {
-        return null;
-    }
-
-    @Override
     public <S extends RoomTemplate> S save(S s) {
         throw new EntityNotFoundException();
     }

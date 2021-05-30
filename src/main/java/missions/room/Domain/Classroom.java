@@ -16,9 +16,6 @@ import java.util.stream.Collectors;
 @Entity
 public class Classroom{
 
-    private static final String YUD = "י ";
-    private static final String YUD_ALEF = "יא ";
-    private static final String YUD_BET = "יב ";
     @Id
     private String className;
 

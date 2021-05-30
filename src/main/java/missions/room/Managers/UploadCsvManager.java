@@ -38,7 +38,6 @@ public class UploadCsvManager extends ITManager{
     private static final String CLASSES_FILE = "classes.csv";
     private static final String[] CLASSES_FILE_HEADERS = {"Email", "MembersCount", "Members"};
     private static final int CLASS_EMAIL = 0;
-    private static final int MEMBERS_COUNT = 1;
     private static final int MEMBERS = 2;
 
     private static final String GROUPS_FILE = "groups.csv";
@@ -120,7 +119,6 @@ public class UploadCsvManager extends ITManager{
 
     private boolean checkFilesExtension(MultipartFile[] CSVs){
         for (int i = 0 ; i < CSVs.length ; i++){
-            String x = CSVs[i].getContentType();
             if (!(CSVs[i].getContentType().equals("csv/text") || CSVs[i].getContentType().equals("text/csv")) ) {
                 return false;
             }
@@ -154,7 +152,6 @@ public class UploadCsvManager extends ITManager{
             }
             HashMap<String, Student> studentsInClass = getStudentInClass(classData[MEMBERS], students);
 
-            //TODO: check compatible with members count
             classes.add(creatClass(studentsInClass, classPair));
         }
         return new Response<>(classes, OpCode.Success);
