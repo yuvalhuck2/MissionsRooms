@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { ScrollView } from 'react-native-gesture-handler';
 import { ActivityIndicator, Appbar } from 'react-native-paper';
 import { connect } from 'react-redux';
 import {
@@ -175,7 +176,7 @@ class AddTriviaQuestion extends Component {
 
     let inputValues = [...wrongAnswers, correctAnswer];
 
-    let renderItem = ({ item }) => {
+    let renderItem = ( item ) => {
       return item.name === 'input' ? (
         <TextInput
           label={item.placeholder}
@@ -195,11 +196,14 @@ class AddTriviaQuestion extends Component {
     };
 
     return (
-      <FlatList
-        data={inputParams}
-        keyExtractor={(item) => item.key}
-        renderItem={renderItem}
-      />
+        inputParams.map((x) => renderItem(x))
+      
+      
+      // <FlatList
+      //   data={inputParams}
+      //   keyExtractor={(item) => item.key}
+      //   renderItem={renderItem}
+      // />
     );
   }
 
@@ -214,9 +218,12 @@ class AddTriviaQuestion extends Component {
           />
         </Appbar.Header>
         <Header>{header}</Header>
+        <ScrollView>
         {this.renderQuestion()}
         {this.renderDropDownSubject()}
         {this.renderQuestionsInputs()}
+        </ScrollView>
+
       </View>
     );
   }

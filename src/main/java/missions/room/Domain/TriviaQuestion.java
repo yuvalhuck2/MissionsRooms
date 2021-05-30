@@ -29,8 +29,8 @@ public class TriviaQuestion {
 
     private String correctAnswer;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @OnDelete(action =  OnDeleteAction.CASCADE)
+    @ManyToOne
+    @OnDelete(action =  OnDeleteAction.NO_ACTION)
     @JoinColumn(name="subject", referencedColumnName = "name", nullable=false)
     private TriviaSubject subject;
 
