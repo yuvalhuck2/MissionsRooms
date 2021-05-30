@@ -7,8 +7,8 @@ import missions.room.Domain.RoomTemplate;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)

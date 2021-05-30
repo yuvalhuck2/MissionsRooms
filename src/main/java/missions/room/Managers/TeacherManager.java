@@ -3,7 +3,7 @@ package missions.room.Managers;
 import CrudRepositories.TeacherCrudRepository;
 import DataObjects.FlatDataObjects.OpCode;
 import DataObjects.FlatDataObjects.Response;
-import missions.room.Domain.*;
+import missions.room.Domain.Ram;
 import missions.room.Domain.Users.Teacher;
 import missions.room.Repo.TeacherRepo;
 import org.springframework.beans.factory.annotation.Autowired;

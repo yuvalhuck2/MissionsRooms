@@ -1,16 +1,16 @@
 package missions.room.Managers;
 
+import DataObjects.APIObjects.SuggestionData;
 import DataObjects.FlatDataObjects.OpCode;
 import DataObjects.FlatDataObjects.Response;
-import DataObjects.APIObjects.SuggestionData;
 import ExternalSystems.UniqueStringGenerator;
+import Utils.Utils;
 import lombok.extern.apachecommons.CommonsLog;
-import missions.room.Domain.Users.Student;
 import missions.room.Domain.Suggestion;
+import missions.room.Domain.Users.Student;
 import missions.room.Domain.Users.Teacher;
 import missions.room.Repo.SuggestionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import Utils.Utils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

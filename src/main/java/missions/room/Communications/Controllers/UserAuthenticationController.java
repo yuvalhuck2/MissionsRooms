@@ -2,8 +2,8 @@ package missions.room.Communications.Controllers;
 
 import DataObjects.APIObjects.RegisterCodeDetailsData;
 import DataObjects.APIObjects.RegisterDetailsData;
-import DataObjects.FlatDataObjects.Response;
 import DataObjects.APIObjects.TeacherData;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Service.UserAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

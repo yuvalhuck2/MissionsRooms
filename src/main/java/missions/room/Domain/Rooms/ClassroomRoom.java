@@ -2,7 +2,8 @@ package missions.room.Domain.Rooms;
 
 import DataObjects.FlatDataObjects.GroupType;
 import DataObjects.FlatDataObjects.RoomType;
-import missions.room.Domain.*;
+import missions.room.Domain.Classroom;
+import missions.room.Domain.RoomTemplate;
 import missions.room.Domain.Users.Teacher;
 
 import javax.persistence.Entity;

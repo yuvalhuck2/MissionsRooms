@@ -1,8 +1,8 @@
 package missions.room.Domain.missions;
 
 
-import DataObjects.FlatDataObjects.RoomType;
 import DataObjects.FlatDataObjects.MissionData;
+import DataObjects.FlatDataObjects.RoomType;
 import missions.room.Domain.TriviaQuestion;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;

@@ -1,7 +1,7 @@
 package missions.room.Service;
 
-import DataObjects.FlatDataObjects.Response;
 import DataObjects.APIObjects.TriviaQuestionData;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Managers.TriviaManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

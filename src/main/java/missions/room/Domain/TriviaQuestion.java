@@ -1,6 +1,5 @@
 package missions.room.Domain;
 
-import missions.room.Domain.missions.TriviaMission;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 

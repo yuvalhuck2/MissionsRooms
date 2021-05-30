@@ -1,5 +1,4 @@
 package ExternalSystems;
-import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;

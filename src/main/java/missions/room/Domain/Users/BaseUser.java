@@ -6,7 +6,10 @@ import DataObjects.FlatDataObjects.UserProfileData;
 import missions.room.Domain.Message;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)

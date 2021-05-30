@@ -2,11 +2,13 @@ package missions.room.TriviaManagerTests;
 
 import CrudRepositories.MissionCrudRepository;
 import CrudRepositories.TriviaQuestionRepository;
+import CrudRepositories.TriviaSubjectRepository;
 import Data.Data;
 import DataObjects.FlatDataObjects.OpCode;
 import DataObjects.FlatDataObjects.Response;
 import DataObjects.APIObjects.TriviaQuestionData;
 import missions.room.Domain.TriviaQuestion;
+import missions.room.Domain.TriviaSubject;
 import missions.room.Managers.TriviaManager;
 import missions.room.Repo.TriviaRepo;
 import org.junit.jupiter.api.AfterEach;
@@ -24,6 +26,9 @@ public class TriviaManagerTestsAllReal extends TriviaManagerTestsRealRamTeacher{
 
     @Autowired
     private TriviaRepo realTriviaRepo;
+
+    @Autowired
+    private TriviaSubjectRepository triviaSubjectRepository;
 
     @Autowired
     private TriviaQuestionRepository realTriviaCrudRepository;
@@ -105,6 +110,7 @@ public class TriviaManagerTestsAllReal extends TriviaManagerTestsRealRamTeacher{
     }
 
     private void addTriviaQuestion(TriviaQuestionData triviaQuestion) {
+        triviaSubjectRepository.save(new TriviaSubject(triviaQuestion.getSubject()));
         realTriviaCrudRepository.save(new TriviaQuestion(triviaQuestion.getId(),
                 triviaQuestion.getQuestion(),
                 triviaQuestion.getAnswers(),
@@ -117,5 +123,6 @@ public class TriviaManagerTestsAllReal extends TriviaManagerTestsRealRamTeacher{
     void tearDown() {
         super.tearDown();
         realTriviaCrudRepository.deleteAll();
+        triviaSubjectRepository.deleteAll();
     }
 }

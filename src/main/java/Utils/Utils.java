@@ -2,9 +2,9 @@ package Utils;
 
 import javafx.util.Pair;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

@@ -1,12 +1,9 @@
 package ExternalSystems;
 
-import org.hibernate.mapping.Collection;
-import org.springframework.data.domain.Range;
-
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.Queue;
 import java.util.List;
+import java.util.Queue;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 

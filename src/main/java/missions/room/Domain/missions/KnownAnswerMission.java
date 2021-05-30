@@ -3,7 +3,7 @@ package missions.room.Domain.missions;
 import DataObjects.FlatDataObjects.MissionData;
 import DataObjects.FlatDataObjects.OpCode;
 import DataObjects.FlatDataObjects.RoomType;
-import Utils.*;
+import Utils.Utils;
 
 import javax.persistence.Entity;
 import java.util.ArrayList;

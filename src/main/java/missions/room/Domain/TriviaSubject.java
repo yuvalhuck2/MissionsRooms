@@ -1,11 +1,7 @@
 package missions.room.Domain;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import javax.persistence.*;
-import java.util.HashMap;
-import java.util.Map;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class TriviaSubject {
