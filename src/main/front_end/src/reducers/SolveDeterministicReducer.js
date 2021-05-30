@@ -22,6 +22,7 @@ const initialState = {
     EXIT_ROOM,
     FINISH_MISSION,
     CHANGE_IN_CHARGE,
+    UPDATE_IN_CHARGE_DETERMINISTIC,
   } from '../actions/types';
   
   export default (state = initialState, action) => {
@@ -52,7 +53,15 @@ const initialState = {
                 state.missionsTries.set(state.mission.missionId,state.tries)
             }
             return {...initialState, apiKey:action.payload, missionTries:state.missionsTries, mission:state.mission}
-
+        case UPDATE_IN_CHARGE_DETERMINISTIC:
+            return { 
+                ...initialState, 
+                apiKey: state.apiKey, 
+                isInCharge: action.payload.isInCharge, 
+                mission:state.mission,
+                tries: action.payload.tries,
+                roomId: state.roomId
+            }
         default:
             return state;
     }

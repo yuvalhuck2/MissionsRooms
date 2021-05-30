@@ -8,7 +8,8 @@ import {
     SEND_OPEN_ANSWER,
     PICKED_FILE,
     UPDATE_ERROR,
-    RESET_FILES
+    RESET_FILES,
+    FINISH_MISSION_OPEN,
 } from './types';
 
 import {
@@ -124,7 +125,7 @@ const parseOpenQuestionResponse = (data, dispatch, apiKey) => {
     const { reason, value } = data;
     switch (reason) {
       case Success:
-        return dispatch({ type: FINISH_MISSION, payload: apiKey });
+        return dispatch({ type: FINISH_MISSION_OPEN, payload: {apiKey, isInCharge: value} });
       case INVALID_ROOM_ID:
         return dispatch({ type: UPDATE_ERROR, payload: mission_in_charge });
       default:

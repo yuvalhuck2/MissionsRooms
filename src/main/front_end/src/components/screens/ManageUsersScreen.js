@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Student, Supervisor, Teacher, IT } from '../../actions/OpCodeTypes';
 import { searchChanged, editUserDetails, firstNameChanged, lastNameChanged, changeDialog,
   deleteUser, passToTransferGroup, handleBack, filterUsers,  changeEnableFirstName,
-  changeEnableLastName} from '../../actions/ManageUsersActions';
+  changeEnableLastName,passToTransferClassroom} from '../../actions/ManageUsersActions';
 import { theme } from '../../core/theme';
 import { WatchProfileStrings,RolesStrings, ManageUsersStrings ,DeleteUserString} from '../../locale/locale_heb';
 import Button from '../common/Button';
@@ -59,6 +59,7 @@ class ManageUsersForm extends Component {
     this.renderDialogContent = this.renderDialogContent.bind(this)
     this.setEnableFirstName=this.setEnableFirstName.bind(this);
     this.setEnableLastName=this.setEnableLastName.bind(this);
+    this.passToTransferClassroom=this.passToTransferClassroom.bind(this);
   }
 
   onSearchChanged(text) {
@@ -79,7 +80,19 @@ class ManageUsersForm extends Component {
   }
 
   passToTransferGroup(){
+      const {apiKey,navigation,profile} = this.props;
+      this.props.passToTransferGroup({apiKey,navigation,alias:profile});
+      this.onLastNameChanged('');
+      this.onFirstNameChanged('');
 
+  }
+
+  passToTransferClassroom(){
+    const {apiKey,navigation} = this.props;
+    //this.onDismissDialog();
+    this.props.passToTransferClassroom({apiKey,navigation});
+    this.onLastNameChanged('');
+    this.onFirstNameChanged('');
   }
 
   onEditButtonPress(){
@@ -119,6 +132,7 @@ class ManageUsersForm extends Component {
   }
 
   onChangeDialog(alias){
+    const{profile, presentedUsers}=this.props;
     this.props.changeDialog(alias);
   }
 
@@ -191,45 +205,64 @@ class ManageUsersForm extends Component {
   }
 
   renderButtons(){
-    const {loading} = this.props
+    const {loading,currUser} = this.props
 
     return loading ? (
       this.renderSpinner()
-    ) : (
-      [<Dialog.Actions key="edit" >
-        <Button
-          // styles={styles.button}
-          onPress={this.onEditButtonPress}>
-          {edit_details}
-        </Button>
-      </Dialog.Actions>,
-      <Dialog.Actions key="delete" >
-      <Button
-        styles={styles.button}
-        onPress={this.onDeleteButtonPress}>
-        {delete_user}
-      </Button>
-    </Dialog.Actions>,
-    <Dialog.Actions key="moveToAnotherGroup" >
-      <Button
-        styles={styles.button}
-        onPress={this.passToTransferGroup}>
-        {transfer}
-      </Button>
-    </Dialog.Actions>,
-    <Dialog.Actions>
-      <Button 
-        styles={styles.button}
-        onPress={this.onDismissDialog}>
-        {exit}
-      </Button>
-    </Dialog.Actions>])
-  
+    ) : (this.createDialogActionsList());
   }
+
+  createDialogActionsList() {
+      const {currUser, profile} = this.props;
+      if (currUser !== undefined) {
+          let lst = [<Dialog.Actions key="edit">
+              <Button
+                  // styles={styles.button}
+                  onPress={this.onEditButtonPress}>
+                  {edit_details}
+              </Button>
+          </Dialog.Actions>,
+              <Dialog.Actions key="delete">
+                  <Button
+                      styles={styles.button}
+                      onPress={this.onDeleteButtonPress}>
+                      {delete_user}
+                  </Button>
+              </Dialog.Actions>];
+          if (currUser.userType === 'Student') {
+              lst.push(<Dialog.Actions key="moveToAnotherGroup">
+                  <Button
+                      styles={styles.button}
+                      onPress={this.passToTransferGroup}>
+                      {transfer}
+                  </Button>
+              </Dialog.Actions>);
+          }
+          if (currUser.userType === 'Teacher' && !currUser.hasClassroom) {
+              lst.push(<Dialog.Actions key="moveToAnotherClass">
+                  <Button
+                      styles={styles.button}
+                      onPress={this.passToTransferClassroom}>
+                      {transfer}
+                  </Button>
+              </Dialog.Actions>);
+          }
+          lst.push(<Dialog.Actions>
+              <Button
+                  styles={styles.button}
+                  onPress={this.onDismissDialog}>
+                  {exit}
+              </Button>
+          </Dialog.Actions>);
+          return lst;
+      }
+  }
+
+
 
   renderDialogContent(){
     const {enableFirstName, enableLastName, firstName, lastName} = this.props;
-    <Dialog.Content>
+     <Dialog.Content>
         <DataTable.Row>
         <DataTable.Cell>{enable_edit_first_name}</DataTable.Cell>
           <Switch  />
@@ -255,8 +288,49 @@ class ManageUsersForm extends Component {
     </Dialog.Content>
   }
 
+   renderPortal(){
+    const {profile, enableFirstName, enableLastName, firstName, lastName,currUser,visible} = this.props;
+
+       return <Portal>
+              <Dialog visible={profile!==''&&visible} onDismiss={this.onDismissDialog}>
+                  <Dialog.Title>{profile}</Dialog.Title>
+
+                  <Dialog.Content>
+                      <DataTable.Row>
+                          <DataTable.Cell>{enable_edit_first_name}</DataTable.Cell>
+                          <Switch value={enableFirstName} onValueChange={this.setEnableFirstName}/>
+                      </DataTable.Row>
+                      <DataTable.Row>
+                          <DataTable.Cell>{enable_edit_last_name}</DataTable.Cell>
+                          <Switch  value={enableLastName} onValueChange={this.setEnableLastName}/>
+                      </DataTable.Row>
+                      {enableFirstName ? (
+                          <TextInput
+                              label={enter_first_name}
+                              value={firstName}
+                              onChangeText={this.onFirstNameChanged}
+                          />
+                      ): null}
+                      {enableLastName ? (
+                          <TextInput
+                              label={enter_last_name}
+                              value={lastName}
+                              onChangeText={this.onLastNameChanged}
+                          />
+                      ): null}
+                  </Dialog.Content>
+                  {this.renderDialogContent()}
+                  {/* <Dialog.Content>
+              {choose_action}
+            </Dialog.Content> */}
+                  {this.renderButtons()}
+              </Dialog>
+          </Portal>;
+
+  }
+
   render() {
-    const {profile, enableFirstName, enableLastName, firstName, lastName} = this.props;
+    const {profile, enableFirstName, enableLastName, firstName, lastName,currUser,loading} = this.props;
     return (
         <KeyboardAwareScrollView style={styles.container}>
          <Appbar.Header styles={styles.bottom}>
@@ -266,41 +340,7 @@ class ManageUsersForm extends Component {
         <Text>{press_user_for_details}</Text>
         {this.renderTextBox()}
         {this.renderListItems()}
-        <Portal>
-            <Dialog visible={profile !== ''} onDismiss={this.onDismissDialog}>
-            <Dialog.Title>{profile}</Dialog.Title>
-            
-            <Dialog.Content>
-              <DataTable.Row>
-                <DataTable.Cell>{enable_edit_first_name}</DataTable.Cell>
-                <Switch value={enableFirstName} onValueChange={this.setEnableFirstName}/>
-              </DataTable.Row>
-              <DataTable.Row>
-                <DataTable.Cell>{enable_edit_last_name}</DataTable.Cell>
-                <Switch  value={enableLastName} onValueChange={this.setEnableLastName}/>
-              </DataTable.Row>
-              {enableFirstName ? (
-             <TextInput 
-             label={enter_first_name}
-             value={firstName}
-             onChangeText={this.onFirstNameChanged}
-             />
-        ): null}
-       {enableLastName ? (
-             <TextInput 
-             label={enter_last_name}
-             value={lastName}
-             onChangeText={this.onLastNameChanged}
-             />
-        ): null}
-            </Dialog.Content>
-            {this.renderDialogContent()}
-            {/* <Dialog.Content>
-              {choose_action}
-            </Dialog.Content> */}
-            {this.renderButtons()}
-            </Dialog>
-        </Portal>
+        {loading?this.renderSpinner():this.renderPortal()}
         {this.renderError()}
         </KeyboardAwareScrollView>
     );
@@ -342,9 +382,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   const { search, enableFirstName,firstName, lastName,enableLastName,
-    classroom, group, profile, allUsers, presentedUsers, apiKey, errorMessage, loading } = state.manageUsers;
+    classroom, group, profile, allUsers, presentedUsers, apiKey, errorMessage, loading,currUser,allClassrooms,visible } = state.manageUsers;
   return { search, enableFirstName, firstName, lastName, enableLastName,
-    classroom, group, profile, allUsers, presentedUsers, apiKey, errorMessage, loading };
+    classroom, group, profile, allUsers, presentedUsers, apiKey, errorMessage, loading,currUser,allClassrooms,visible };
 };
 
 export default connect(mapStateToProps, {
@@ -358,5 +398,6 @@ export default connect(mapStateToProps, {
   handleBack,
   filterUsers,
   changeEnableFirstName,
-  changeEnableLastName
+  changeEnableLastName,
+    passToTransferClassroom,
 })(ManageUsersForm);

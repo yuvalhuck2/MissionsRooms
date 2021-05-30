@@ -80,4 +80,9 @@ public class TeacherCrudRepositoryMockExceptionFindById  implements TeacherCrudR
     public void deleteAll() {
 
     }
+
+    @Override
+    public List<Teacher> findTeacherForWriteByClassroom(String classroomName) {
+        return null;
+    }
 }

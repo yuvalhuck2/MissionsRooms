@@ -116,9 +116,8 @@ public class ManagerRoomStudent extends StudentManager {
                     return new Response<>(false, openAnsSaveRes != null ? openAnsSaveRes.getReason() : OpCode.DB_Error);
                 }
                 synchronized (room) {
-                    updateRoomAndMissionInCharge(room);
+                    return updateRoomAndMissionInCharge(room, ram.getAlias(apiKey));
                 }
-                return openAnsSaveRes;
 
             } catch (Exception ex) {
                 return new Response<>(false, OpCode.FAILED_READ_FILE_BYTES);
@@ -176,14 +175,12 @@ public class ManagerRoomStudent extends StudentManager {
                     return response;
                 }
             }
-            updateRoomAndMissionInCharge(room);
+            return updateRoomAndMissionInCharge(room, checkStudent.getValue().getAlias());
         }
-
-        return new Response<>(true, OpCode.Success);
     }
 
 
-    private void updateRoomAndMissionInCharge(Room room) {
+    private Response<Boolean> updateRoomAndMissionInCharge(Room room, String studentAlias) {
         OpCode reason;
         String nextInCharge=null;
         NonPersistenceNotification<RoomDetailsData> notification;
@@ -215,6 +212,7 @@ public class ManagerRoomStudent extends StudentManager {
             }
             publisher.update(ram.getApiKey(alias), notification);
         }
+        return new Response<>(studentAlias.equals(nextInCharge), OpCode.Success);
     }
 
     private void saveRoomAndLog(Room room) {
@@ -245,7 +243,7 @@ public class ManagerRoomStudent extends StudentManager {
                         .getReason();
                 break;
             default:
-                log.error(String.format("room %s does not have a type", room.getRoomId()));
+//                log.error(String.format("room %s does not have a type", room.getRoomId()));
                 break;
 
         }
@@ -505,7 +503,7 @@ public class ManagerRoomStudent extends StudentManager {
             synchronized (room) {
                 if(room.clearStoryMission()) {
                     updateCorrectAnswer(room);
-                    updateRoomAndMissionInCharge(room);
+                    updateRoomAndMissionInCharge(room, ram.getAlias(apiKey));
                 }
                 return new Response<>(true,OpCode.Success);
             }

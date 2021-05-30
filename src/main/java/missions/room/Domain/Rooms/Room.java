@@ -278,4 +278,8 @@ public abstract class Room {
     }
 
     public abstract Set<String> getStudentsAlias();
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
 }

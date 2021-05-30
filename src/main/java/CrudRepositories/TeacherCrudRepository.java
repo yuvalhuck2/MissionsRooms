@@ -27,4 +27,8 @@ public interface TeacherCrudRepository extends CrudRepository<Teacher,String> {
             "join g.students s " +
             "where s.alias= :student")
     List<Teacher> findTeacherByStudent(String student);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select a from Teacher a join a.classroom c where c.className= :classroomName")
+    List<Teacher> findTeacherForWriteByClassroom(@Param("classroomName") String classroomName);
 }

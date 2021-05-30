@@ -3,7 +3,6 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 import { ActivityIndicator, Appbar, RadioButton } from "react-native-paper";
 import ListAccordion from "react-native-paper/src/components/List/ListAccordion";
 import ListAccordionGroup from "react-native-paper/src/components/List/ListAccordionGroup";
-import RadioButtonGroup from "react-native-paper/src/components/RadioButton/RadioButtonGroup";
 import { connect } from "react-redux";
 import {
   enterChatStudent,
@@ -23,6 +22,7 @@ class SolveTriviaMission extends Component {
     this.onChatButtonPress = this.onChatButtonPress.bind(this);
     this.onAnswerChanged = this.onAnswerChanged.bind(this);
     this.onButtonPress = this.onButtonPress.bind(this);
+    this.initState = this.initState.bind(this);
     this.state = {
       currentAnswers: [],
       questions: [],
@@ -30,20 +30,29 @@ class SolveTriviaMission extends Component {
     };
   }
 
-
   componentDidMount() {
+    this.initState();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.mission !== this.props.mission){
+      this.initState();
+    }
+  }
+
+  initState(){
     const { mission } = this.props;
     const triviaQuestions = Object.values(mission.triviaQuestionMap);
     const triviaAnswers = triviaQuestions.map((question, questNum) => {
       let currAnswers = [...question.answers, question.correctAnswer];
       currAnswers = currAnswers.sort((a, b) => 0.5 - Math.random());
-      let answersWithIndex = []
-      for(let i=0; i<currAnswers.length; i++){
+      let answersWithIndex = [];
+      for (let i = 0; i < currAnswers.length; i++) {
         answersWithIndex.push({
           answer: currAnswers[i],
           index: i,
           questNum,
-        })
+        });
       }
       return answersWithIndex;
     });
@@ -76,7 +85,7 @@ class SolveTriviaMission extends Component {
     const { roomId, mission, apiKey, navigation, sendTriviaForm } = this.props;
 
     const { currentAnswers } = this.state;
-    let actualAnswers = currentAnswers.map(value => value.answer);
+    let actualAnswers = currentAnswers.map((value) => value.answer);
     sendTriviaForm({
       roomId,
       mission,
@@ -96,28 +105,12 @@ class SolveTriviaMission extends Component {
     );
   }
 
-  // renderButton() {
-  //   const { loading, isInCharge } = this.props;
-
-  //   return loading ? (
-  //     this.renderSpinner()
-  //   ) : isInCharge ? (
-  //     <Button
-  //       mode="contained"
-  //       style={styles.button}
-  //       onPress={this.onButtonPress}
-  //     >
-  //       {send_answer}
-  //     </Button>
-  //   ) : null;
-  // }
-
-  renderButton(){
+  renderButton() {
     const { loading, isInCharge } = this.props;
 
     return loading ? (
       this.renderSpinner()
-    ) : (
+    ) : isInCharge ? (
       <Button
         mode="contained"
         style={styles.button}
@@ -125,8 +118,24 @@ class SolveTriviaMission extends Component {
       >
         שלח טופס
       </Button>
-    )
+    ) : null;
   }
+
+  // renderButton(){
+  //   const { loading, isInCharge } = this.props;
+
+  //   return loading ? (
+  //     this.renderSpinner()
+  //   ) : (
+  //     <Button
+  //       mode="contained"
+  //       style={styles.button}
+  //       onPress={this.onButtonPress}
+  //     >
+  //       שלח טופס
+  //     </Button>
+  //   )
+  // }
 
   renderError() {
     const { errorMessage } = this.props;
@@ -152,7 +161,11 @@ class SolveTriviaMission extends Component {
           }}
         >
           {/* <Text style={{ flex: 1 }}>{item}</Text> */}
-          <RadioButton.Item style={{ flex: 1,  }} label={item.answer} value={item} />
+          <RadioButton.Item
+            style={{ flex: 1 }}
+            label={item.answer}
+            value={item}
+          />
         </View>
       );
     };
@@ -243,7 +256,14 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  const { roomId, mission, apiKey, navigation, isInCharge } = state.solveTriviaMission;
+  const {
+    roomId,
+    mission,
+    apiKey,
+    navigation,
+    isInCharge,
+  } = state.solveTriviaMission;
+  console.log(mission);
   return { roomId, mission, apiKey, navigation, isInCharge };
 };
 

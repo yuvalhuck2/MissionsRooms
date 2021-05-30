@@ -42,6 +42,8 @@ import {
   WatchOpenAnswerSolutionScreen,
   WatchProfileScreen,
   WatchSuggestionsScreen,
+  TransferTeacherScreen,
+  TransferStudentScreen
 } from "./components/screens";
 import DeleteTriviaQuestion from "./components/screens/DeleteTriviaQuestion";
 import TeacherRoomMenuScreen from "./components/screens/TeacherRoomMenuScreen";
@@ -136,6 +138,14 @@ const App = () => {
           component={DeleteTriviaQuestion}
         />
         <Stack.Screen name="SolveTriviaMission" component={SolveTriviaMission} />
+        <Stack.Screen
+            name = 'TransferStudent'
+            component={TransferStudentScreen}
+        />
+        <Stack.Screen
+            name = 'TransferTeacher'
+            component={TransferTeacherScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

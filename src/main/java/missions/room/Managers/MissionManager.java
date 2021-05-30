@@ -99,7 +99,7 @@ public class MissionManager extends TeacherManager {
             return new Response<>(mission,OpCode.Success);
         }
         catch (Exception e){
-            log.error("wrong format mission "+ missionData.toString(), e);
+//            log.error("wrong format mission "+ missionData.toString(), e);
         }
         return new Response<>(null,OpCode.Not_Mission);
     }

@@ -20,12 +20,12 @@ public class TriviaQuestion {
     @Column(name="answer")
     private List<String> answers;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name="TriviaMissionQuestions",
-            joinColumns ={@JoinColumn(name = "missionId")},
-            inverseJoinColumns={@JoinColumn(name="id")}
-    )
-    private List<TriviaMission> triviaMissions;
+//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinTable(name="TriviaMissionQuestions",
+//            joinColumns ={@JoinColumn(name = "missionId")},
+//            inverseJoinColumns={@JoinColumn(name="id")}
+//    )
+//    private List<TriviaMission> triviaMissions;
 
     private String correctAnswer;
 
@@ -71,14 +71,6 @@ public class TriviaQuestion {
 
     public void setAnswers(List<String> answers) {
         this.answers = answers;
-    }
-
-    public List<TriviaMission> getTriviaMissions() {
-        return triviaMissions;
-    }
-
-    public void setTriviaMissions(List<TriviaMission> triviaMissions) {
-        this.triviaMissions = triviaMissions;
     }
 
     public String getCorrectAnswer() {

@@ -50,6 +50,19 @@ public class TeacherRepo {
         }
     }
 
+    @Transactional
+    public Response<List<Teacher>> findTeacherForWriteByClassroom(String classroomName){
+        try{
+            return new Response<>(teacherCrudRepository.findTeacherForWriteByClassroom(classroomName), OpCode.Success);
+        }
+        catch(LockTimeoutException e){
+            return new Response<>(null,OpCode.TimeOut);
+        }
+        catch(Exception e){
+            return new Response<>(null,OpCode.DB_Error);
+        }
+    }
+
     public Response<Teacher> findTeacherById(String alias){
         try{
             Optional<Teacher> teacherOptional=teacherCrudRepository.findById(alias);
