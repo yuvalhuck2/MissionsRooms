@@ -45,9 +45,9 @@ INSERT INTO IT (alias) VALUES ('admin') ON CONFLICT DO NOTHING;
 --
 -- INSERT INTO TEACHER (alias,group_type, classroom_class_name) VALUES('tal', 3,'2=4'), ('roni', 3, null);
 --
--- INSERT INTO MISSION(mission_id,points) VALUES ('mid1',2), ('mid2',2),('story1',2),('story2',4),('open1',1),('open_mission_id',3);
+-- INSERT INTO MISSION(mission_id,points) VALUES ('mid1',2),('m5',1), ('mid2',2),('story1',2),('story2',4),('open1',1),('open_mission_id',3), ('triv', 2);
 --
--- INSERT INTO MISSION_MISSION_TYPES(mission_mission_id,mission_types) VALUES('mid1',0), ('mid2',2),('mid1',1),('mid1',2),('story1',0),('story1',1),('story1',2),('story2',0),('story2',1),('story2',2),('open_mission_id',0),('open_mission_id',1),('open_mission_id',2),('open1',0);
+-- INSERT INTO MISSION_MISSION_TYPES(mission_mission_id,mission_types) VALUES('m5',0), ('mid1',0), ('mid2',2),('mid1',1),('mid1',2),('story1',0),('story1',1),('story1',2),('story2',0),('story2',1),('story2',2),('open_mission_id',0),('open_mission_id',1),('open_mission_id',2),('open1',0);
 --
 -- INSERT INTO OPEN_ANSWER_MISSION(question,mission_id) VALUES ('WHATS MY NAME','open1');
 --
@@ -57,13 +57,23 @@ INSERT INTO IT (alias) VALUES ('admin') ON CONFLICT DO NOTHING;
 --
 -- INSERT INTO STORY_MISSION(mission_id) VALUES('story1'),('story2');
 --
--- INSERT INTO ROOM_TEMPLATE(room_template_id,minimal_missions_to_pass,name,type) VALUES('tid1',0,'תבנית אישית',0),('tid2',0,'תבנית קבוצתית',1),('tid3',0,'תבנית כיתתית',2),('tid_story',0,'תבנית סיפור',2),('tid_open', 0, 'תבנית אישית', 0);
+-- insert into trivia_mission(pass_ratio, mission_id) values (0.1,'m5');
 --
--- INSERT INTO MISSION_TEMPLATES(room_template_id,mission_id,index) VALUES('tid1','mid2',0),('tid1','mid1',1),('tid2','mid1',0),('tid2','mid2',1),('tid3','mid1',0),('tid3','mid2',1),('tid_story','story1',0),('tid_story','story2',1),('tid_open', 'open_mission_id', 0), ('tid_open', 'mid1', 1);
+-- insert into trivia_subject(name) values ('נושא');
 --
--- INSERT INTO ROOM(room_id,bonus,count_correct_answer,current_mission,name,room_template_room_template_id,teacher_alias) VALUES('rid1',1,0,0,'אישי של ניב','tid1','tal'),('rid2',1,0,0,'קבוצתי של איי','tid2','tal'),('rid_story',1,0,0,'סיפור כיתתי','tid_story','tal'),('rid_open',1,0,0,'קבוצתי שאלה פתוחה','tid_open','tal'),('rid4',1,0,1,'אישי של רוי','tid_open','tal');
+-- insert into trivia_question(id, correct_answer, question, subject) VALUES ('1', 'a', 'שאלה', 'נושא'),('2','a','שאלה למחיקה','נושא');
 --
--- INSERT INTO STUDENT_ROOM(room_id,participant_alias) values('rid1','niv'),('rid4','roy4');
+-- insert into trivia_question_answers(trivia_question_id, answer, index) VALUES('1', 'b', 0), ('1', 'd', 1), ('1', 'c', 2), ('2', 'b', 0), ('2', 'd', 1), ('2', 'c', 2);
+--
+-- insert into trivia_mission_questions(mission_id, id) values ('m5','1');
+--
+-- INSERT INTO ROOM_TEMPLATE(room_template_id,minimal_missions_to_pass,name,type) VALUES('tid1',0,'תבנית אישית',0),('tid2',0,'תבנית קבוצתית',1),('tid3',0,'תבנית כיתתית',2),('tid_story',0,'תבנית סיפור',2),('tid_open', 0, 'תבנית אישית', 0),('rot',0,'אישית של רותם',0);
+--
+-- INSERT INTO MISSION_TEMPLATES(room_template_id,mission_id,index) VALUES('tid1','mid2',0),('tid1','mid1',1),('tid2','mid1',0),('tid2','mid2',1),('tid3','mid1',0),('tid3','mid2',1),('tid_story','story1',0),('tid_story','story2',1),('tid_open', 'open_mission_id', 0), ('tid_open', 'mid1', 1),('rot','m5',0);
+--
+-- INSERT INTO ROOM(room_id,bonus,count_correct_answer,current_mission,name,room_template_room_template_id,teacher_alias) VALUES('rid1',1,0,0,'אישי של ניב','tid1','tal'),('rid2',1,0,0,'קבוצתי של איי','tid2','tal'),('rid_story',1,0,0,'סיפור כיתתי','tid_story','tal'),('rid_open',1,0,0,'קבוצתי שאלה פתוחה','tid_open','tal'),('rid4',1,0,1,'אישי של רוי','tid_open','tal'),('rotrid',1,0,0,'אישי של רותם','rot','tal');
+--
+-- INSERT INTO STUDENT_ROOM(room_id,participant_alias) values('rid1','niv'), ('rid4','roy4'), ('rotrid','rotem');
 --
 -- INSERT INTO GROUP_ROOM(room_id,participant_group_name) values('rid_open','A2');
 --
@@ -73,4 +83,5 @@ INSERT INTO IT (alias) VALUES ('admin') ON CONFLICT DO NOTHING;
 --
 -- INSERT INTO SUGGESTION(id,suggestion) values('123','הצעה טובה מאוד');
 --
--- insert into open_answer(id, has_file, mission_id, open_answer_text, room_id) values('open_id', false, 'open_mission_id', 'text', 'rid4')
+-- insert into open_answer(id, has_file, mission_id, open_answer_text, room_id) values('open_id', false, 'open_mission_id', 'text', 'rid4');
+--
