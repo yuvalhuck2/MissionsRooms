@@ -4,7 +4,7 @@ import {
   deleteTriviaQuestionStrings,
   GeneralErrors,
 } from '../locale/locale_heb';
-import { Invalid_Trivia_Question, Exist_In_Mission } from './OpCodeTypes';
+import { Invalid_Trivia_Question, Exist_In_Mission, Success } from './OpCodeTypes';
 import {
   DELETE_QUESTION,
   DELETE_QUESTION_SUCCESS,
