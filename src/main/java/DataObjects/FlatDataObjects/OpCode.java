@@ -49,7 +49,7 @@ public enum OpCode implements Serializable {
     MISSION_NOT_IN_OPEN_ANS,
     APPROVED_CLOSE, APPROVED_OPEN, REJECT_CLOSE, REJECT_OPEN,
     WrongFileExt, InvalidTeacherMail, InvalidStudentMail, InvalidClassMail, InvalidClassName, ClassNotFound,
-    ROOM_CLOSED, ROOM_SAVED,Not_Exist_ClassGroup;
+    ROOM_CLOSED, ROOM_SAVED,Not_Exist_ClassGroup, Trivia_Subject_Not_Exists, Exist_In_Mission;
 
 
 

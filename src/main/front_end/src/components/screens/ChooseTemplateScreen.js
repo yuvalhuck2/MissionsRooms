@@ -9,7 +9,7 @@ import { theme } from '../../core/theme';
 import Button from '../common/Button';
 import Header from '../common/Header';
 import TextInput from '../common/TextInput';
-import { DETERMINISTIC_NAME, STORY_NAME } from '../../actions/types'; 
+import { DETERMINISTIC_NAME, STORY_NAME, OPEN_QUESTION_NAME, TRIVIA_NAME } from '../../actions/types'; 
 
 const {
     header,
@@ -28,6 +28,8 @@ const {
     deterministic_name,
     question,
     story_description,
+    open_question_name,
+    trivia_question_name,
   } = ChooseMissionsTemplateStrings;
 
 class ChooseTemplatesForm extends Component{
@@ -100,6 +102,10 @@ class ChooseTemplatesForm extends Component{
             return deterministic_name+'\n\t\t'+question+mission.question[0]
           case STORY_NAME:
             return story_description
+          case OPEN_QUESTION_NAME:
+            return open_question_name+'\n'+question+mission.question[0];
+          case TRIVIA_NAME:
+            return trivia_question_name;
           default:
               return ""
         }

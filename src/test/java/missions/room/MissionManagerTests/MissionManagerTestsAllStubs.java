@@ -2,6 +2,8 @@ package missions.room.MissionManagerTests;
 
 import CrudRepositories.MissionCrudRepository;
 import CrudRepositories.TeacherCrudRepository;
+import CrudRepositories.TriviaQuestionRepository;
+import CrudRepositories.TriviaSubjectRepository;
 import Data.Data;
 import Data.DataGenerator;
 import DataObjects.FlatDataObjects.MissionData;
@@ -13,6 +15,8 @@ import RepositoryMocks.MissionRepository.MissionCrudRepositoryMockExeptionSave;
 import RepositoryMocks.MissionRepository.MissionCrudRepositoryMockNoMissions;
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMock;
 import RepositoryMocks.TeacherRepository.TeacherCrudRepositoryMockNotExist;
+import missions.room.Domain.TriviaQuestion;
+import missions.room.Domain.TriviaSubject;
 import missions.room.Domain.missions.Mission;
 import missions.room.Domain.Ram;
 import DomainMocks.MockRam;
@@ -22,12 +26,14 @@ import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import missions.room.Domain.missions.KnownAnswerMission;
+import missions.room.Domain.missions.TriviaMission;
 import missions.room.Managers.MissionManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -40,6 +46,12 @@ public class MissionManagerTestsAllStubs {
 
     @Autowired
     protected MissionCrudRepository missionCrudRepository;
+
+    @Autowired
+    protected TriviaSubjectRepository triviaSubjectRepository;
+
+    @Autowired
+    protected TriviaQuestionRepository triviaQuestionRepository;
 
     @Autowired
     protected MissionManager missionManager;
@@ -71,6 +83,7 @@ public class MissionManagerTestsAllStubs {
         missionString=gson.toJson(new MissionMock(),Mission.class);
         missionManager =new MissionManager(ram,teacherCrudRepository,missionCrudRepository);
     }
+
 
     void setUpAddMission(){
         setUpMocks();

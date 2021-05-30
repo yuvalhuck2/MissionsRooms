@@ -1,7 +1,5 @@
 package DataObjects.FlatDataObjects;
 
-import DataObjects.FlatDataObjects.PointsData;
-
 import java.util.List;
 
 public class RecordTableData {

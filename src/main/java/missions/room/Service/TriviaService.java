@@ -1,7 +1,7 @@
 package missions.room.Service;
 
-import DataObjects.FlatDataObjects.Response;
 import DataObjects.APIObjects.TriviaQuestionData;
+import DataObjects.FlatDataObjects.Response;
 import missions.room.Managers.TriviaManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +18,8 @@ public class TriviaService {
      * @return if the subject was added successfully
      */
     public Response<Boolean> createTriviaSubject(String apiKey, String subject){
-
         return triviaManager.createTriviaSubject(apiKey, subject);
     }
-
 
     /**
      * req 4.7 - add trivia question
@@ -32,5 +30,17 @@ public class TriviaService {
     public Response<Boolean> addTriviaQuestion(String apiKey, TriviaQuestionData question){
 
         return triviaManager.addTriviaQuestion(apiKey, question);
+    }
+
+    public Response<Boolean> deleteTriviaQuestion(String apiKey, String id){
+        return triviaManager.deleteTriviaQuestion(apiKey, id);
+    }
+
+    public Response<?> getTriviaQuestions(String apiKey) {
+        return triviaManager.getTriviaQuestions(apiKey);
+    }
+
+    public Response<?> getTriviaSubjects(String apiKey) {
+        return triviaManager.getTriviaSubjects(apiKey);
     }
 }

@@ -318,7 +318,6 @@ public class ManagerRoomStudentAllStubs {
     public void testAnswerDeterministicHappyTest(){
         Response<Boolean> response=managerRoomStudentWithMock.answerDeterministicQuestion(studentApiKey,dataGenerator.getRoom(Data.Valid_Student).getRoomId(),true);
         assertEquals(response.getReason(),OpCode.Success);
-        assertEquals(true,response.getValue());
         Notification notification=((PublisherMock)mockPublisher).getNotifications(studentApiKey).get(0);
         assertEquals(notification.getReason(),Finish_Missions_In_Room);
         assertNull(notification.getValue());
@@ -340,7 +339,6 @@ public class ManagerRoomStudentAllStubs {
                         .getRoomId(),
                 false);
         assertEquals(response.getReason(),OpCode.Success);
-        assertEquals(true,response.getValue());
     }
 
     @Test
@@ -402,7 +400,6 @@ public class ManagerRoomStudentAllStubs {
         room.addOpenAnswer(new OpenAnswer());
         Response<Boolean> response = managerRoomStudentWithMock.answerDeterministicQuestion(studentApiKey,room.getRoomId(),false);
         assertEquals(response.getReason(),OpCode.Success);
-        assertEquals(true,response.getValue());
         Notification notification=((PublisherMock)mockPublisher).getNotifications(studentApiKey).get(0);
         assertEquals(notification.getReason(), Has_Unapproved_Solutions);
         assertNull(notification.getValue());
@@ -929,7 +926,6 @@ public class ManagerRoomStudentAllStubs {
         SolutionData solutionData = new SolutionData(dataGenerator.getMission(Data.VALID_OPEN_ANS).getMissionId(), dataGenerator.getRoom(Data.VALID_OPEN_ANS).getRoomId(), "ans");
         Response<Boolean> res = managerRoomStudentWithMock.answerOpenQuestionMission(studentApiKey, solutionData, null);
         assertEquals(res.getReason(),OpCode.Success);
-        assertTrue(res.getValue());
     }
 
     @Test void testAnswerOpenQuestionWithFileSuccess(){
@@ -938,7 +934,6 @@ public class ManagerRoomStudentAllStubs {
         SolutionData solutionData = new SolutionData(dataGenerator.getMission(Data.VALID_OPEN_ANS).getMissionId(), dataGenerator.getRoom(Data.VALID_OPEN_ANS).getRoomId(), "ans");
         Response<Boolean> res = managerRoomStudentWithMock.answerOpenQuestionMission(studentApiKey, solutionData, mockFile);
         assertEquals(res.getReason(),OpCode.Success);
-        assertTrue(res.getValue());
     }
 
     @Test

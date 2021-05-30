@@ -170,14 +170,16 @@ class PointsTableForm extends Component{
 
       renderDataTable(){
         return(
-            <DataTable style = {styles.container}>
+          <View>
             <Header>{header}</Header>
+            <DataTable style = {styles.container}>
             {this.renderTextInput()}
             {this.renderTabs()}
             {this.renderDataTableHeadlines()}
             {this.renderPointsTable()}
             {this.renderError()}
             </DataTable>
+          </View>
             )
     }
 

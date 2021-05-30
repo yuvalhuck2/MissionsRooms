@@ -1,11 +1,11 @@
 package missions.room.AcceptanceTests.AcceptanceTests;
 
-import com.sun.deploy.cache.BaseLocalApplicationProperties;
+//import com.sun.deploy.cache.BaseLocalApplicationProperties;
 import missions.room.AcceptanceTests.AcceptanceTestDataObjects.*;
 import missions.room.AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsProxyBridge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.plugin.javascript.navig.Array;
+//import sun.plugin.javascript.navig.Array;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

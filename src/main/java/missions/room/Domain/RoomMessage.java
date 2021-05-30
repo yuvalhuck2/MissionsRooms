@@ -1,6 +1,7 @@
 package missions.room.Domain;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class RoomMessage {

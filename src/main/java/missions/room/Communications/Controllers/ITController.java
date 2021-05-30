@@ -7,7 +7,10 @@ import DataObjects.FlatDataObjects.Response;
 import DataObjects.FlatDataObjects.UserProfileData;
 import missions.room.Service.ITService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController // This means that this class is a Controller
 @RequestMapping(path="/it")

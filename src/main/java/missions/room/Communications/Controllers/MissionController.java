@@ -7,7 +7,6 @@ import DataObjects.APIObjects.RoomOpenAnswerData;
 import DataObjects.FlatDataObjects.MissionData;
 import DataObjects.FlatDataObjects.OpCode;
 import DataObjects.FlatDataObjects.Response;
-import Utils.Utils;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Service.MissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.util.List;
 
 @RestController // This means that this class is a Controller

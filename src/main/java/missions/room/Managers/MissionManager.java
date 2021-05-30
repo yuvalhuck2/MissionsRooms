@@ -3,10 +3,10 @@ package missions.room.Managers;
 import CrudRepositories.MissionCrudRepository;
 import CrudRepositories.TeacherCrudRepository;
 import DataObjects.APIObjects.RoomOpenAnswerData;
+import DataObjects.APIObjects.SolutionData;
 import DataObjects.FlatDataObjects.MissionData;
 import DataObjects.FlatDataObjects.OpCode;
 import DataObjects.FlatDataObjects.Response;
-import DataObjects.APIObjects.SolutionData;
 import ExternalSystems.UniqueStringGenerator;
 import Utils.InterfaceAdapter;
 import Utils.Utils;
@@ -14,12 +14,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Domain.OpenAnswer;
+import missions.room.Domain.Ram;
 import missions.room.Domain.RoomOpenAnswersView;
 import missions.room.Domain.RoomTemplate;
 import missions.room.Domain.Rooms.Room;
-import missions.room.Domain.missions.Mission;
-import missions.room.Domain.Ram;
 import missions.room.Domain.Users.Teacher;
+import missions.room.Domain.missions.Mission;
 import missions.room.Domain.missions.OpenAnswerMission;
 import missions.room.Repo.MissionRepo;
 import missions.room.Repo.OpenAnswerRepo;
@@ -99,7 +99,7 @@ public class MissionManager extends TeacherManager {
             return new Response<>(mission,OpCode.Success);
         }
         catch (Exception e){
-            log.error("wrong format mission "+ missionData.toString(), e);
+//            log.error("wrong format mission "+ missionData.toString(), e);
         }
         return new Response<>(null,OpCode.Not_Mission);
     }

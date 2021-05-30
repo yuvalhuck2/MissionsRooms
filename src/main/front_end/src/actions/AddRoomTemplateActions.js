@@ -34,6 +34,8 @@ import {
   DETERMINISTIC_NAME,
   STORY_NAME,
   FILTER_MISSIONS,
+  OPEN_QUESTION_NAME,
+  TRIVIA_NAME,
 } from './types';
 
 const {
@@ -233,6 +235,10 @@ export const searchMission = ({notFilteredMission, deterministic, trivia, story,
         return story;
       case DETERMINISTIC_NAME:
         return deterministic;
+      case OPEN_QUESTION_NAME:
+        return openQuestion;
+      case TRIVIA_NAME:
+        return trivia;
       default:
         return false
     }

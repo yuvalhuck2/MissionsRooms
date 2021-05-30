@@ -1,13 +1,19 @@
 package missions.room.Managers;
 
-import CrudRepositories.*;
+import CrudRepositories.ClassroomRepository;
+import CrudRepositories.GroupRepository;
+import CrudRepositories.RoomCrudRepository;
+import CrudRepositories.StudentCrudRepository;
 import DataObjects.APIObjects.SolutionData;
 import DataObjects.FlatDataObjects.*;
 import lombok.extern.apachecommons.CommonsLog;
 import missions.room.Communications.Publisher.Publisher;
 import missions.room.Communications.Publisher.SinglePublisher;
-import missions.room.Domain.*;
+import missions.room.Domain.ClassGroup;
+import missions.room.Domain.Classroom;
 import missions.room.Domain.Notifications.NonPersistenceNotification;
+import missions.room.Domain.OpenAnswer;
+import missions.room.Domain.Ram;
 import missions.room.Domain.Rooms.ClassroomRoom;
 import missions.room.Domain.Rooms.GroupRoom;
 import missions.room.Domain.Rooms.Room;
@@ -15,7 +21,10 @@ import missions.room.Domain.Rooms.StudentRoom;
 import missions.room.Domain.Users.Student;
 import missions.room.Domain.missions.Mission;
 import missions.room.Domain.missions.StoryMission;
-import missions.room.Repo.*;
+import missions.room.Repo.ClassGroupRepo;
+import missions.room.Repo.ClassroomRepo;
+import missions.room.Repo.OpenAnswerRepo;
+import missions.room.Repo.RoomRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -116,9 +125,8 @@ public class ManagerRoomStudent extends StudentManager {
                     return new Response<>(false, openAnsSaveRes != null ? openAnsSaveRes.getReason() : OpCode.DB_Error);
                 }
                 synchronized (room) {
-                    updateRoomAndMissionInCharge(room);
+                    return updateRoomAndMissionInCharge(room, ram.getAlias(apiKey));
                 }
-                return openAnsSaveRes;
 
             } catch (Exception ex) {
                 return new Response<>(false, OpCode.FAILED_READ_FILE_BYTES);
@@ -136,9 +144,24 @@ public class ManagerRoomStudent extends StudentManager {
      * @param answer - answer for the question
      * @return if the answer was correct
      */
-
     @Transactional
     public Response<Boolean> answerDeterministicQuestion(String apiKey, String roomId, boolean answer){
+        return checkBooleanMissionAnswer(apiKey, roomId, answer);
+    }
+
+    /**
+     * req 3.6.2.5 - answer trivia questions mission
+     * @param apiKey - authentication object
+     * @param roomId - room id
+     * @param answer - indicates if the mission was solved successfully
+     * @return true if the mission solved correctly and updated in the server
+     */
+    @Transactional
+    public Response<Boolean> answerTriviaMission(String apiKey, String roomId, boolean answer){
+        return checkBooleanMissionAnswer(apiKey, roomId, answer);
+    }
+
+    private Response<Boolean> checkBooleanMissionAnswer(String apiKey, String roomId, boolean answer) {
         Response<Student> checkStudent = checkStudent(apiKey);
         if (checkStudent.getReason() != OpCode.Success) {
             return new Response<>(null, checkStudent.getReason());
@@ -161,15 +184,12 @@ public class ManagerRoomStudent extends StudentManager {
                     return response;
                 }
             }
-            updateRoomAndMissionInCharge(room);
+            return updateRoomAndMissionInCharge(room, checkStudent.getValue().getAlias());
         }
-
-        return new Response<>(true, OpCode.Success);
-
     }
 
 
-    private void updateRoomAndMissionInCharge(Room room) {
+    private Response<Boolean> updateRoomAndMissionInCharge(Room room, String studentAlias) {
         OpCode reason;
         String nextInCharge=null;
         NonPersistenceNotification<RoomDetailsData> notification;
@@ -201,6 +221,7 @@ public class ManagerRoomStudent extends StudentManager {
             }
             publisher.update(ram.getApiKey(alias), notification);
         }
+        return new Response<>(studentAlias.equals(nextInCharge), OpCode.Success);
     }
 
     private void saveRoomAndLog(Room room) {
@@ -231,7 +252,7 @@ public class ManagerRoomStudent extends StudentManager {
                         .getReason();
                 break;
             default:
-                log.error(String.format("room %s does not have a type", room.getRoomId()));
+//                log.error(String.format("room %s does not have a type", room.getRoomId()));
                 break;
 
         }
@@ -491,7 +512,7 @@ public class ManagerRoomStudent extends StudentManager {
             synchronized (room) {
                 if(room.clearStoryMission()) {
                     updateCorrectAnswer(room);
-                    updateRoomAndMissionInCharge(room);
+                    updateRoomAndMissionInCharge(room, ram.getAlias(apiKey));
                 }
                 return new Response<>(true,OpCode.Success);
             }

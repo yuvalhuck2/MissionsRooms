@@ -9,7 +9,10 @@ import missions.room.Domain.ClassGroup;
 import missions.room.Domain.Classroom;
 import org.springframework.beans.factory.annotation.Configurable;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
 import javax.transaction.Transactional;
 
 

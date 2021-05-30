@@ -1,7 +1,7 @@
 package missions.room.Domain.Users;
 
-import DataObjects.FlatDataObjects.OpCode;
 import DataObjects.APIObjects.StudentData;
+import DataObjects.FlatDataObjects.OpCode;
 import DataObjects.FlatDataObjects.UserProfileData;
 
 import javax.persistence.Entity;

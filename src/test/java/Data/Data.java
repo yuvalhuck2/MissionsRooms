@@ -28,5 +28,5 @@ public enum Data {
     VALID_OPEN_ANS, EXIST_IT, BOTH_GROUP, NULL_CLASSROOM,
    VALID_WITHOUT_CLASSROOM,
      Empty_Students2,
-    VALID_OPEN_ANS2,Valid_Group_A,Valid_Group_B;
+    VALID_OPEN_ANS2,Valid_Group_A,Valid_Group_B, TRIVIA_VALID;
 }

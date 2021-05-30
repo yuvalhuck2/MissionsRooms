@@ -1,8 +1,8 @@
 package missions.room.Service;
 
+import DataObjects.APIObjects.SolutionData;
 import DataObjects.FlatDataObjects.Response;
 import DataObjects.FlatDataObjects.RoomDetailsData;
-import DataObjects.APIObjects.SolutionData;
 import missions.room.Managers.ManagerRoomStudent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,6 +63,10 @@ public class StudentRoomService {
      */
     public Response<Boolean> answerStoryMission(String apiKey,String roomId, String sentence){
         return managerRoomStudent.answerStoryMission(apiKey, roomId, sentence);
+    }
+
+    public Response<Boolean> answerTriviaMission(String apiKey, String roomId, Boolean answer){
+        return managerRoomStudent.answerTriviaMission(apiKey, roomId, answer);
     }
 
     /**

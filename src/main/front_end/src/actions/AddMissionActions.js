@@ -1,32 +1,37 @@
 import {
+  ADD_MISSION_POINTS_CHANGED,
   ADD_MISSON,
   ANSWER_CHANGED,
+  CHOOSE_TRIVIA_QUESTION,
   DETERMINISTIC,
+  ENTER_ADD_MISSION,
+  GOT_TRIVIA_QUESTIONS,
   LOGIN_TEACHER,
   OPEN_QUESTION,
+  PASS_RATIO_CHANGED,
   QUESTION_CHANGED,
+  REMOVE_TRIVIA_QUESTION,
+  TRIVIA,
   TYPES_CHANGED,
   UPDATE_ERROR_MISSION,
-  ADD_MISSION_POINTS_CHANGED,
-  ENTER_ADD_MISSION,
-} from '../actions/types';
-import API from '../api/API';
-import * as APIPaths from '../api/APIPaths';
+} from "../actions/types";
+import API from "../api/API";
+import * as APIPaths from "../api/APIPaths";
 import {
   AddDeterministicMissionErrors,
   AddDeterministicMissionSuccess,
   addMissionErrors,
   GeneralErrors,
-} from '../locale/locale_heb';
-import * as NavPaths from '../navigation/NavPaths';
+} from "../locale/locale_heb";
+import * as NavPaths from "../navigation/NavPaths";
 import {
   Not_Exist,
   Not_Mission,
   Null_Error,
   Success,
-  Wrong_Type,
   Wrong_Key,
-} from './OpCodeTypes';
+  Wrong_Type,
+} from "./OpCodeTypes";
 
 const {
   question_empty,
@@ -43,7 +48,11 @@ const {
   teacher_not_exists_error,
 } = GeneralErrors;
 
-const { mission_details_error } = addMissionErrors;
+const { 
+  mission_details_error,
+  invalidPassRatio,
+  selectTriviaQuestionsError,
+} = addMissionErrors;
 
 export const questionChanged = (text) => {
   return {
@@ -66,22 +75,86 @@ export const typesChanged = (list) => {
   };
 };
 
+export const passRatioChanged = (ratio) => {
+  return {
+    type: PASS_RATIO_CHANGED,
+    payload: ratio,
+  };
+};
+
+export const chooseTriviaQuestion = (question) => {
+  return {
+    type: CHOOSE_TRIVIA_QUESTION,
+    payload: question,
+  };
+};
+
+export const removeTriviaQuestion = (question) => {
+  return {
+    type: REMOVE_TRIVIA_QUESTION,
+    payload: question,
+  };
+};
+
 export const navigateToMission = (type, navigation, points) => {
   return async (dispatch) => {
-    if(points.trim()=="" || parseInt(points) <= 0){
-      return dispatch({type: UPDATE_ERROR_MISSION, payload: points_must_be_positive})
+    if (points.trim() == "" || parseInt(points) <= 0) {
+      return dispatch({
+        type: UPDATE_ERROR_MISSION,
+        payload: points_must_be_positive,
+      });
     }
-    dispatch({type: ENTER_ADD_MISSION})
+    dispatch({ type: ENTER_ADD_MISSION });
 
     switch (type) {
       case DETERMINISTIC:
         return navigation.navigate(NavPaths.AddDeterministicMission);
       case OPEN_QUESTION:
         return navigation.navigate(NavPaths.AddOpenQuestionMission);
-
+      case TRIVIA:
+        return navigation.navigate(NavPaths.addTriviaMission);
     }
   };
 };
+
+export const getTriviaQuestions = ({ apiKey }) => {
+  return async (dispatch) => {
+    try {
+      const res = await API.post(
+        `${APIPaths.getTriviaQuestions}?apiKey=${apiKey}`
+      );
+      res
+        ? checkGetCurrentQuestionsResponse(res.data, dispatch)
+        : dispatch({ type: "" });
+    } catch (err) {
+      return dispatch({ type: "" });
+    }
+  };
+};
+
+const checkGetCurrentQuestionsResponse = (data, dispatch) => {
+  const { reason, value } = data;
+  switch (reason) {
+    case Success:
+      return dispatch({ type: GOT_TRIVIA_QUESTIONS, payload: value });
+    default:
+      return dispatch({ type: "" });
+  }
+};
+
+const validateTriviaMission = (triviaMissionData, dispatch) => {
+  const { passRatio, questions } = triviaMissionData;
+  const parsedPassRatio = parseInt(passRatio);
+  if(isNaN(parsedPassRatio) || parsedPassRatio < 0 || parsedPassRatio > 1){
+    dispatch({type: UPDATE_ERROR_MISSION, payload: invalidPassRatio})
+    return false;
+  }
+  if (Object.keys(questions).length === 0){
+    dispatch({ type: UPDATE_ERROR_MISSION, payload: selectTriviaQuestionsError});
+    return false;
+  }
+  return true;
+}
 
 export const addMission = ({
   apiKey,
@@ -91,24 +164,54 @@ export const addMission = ({
   points,
   question = undefined,
   realAnswer = undefined,
+  passRatio = undefined,
+  triviaQuestions = undefined,
 }) => {
   return async (dispatch) => {
-    if(points.trim()=="" || parseInt(points) <= 0){
-      return dispatch({type: UPDATE_ERROR_MISSION, payload: points_must_be_positive})
+    if (points.trim() == "" || parseInt(points) <= 0) {
+      return dispatch({
+        type: UPDATE_ERROR_MISSION,
+        payload: points_must_be_positive,
+      });
     }
-    if (question != undefined && question.trim() === '') {
+    if (question != undefined && question.trim() === "") {
       dispatch({ type: UPDATE_ERROR_MISSION, payload: question_empty });
-    } else if ( realAnswer != undefined && realAnswer.trim() === '') {
+    } else if (realAnswer != undefined && realAnswer.trim() === "") {
       dispatch({ type: UPDATE_ERROR_MISSION, payload: answer_empty });
     } else if (missionTypes.length == 0) {
       dispatch({ type: UPDATE_ERROR_MISSION, payload: types_empty });
     } else {
       try {
         dispatch({ type: ADD_MISSON });
-        missionData = JSON.stringify({
-          CLASSNAME: className,
-          DATA: { question, realAnswer, missionTypes, points },
-        });
+        let missionData;
+        let DATA;
+        let validTriviaMission = true;
+        if (className != TRIVIA) {
+          DATA = { question, realAnswer, missionTypes, points }
+          missionData = JSON.stringify({
+            CLASSNAME: className,
+            DATA,
+          });
+        } else {
+          let triviaMap = {};
+          let updatedTriviaQuestions = triviaQuestions.map((q) => {
+            return { ...q, subject: { name: q.subject } };
+          });
+          updatedTriviaQuestions.forEach((q) => (triviaMap[q.id] = q));
+          let DATA = {
+            passRatio,
+            questions: triviaMap,
+            missionTypes,
+            points,
+          }
+          validTriviaMission = validateTriviaMission(DATA, dispatch);
+          missionData = JSON.stringify({
+            CLASSNAME: className,
+            DATA,
+          });
+        }
+        console.log(missionData);
+        if (validTriviaMission) {
         const res = await API.post(APIPaths.addMission, {
           apiKey,
           missionData,
@@ -116,14 +219,13 @@ export const addMission = ({
         res
           ? checkAddMissionResponse(res.data, dispatch, navigation, apiKey)
           : dispatch({ type: UPDATE_ERROR_MISSION, payload: server_error });
-      } catch (err) {
+      }} catch (err) {
         console.log(err);
         dispatch({ type: UPDATE_ERROR_MISSION, payload: server_error });
       }
     }
   };
 };
-
 
 export const addOpenMission = ({
   apiKey,
@@ -132,7 +234,7 @@ export const addOpenMission = ({
   navigation,
 }) => {
   return async (dispatch) => {
-    if (question.trim() === '') {
+    if (question.trim() === "") {
       dispatch({ type: UPDATE_ERROR_MISSION, payload: question_empty });
     } else if (missionTypes.length == 0) {
       dispatch({ type: UPDATE_ERROR_MISSION, payload: types_empty });

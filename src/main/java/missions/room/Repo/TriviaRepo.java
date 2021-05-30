@@ -6,7 +6,9 @@ import DataObjects.FlatDataObjects.OpCode;
 import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.TriviaQuestion;
 import missions.room.Domain.TriviaSubject;
+import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +24,7 @@ public class TriviaRepo {
 
     public OpCode addTriviaSubject(TriviaSubject triviaSubject) {
         try{
-            boolean isSubjectExist = triviaSubjectRepository.existsById(triviaSubject.getName());
+            boolean isSubjectExist = isSubjectExist(triviaSubject.getName());
             if(isSubjectExist){
                 return OpCode.Trivia_Subject_Already_Exists;
             }
@@ -46,12 +48,43 @@ public class TriviaRepo {
         }
     }
 
+    public OpCode deleteTriviaQuestion(String id) {
+        try{
+            triviaQuestionRepository.deleteById(id);
+            return OpCode.Success;
+        }
+        catch(DataIntegrityViolationException e){
+            return OpCode.Exist_In_Mission;
+        }
+        catch(Exception e){
+            return OpCode.DB_Error;
+        }
+    }
+
     public Response<List<TriviaQuestion>> getAllQuestionsBySubject(String subjectName) {
         try{
             List<TriviaQuestion> questions = triviaQuestionRepository.findBySubjectName(subjectName);
             return new Response<>(questions, OpCode.Success);
         } catch(Exception e) {
-            return new Response(null, OpCode.DB_Error);
+            return new Response<>(null, OpCode.DB_Error);
+        }
+    }
+
+    public Response<List<TriviaQuestion>> getTriviaQuestions() {
+        try{
+            List<TriviaQuestion> questions = Lists.newArrayList(triviaQuestionRepository.findAll());
+            return new Response<>(questions, OpCode.Success);
+        } catch(Exception e) {
+            return new Response<>(null, OpCode.DB_Error);
+        }
+    }
+
+    public Response<List<TriviaSubject>> getTriviaSubjects(){
+        try{
+            List<TriviaSubject> subjects = Lists.newArrayList(triviaSubjectRepository.findAll());
+            return new Response<>(subjects, OpCode.Success);
+        } catch (Exception e){
+            return new Response<>(null, OpCode.DB_Error);
         }
     }
 }

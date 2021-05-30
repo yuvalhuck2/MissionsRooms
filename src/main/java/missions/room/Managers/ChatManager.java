@@ -11,7 +11,8 @@ import missions.room.Domain.Notifications.NonPersistenceNotification;
 import missions.room.Domain.Ram;
 import missions.room.Domain.Rooms.Room;
 import missions.room.Domain.Users.SchoolUser;
-import missions.room.Repo.*;
+import missions.room.Repo.RoomRepo;
+import missions.room.Repo.SchoolUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

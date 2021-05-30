@@ -1,8 +1,10 @@
 package missions.room.TriviaManagerTests;
 
 import Data.Data;
+import DataObjects.APIObjects.TriviaQuestionData;
 import missions.room.Domain.Ram;
 import missions.room.Managers.TeacherManager;
+import org.junit.jupiter.api.AfterEach;
 
 import java.lang.reflect.Field;
 
@@ -11,11 +13,11 @@ import static Data.DataConstants.WRONG_TEACHER_NAME;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class TriviaManagerTestsRealRam extends TriviaManagerTestsAllStubs{
-
+    private Ram realRam;
     @Override
-    protected void initMocks(){
-        Ram realRam=new Ram();
-        super.initMocks();
+    protected void initMocks(TriviaQuestionData triviaQuestion){
+        this.realRam = new Ram();
+        super.initMocks(triviaQuestion);
         try {
             Field managerRam = TeacherManager.class.getDeclaredField("ram");
             managerRam.setAccessible(true);
@@ -34,5 +36,9 @@ public class TriviaManagerTestsRealRam extends TriviaManagerTestsAllStubs{
                 ,WRONG_USER_NAME);
         realRam.addApi(NULL_TEACHER_KEY
                 ,WRONG_TEACHER_NAME);
+    }
+    @AfterEach
+    public void clearRam(){
+        realRam.clearRam();
     }
 }

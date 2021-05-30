@@ -1,11 +1,12 @@
-import axios from 'axios'
-export const baseURL = "http://192.168.1.39:8080"
-//export const baseURL = "http:///192.168.14.55:8080"
+import axios from 'axios';
+//export const baseURL = "http://132.72.232.60:8080"
+//export const baseURL = "http://132.73.214.238:8080"
+export const baseURL = 'http://192.168.1.12:8080';
 export default axios.create({
-    baseURL: baseURL,
-  });
+  baseURL: baseURL,
+});
 
-  // THIS IS FOR CHECKING DNS ADDRESS WHEN RUNNING EXPO ON PHYSICAL DEVICE
+// THIS IS FOR CHECKING DNS ADDRESS WHEN RUNNING EXPO ON PHYSICAL DEVICE
 //    import Constants from 'expo-constants'
 // const { manifest } = Constants;
 

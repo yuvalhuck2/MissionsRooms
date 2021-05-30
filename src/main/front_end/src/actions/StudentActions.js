@@ -1,28 +1,63 @@
 import {
-    GET_STUDENT_ROOMS,
-    LOGIN_STUDENT,
-    UPDATE_ERROR_SOLVE_ROOM,
-    Student_Not_Exist_In_Class,
-    Student_Not_Exist_In_Group,
-    Wrong_Mission, UPDATE_ERROR,
-    SUGGESTION_CHANGED, ADD_SUGGESTION,
-    CLEAR_STATE,
-    UPDATE_ERROR_SOLVE_DETERMINISTIC,
-    STUDENT_DIALOG,
-    UPDATE_ERROR_WATCH_PROFILE,
-    UPDATE_ALL_USER_PROFILES,
-    UPDATE_ERROR_WATCH_MESSAGES,
-    UPDATE_ALL_MESSAGES,
-    RESET_POINTS_TABLE,
-    UPDATE_ERROR_POINTS_TABLE,
-    INIT_POINTS_TABLE,
-    UPDATE_ERROR_ADD_SUGGESTION, PASS_TO_ROOM_MENU, ENTER_CHAT_ROOM,ENTER_CHAT_ROOM_STUDENT
+  ADD_SUGGESTION, GET_STUDENT_ROOMS,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  INIT_POINTS_TABLE, LOGIN_STUDENT,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  LOGIN_TEACHER, RESET_POINTS_TABLE, STUDENT_DIALOG, Student_Not_Exist_In_Class,
+  Student_Not_Exist_In_Group,
+
+  SUGGESTION_CHANGED,
+
+
+
+
+
+
+  UPDATE_ALL_MESSAGES, UPDATE_ALL_USER_PROFILES,
+
+
+
+
+
+  UPDATE_ERROR_ADD_SUGGESTION, UPDATE_ERROR_POINTS_TABLE, UPDATE_ERROR_SOLVE_DETERMINISTIC,
+
+
+
+  UPDATE_ERROR_WATCH_MESSAGES, UPDATE_ERROR_WATCH_PROFILE, Wrong_Mission
 } from '../actions/types';
 import API from '../api/API';
 import * as APIPaths from '../api/APIPaths';
-import { GeneralErrors, passToMyRoomsErrors, addSuggestionErrors } from '../locale/locale_heb';
+import { addSuggestionErrors, GeneralErrors, passToMyRoomsErrors } from '../locale/locale_heb';
 import * as NavPaths from '../navigation/NavPaths';
-import { Success, Wrong_Key,Not_Exist, Wrong_Suggestion} from './OpCodeTypes';
+import { Not_Exist, Success, Wrong_Key, Wrong_Suggestion } from './OpCodeTypes';
 
 const { server_error, wrong_key_error, } = GeneralErrors;
 
@@ -65,6 +100,8 @@ const checkGetStudentRoomsResponse = ({
   navigation,
   rooms,
 }) => {
+  console.log("rooms");
+  console.log(data);
   const { reason, value } = data;
   switch (reason) {
     case Wrong_Key:
@@ -186,6 +223,13 @@ export const passToAddSuggestion = ({ navigation, apiKey}) => {
     };
 };
 
+
+export const passToTriviaManagement = ({navigation, apiKey}) => {
+  return async (dispatch) => {
+    dispatch({ type: LOGIN_TEACHER, payload: apiKey  });
+    return navigation.navigate(NavPaths.triviaManagement);
+};
+}
 
 export const addSuggestion = ({navigation, apiKey,suggestion})=>{
   return async (dispatch)=>{

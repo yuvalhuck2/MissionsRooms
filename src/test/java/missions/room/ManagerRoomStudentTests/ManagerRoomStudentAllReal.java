@@ -262,7 +262,6 @@ public class ManagerRoomStudentAllReal extends ManagerRoomStudentRealRamRealClas
         SolutionData solutionData = new SolutionData(dataGenerator.getMission(Data.VALID_OPEN_ANS).getMissionId(), dataGenerator.getRoom(Data.VALID_OPEN_ANS).getRoomId(), "ans");
         Response<Boolean> res = managerRoomStudentWithMock.answerOpenQuestionMission(studentApiKey, solutionData, mockFile);
         assertEquals(res.getReason(), OpCode.Success);
-        assertTrue(res.getValue());
         assertTrue(checkOpenAnswerFileExist(dataGenerator.getRoom(Data.VALID_OPEN_ANS).getRoomId(), dataGenerator.getMission(Data.VALID_OPEN_ANS).getMissionId(), fileName));
     }
 

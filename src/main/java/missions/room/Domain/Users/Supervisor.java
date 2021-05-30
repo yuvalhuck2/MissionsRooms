@@ -1,8 +1,8 @@
 package missions.room.Domain.Users;
 
+import DataObjects.APIObjects.TeacherData;
 import DataObjects.FlatDataObjects.GroupType;
 import DataObjects.FlatDataObjects.OpCode;
-import DataObjects.APIObjects.TeacherData;
 import missions.room.Domain.Classroom;
 
 import javax.persistence.Entity;

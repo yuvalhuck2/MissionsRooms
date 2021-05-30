@@ -1,6 +1,5 @@
 package missions.room.Domain;
 
-import missions.room.Domain.missions.TriviaMission;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -20,17 +19,17 @@ public class TriviaQuestion {
     @Column(name="answer")
     private List<String> answers;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name="TriviaMissionQuestions",
-            joinColumns ={@JoinColumn(name = "missionId")},
-            inverseJoinColumns={@JoinColumn(name="id")}
-    )
-    private List<TriviaMission> triviaMissions;
+//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinTable(name="TriviaMissionQuestions",
+//            joinColumns ={@JoinColumn(name = "missionId")},
+//            inverseJoinColumns={@JoinColumn(name="id")}
+//    )
+//    private List<TriviaMission> triviaMissions;
 
     private String correctAnswer;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @OnDelete(action =  OnDeleteAction.CASCADE)
+    @ManyToOne
+    @OnDelete(action =  OnDeleteAction.NO_ACTION)
     @JoinColumn(name="subject", referencedColumnName = "name", nullable=false)
     private TriviaSubject subject;
 
@@ -43,14 +42,6 @@ public class TriviaQuestion {
         this.answers = answers;
         this.correctAnswer = correctAnswer;
         this.subject = new TriviaSubject(subject);
-    }
-
-    public TriviaQuestion(String id, String question, List<String> answers, String correctAnswer, TriviaSubject subject) {
-        this.id = id;
-        this.question = question;
-        this.answers = answers;
-        this.correctAnswer = correctAnswer;
-        this.subject = subject;
     }
 
     public String getSubject() {
@@ -79,14 +70,6 @@ public class TriviaQuestion {
 
     public void setAnswers(List<String> answers) {
         this.answers = answers;
-    }
-
-    public List<TriviaMission> getTriviaMissions() {
-        return triviaMissions;
-    }
-
-    public void setTriviaMissions(List<TriviaMission> triviaMissions) {
-        this.triviaMissions = triviaMissions;
     }
 
     public String getCorrectAnswer() {

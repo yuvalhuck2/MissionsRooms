@@ -52,6 +52,17 @@ public class StudentRoomController extends AbsController{
         return response;
     }
 
+
+    @PostMapping("/trivia")
+    public Response<?> answerTriviaMission(@RequestBody String answerData){
+        AnswerTriviaData data = json.fromJson(answerData, AnswerTriviaData.class);
+        return studentRoomService.answerTriviaMission(
+                data.getApiKey(),
+                data.getRoomId(),
+                data.isAnswer()
+        );
+    }
+
     @PostMapping("/openAns")
     @ResponseStatus(HttpStatus.CREATED)
     public Response<?> answerOpenQuestion(@RequestParam(name = "file", required = false) MultipartFile file, @RequestParam("missionId") String missionId, @RequestParam("roomId") String roomId, @RequestParam(name = "openAnswer", defaultValue = "") String openAnswer, @RequestParam String token) {

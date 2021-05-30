@@ -1,10 +1,10 @@
 package missions.room.Repo;
 
+import CrudRepositories.SchoolUserCrudRepository;
 import DataObjects.FlatDataObjects.OpCode;
 import DataObjects.FlatDataObjects.Response;
 import missions.room.Domain.Users.BaseUser;
 import missions.room.Domain.Users.SchoolUser;
-import CrudRepositories.SchoolUserCrudRepository;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

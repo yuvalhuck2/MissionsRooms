@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
 import Button from '../common/Button';
 import Header from '../common/Header';
-import {DETERMINISTIC, OPEN_QUESTION, STORY_MISSION} from '../../actions/types'
+import {DETERMINISTIC, OPEN_QUESTION, STORY_MISSION, TRIVIA} from '../../actions/types'
 import TextInput from '../common/TextInput';
 
 const {
@@ -16,12 +16,14 @@ const {
     OpenAnswerMissionButton,
     StoryMissionButton,
     enter_points,
+    TriviaMissionButton,
   } = ChooseMissionToAddStrings;
 
 const buttons =[
     {name: deterministicButton, type: DETERMINISTIC},
     {name: OpenAnswerMissionButton , type: OPEN_QUESTION},
-    {name: StoryMissionButton, type: STORY_MISSION}
+    {name: StoryMissionButton, type: STORY_MISSION},
+    {name: TriviaMissionButton, type: TRIVIA}
 ]
 
 const storyTypes = ['Group', 'Class']
