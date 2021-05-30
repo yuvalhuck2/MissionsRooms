@@ -58,4 +58,9 @@ public class StudentRoom extends Room {
     public Student getParticipant() {
         return participant;
     }
+
+    @Override
+    public String getMissionInCharge() {
+        return participant.getAlias();
+    }
 }

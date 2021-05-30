@@ -5,7 +5,7 @@ const initialState = {fileText: '',
                     currentAnswer:'', 
                     isInCharge:false, 
                     loading: false, 
-                    roomId:'rid1', 
+                    roomId:'', 
                     errorMessage: '', 
                     successMessage: '', 
                     apiKey:''};
@@ -23,7 +23,8 @@ const initialState = {fileText: '',
     PICKED_FILE,
     RESET_FILES,
     UPDATE_ERROR,
-    SEND_OPEN_ANSWER
+    SEND_OPEN_ANSWER,
+    FINISH_MISSION_OPEN,
   } from '../actions/types';
   
   export default (state = initialState, action) => {
@@ -46,11 +47,13 @@ const initialState = {fileText: '',
         case EXIT_ROOM:
             return {...initialState, apiKey:state.apiKey}
         case FINISH_MISSION:
-            return {...initialState, apiKey:action.payload, mission:state.mission}
+            return { ...initialState,apiKey: action.payload, mission: state.mission }
         case UPDATE_ERROR:
             return { ...state, errorMessage: action.payload, loading: false, successMessage: '' }
         case CLEAR_STATE:
             return initialState;
+        case FINISH_MISSION_OPEN:
+            return {...initialState, apiKey: state.apiKey, isInCharge: action.payload.isInCharge, mission:state.mission, roomId: state.roomId}
         default:
             return state;
     }

@@ -7,6 +7,7 @@ import {
     UPDATE_ERROR_SOLVE_DETERMINISTIC,
     TRIES,
     SOLVE_DETERMINISTIC_MISSION_SEND,
+    UPDATE_IN_CHARGE_DETERMINISTIC,
   } from './types';
  
   import {
@@ -63,7 +64,7 @@ const {
         }
       }
       else{//wrong so tries removed
-        dispatch({ type: TRIES,payload:tries-1});
+        dispatch({ type: TRIES,payload: tries-1});
         return dispatch({ type: UPDATE_ERROR_SOLVE_DETERMINISTIC, payload: wrong_answer+(tries-1) });
         
       }
@@ -78,8 +79,7 @@ const {
       case Not_Exist:
         return dispatch({ type: UPDATE_ERROR_SOLVE_DETERMINISTIC, payload: student_not_exist });
       case Success:
-        alert(solutionMessage)
-        return dispatch({ type: TRIES, payload: 3 });
+        return dispatch({ type: UPDATE_IN_CHARGE_DETERMINISTIC, payload: {tries: 3, isInCharge: value}})
       default:
         return dispatch({ type: UPDATE_ERROR_SOLVE_DETERMINISTIC, payload: server_error });
     }

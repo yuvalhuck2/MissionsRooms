@@ -1,5 +1,5 @@
 const initialState = { text: '', files: [], errorMessage: '', successMessage: '', apiKey: '' };
-import { PICKED_FILE, RESET_FILES, CLEAR_STATE, UPDATE_ERROR_IT, UPLOAD_CSV_SUCCESS, LOGIN_IT, DEFAULT } from '../actions/types'
+import { PICKED_FILE, RESET_FILES, CLEAR_STATE, UPDATE_ERROR_IT, UPLOAD_CSV_SUCCESS, LOGIN_IT, DEFAULT, RESET_IT } from '../actions/types'
 
 export default (state = initialState, action) => {
     switch (action.type) {

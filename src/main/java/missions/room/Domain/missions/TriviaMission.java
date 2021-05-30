@@ -19,7 +19,7 @@ public class TriviaMission extends Mission {
 
     private final static String missionName = "Trivia mission";
 
-    @OneToMany
+    @ManyToMany
     @MapKey(name = "id")
     @JoinTable(name="TriviaMissionQuestions",
             joinColumns ={@JoinColumn(name = "missionId")},

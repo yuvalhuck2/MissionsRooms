@@ -2,7 +2,7 @@ import API from "../api/API";
 import * as APIPaths from "../api/APIPaths";
 import { GeneralErrors, SolveTriviaMissionStrings } from "../locale/locale_heb";
 import { Success } from "./OpCodeTypes";
-import { SOLVE_TRIVIA_MISSION_SEND, UPDATE_ERROR_SOLVE_TRIVIA } from "./types";
+import { SOLVE_TRIVIA_MISSION_SEND, UPDATE_ERROR_SOLVE_TRIVIA, FINISH_MISSION_TRIVIA } from "./types";
 
 const { server_error } = GeneralErrors;
 const { triviaPassMessage, triviaFailMessage } = SolveTriviaMissionStrings;
@@ -64,12 +64,12 @@ export const checkSolveTriviaResponse = (
   navigation,
   passed
 ) => {
-  const { reason } = data;
+  const { reason, value } = data;
   switch (reason) {
     case Success:
       let solutionMessage = passed ? triviaPassMessage : triviaFailMessage;
       alert(solutionMessage);
-      return dispatch({ type: "" });
+      return dispatch({ type: FINISH_MISSION_TRIVIA, payload: value });
     default:
       return dispatch({
         type: UPDATE_ERROR_SOLVE_TRIVIA,
