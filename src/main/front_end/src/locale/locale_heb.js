@@ -175,7 +175,7 @@ export const TeacherStrings = {
   watch_suggestions: 'צפייה בהצעות',
   add_trivia_subject: 'נושא טריוויה',
   WatchRooms: 'צפיה בחדרים',
-  trivia_manage: 'ניהול משימות טריוויה',
+  trivia_manage: 'ניהול טריוויה',
 };
 
 export const AddRoomStrings = {
