@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { ActivityIndicator } from "react-native-paper";
 import { connect } from "react-redux";
@@ -128,7 +128,7 @@ class SolveStoryFrom extends Component {
   render() {
     const { story } = this.props;
     return (
-      <SolveStoryScreen style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <CustomAppbar
           backAction={this.onBackPress}
           actions={[{ icon: "chat", onPress: this.onChatButtonPress }]}
@@ -141,7 +141,7 @@ class SolveStoryFrom extends Component {
         {this.renderButton()}
         {this.renderFinishButton()}
         {this.renderError()}
-      </SolveStoryScreen>
+      </SafeAreaView>
     );
   }
 }
