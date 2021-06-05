@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { TriviaManagementStrings } from '../../locale/locale_heb';
-import * as NavPaths from '../../navigation/NavPaths';
-import Button from '../common/Button';
-import Header from '../common/Header';
-import { Appbar } from 'react-native-paper';
+import React, { Component } from "react";
+import { FlatList, SafeAreaView, StyleSheet } from "react-native";
+import { TriviaManagementStrings } from "../../locale/locale_heb";
+import * as NavPaths from "../../navigation/NavPaths";
+import Button from "../common/Button";
+import CustomAppbar from "../common/CustomAppbar";
+import Header from "../common/Header";
 
 const {
   header,
@@ -20,27 +20,32 @@ const navigateTo = (navigation, path) => {
 const buttons = [
   {
     name: addSubjectTrivia,
-    key: '0',
+    key: "0",
     onPress: (navigation) => {
       navigateTo(navigation, NavPaths.addTriviaSubject);
     },
   },
   {
     name: addQuestionTrivia,
-    key: '1',
+    key: "1",
     onPress: (navigation) => {
       navigateTo(navigation, NavPaths.addTriviaQuestion);
     },
   },
-  { name: deleteQuestionTrivia, key: '2', onPress: (navigation) => {
-    navigateTo(navigation, NavPaths.deleteTriviaQuestion)
-  } },
+  {
+    name: deleteQuestionTrivia,
+    key: "2",
+    onPress: (navigation) => {
+      navigateTo(navigation, NavPaths.deleteTriviaQuestion);
+    },
+  },
 ];
 
 class TriviaManagement extends Component {
   constructor(...args) {
     super(...args);
     this.renderButtons = this.renderButtons.bind(this);
+    this.onBackAction = this.onBackAction.bind(this);
   }
 
   renderButtons() {
@@ -48,7 +53,7 @@ class TriviaManagement extends Component {
     let renderItem = ({ item }) => {
       return (
         <Button
-          mode='contained'
+          mode="contained"
           style={styles.button}
           onPress={() => item.onPress(navigation)}
         >
@@ -65,15 +70,18 @@ class TriviaManagement extends Component {
     );
   }
 
+  onBackAction() {
+    const { navigation } = this.props;
+    navigation.goBack();
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Appbar.Header styles={styles.bottom}>
-          <Appbar.BackAction onPress={this.props.navigation.goBack} />
-        </Appbar.Header>
+      <SafeAreaView style={styles.container}>
+        <CustomAppbar backAction={this.onBackAction} />
         <Header>{header}</Header>
         {this.renderButtons()}
-      </View>
+      </SafeAreaView>
     );
   }
 }
@@ -82,9 +90,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    width: '100%',
+    width: "100%",
     maxWidth: 340,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   button: {
     marginTop: 24,

@@ -1,20 +1,23 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ActivityIndicator,Appbar ,IconButton } from 'react-native-paper';
-import { connect } from 'react-redux';
-import { answerChanged, sendDeterministicAnswer } from '../../actions/SolveDeterministicActions';
-import {handleBack,enterChatStudent} from '../../actions/ChooseStudentRoomActions';
-import { theme } from '../../core/theme';
-import { SolveDeterministicMissionStrings } from '../../locale/locale_heb';
-import Button from '../common/Button';
-import Header from '../common/Header';
-import TextInput from '../common/TextInput';
+import React, { Component } from "react";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
+import { connect } from "react-redux";
+import {
+  enterChatStudent,
+  handleBack,
+} from "../../actions/ChooseStudentRoomActions";
+import {
+  answerChanged,
+  sendDeterministicAnswer,
+} from "../../actions/SolveDeterministicActions";
+import { theme } from "../../core/theme";
+import { SolveDeterministicMissionStrings } from "../../locale/locale_heb";
+import Button from "../common/Button";
+import CustomAppbar from "../common/CustomAppbar";
+import Header from "../common/Header";
+import TextInput from "../common/TextInput";
 
-const {
-  enter_answer,
-  send_answer,
-} = SolveDeterministicMissionStrings;
+const { enter_answer, send_answer } = SolveDeterministicMissionStrings;
 
 class SolveDeterministicForm extends Component {
   constructor(...args) {
@@ -22,7 +25,7 @@ class SolveDeterministicForm extends Component {
     this.onAnswerChanged = this.onAnswerChanged.bind(this);
     this.onButtonPress = this.onButtonPress.bind(this);
     this.onBackPress = this.onBackPress.bind(this);
-    this.onChatButtonPress=this.onChatButtonPress.bind(this);
+    this.onChatButtonPress = this.onChatButtonPress.bind(this);
   }
 
   onAnswerChanged(text) {
@@ -30,19 +33,37 @@ class SolveDeterministicForm extends Component {
   }
 
   onButtonPress() {
-    const {roomId,mission,tries,apiKey, navigation,currentAnswer } = this.props;
-    this.props.sendDeterministicAnswer({roomId,mission,tries,apiKey, navigation,currentAnswer });
+    const {
+      roomId,
+      mission,
+      tries,
+      apiKey,
+      navigation,
+      currentAnswer,
+    } = this.props;
+    this.props.sendDeterministicAnswer({
+      roomId,
+      mission,
+      tries,
+      apiKey,
+      navigation,
+      currentAnswer,
+    });
   }
 
   onChatButtonPress() {
-      const {navigation} = this.props;
-      this.props.enterChatStudent({navigation});
+    const { navigation } = this.props;
+    this.props.enterChatStudent({ navigation });
   }
 
-
-  onBackPress(){
-    const {navigation,apiKey,roomId,mission} =this.props;
-    this.props.handleBack({navigation,apiKey,roomId,missionId:mission.missionId});
+  onBackPress() {
+    const { navigation, apiKey, roomId, mission } = this.props;
+    this.props.handleBack({
+      navigation,
+      apiKey,
+      roomId,
+      missionId: mission.missionId,
+    });
   }
 
   renderSpinner() {
@@ -50,31 +71,31 @@ class SolveDeterministicForm extends Component {
       <ActivityIndicator
         animating={true}
         color={theme.colors.primary}
-        size='large'
+        size="large"
       />
     );
   }
 
-  renderButton(){
-    const {loading, isInCharge} = this.props
+  renderButton() {
+    const { loading, isInCharge } = this.props;
 
     return loading ? (
       this.renderSpinner()
-    ) : (
-        isInCharge ?
-            (<Button
-                mode='contained'
-                style={styles.button}
-                onPress={this.onButtonPress}>
-              {send_answer}
-            </Button>) : null
-    )
+    ) : isInCharge ? (
+      <Button
+        mode="contained"
+        style={styles.button}
+        onPress={this.onButtonPress}
+      >
+        {send_answer}
+      </Button>
+    ) : null;
   }
 
   renderError() {
     const { errorMessage } = this.props;
 
-    if (errorMessage && errorMessage !== '') {
+    if (errorMessage && errorMessage !== "") {
       return (
         <View>
           <Text style={styles.errorTextStyle}>{errorMessage}</Text>
@@ -83,33 +104,33 @@ class SolveDeterministicForm extends Component {
     }
   }
 
-  renderTextBox(){
-    const {currentAnswer,isInCharge} = this.props;
-    if(isInCharge){
+  renderTextBox() {
+    const { currentAnswer, isInCharge } = this.props;
+    if (isInCharge) {
       return (
-      <TextInput
+        <TextInput
           label={enter_answer}
           value={currentAnswer}
           onChangeText={this.onAnswerChanged}
-          placeholder='תשובה'
+          placeholder="תשובה"
         />
-      )
+      );
     }
   }
 
   render() {
     const { mission } = this.props;
     return (
-      <KeyboardAwareScrollView style={styles.container}>
-        <Appbar.Header>
-          <Appbar.BackAction onPress={() => {this.onBackPress()}} />
-          <Appbar.Action icon="chat" onPress={() => this.onChatButtonPress()} />
-        </Appbar.Header>
+      <SafeAreaView style={styles.container}>
+        <CustomAppbar
+          backAction={this.onBackPress}
+          actions={[{ icon: "chat", onPress: this.onChatButtonPress }]}
+        />
         <Header>{mission.question}</Header>
         {this.renderTextBox()}
         {this.renderButton()}
         {this.renderError()}
-      </KeyboardAwareScrollView>
+      </SafeAreaView>
     );
   }
 }
@@ -118,9 +139,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    width: '100%',
+    width: "100%",
     maxWidth: 340,
-    alignSelf: 'center',
+    alignSelf: "center",
     // alignItems: 'center',
     // justifyContent: 'center',
   },
@@ -128,29 +149,47 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 10,
   },
   link: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: theme.colors.primary,
   },
   errorTextStyle: {
     fontSize: 22,
-    alignSelf: 'center',
+    alignSelf: "center",
     color: theme.colors.error,
   },
-  chatButton:{
-      //alignSelf: 'flex-end',
-      position: 'absolute',
-      top:550,
-      right:0,
+  chatButton: {
+    //alignSelf: 'flex-end',
+    position: "absolute",
+    top: 550,
+    right: 0,
   },
 });
 
 const mapStateToProps = (state) => {
-  const { roomId,loading,mission,currentAnswer,apiKey,tries,isInCharge, errorMessage } = state.SolveDeterministic;
-  return { roomId,loading,mission,currentAnswer,apiKey,tries,isInCharge, errorMessage };
+  const {
+    roomId,
+    loading,
+    mission,
+    currentAnswer,
+    apiKey,
+    tries,
+    isInCharge,
+    errorMessage,
+  } = state.SolveDeterministic;
+  return {
+    roomId,
+    loading,
+    mission,
+    currentAnswer,
+    apiKey,
+    tries,
+    isInCharge,
+    errorMessage,
+  };
 };
 
 export default connect(mapStateToProps, {

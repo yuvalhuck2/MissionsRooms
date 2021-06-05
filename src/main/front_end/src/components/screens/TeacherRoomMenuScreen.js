@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { Card, Menu, Paragraph, ProgressBar, Title } from "react-native-paper";
 import { connect } from "react-redux";
 import {
@@ -7,12 +7,18 @@ import {
   closeRoom,
   enterChatTeacher,
 } from "../../actions/ChooseRoomTeacherActions";
-import { DETERMINISTIC_NAME, STORY_NAME, OPEN_QUESTION_NAME, TRIVIA_NAME} from "../../actions/types";
+import {
+  DETERMINISTIC_NAME,
+  OPEN_QUESTION_NAME,
+  STORY_NAME,
+  TRIVIA_NAME,
+} from "../../actions/types";
 import { theme } from "../../core/theme";
 import {
   ChooseMissionsTemplateStrings,
   TeacherRoomMenuStrings,
 } from "../../locale/locale_heb";
+import CustomAppbar from "../common/CustomAppbar";
 
 const {
   chat,
@@ -24,12 +30,18 @@ const {
   no,
   sure,
 } = TeacherRoomMenuStrings;
-const { deterministic_name, question, open_question_name,story_description,
-    trivia_question_name, } = ChooseMissionsTemplateStrings;
+const {
+  deterministic_name,
+  question,
+  open_question_name,
+  story_description,
+  trivia_question_name,
+} = ChooseMissionsTemplateStrings;
 
 class TeacherRoomMenuForm extends Component {
   constructor(...args) {
     super(...args);
+    this.onBackAction = this.onBackAction.bind(this);
   }
 
   renderError() {
@@ -73,6 +85,11 @@ class TeacherRoomMenuForm extends Component {
     );
   }
 
+  onBackAction() {
+    const { navigation } = this.props;
+    navigation.goBack();
+  }
+
   render() {
     const { navigation, apiKey, roomsType, currentRoom } = this.props;
     console.log(currentRoom);
@@ -80,7 +97,8 @@ class TeacherRoomMenuForm extends Component {
     let progress =
       currentRoom.currentMissionNumber / currentRoom.numberOfMissions;
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <CustomAppbar backAction={this.onBackAction} />
         <Card>
           <Card.Content>
             <Title>{currentRoom.name}</Title>
@@ -130,7 +148,7 @@ class TeacherRoomMenuForm extends Component {
             title={close_room}
           />
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }

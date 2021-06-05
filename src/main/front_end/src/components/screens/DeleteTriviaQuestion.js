@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import { ActivityIndicator, Appbar, RadioButton } from "react-native-paper";
-import RadioButtonGroup from "react-native-paper/src/components/RadioButton/RadioButtonGroup";
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, RadioButton } from "react-native-paper";
 import { connect } from "react-redux";
 import { getTriviaQuestions } from "../../actions/AddMissionActions";
 import {
@@ -12,6 +11,7 @@ import {
 import { theme } from "../../core/theme";
 import { deleteTriviaQuestionStrings } from "../../locale/locale_heb";
 import Button from "../common/Button";
+import CustomAppbar from "../common/CustomAppbar";
 import Header from "../common/Header";
 
 const { header, button } = deleteTriviaQuestionStrings;
@@ -121,21 +121,15 @@ class DeleteTriviaQuestion extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Appbar.Header styles={styles.bottom}>
-          <Appbar.BackAction
-            onPress={() => {
-              this.onBackPress();
-            }}
-          />
-        </Appbar.Header>
+      <SafeAreaView style={styles.container}>
+        <CustomAppbar backAction={this.onBackPress} />
         <View style={{ flex: 1, alignItems: "center" }}>
           <Header>{header}</Header>
           {this.renderTriviaForm()}
           {this.renderButton()}
           {this.renderError()}
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }

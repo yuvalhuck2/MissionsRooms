@@ -1,119 +1,109 @@
-import { sendMessage,loadMessages } from '../../actions/ChooseRoomTeacherActions.js';
-import {GiftedChat} from 'react-native-gifted-chat';
-import { StyleSheet, Text, View, FlatList,TextInput,KeyboardAvoidingView,TouchableOpacity,Button } from 'react-native';
-import React from "react";
-import { connect } from 'react-redux';
-import { theme } from '../../core/theme';
-import { Component } from 'react';
-import { useState, useCallback, useEffect } from 'react'
+import React, { Component } from "react";
+import { SafeAreaView, StyleSheet } from "react-native";
+import { GiftedChat } from "react-native-gifted-chat";
+import { connect } from "react-redux";
+import { sendMessage } from "../../actions/ChooseRoomTeacherActions.js";
+import CustomAppbar from "../common/CustomAppbar.js";
 
 class ChatRoomForm extends Component {
+  constructor(...args) {
+    super(...args);
+    this.onBackAction = this.onBackAction.bind(this);
+    this.state = {
+      messages: [],
+      messageCount: 0,
+    };
+  }
 
-    constructor(...args) {
-        super(...args);
-        this.state = {
-            messages: [],
-            messageCount:0,
-        };
+  componentWillMount() {}
 
+  componentDidUpdate(prevProps) {
+    const { messagesProps } = this.props;
+
+    if (prevProps.messagesProps.length !== messagesProps.length) {
+      //alert(messagesProps.length+" "+this.state.messages.length)
+
+      let messages = messagesProps;
+      let newMessagesLength = messages.length;
+
+      let newMessages = messages.slice(this.state.messageCount);
+
+      this.setState((prevState) => ({
+        messages: GiftedChat.append(prevState.messages, newMessages),
+        messageCount: newMessagesLength,
+      }));
     }
+  }
 
-    componentWillMount() {
+  onSend(messages = []) {
+    const { name, roomId, navigation, apiKey } = this.props;
+    this.setState((previousState) => ({
+      messages: GiftedChat.append(previousState.messages, messages),
+    }));
 
+    this.props.sendMessage({
+      navigation,
+      newMessage: messages[0],
+      roomId,
+      apiKey,
+    });
+  }
 
+  onBackAction() {
+    const { navigation } = this.props;
+    navigation.goBack();
+  }
 
-    }
+  render() {
+    const { name, roomId, navigation, apiKey, messages } = this.props;
 
-    componentDidUpdate(prevProps) {
+    const user = {
+      _id: name,
+      name,
+    };
 
-        const {messagesProps}= this.props;
-
-
-        if(prevProps.messagesProps.length!==messagesProps.length) {
-            //alert(messagesProps.length+" "+this.state.messages.length)
-
-            let messages = messagesProps;
-            let newMessagesLength = messages.length
-
-            let newMessages = messages.slice(this.state.messageCount)
-
-
-
-
-            this.setState((prevState) => ({
-                messages: GiftedChat.append(prevState.messages, newMessages),
-                messageCount: newMessagesLength,
-            }));
-        }
-    }
-
-    onSend(messages = []) {
-        const {name,roomId,navigation,apiKey} = this.props;
-        this.setState((previousState) => ({
-            messages: GiftedChat.append(previousState.messages, messages),
-        }));
-
-        this.props.sendMessage({navigation,newMessage:messages[0],roomId,apiKey})
-    }
-
-
-
-
-    render() {
-        const {name,roomId,navigation,apiKey,messages} = this.props;
-
-        const user = {
-            _id: name,
-            name,
-        };
-
-
-
-        return (
-            <View style={{flex: 1}}>
-                <GiftedChat
-                    messages={this.state.messages}
-                    onSend={(newMessages) => this.onSend(newMessages)}
-                        //this.props.sendMessage({navigation,newMessage:newMessages[0],roomId,apiKey})}
-                    user={user}
-                    renderUsernameOnMessage
-                />
-            </View>
-        );
-    }
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <CustomAppbar backAction={this.onBackAction} />
+        <GiftedChat
+          messages={this.state.messages}
+          onSend={(newMessages) => this.onSend(newMessages)}
+          //this.props.sendMessage({navigation,newMessage:newMessages[0],roomId,apiKey})}
+          user={user}
+          renderUsernameOnMessage
+        />
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    textInput: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        width: '50%'
-    }
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  textInput: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    width: "50%",
+  },
 });
 
-
-
-
-
-
 const mapStateToProps = (state) => {
-    const { roomId, errorMessage , apiKey,name,messagesProps,typing} = state.ChatRoom;
-    return { roomId, errorMessage , apiKey,name,messagesProps,typing};
+  const {
+    roomId,
+    errorMessage,
+    apiKey,
+    name,
+    messagesProps,
+    typing,
+  } = state.ChatRoom;
+  return { roomId, errorMessage, apiKey, name, messagesProps, typing };
 };
 
 export default connect(mapStateToProps, {
-    sendMessage,
+  sendMessage,
 })(ChatRoomForm);
-
-
-
-
-
-

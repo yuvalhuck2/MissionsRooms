@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import {
@@ -59,7 +59,7 @@ class TeacherForm extends Component {
   render() {
     const { navigation, apiKey, roomsType } = this.props;
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View>
           <Button
             onPress={() => this.navigate(NavPaths.addMissionScreen)}
@@ -211,7 +211,7 @@ class TeacherForm extends Component {
             <Icon name='exit-to-app' />
           </Button>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }

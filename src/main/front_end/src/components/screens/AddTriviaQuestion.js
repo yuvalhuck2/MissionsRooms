@@ -1,23 +1,24 @@
-import React, { Component } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { ScrollView } from 'react-native-gesture-handler';
-import { ActivityIndicator, Appbar } from 'react-native-paper';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
+import { ScrollView } from "react-native-gesture-handler";
+import { ActivityIndicator } from "react-native-paper";
+import { connect } from "react-redux";
 import {
   addTriviaQuestion,
   correctAnswerChanged,
   getCurrentSubjects,
+  handleBack,
   questionChanged,
   subjectChanged,
   wrongAnswerChanged,
-  handleBack,
-} from '../../actions/AddTriviaQuestionActions';
-import { theme } from '../../core/theme';
-import { AddTriviaQuestionStrings } from '../../locale/locale_heb';
-import Button from '../common/Button';
-import Header from '../common/Header';
-import TextInput from '../common/TextInput';
+} from "../../actions/AddTriviaQuestionActions";
+import { theme } from "../../core/theme";
+import { AddTriviaQuestionStrings } from "../../locale/locale_heb";
+import Button from "../common/Button";
+import CustomAppbar from "../common/CustomAppbar";
+import Header from "../common/Header";
+import TextInput from "../common/TextInput";
 
 const {
   header,
@@ -93,7 +94,7 @@ class AddTriviaQuestion extends Component {
       <ActivityIndicator
         animating={true}
         color={theme.colors.primary}
-        size='large'
+        size="large"
       />
     );
   }
@@ -101,7 +102,7 @@ class AddTriviaQuestion extends Component {
   renderError() {
     const { errorMessage } = this.props;
 
-    if (errorMessage && errorMessage !== '') {
+    if (errorMessage && errorMessage !== "") {
       return (
         <View>
           <Text style={styles.errorTextStyle}>{errorMessage}</Text>
@@ -118,7 +119,7 @@ class AddTriviaQuestion extends Component {
     ) : (
       <>
         <Button
-          mode='contained'
+          mode="contained"
           style={styles.button}
           onPress={this.onButtonPressed}
         >
@@ -149,11 +150,11 @@ class AddTriviaQuestion extends Component {
       <DropDownPicker
         items={mappedSubjects}
         containerStyle={{ height: 40 }}
-        style={{ backgroundColor: '#fafafa' }}
+        style={{ backgroundColor: "#fafafa" }}
         itemStyle={{
-          justifyContent: 'flex-start',
+          justifyContent: "flex-start",
         }}
-        dropDownStyle={{ backgroundColor: '#fafafa', marginTop: 2 }}
+        dropDownStyle={{ backgroundColor: "#fafafa", marginTop: 2 }}
         placeholder={addSubject}
         onChangeItem={this.onChangeSubject}
       />
@@ -163,21 +164,21 @@ class AddTriviaQuestion extends Component {
   renderQuestionsInputs() {
     const { wrongAnswers, correctAnswer } = this.props;
     const inputParams = [
-      { name: 'input', placeholder: addWrongAnswer, key: '0' },
-      { name: 'input', placeholder: addWrongAnswer, key: '1' },
-      { name: 'input', placeholder: addWrongAnswer, key: '2' },
-      { name: 'input', placeholder: addCorrectAnswer, key: '3' },
+      { name: "input", placeholder: addWrongAnswer, key: "0" },
+      { name: "input", placeholder: addWrongAnswer, key: "1" },
+      { name: "input", placeholder: addWrongAnswer, key: "2" },
+      { name: "input", placeholder: addCorrectAnswer, key: "3" },
       {
-        name: 'button',
+        name: "button",
         placeholder: addQuestion,
-        key: '4',
+        key: "4",
       },
     ];
 
     let inputValues = [...wrongAnswers, correctAnswer];
 
-    let renderItem = ( item ) => {
-      return item.name === 'input' ? (
+    let renderItem = (item) => {
+      return item.name === "input" ? (
         <TextInput
           label={item.placeholder}
           value={inputValues[parseInt(item.key)]}
@@ -195,36 +196,26 @@ class AddTriviaQuestion extends Component {
       );
     };
 
-    return (
-        inputParams.map((x) => renderItem(x))
-      
-      
-      // <FlatList
-      //   data={inputParams}
-      //   keyExtractor={(item) => item.key}
-      //   renderItem={renderItem}
-      // />
-    );
+    return inputParams.map((x) => renderItem(x));
+
+    // <FlatList
+    //   data={inputParams}
+    //   keyExtractor={(item) => item.key}
+    //   renderItem={renderItem}
+    // />
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <Appbar.Header styles={styles.bottom}>
-          <Appbar.BackAction
-            onPress={() => {
-              this.onBackPress();
-            }}
-          />
-        </Appbar.Header>
+      <SafeAreaView style={styles.container}>
+        <CustomAppbar backAction={this.onBackPress} />
         <Header>{header}</Header>
         <ScrollView>
-        {this.renderQuestion()}
-        {this.renderDropDownSubject()}
-        {this.renderQuestionsInputs()}
+          {this.renderQuestion()}
+          {this.renderDropDownSubject()}
+          {this.renderQuestionsInputs()}
         </ScrollView>
-
-      </View>
+      </SafeAreaView>
     );
   }
 }
@@ -233,16 +224,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    width: '100%',
+    width: "100%",
     maxWidth: 340,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   button: {
     marginTop: 24,
   },
   errorTextStyle: {
     fontSize: 22,
-    alignSelf: 'center',
+    alignSelf: "center",
     color: theme.colors.error,
   },
 });

@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ActivityIndicator, Appbar, List, Dialog, Portal, Searchbar } from 'react-native-paper';
-import { connect } from 'react-redux';
-import { handleBack, onMissionPress } from '../../actions/WatchAllOpenAnswersActions';
-import { theme } from '../../core/theme';
-import { WatchAllOpenQuestionMissions } from '../../locale/locale_heb';
-import Header from '../common/Header';
+import React, { Component } from "react";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { List } from "react-native-paper";
+import { connect } from "react-redux";
+import {
+  handleBack,
+  onMissionPress,
+} from "../../actions/WatchAllOpenAnswersActions";
+import { theme } from "../../core/theme";
+import { WatchAllOpenQuestionMissions } from "../../locale/locale_heb";
+import CustomAppbar from "../common/CustomAppbar";
+import Header from "../common/Header";
 
-
-const {
-  mission_title,
-  title
-} = WatchAllOpenQuestionMissions;
+const { mission_title, title } = WatchAllOpenQuestionMissions;
 
 class WatchAllAnswersForm extends Component {
   constructor(...args) {
@@ -21,7 +21,6 @@ class WatchAllAnswersForm extends Component {
     this.onBackPress = this.onBackPress.bind(this);
     this.onMissionPress = this.onMissionPress.bind(this);
   }
-
 
   onButtonPress() {
     const { apiKey, message, profile } = this.props;
@@ -34,37 +33,36 @@ class WatchAllAnswersForm extends Component {
   }
 
   onMissionPress(solutionData) {
-    const {navigation, apiKey, roomId} = this.props;
-    this.props.onMissionPress({navigation, roomId, solutionData, apiKey})
+    const { navigation, apiKey, roomId } = this.props;
+    this.props.onMissionPress({ navigation, roomId, solutionData, apiKey });
   }
 
   renderListItems() {
     const { openAnswers } = this.props;
-    return (
-      openAnswers.map((mission, index) =>
-        <List.Item 
-          right={props => <View style={styles.item_view}>
+    return openAnswers.map((mission, index) => (
+      <List.Item
+        right={(props) => (
+          <View style={styles.item_view}>
             <Text style={styles.item_text}>{mission_title + index}</Text>
             <List.Icon {...props} icon="playlist-edit" />
-          </View>}
-          key={mission.missionId}
-          onPress={() => this.onMissionPress(mission)}
-        />
-      )
-    )
+          </View>
+        )}
+        key={mission.missionId}
+        onPress={() => this.onMissionPress(mission)}
+      />
+    ));
   }
-
 
   render() {
     const { roomName } = this.props;
     return (
-      <KeyboardAwareScrollView style={styles.container}>
-        <Appbar.Header styles={styles.bottom}>
-          <Appbar.BackAction onPress={() => { this.onBackPress() }} />
-        </Appbar.Header>
-        <Header>{title + roomName}</Header>
-        <View style={styles.list_item}>{this.renderListItems()}</View>
-      </KeyboardAwareScrollView>
+      <SafeAreaView style={styles.container}>
+        <KeyboardAwareScrollView style={styles.container}>
+          <CustomAppbar backAction={this.onBackPress} />
+          <Header>{title + roomName}</Header>
+          <View style={styles.list_item}>{this.renderListItems()}</View>
+        </KeyboardAwareScrollView>
+      </SafeAreaView>
     );
   }
 }
@@ -73,9 +71,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 0,
-    width: '100%',
+    width: "100%",
     maxWidth: 340,
-    alignSelf: 'center',
+    alignSelf: "center",
     // alignItems: 'center',
     // justifyContent: 'center',
   },
@@ -84,38 +82,42 @@ const styles = StyleSheet.create({
     width: 100,
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 0,
   },
   link: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: theme.colors.primary,
   },
   errorTextStyle: {
     fontSize: 22,
-    alignSelf: 'center',
+    alignSelf: "center",
     color: theme.colors.error,
   },
   bottom: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     bottom: 0,
   },
   item_view: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   item_text: {
     fontSize: 20,
-    alignSelf: 'center',
-
-  }
+    alignSelf: "center",
+  },
 });
 
 const mapStateToProps = (state) => {
   //const { search, message, profile, allUsers, presentedUsers, apiKey, errorMessage, loading } = state.WatchProfile;
   //return { search, message, profile, allUsers, presentedUsers, apiKey, errorMessage, loading };
-  return { apiKey, roomId, roomName, openAnswers} = state.WatchAllOpenQuestionMissions;
+  return ({
+    apiKey,
+    roomId,
+    roomName,
+    openAnswers,
+  } = state.WatchAllOpenQuestionMissions);
   // openAnswers = [
   //   {
   //     "missionId": "open1",
@@ -132,5 +134,5 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   handleBack,
-  onMissionPress
+  onMissionPress,
 })(WatchAllAnswersForm);

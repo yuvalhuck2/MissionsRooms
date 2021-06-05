@@ -35,6 +35,8 @@ import {
   StudentScreen,
   TeacherScreen,
   Test,
+  TransferStudentScreen,
+  TransferTeacherScreen,
   TriviaManagement,
   UploadCsvScreen,
   WatchAllOpenQuestionMissionsScreen,
@@ -42,8 +44,6 @@ import {
   WatchOpenAnswerSolutionScreen,
   WatchProfileScreen,
   WatchSuggestionsScreen,
-  TransferTeacherScreen,
-  TransferStudentScreen
 } from "./components/screens";
 import DeleteTriviaQuestion from "./components/screens/DeleteTriviaQuestion";
 import TeacherRoomMenuScreen from "./components/screens/TeacherRoomMenuScreen";
@@ -53,7 +53,10 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Register">
+      <Stack.Navigator
+        initialRouteName="TransferTeacher"
+        screenOptions={{ headerShown: false }}
+      >
         <Stack.Screen name="CloseClassroom" component={CloseClassroomScreen} />
         <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
         <Stack.Screen name="AddUser" component={AddUserScreen} />
@@ -137,14 +140,17 @@ const App = () => {
           name="DeleteTriviaQuestion"
           component={DeleteTriviaQuestion}
         />
-        <Stack.Screen name="SolveTriviaMission" component={SolveTriviaMission} />
         <Stack.Screen
-            name = 'TransferStudent'
-            component={TransferStudentScreen}
+          name="SolveTriviaMission"
+          component={SolveTriviaMission}
         />
         <Stack.Screen
-            name = 'TransferTeacher'
-            component={TransferTeacherScreen}
+          name="TransferStudent"
+          component={TransferStudentScreen}
+        />
+        <Stack.Screen
+          name="TransferTeacher"
+          component={TransferTeacherScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

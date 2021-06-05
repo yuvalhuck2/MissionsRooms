@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { FlatList, StyleSheet, View, Text } from "react-native";
-import { Checkbox, ActivityIndicator } from "react-native-paper";
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Checkbox } from "react-native-paper";
 import { connect } from "react-redux";
 import {
   addMission,
@@ -11,12 +11,13 @@ import {
   typesChanged,
 } from "../../actions/AddMissionActions";
 import { TRIVIA } from "../../actions/types";
+import { theme } from "../../core/theme";
 import { AddDeterministicMissionStrings } from "../../locale/locale_heb";
 import Button from "../common/Button";
+import CustomAppbar from "../common/CustomAppbar";
 import Header from "../common/Header";
 import TextInput from "../common/TextInput";
 const { personal, group, classroom } = AddDeterministicMissionStrings;
-import { theme } from '../../core/theme'
 
 class AddTriviaMission extends Component {
   constructor(...args) {
@@ -27,6 +28,7 @@ class AddTriviaMission extends Component {
     this.onButtonPress = this.onButtonPress.bind(this);
     this.renderButton = this.renderButton.bind(this);
     this.renderError = this.renderError.bind(this);
+    this.onBackAction = this.onBackAction.bind(this);
   }
 
   componentDidMount() {
@@ -166,9 +168,15 @@ class AddTriviaMission extends Component {
     );
   }
 
+  onBackAction() {
+    const { navigation } = this.props;
+    navigation.goBack();
+  }
+
   render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <CustomAppbar backAction={this.onBackAction} />
         <View style={{ flex: 1 }}>
           <Header>בחר שאלות עבור המשימה</Header>
           {this.renderQuestions()}
@@ -185,7 +193,7 @@ class AddTriviaMission extends Component {
           {this.renderButton()}
           {this.renderError()}
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }
@@ -195,6 +203,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     width: "100%",
+    maxWidth: 340,
+    alignSelf: "center",
   },
   button: {
     margin: 30,
@@ -202,7 +212,7 @@ const styles = StyleSheet.create({
   },
   errorTextStyle: {
     fontSize: 25,
-    alignSelf: 'center',
+    alignSelf: "center",
     color: theme.colors.error,
   },
 });

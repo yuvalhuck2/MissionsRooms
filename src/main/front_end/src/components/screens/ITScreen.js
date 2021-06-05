@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {StyleSheet, Text, Dimensions, View, Alert} from 'react-native';
+import {StyleSheet, Text, Dimensions, View, Alert, SafeAreaView} from 'react-native';
 import { connect } from 'react-redux';
 import Button from '../common/Button';
 import { Icon } from 'react-native-elements'
@@ -70,7 +70,7 @@ class ITForm extends Component {
   render() {
     const {navigation,apiKey} =this.props
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View>
           <Button onPress={this.navigateToAddNewIT} style={[styles.button, styles.top_button_marg, styles.left_button_border, styles.top_button_border]} >
             <Text style={{color:"white"}}>{addNewIT}</Text> 
@@ -119,7 +119,7 @@ class ITForm extends Component {
             </Button>
         </View>
 
-      </View>
+      </SafeAreaView>
     );
   }
 }

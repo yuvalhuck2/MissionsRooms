@@ -1,14 +1,27 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ActivityIndicator } from 'react-native-paper';
-import { connect } from 'react-redux';
-import { emailChanged, loginUser, passwordChanged, navigateToRegister, navigateToResetPassword } from '../../actions';
-import { theme } from '../../core/theme';
-import { loginStrings } from '../../locale/locale_heb';
-import Button from '../common/Button';
-import Header from '../common/Header';
-import TextInput from '../common/TextInput';
+import React, { Component } from "react";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { ActivityIndicator } from "react-native-paper";
+import { connect } from "react-redux";
+import {
+  emailChanged,
+  loginUser,
+  navigateToRegister,
+  navigateToResetPassword,
+  passwordChanged,
+} from "../../actions";
+import { theme } from "../../core/theme";
+import { loginStrings } from "../../locale/locale_heb";
+import Button from "../common/Button";
+import CustomAppbar from "../common/CustomAppbar";
+import Header from "../common/Header";
+import TextInput from "../common/TextInput";
 
 const {
   header,
@@ -44,14 +57,14 @@ class LoginForm extends Component {
     this.props.loginUser({ email, password, navigation });
   }
 
-  navigateToRegister(){
-    const {navigation} = this.props
-    this.props.navigateToRegister({navigation})
+  navigateToRegister() {
+    const { navigation } = this.props;
+    this.props.navigateToRegister({ navigation });
   }
 
-  navigateToResetPassword(){
-    const {navigation} = this.props
-    this.props.navigateToResetPassword({navigation})
+  navigateToResetPassword() {
+    const { navigation } = this.props;
+    this.props.navigateToResetPassword({ navigation });
   }
 
   renderSpinner() {
@@ -59,7 +72,7 @@ class LoginForm extends Component {
       <ActivityIndicator
         animating={true}
         color={theme.colors.primary}
-        size='large'
+        size="large"
       />
     );
   }
@@ -67,7 +80,7 @@ class LoginForm extends Component {
   renderError() {
     const { errorMessage } = this.props;
 
-    if (errorMessage && errorMessage !== '') {
+    if (errorMessage && errorMessage !== "") {
       return (
         <View>
           <Text style={styles.errorTextStyle}>{errorMessage}</Text>
@@ -83,7 +96,7 @@ class LoginForm extends Component {
       this.renderSpinner()
     ) : (
       <Button
-        mode='contained'
+        mode="contained"
         style={styles.button}
         onPress={this.onButtonPress}
       >
@@ -122,28 +135,31 @@ class LoginForm extends Component {
     const { email, password } = this.props;
 
     return (
-      <KeyboardAwareScrollView style={styles.container}>
-        <Header>{header}</Header>
-        <TextInput
-          label={enter_email}
-          value={email}
-          onChangeText={this.onEmailChange}
-          placeholder='roy4@post.bgu.ac.il'
-        />
+      <SafeAreaView style={styles.container}>
+        <KeyboardAwareScrollView>
+          <CustomAppbar backAction={this.props.navigation.goBack} />
+          <Header>{header}</Header>
+          <TextInput
+            label={enter_email}
+            value={email}
+            onChangeText={this.onEmailChange}
+            placeholder="roy4@post.bgu.ac.il"
+          />
 
-        <TextInput
-          label={enter_password}
-          value={password}
-          onChangeText={this.onPasswordChange}
-          placeholder='Th1sI5@passWord'
-          secureTextEntry
-        />
+          <TextInput
+            label={enter_password}
+            value={password}
+            onChangeText={this.onPasswordChange}
+            placeholder="Th1sI5@passWord"
+            secureTextEntry
+          />
 
-        {this.renderButton()}
-        {this.renderError()}
-        {this.renderRegisterLabel()}
-        {this.renderResetPasswordLabel()}
-      </KeyboardAwareScrollView>
+          {this.renderButton()}
+          {this.renderError()}
+          {this.renderRegisterLabel()}
+          {this.renderResetPasswordLabel()}
+        </KeyboardAwareScrollView>
+      </SafeAreaView>
     );
   }
 }
@@ -152,24 +168,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    width: '100%',
+    width: "100%",
     maxWidth: 340,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   button: {
     marginTop: 24,
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 10,
   },
   link: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: theme.colors.primary,
   },
   errorTextStyle: {
     fontSize: 22,
-    alignSelf: 'center',
+    alignSelf: "center",
     color: theme.colors.error,
   },
 });
