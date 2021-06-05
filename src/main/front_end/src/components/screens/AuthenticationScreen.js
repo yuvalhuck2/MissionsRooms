@@ -1,6 +1,6 @@
 import CodeInput from '@andreferi/react-native-confirmation-code-input';
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ActivityIndicator } from 'react-native-paper';
@@ -13,6 +13,7 @@ import {
 import { theme } from '../../core/theme';
 import { authStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
+import CustomAppbar from '../common/CustomAppbar';
 import Header from '../common/Header';
 
 const { header, enter_code, choose_group, send_btn, no_code } = authStrings;
@@ -29,6 +30,7 @@ class AuthForm extends Component {
     this.onCodeChanged = this.onCodeChanged.bind(this);
     this.onButtonPressed = this.onButtonPressed.bind(this);
     this.onSendAgainButtonPress = this.onSendAgainButtonPress.bind(this);
+    this.onBackAction = this.onBackAction.bind(this);
     this.state = {
       groupsData: [],
       selectedGroupData: null,
@@ -189,9 +191,16 @@ class AuthForm extends Component {
     }
   }
 
+  onBackAction(){
+    const {navigation} = this.props;
+    navigation.goBack();
+  }
+
   render() {
     return (
-      <KeyboardAwareScrollView style={styles.container}>
+      <SafeAreaView style={styles.container}>
+      <KeyboardAwareScrollView>
+        <CustomAppbar backAction={this.onBackAction}/>
         <Header>{header}</Header>
 
         <CodeInput
@@ -212,6 +221,7 @@ class AuthForm extends Component {
         {this.renderError()}
         {this.renderSendAgainLabel()}
       </KeyboardAwareScrollView>
+      </SafeAreaView>
     );
   }
 }

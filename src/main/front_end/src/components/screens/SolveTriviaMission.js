@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import { ActivityIndicator, Appbar, RadioButton } from "react-native-paper";
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, RadioButton } from "react-native-paper";
 import ListAccordion from "react-native-paper/src/components/List/ListAccordion";
 import ListAccordionGroup from "react-native-paper/src/components/List/ListAccordionGroup";
 import { connect } from "react-redux";
@@ -11,6 +11,7 @@ import {
 import { sendTriviaForm } from "../../actions/solveTriviaMissionActions";
 import { theme } from "../../core/theme";
 import Button from "../common/Button";
+import CustomAppbar from "../common/CustomAppbar";
 import Header from "../common/Header";
 
 class SolveTriviaMission extends Component {
@@ -35,12 +36,12 @@ class SolveTriviaMission extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.mission !== this.props.mission){
+    if (prevProps.mission !== this.props.mission) {
       this.initState();
     }
   }
 
-  initState(){
+  initState() {
     const { mission } = this.props;
     const triviaQuestions = Object.values(mission.triviaQuestionMap);
     const triviaAnswers = triviaQuestions.map((question, questNum) => {
@@ -210,24 +211,22 @@ class SolveTriviaMission extends Component {
 
   render() {
     return (
-      <ListAccordionGroup style={styles.container}>
-        <Appbar.Header>
-          <Appbar.BackAction
-            onPress={() => {
-              this.onBackPress();
-            }}
+      <SafeAreaView style={styles.containe}>
+        <ListAccordionGroup>
+          <CustomAppbar
+            backAction={this.onBackPress}
+            actions={[{ icon: "chat", onPress: this.onChatButtonPress }]}
           />
-          <Appbar.Action icon="chat" onPress={() => this.onChatButtonPress()} />
-        </Appbar.Header>
-        <Header>ביצוע משימת טריוויה</Header>
-        {this.renderTriviaForm()}
-        <View
-          style={{ flex: 0.5, flexDirection: "column", alignItems: "center" }}
-        >
-          {this.renderButton()}
-          {this.renderError()}
-        </View>
-      </ListAccordionGroup>
+          <Header>ביצוע משימת טריוויה</Header>
+          {this.renderTriviaForm()}
+          <View
+            style={{ flex: 0.5, flexDirection: "column", alignItems: "center" }}
+          >
+            {this.renderButton()}
+            {this.renderError()}
+          </View>
+        </ListAccordionGroup>
+      </SafeAreaView>
     );
   }
 }
