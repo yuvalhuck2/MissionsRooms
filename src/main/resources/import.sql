@@ -45,7 +45,7 @@ INSERT INTO IT (alias) VALUES ('admin') ON CONFLICT DO NOTHING;
 --
 -- INSERT INTO TEACHER (alias,group_type, classroom_class_name) VALUES('tal', 3,'2=4'), ('roni', 3, null);
 --
--- INSERT INTO MISSION(mission_id,points) VALUES ('mid1',2),('m5',1), ('mid2',2),('story1',2),('story2',4),('open1',1),('open_mission_id',3), ('triv', 2);
+-- INSERT INTO MISSION(mission_id,points) VALUES ('mid1',2),('m5',1), ('mid2',2),('story1',2),('story2',4),('open1',1),('open_mission_id',3);
 --
 -- INSERT INTO MISSION_MISSION_TYPES(mission_mission_id,mission_types) VALUES('m5',0), ('mid1',0), ('mid2',2),('mid1',1),('mid1',2),('story1',0),('story1',1),('story1',2),('story2',0),('story2',1),('story2',2),('open_mission_id',0),('open_mission_id',1),('open_mission_id',2),('open1',0);
 --
