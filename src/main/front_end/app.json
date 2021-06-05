@@ -1,0 +1,16 @@
+{
+    "expo": {
+     "name": "MissionsRoom",
+     "icon": "./assets/leobeak_logo.png",
+     "version": "1.0.0",
+     "slug": "missionsRoom",
+     "ios": {
+       "bundleIdentifier": "com.bgu.missionsroom",
+       "buildNumber": "1.0.0"
+     },
+     "android": {
+       "package": "com.bgu.missionsroom",
+       "versionCode": 1
+     }
+    }
+  }

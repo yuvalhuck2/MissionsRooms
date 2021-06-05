@@ -1,19 +1,30 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Appbar } from 'react-native-paper';
+import React from "react";
+import { Appbar } from "react-native-paper";
 
-const renderAppbarActions = (actions) =>{
+const renderAppbarActions = (actions) => {
+  if (actions) {
     return actions.map((action) => {
-        return <Appbar.Action icon={action.icon} onPress={action.onPress}/>
-    })
-}
+      return <Appbar.Action icon={action.icon} onPress={action.onPress} />;
+    });
+  }
+};
 
-const CustomAppbar = ({styles, appbarActions}) => {
+const renderBackAction = (backAction) => {
+  return backAction ? <Appbar.BackAction onPress={backAction} /> : null;
+};
+
+const CustomAppbar = ({ appBarStyle, backAction, actions }) => {
   return (
-    <Appbar style={styles.location}>
-        {renderAppbarActions(appbarActions)}
-    </Appbar>
+    <Appbar.Header style={[styles.appBar, appBarStyle]}>
+      {renderBackAction(backAction)}
+      {renderAppbarActions(actions)}
+    </Appbar.Header>
   );
+};
+
+const styles = {
+  appBar: {
+  },
 };
 
 export default CustomAppbar;

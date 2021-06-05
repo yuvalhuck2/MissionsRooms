@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import {ActivityIndicator, Appbar, IconButton} from 'react-native-paper';
+import { Dimensions, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 import { connect } from 'react-redux';
+import { onRestart } from '../../actions';
+import { enterChatStudent, handleBack } from '../../actions/ChooseStudentRoomActions';
 import { answerChanged } from '../../actions/SolveDeterministicActions';
-import { sendOpenQuestionAnswer, onPickFile } from '../../actions/SolveOpenQuestionActions'
-import {enterChatStudent, handleBack} from '../../actions/ChooseStudentRoomActions';
+import { onPickFile, sendOpenQuestionAnswer } from '../../actions/SolveOpenQuestionActions';
 import { theme } from '../../core/theme';
 import { SolveDeterministicMissionStrings, uploadStrings } from '../../locale/locale_heb';
 import Button from '../common/Button';
+import CustomAppbar from "../common/CustomAppbar";
 import Header from '../common/Header';
 import TextInput from '../common/TextInput';
-import { onRestart } from '../../actions'
 
 const {
     enter_answer,
@@ -147,17 +147,17 @@ class SolveOpenQuestionMissionForm extends Component {
         console.log(isInCharge)
         console.log(mission)
         return (
-            <KeyboardAwareScrollView style={styles.container}>
-                <Appbar.Header>
-                    <Appbar.BackAction onPress={() => { this.onBackPress() }} />
-                    <Appbar.Action icon="chat" onPress={() => this.onChatButtonPress()} />
-                </Appbar.Header>
+            <SafeAreaView style={styles.container}>
+        <CustomAppbar
+          backAction={this.onBackPress}
+          actions={[{ icon: "chat", onPress: this.onChatButtonPress }]}
+        />
                 <Header>{mission ? mission.question[0]: ""}</Header>
                 {this.renderError()}
                 {this.renderTextBox()}
                 {this.renderPickFile()}
                 {this.renderButton()}
-            </KeyboardAwareScrollView>
+            </SafeAreaView>
         );
     }
 }

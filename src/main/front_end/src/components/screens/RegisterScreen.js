@@ -1,19 +1,27 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ActivityIndicator } from 'react-native-paper';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { ActivityIndicator } from "react-native-paper";
+import { connect } from "react-redux";
 import {
   emailChanged,
   navigateToLogin,
   passwordChanged,
   registerUser,
-} from '../../actions';
-import { theme } from '../../core/theme';
-import { registerStrings } from '../../locale/locale_heb';
-import Button from '../common/Button';
-import Header from '../common/Header';
-import TextInput from '../common/TextInput';
+} from "../../actions";
+import { theme } from "../../core/theme";
+import { registerStrings } from "../../locale/locale_heb";
+import Button from "../common/Button";
+import CustomAppbar from "../common/CustomAppbar";
+import Header from "../common/Header";
+import TextInput from "../common/TextInput";
 
 const {
   header,
@@ -56,7 +64,7 @@ class RegisterForm extends Component {
       <ActivityIndicator
         animating={true}
         color={theme.colors.primary}
-        size='large'
+        size="large"
       />
     );
   }
@@ -70,7 +78,7 @@ class RegisterForm extends Component {
       <View style={styles.row}>
         <Text style={styles.label}>{already_user}</Text>
         <TouchableOpacity
-          onPress={() => this.props.navigation.navigate('Login')}
+          onPress={() => this.props.navigation.navigate("Login")}
         >
           <Text style={styles.link}>{already_user_sign_in}</Text>
         </TouchableOpacity>
@@ -85,7 +93,7 @@ class RegisterForm extends Component {
       this.renderSpinner()
     ) : (
       <Button
-        mode='contained'
+        mode="contained"
         style={styles.button}
         onPress={this.onButtonPress}
       >
@@ -110,7 +118,7 @@ class RegisterForm extends Component {
   renderError() {
     const { errorMessage } = this.props;
 
-    if (errorMessage && errorMessage !== '') {
+    if (errorMessage && errorMessage !== "") {
       return (
         <View>
           <Text style={styles.errorTextStyle}>{errorMessage}</Text>
@@ -123,26 +131,35 @@ class RegisterForm extends Component {
     const { email, password } = this.props;
 
     return (
-      <KeyboardAwareScrollView style={styles.container}>
-        <Header>{header}</Header>
-        <TextInput
-          label={enter_email}
-          value={email}
-          onChangeText={this.onEmailChange}
-          placeholder='roy4@post.bgu.ac.il'
-        />
+      <SafeAreaView style={styles.container}>
+        <KeyboardAwareScrollView>
+          <CustomAppbar/>
+          <Header>{header}</Header>
+          <TextInput
+            label={enter_email}
+            value={email}
+            onChangeText={this.onEmailChange}
+            placeholder="roy4@post.bgu.ac.il"
+          />
 
-        <TextInput
-          label={enter_password}
-          value={password}
-          onChangeText={this.onPasswordChange}
-          placeholder='Th1sI5@passWord'
-          secureTextEntry
-        />
-        {this.renderButton()}
-        {this.renderError()}
-        {this.renderLoginLabel()}
-      </KeyboardAwareScrollView>
+          <TextInput
+            label={enter_password}
+            value={password}
+            onChangeText={this.onPasswordChange}
+            placeholder="Th1sI5@passWord"
+            secureTextEntry
+          />
+          {this.renderButton()}
+          {this.renderError()}
+          {this.renderLoginLabel()}
+          <View style={{ alignItems: "center", justifyContent: "center" }}>
+            <Image
+              style={{ marginTop: 20, width: 180, height: 200 }}
+              source={require("../../../assets/full_logo.png")}
+            />
+          </View>
+        </KeyboardAwareScrollView>
+      </SafeAreaView>
     );
   }
 }
@@ -151,9 +168,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    width: '100%',
+    width: "100%",
     maxWidth: 340,
-    alignSelf: 'center',
+    alignSelf: "center",
     // alignItems: 'center',
     // justifyContent: 'center',
   },
@@ -161,16 +178,16 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 10,
   },
   link: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: theme.colors.primary,
   },
   errorTextStyle: {
     fontSize: 22,
-    alignSelf: 'center',
+    alignSelf: "center",
     color: theme.colors.error,
   },
 });
