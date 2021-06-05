@@ -54,7 +54,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="TransferTeacher"
+        initialRouteName="Register"
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="CloseClassroom" component={CloseClassroomScreen} />
