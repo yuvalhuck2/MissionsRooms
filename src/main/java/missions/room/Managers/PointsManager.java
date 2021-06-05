@@ -39,14 +39,14 @@ public class PointsManager extends TeacherManager  {
         String userAlias = ram.getAlias(apiKey);
         Response<Boolean> APIResponse=userRepo.isExistsById(userAlias);
         if(APIResponse.getReason()!= OpCode.Success){
-            log.warn(String.format("There was a problem from kind %s when trying to find user %s",
-                    APIResponse.getReason().toString(),
-                    userAlias));
+//            log.warn(String.format("There was a problem from kind %s when trying to find user %s",
+//                    APIResponse.getReason().toString(),
+//                    userAlias));
             return new Response<>(null,APIResponse.getReason());
         }
         if(!APIResponse.getValue()){
-            log.warn(String.format("The user %s is not exist",
-                    userAlias));
+//            log.warn(String.format("The user %s is not exist",
+//                    userAlias));
             return new Response<>(null,OpCode.Not_Exist);
         }
         RecordTable recordTable = ram.getRecordTable();

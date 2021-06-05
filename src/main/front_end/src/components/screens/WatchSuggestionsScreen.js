@@ -89,7 +89,7 @@ class WatchMessagesForm extends Component {
   render() {
     const { suggestion } = this.props;
     return (
-      <SafeAreaView style={style.container}>
+      <SafeAreaView style={styles.container}>
         <KeyboardAwareScrollView>
           <CustomAppbar backAction={this.onBackPress} />
           <Header>{watch_suggestions}</Header>

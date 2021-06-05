@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { ActivityIndicator } from "react-native-paper";
@@ -158,6 +159,13 @@ class LoginForm extends Component {
           {this.renderError()}
           {this.renderRegisterLabel()}
           {this.renderResetPasswordLabel()}
+
+          <View style={{ alignItems: "center", justifyContent: "center" }}>
+            <Image
+              style={{ marginTop: 20, width: 180, height: 200 }}
+              source={require("../../../assets/full_logo.png")}
+            />
+          </View>
         </KeyboardAwareScrollView>
       </SafeAreaView>
     );

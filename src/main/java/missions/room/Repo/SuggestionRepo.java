@@ -48,7 +48,7 @@ public class SuggestionRepo {
             return new Response<>(suggestions,OpCode.Success);
         }
         catch (Exception e){
-            log.error("couldn't find all suggestions",e);
+//            log.error("couldn't find all suggestions",e);
             return new Response<>(null,OpCode.DB_Error);
         }
     }

@@ -36,9 +36,9 @@ public class Utils {
     }
 
     public static String getMailFromAlias(String alias) {
-        // return alias+LEOBAECK_SUFFIX;
+        return alias+LEOBAECK_SUFFIX;
         // TODO: remove when testing is done
-        return alias+TEST_SUFFIX;
+        // return alias+TEST_SUFFIX;
     }
 
     public static String getAlias(String email){
