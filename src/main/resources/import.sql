@@ -84,4 +84,4 @@ INSERT INTO IT (alias) VALUES ('admin') ON CONFLICT DO NOTHING;
 -- INSERT INTO SUGGESTION(id,suggestion) values('123','הצעה טובה מאוד');
 --
 -- insert into open_answer(id, has_file, mission_id, open_answer_text, room_id) values('open_id', false, 'open_mission_id', 'text', 'rid4');
---
+
