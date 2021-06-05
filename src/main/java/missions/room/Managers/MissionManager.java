@@ -104,14 +104,6 @@ public class MissionManager extends TeacherManager {
         return new Response<>(null,OpCode.Not_Mission);
     }
 
-    private List<RoomOpenAnswerData> convertRoomOpenAnswerViewListToRoomOpenAnswerDataList(List<RoomOpenAnswersView> roomOpenAnswersViews) {
-        List<RoomOpenAnswerData> roomOpenAnswerDataList = new ArrayList<>();
-        for(RoomOpenAnswersView roomOpenAnswersView : roomOpenAnswersViews) {
-            roomOpenAnswerDataList.add(convertRoomOpenAnswerViewToSolutionData(roomOpenAnswersView));
-        }
-        return roomOpenAnswerDataList;
-    }
-
     private RoomOpenAnswerData convertRoomOpenAnswerViewToSolutionData(RoomOpenAnswersView roomOpenAnswersView) {
         List<OpenAnswer> openAnswers = roomOpenAnswersView.getOpenAnswers();
         RoomTemplate roomTemplate = roomOpenAnswersView.getRoomTemplate();
@@ -152,7 +144,6 @@ public class MissionManager extends TeacherManager {
         if(missionResponse.getReason()!= OpCode.Success){
             return new Response<>(false,missionResponse.getReason());
         }
-        Response<List<Mission>> response =missionRepo.findAllMissions();
         return new Response<>(true,OpCode.Success);
 
     }

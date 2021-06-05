@@ -72,5 +72,4 @@ class ITControllerTest extends ControllerTest {
         testControllerWithBody(DELETE_SENIORS, body, Wrong_Key, null);
     }
 
-    //TODO transfer teacher and transfer student
 }

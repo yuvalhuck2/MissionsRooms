@@ -15,23 +15,12 @@ public class MessageChatDetails {
         return apiKey;
     }
 
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
-
     public ChatMessageData getChatMessageData() {
         return newMessage;
-    }
-
-    public void setChatMessageData(ChatMessageData chatMessageData) {
-        this.newMessage = chatMessageData;
     }
 
     public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
-    }
 }

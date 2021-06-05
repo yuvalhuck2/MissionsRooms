@@ -101,5 +101,4 @@ class StudentRoomControllerTest extends ControllerTest {
                 body(valueParamName, equalTo(value));
     }
 
-    //TODO trivia related
 }

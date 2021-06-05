@@ -57,13 +57,10 @@ public class MissionController extends AbsController {
     @GetMapping("/downloadFile")
     public  ResponseEntity<?> downloadOpenAnswerFile(@RequestParam String apiKey, @RequestParam(name = "roomId") String roomId, @RequestParam(name = "missionId") String missionId) {
         Response<File> fileRes = missionService.getMissionOpenAnswerFile(apiKey, roomId, missionId);
-//        String rootPath = Utils.getRootDirectory();
-//        Path folderPath = FileSystems.getDefault().getPath(rootPath,"openAnswer", roomId, missionId);
         if (fileRes.getReason() != OpCode.Success) {
-            //TODO add logs
             return null;
         }
-        File f = fileRes.getValue(); //TODO add defense
+        File f = fileRes.getValue();
         try {
             InputStreamResource resource = new InputStreamResource(new FileInputStream(f));
             HttpHeaders headers = new HttpHeaders();
@@ -75,7 +72,7 @@ public class MissionController extends AbsController {
                     .contentType(MediaType.parseMediaType("application/txt")).body(resource);
             log.info(responseEntity);
             return  responseEntity;
-        } catch (FileNotFoundException e) { //TODO add log
+        } catch (FileNotFoundException e) {
             log.error("error down;pad file", e);
         }
 

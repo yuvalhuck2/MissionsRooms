@@ -1,7 +1,6 @@
 package RepositoryMocks.SchoolUserRepositry;
 
 import CrudRepositories.SchoolUserCrudRepository;
-import Data.Data;
 import Data.DataGenerator;
 import missions.room.Domain.Users.SchoolUser;
 
@@ -13,11 +12,6 @@ public class SchoolUserRepositoryMockExceptionFindWrite implements SchoolUserCru
 
     public SchoolUserRepositoryMockExceptionFindWrite(DataGenerator dataGenerator) {
         this.dataGenerator = dataGenerator;
-    }
-
-    @Override
-    public SchoolUser findUserForRead(String alias) {
-        return dataGenerator.getStudent(Data.VALID);
     }
 
     @Override

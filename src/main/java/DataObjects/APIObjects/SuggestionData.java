@@ -20,16 +20,8 @@ public class SuggestionData {
         return apiKey;
     }
 
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
-
     public String getSuggestion() {
         return suggestion;
-    }
-
-    public void setSuggestion(String suggestion) {
-        this.suggestion = suggestion;
     }
 
     public String getId() {

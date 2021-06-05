@@ -3,9 +3,7 @@ package RepositoryMocks.RoomTemplateRepository;
 import CrudRepositories.RoomTemplateCrudRepository;
 import Data.Data;
 import Data.DataGenerator;
-import javassist.bytecode.Opcode;
 import missions.room.Domain.RoomTemplate;
-import org.springframework.dao.DataAccessException;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -19,16 +17,6 @@ public class RoomTemplateMockRepositorySearch implements RoomTemplateCrudReposit
             this.dataGenerator=dataGenerator;
             this.opcode=opcode;
         }
-
-    @Override
-    public RoomTemplate findTemplateForWrite(String roomTemplateId) {
-        return null;
-    }
-
-    @Override
-    public RoomTemplate findTemplateForRead(String roomTemplateId) {
-        return null;
-    }
 
     @Override
     public <S extends RoomTemplate> S save(S s) {

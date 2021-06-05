@@ -13,15 +13,8 @@ public class ApiKeyAndAliasData {
         return apiKey;
     }
 
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
-
     public String getAlias() {
         return alias;
     }
 
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
 }

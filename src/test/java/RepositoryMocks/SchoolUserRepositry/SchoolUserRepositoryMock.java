@@ -22,11 +22,6 @@ public class SchoolUserRepositoryMock implements SchoolUserCrudRepository {
     }
 
     @Override
-    public SchoolUser findUserForRead(String alias) {
-        return dataGenerator.getStudent(Data.VALID);
-    }
-
-    @Override
     public <S extends SchoolUser> S save(S s) {
         return (S) dataGenerator.getStudent(Data.VALID);
     }

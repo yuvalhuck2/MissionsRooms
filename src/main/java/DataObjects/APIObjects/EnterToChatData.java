@@ -13,15 +13,8 @@ public class EnterToChatData {
         return apiKey;
     }
 
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
-
     public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
-    }
 }

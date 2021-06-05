@@ -22,7 +22,6 @@ const {
   addTemplate,
   createRoom,
   watch_suggestions,
-  closeRoom,
   WatchRooms,
   trivia_manage,
 } = TeacherStrings;
@@ -124,15 +123,7 @@ class TeacherForm extends Component {
               styles.left_button_border,
               styles.bottom_button_border,
             ]}
-            onPress={() =>
-              this.props.passToWatchProfiles({
-                navigation,
-                apiKey,
-                isStudent: false,
-              })
-            }
           >
-            <Text style={{ color: 'white' }}>{watchProfiles}</Text>
           </Button>
         </View>
         <View>
@@ -193,10 +184,14 @@ class TeacherForm extends Component {
               styles.right_button_border,
             ]}
             onPress={() =>
-              this.props.passToWatchMessages({ navigation, apiKey })
+              this.props.passToWatchProfiles({
+                navigation,
+                apiKey,
+                isStudent: false,
+              })
             }
           >
-            <Text style={{ color: 'white' }}></Text>
+            <Text style={{ color: 'white' }}>{watchProfiles}</Text>
           </Button>
           <Button
             onPress={this.onLogout}

@@ -19,31 +19,16 @@ public class TransferDetailsData {
         return apiKey;
     }
 
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
-
     public String getAlias() {
         return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
     }
 
     public String getClassroomName() {
         return classroomName;
     }
 
-    public void setClassroomName(String classroomName) {
-        this.classroomName = classroomName;
-    }
-
     public GroupType getGroupType() {
         return groupType;
     }
 
-    public void setGroupType(GroupType groupType) {
-        this.groupType = groupType;
-    }
 }

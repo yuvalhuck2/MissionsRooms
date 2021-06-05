@@ -25,19 +25,6 @@ public class RoomRepo {
     }
 
     @Transactional
-    public Response<Room> findRoomForWrite(String id){
-        try {
-            return new Response<>(roomCrudRepository.findRoomForWrite(id), OpCode.Success);
-        }
-        catch(LockTimeoutException e){
-            return new Response<>(null,OpCode.TimeOut);
-        }
-        catch(Exception e){
-            return new Response<>(null,OpCode.DB_Error);
-        }
-    }
-
-    @Transactional
     public Response<Room> findRoomForRead(String id){
         try{
             return new Response<>(roomCrudRepository.findRoomForRead(id), OpCode.Success);

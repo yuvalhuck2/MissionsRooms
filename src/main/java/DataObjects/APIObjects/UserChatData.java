@@ -13,15 +13,8 @@ public class UserChatData {
         return _id;
     }
 
-    public void setId(String id) {
-        this._id = id;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 }

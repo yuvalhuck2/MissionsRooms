@@ -16,16 +16,6 @@ public class RoomTemplateCrudRepositoryMock implements RoomTemplateCrudRepositor
     }
 
     @Override
-    public RoomTemplate findTemplateForWrite(String roomTemplateId) {
-        return null;
-    }
-
-    @Override
-    public RoomTemplate findTemplateForRead(String roomTemplateId) {
-        return null;
-    }
-
-    @Override
     public <S extends RoomTemplate> S save(S s) {
         return (S) dataGenerator.getRoomTemplate(Data.VALID);
     }

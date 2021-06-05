@@ -96,15 +96,6 @@ public class ClassroomRepo {
         }
     }
 
-    public Response<List<String>> getAllClassroomNames() {
-        try {
-            return new Response<List<String>>(Lists.newArrayList(classRoomRepository.getAllNames()), OpCode.Success);
-        }
-        catch (Exception e){
-            return new Response<>(new ArrayList<>(), OpCode.DB_Error);
-        }
-    }
-
     public Response<Classroom> find(String classroomName){
         try{
             Classroom classroom=classRoomRepository.findClassroom(classroomName);

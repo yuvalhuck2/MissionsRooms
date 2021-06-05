@@ -6,7 +6,6 @@ import Data.DataGenerator;
 import missions.room.Domain.Users.SchoolUser;
 
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.LockTimeoutException;
 import java.util.Optional;
 
 public class SchoolUserRepositoryMockLockExceptionFindRead implements SchoolUserCrudRepository {
@@ -19,11 +18,6 @@ public class SchoolUserRepositoryMockLockExceptionFindRead implements SchoolUser
     @Override
     public SchoolUser findUserForWrite(String alias) {
         return dataGenerator.getStudent(Data.VALID);
-    }
-
-    @Override
-    public SchoolUser findUserForRead(String alias) {
-        throw new LockTimeoutException();
     }
 
     @Override
